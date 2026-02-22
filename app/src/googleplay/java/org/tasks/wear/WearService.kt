@@ -220,6 +220,7 @@ class WearService(
             .setCompleted(task.isCompleted)
             .setPriority(task.priority)
             .setRepeating(task.isRecurring)
+            .setDescription(task.notes ?: "")
             .build()
     }
 

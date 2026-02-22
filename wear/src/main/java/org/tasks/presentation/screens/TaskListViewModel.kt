@@ -9,7 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.data.ProtoDataStoreHelper.protoFlow
-import com.google.android.horologist.data.TargetNodeId
+import org.tasks.presentation.phoneTargetNodeId
 import com.google.android.horologist.datalayer.grpc.GrpcExtensions.grpcClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
@@ -58,9 +58,10 @@ class TaskListViewModel(
         .cachedIn(viewModelScope)
 
     private val registry = application.wearDataLayerRegistry(viewModelScope)
+    private val targetNodeId = application.phoneTargetNodeId()
 
     private val wearService : WearServiceGrpcKt.WearServiceCoroutineStub = registry.grpcClient(
-        nodeId = TargetNodeId.PairedPhone,
+        nodeId = targetNodeId,
         coroutineScope = viewModelScope,
     ) {
         WearServiceGrpcKt.WearServiceCoroutineStub(it)
@@ -68,11 +69,11 @@ class TaskListViewModel(
 
     init {
         registry
-            .protoFlow<LastUpdate>(TargetNodeId.PairedPhone)
+            .protoFlow<LastUpdate>(targetNodeId)
             .onEach { invalidate() }
             .launchIn(viewModelScope)
         registry
-            .protoFlow<Settings>(TargetNodeId.PairedPhone)
+            .protoFlow<Settings>(targetNodeId)
             .onEach { invalidate() }
             .launchIn(viewModelScope)
     }

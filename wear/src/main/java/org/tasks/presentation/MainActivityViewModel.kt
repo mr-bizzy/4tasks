@@ -50,29 +50,35 @@ class MainActivityViewModel(
         if (!helper.isAvailable()) {
             _uiState.value = NodesActionScreenState.ApiNotAvailable
         } else {
-            _uiState.value = NodesActionScreenState.Loaded(
-                nodeList = helper.connectedNodes().map { node ->
-                    val type = when (node.appInstallationStatus) {
-                        is AppInstallationStatus.Installed -> {
-                            val status =
-                                node.appInstallationStatus as AppInstallationStatus.Installed
-                            when (status.nodeType) {
-                                AppInstallationStatusNodeType.WATCH -> NodeTypeUiModel.WATCH
-                                AppInstallationStatusNodeType.PHONE -> NodeTypeUiModel.PHONE
-                            }
+            val nodeList = helper.connectedNodes().map { node ->
+                val type = when (node.appInstallationStatus) {
+                    is AppInstallationStatus.Installed -> {
+                        val status =
+                            node.appInstallationStatus as AppInstallationStatus.Installed
+                        when (status.nodeType) {
+                            AppInstallationStatusNodeType.WATCH -> NodeTypeUiModel.WATCH
+                            AppInstallationStatusNodeType.PHONE -> NodeTypeUiModel.PHONE
                         }
-
-                        AppInstallationStatus.NotInstalled -> NodeTypeUiModel.UNKNOWN
                     }
 
-                    NodeUiModel(
-                        id = node.id,
-                        name = node.displayName,
-                        appInstalled = node.appInstallationStatus is AppInstallationStatus.Installed,
-                        type = type,
-                    )
-                },
-            ).also {
+                    AppInstallationStatus.NotInstalled -> NodeTypeUiModel.UNKNOWN
+                }
+
+                NodeUiModel(
+                    id = node.id,
+                    name = node.displayName,
+                    appInstalled = node.appInstallationStatus is AppInstallationStatus.Installed,
+                    type = type,
+                )
+            }
+            val phoneNode = nodeList
+                .firstOrNull { it.type == NodeTypeUiModel.PHONE && it.appInstalled }
+            if (phoneNode != null) {
+                getApplication<Application>().savePhoneNodeId(phoneNode.id)
+            } else {
+                getApplication<Application>().clearPhoneNodeId()
+            }
+            _uiState.value = NodesActionScreenState.Loaded(nodeList = nodeList).also {
                 Timber.d("Loaded: $it")
             }
         }

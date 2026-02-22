@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
 import com.google.android.horologist.data.ProtoDataStoreHelper.protoFlow
-import com.google.android.horologist.data.TargetNodeId
+import org.tasks.presentation.phoneTargetNodeId
 import com.google.android.horologist.datalayer.grpc.GrpcExtensions.grpcClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,8 +31,9 @@ class SettingsViewModel(
     application: Application,
 ) : AndroidViewModel(application) {
     private val registry = application.wearDataLayerRegistry(viewModelScope)
+    private val targetNodeId = application.phoneTargetNodeId()
     private val wearService: WearServiceGrpcKt.WearServiceCoroutineStub = registry.grpcClient(
-        nodeId = TargetNodeId.PairedPhone,
+        nodeId = targetNodeId,
         coroutineScope = viewModelScope,
     ) {
         WearServiceGrpcKt.WearServiceCoroutineStub(it)
@@ -42,7 +43,7 @@ class SettingsViewModel(
 
     init {
         registry
-            .protoFlow<Settings>(TargetNodeId.PairedPhone)
+            .protoFlow<Settings>(targetNodeId)
             .onEach { newSettings ->
                 _viewState.update {
                     it.copy(

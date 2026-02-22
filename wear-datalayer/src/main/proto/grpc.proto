@@ -86,6 +86,7 @@ message GetTaskResponse {
   bool completed = 2;
   bool repeating = 3;
   uint32 priority = 4;
+  string description = 5;
 }
 
 message SaveTaskRequest {

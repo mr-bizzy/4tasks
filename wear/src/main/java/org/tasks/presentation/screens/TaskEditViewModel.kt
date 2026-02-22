@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
-import com.google.android.horologist.data.TargetNodeId
+import org.tasks.presentation.phoneTargetNodeId
 import com.google.android.horologist.datalayer.grpc.GrpcExtensions.grpcClient
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +23,7 @@ data class UiState(
     val repeating: Boolean = false,
     val priority: Int = 0,
     val title: String = "",
+    val description: String = "",
 )
 
 @OptIn(ExperimentalHorologistApi::class)
@@ -35,7 +36,7 @@ class TaskEditViewModel(
     private val registry = applicationContext.wearDataLayerRegistry(viewModelScope)
 
     private val wearService : WearServiceGrpcKt.WearServiceCoroutineStub = registry.grpcClient(
-        nodeId = TargetNodeId.PairedPhone,
+        nodeId = applicationContext.phoneTargetNodeId(),
         coroutineScope = viewModelScope,
     ) {
         WearServiceGrpcKt.WearServiceCoroutineStub(it)
@@ -61,6 +62,7 @@ class TaskEditViewModel(
                 title = task.title,
                 repeating = task.repeating,
                 priority = task.priority,
+                description = task.description,
             )
         }
     }
@@ -93,8 +95,11 @@ class TaskEditViewModel(
         }
     }
 
-    fun setCompleted(completed: Boolean) {
+    fun setCompleted(completed: Boolean, onComplete: () -> Unit) {
         _uiState.update { it.copy(completed = completed) }
+        if (completed) {
+            save(onComplete)
+        }
     }
 }
 

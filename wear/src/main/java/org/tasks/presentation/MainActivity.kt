@@ -69,8 +69,6 @@ class MainActivity : ComponentActivity() {
                     val taskListItems = taskListViewModel.uiItems.collectAsLazyPagingItems()
                     val settingsViewModel: SettingsViewModel = viewModel()
                     val connected = viewModel.uiState.collectAsStateWithLifecycle().value
-                    val menuViewModel: MenuViewModel = viewModel()
-                    val menuItems = menuViewModel.uiItems.collectAsLazyPagingItems()
                     LaunchedEffect(connected) {
                         when (connected) {
                             NodesActionScreenState.ApiNotAvailable -> {
@@ -193,14 +191,16 @@ class MainActivity : ComponentActivity() {
                             TaskEditScreen(
                                 uiState = uiState,
                                 setTitle = { viewModel.setTitle(it) },
-                                toggleCompleted = { viewModel.setCompleted(!uiState.completed) },
+                                toggleCompleted = { viewModel.setCompleted(!uiState.completed) { navController.popBackStack() } },
                                 save = { viewModel.save { navController.popBackStack() } },
                                 back = { navController.popBackStack() },
                             )
                         }
                         composable(
                             route = "menu",
-                        ) { navBackStackEntry ->
+                        ) {
+                            val menuViewModel: MenuViewModel = viewModel()
+                            val menuItems = menuViewModel.uiItems.collectAsLazyPagingItems()
                             MenuScreen(
                                 items = menuItems,
                                 selectFilter = {
