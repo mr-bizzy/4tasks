@@ -90,6 +90,16 @@ message SaveTaskResponse {
   uint64 taskId = 1;
 }
 
+message GetTaskCountRequest {
+  optional string filter = 1;
+  bool showHidden = 2;
+  bool showCompleted = 3;
+}
+message GetTaskCountResponse {
+  uint32 count = 1;
+  uint32 completedCount = 2;
+}
+
 service WearService {
   rpc getTasks(GetTasksRequest) returns (Tasks);
   rpc completeTask(CompleteTaskRequest) returns (CompleteTaskResponse);
@@ -97,4 +107,5 @@ service WearService {
   rpc getLists(GetListsRequest) returns (GetListsResponse);
   rpc getTask(GetTaskRequest) returns (GetTaskResponse);
   rpc saveTask(SaveTaskRequest) returns (SaveTaskResponse);
+  rpc getTaskCount(GetTaskCountRequest) returns (GetTaskCountResponse);
 }

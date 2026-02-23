@@ -46,6 +46,8 @@ import org.tasks.presentation.screens.TaskEditViewModelFactory
 import org.tasks.presentation.screens.TaskListScreen
 import org.tasks.presentation.screens.TaskListViewModel
 import org.tasks.presentation.theme.TasksTheme
+import org.tasks.complications.EXTRA_ADD_TASK
+import org.tasks.complications.EXTRA_COMPLICATION_FILTER
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.wear_install_app
 import tasks.kmp.generated.resources.wear_unknown_error
@@ -85,7 +87,18 @@ class MainActivity : ComponentActivity() {
                             is NodesActionScreenState.Loaded -> {
                                 navController.popBackStack()
                                 if (connected.nodeList.any { it.type == NodeTypeUiModel.PHONE && it.appInstalled }) {
+                                    intent.getStringExtra(EXTRA_COMPLICATION_FILTER)?.let { complicationFilter ->
+                                        settingsViewModel.setFilter(complicationFilter)
+                                        intent.removeExtra(EXTRA_COMPLICATION_FILTER)
+                                    }
+                                    val addTask = intent.getBooleanExtra(EXTRA_ADD_TASK, false)
+                                    if (addTask) {
+                                        intent.removeExtra(EXTRA_ADD_TASK)
+                                    }
                                     navController.navigate("task_list")
+                                    if (addTask) {
+                                        navController.navigate("task_edit?taskId=0")
+                                    }
                                 } else {
                                     connected
                                         .nodeList

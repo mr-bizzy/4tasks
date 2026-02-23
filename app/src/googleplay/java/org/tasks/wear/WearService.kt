@@ -12,6 +12,8 @@ import org.tasks.GrpcProto.GetTaskResponse
 import org.tasks.GrpcProto.GetTasksRequest
 import org.tasks.GrpcProto.ListItem
 import org.tasks.GrpcProto.ListItemType
+import org.tasks.GrpcProto.GetTaskCountRequest
+import org.tasks.GrpcProto.GetTaskCountResponse
 import org.tasks.GrpcProto.SaveTaskResponse
 import org.tasks.GrpcProto.Tasks
 import org.tasks.GrpcProto.ToggleGroupRequest
@@ -233,6 +235,27 @@ class WearService(
             }
             return SaveTaskResponse.newBuilder().setTaskId(request.taskId).build()
         }
+    }
+
+    override suspend fun getTaskCount(request: GetTaskCountRequest): GetTaskCountResponse {
+        val filterPref = if (request.hasFilter()) {
+            request.filter.takeIf { it.isNotBlank() }
+        } else {
+            null
+        }
+        val filter = defaultFilterProvider.getFilterFromPreference(filterPref)
+        val preferences = WearPreferences(
+            appPreferences,
+            wearShowHidden = request.showHidden,
+            wearShowCompleted = request.showCompleted,
+        )
+        val tasks = taskDao.fetchTasks(preferences, filter)
+        val count = tasks.count { !it.task.isCompleted }
+        val completedCount = tasks.count { it.task.isCompleted }
+        return GetTaskCountResponse.newBuilder()
+            .setCount(count)
+            .setCompletedCount(completedCount)
+            .build()
     }
 
     private fun getColor(filter: Filter): Int {

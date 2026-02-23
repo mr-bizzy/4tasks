@@ -80,6 +80,7 @@ dependencies {
     implementation(platform(libs.firebase))
     implementation(libs.firebase.crashlytics)
     implementation(libs.posthog.android)
+    implementation(libs.wear.complications.data.source)
     implementation(libs.wear.compose.material)
     implementation(libs.wear.compose.foundation)
     implementation(libs.wear.compose.navigation)

@@ -29,6 +29,16 @@ suspend fun TaskDao.fetchFiltered(queryTemplate: String): List<Task> {
 
 suspend fun TaskDao.count(filter: Filter): Int = count(getQuery(filter.sql!!, Field.COUNT))
 
+suspend fun TaskDao.countCompleted(filter: Filter): Int {
+    val sql = filter.sql ?: return 0
+    val completedSql = sql.replace("tasks.completed<=0", "tasks.completed>0")
+    return if (completedSql != sql) {
+        count(getQuery(completedSql, Field.COUNT))
+    } else {
+        0
+    }
+}
+
 private fun getQuery(queryTemplate: String, vararg fields: Field): String =
     Query.select(*fields)
         .withQueryTemplate(PermaSql.replacePlaceholdersForQuery(queryTemplate))
