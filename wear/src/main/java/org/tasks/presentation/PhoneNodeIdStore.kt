@@ -5,6 +5,7 @@ import com.google.android.horologist.data.TargetNodeId
 
 private const val PREFS_NAME = "phone_connection"
 private const val KEY_NODE_ID = "phone_node_id"
+private const val KEY_VERSION_PREFIX = "phone_version_"
 
 fun Context.savePhoneNodeId(nodeId: String) {
     getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -28,4 +29,15 @@ fun Context.phoneTargetNodeId(): TargetNodeId {
     } else {
         TargetNodeId.PairedPhone
     }
+}
+
+fun Context.getCachedPhoneVersion(nodeId: String): Int =
+    getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        .getInt("$KEY_VERSION_PREFIX$nodeId", 0)
+
+fun Context.setCachedPhoneVersion(nodeId: String, versionCode: Int) {
+    getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        .edit()
+        .putInt("$KEY_VERSION_PREFIX$nodeId", versionCode)
+        .apply()
 }

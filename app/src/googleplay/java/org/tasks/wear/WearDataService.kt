@@ -17,6 +17,7 @@ import org.tasks.filters.FilterProvider
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
 import org.tasks.tasklist.HeaderFormatter
+import org.tasks.BuildConfig
 import org.tasks.themes.ColorProvider
 import javax.inject.Inject
 
@@ -52,6 +53,7 @@ class WearDataService : BaseGrpcDataService<WearServiceGrpcKt.WearServiceCorouti
             defaultFilterProvider = defaultFilterProvider,
             taskCreator = taskCreator,
             is24HourTime = DateFormat.is24HourFormat(applicationContext),
+            versionCode = BuildConfig.VERSION_CODE,
         )
     }
 }

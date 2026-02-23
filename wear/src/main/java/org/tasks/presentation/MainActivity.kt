@@ -50,6 +50,7 @@ import org.tasks.complications.EXTRA_ADD_TASK
 import org.tasks.complications.EXTRA_COMPLICATION_FILTER
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.wear_install_app
+import tasks.kmp.generated.resources.wear_phone_update_required
 import tasks.kmp.generated.resources.wear_unknown_error
 
 class MainActivity : ComponentActivity() {
@@ -87,17 +88,24 @@ class MainActivity : ComponentActivity() {
                             is NodesActionScreenState.Loaded -> {
                                 navController.popBackStack()
                                 if (connected.nodeList.any { it.type == NodeTypeUiModel.PHONE && it.appInstalled }) {
-                                    intent.getStringExtra(EXTRA_COMPLICATION_FILTER)?.let { complicationFilter ->
-                                        settingsViewModel.setFilter(complicationFilter)
-                                        intent.removeExtra(EXTRA_COMPLICATION_FILTER)
-                                    }
-                                    val addTask = intent.getBooleanExtra(EXTRA_ADD_TASK, false)
-                                    if (addTask) {
-                                        intent.removeExtra(EXTRA_ADD_TASK)
-                                    }
-                                    navController.navigate("task_list")
-                                    if (addTask) {
-                                        navController.navigate("task_edit?taskId=0")
+                                    if (connected.phoneUpdateRequired) {
+                                        val phoneNodeId = connected.nodeList
+                                            .first { it.type == NodeTypeUiModel.PHONE && it.appInstalled }
+                                            .id
+                                        navController.navigate("error?type=${Errors.PHONE_UPDATE_REQUIRED},nodeId=$phoneNodeId")
+                                    } else {
+                                        intent.getStringExtra(EXTRA_COMPLICATION_FILTER)?.let { complicationFilter ->
+                                            settingsViewModel.setFilter(complicationFilter)
+                                            intent.removeExtra(EXTRA_COMPLICATION_FILTER)
+                                        }
+                                        val addTask = intent.getBooleanExtra(EXTRA_ADD_TASK, false)
+                                        if (addTask) {
+                                            intent.removeExtra(EXTRA_ADD_TASK)
+                                        }
+                                        navController.navigate("task_list")
+                                        if (addTask) {
+                                            navController.navigate("task_edit?taskId=0")
+                                        }
                                     }
                                 } else {
                                     connected
@@ -157,6 +165,25 @@ class MainActivity : ComponentActivity() {
                                             label = {
                                                 Text(
                                                     text = stringResource(Res.string.wear_install_app),
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
+                                                )
+                                            },
+                                        )
+                                    }
+
+                                    Errors.PHONE_UPDATE_REQUIRED -> {
+                                        LaunchedEffect(Unit) {
+                                            while (true) {
+                                                delay(5000)
+                                                viewModel.loadNodes()
+                                            }
+                                        }
+                                        Chip(
+                                            onClick = { viewModel.installOnNode(nodeId) },
+                                            label = {
+                                                Text(
+                                                    text = stringResource(Res.string.wear_phone_update_required),
                                                     maxLines = 1,
                                                     overflow = TextOverflow.Ellipsis
                                                 )

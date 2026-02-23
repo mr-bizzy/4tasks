@@ -14,6 +14,8 @@ import org.tasks.GrpcProto.ListItem
 import org.tasks.GrpcProto.ListItemType
 import org.tasks.GrpcProto.GetTaskCountRequest
 import org.tasks.GrpcProto.GetTaskCountResponse
+import org.tasks.GrpcProto.GetVersionRequest
+import org.tasks.GrpcProto.GetVersionResponse
 import org.tasks.GrpcProto.SaveTaskResponse
 import org.tasks.GrpcProto.Tasks
 import org.tasks.GrpcProto.ToggleGroupRequest
@@ -54,6 +56,7 @@ class WearService(
     private val defaultFilterProvider: DefaultFilterProvider,
     private val taskCreator: TaskCreator,
     private val is24HourTime: Boolean,
+    private val versionCode: Int,
 ) : WearServiceGrpcKt.WearServiceCoroutineImplBase() {
     override suspend fun getTasks(request: GetTasksRequest): Tasks {
         val position = request.position
@@ -255,6 +258,12 @@ class WearService(
         return GetTaskCountResponse.newBuilder()
             .setCount(count)
             .setCompletedCount(completedCount)
+            .build()
+    }
+
+    override suspend fun getVersion(request: GetVersionRequest): GetVersionResponse {
+        return GetVersionResponse.newBuilder()
+            .setVersionCode(versionCode)
             .build()
     }
 
