@@ -13,6 +13,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -69,6 +70,10 @@ class MainActivity : ComponentActivity() {
                     val taskListItems = taskListViewModel.uiItems.collectAsLazyPagingItems()
                     val settingsViewModel: SettingsViewModel = viewModel()
                     val connected = viewModel.uiState.collectAsStateWithLifecycle().value
+                    LifecycleResumeEffect(Unit) {
+                        taskListViewModel.invalidate()
+                        onPauseOrDispose {}
+                    }
                     LaunchedEffect(connected) {
                         when (connected) {
                             NodesActionScreenState.ApiNotAvailable -> {
@@ -214,16 +219,12 @@ class MainActivity : ComponentActivity() {
                         ) {
                             val viewState =
                                 settingsViewModel.viewState.collectAsStateWithLifecycle().value
-                            if (viewState.initialized) {
-                                SettingsScreen(
-                                    showHidden = viewState.settings.showHidden,
-                                    showCompleted = viewState.settings.showCompleted,
-                                    toggleShowHidden = { settingsViewModel.setShowHidden(it) },
-                                    toggleShowCompleted = { settingsViewModel.setShowCompleted(it) },
-                                )
-                            } else {
-                                // TODO: show spinner
-                            }
+                            SettingsScreen(
+                                showHidden = viewState.showHidden,
+                                showCompleted = viewState.showCompleted,
+                                toggleShowHidden = { settingsViewModel.setShowHidden(it) },
+                                toggleShowCompleted = { settingsViewModel.setShowCompleted(it) },
+                            )
                         }
                     }
                 }

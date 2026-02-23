@@ -89,7 +89,6 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.horologist.compose.layout)
     implementation(libs.horologist.compose.material)
-    implementation(libs.horologist.compose.tools)
     implementation(libs.horologist.datalayer.watch)
     implementation(libs.horologist.datalayer.core)
     implementation(libs.horologist.datalayer.grpc)

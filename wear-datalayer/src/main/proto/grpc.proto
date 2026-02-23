@@ -29,24 +29,13 @@ message Tasks {
   repeated UiItem items = 2;
 }
 
-message LastUpdate {
-  uint64 now = 1;
-}
-
-message Settings {
-  repeated uint64 collapsed = 1;
-  optional string filter = 2;
-  bool showHidden = 3;
-  bool showCompleted = 4;
-}
-
-message UpdateSettingsRequest {
-  Settings settings = 1;
-}
-
 message GetTasksRequest {
   uint32 position = 1;
   uint32 limit = 2;
+  optional string filter = 3;
+  bool showHidden = 4;
+  bool showCompleted = 5;
+  repeated uint64 collapsed = 6;
 }
 message CompleteTaskRequest {
   uint64 id = 1;
@@ -93,6 +82,7 @@ message SaveTaskRequest {
   uint64 taskId = 1;
   string title = 2;
   bool completed = 3;
+  optional string filter = 4;
 }
 message SaveTaskResponse {
   uint64 taskId = 1;
@@ -101,8 +91,6 @@ message SaveTaskResponse {
 service WearService {
   rpc getTasks(GetTasksRequest) returns (Tasks);
   rpc completeTask(CompleteTaskRequest) returns (CompleteTaskResponse);
-  rpc toggleGroup(ToggleGroupRequest) returns (ToggleGroupResponse);
-  rpc updateSettings(UpdateSettingsRequest) returns (Settings);
   rpc toggleSubtasks(ToggleGroupRequest) returns (ToggleGroupResponse);
   rpc getLists(GetListsRequest) returns (GetListsResponse);
   rpc getTask(GetTaskRequest) returns (GetTaskResponse);

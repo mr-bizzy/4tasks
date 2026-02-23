@@ -1,16 +1,16 @@
 package org.tasks.wear
 
-import org.tasks.GrpcProto.Settings
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.QueryPreferences
 
 class WearPreferences(
     preferences: Preferences,
-    private val settings: Settings,
+    private val wearShowHidden: Boolean,
+    private val wearShowCompleted: Boolean,
 ): QueryPreferences by preferences {
     override val showHidden: Boolean
-        get() = settings.showHidden
+        get() = wearShowHidden
 
     override val showCompleted: Boolean
-        get() = settings.showCompleted
+        get() = wearShowCompleted
 }

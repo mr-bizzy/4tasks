@@ -8,19 +8,17 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.google.android.horologist.annotations.ExperimentalHorologistApi
-import com.google.android.horologist.data.ProtoDataStoreHelper.protoFlow
 import org.tasks.presentation.phoneTargetNodeId
 import com.google.android.horologist.datalayer.grpc.GrpcExtensions.grpcClient
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.tasks.GrpcProto
-import org.tasks.GrpcProto.LastUpdate
 import org.tasks.GrpcProto.ListItem
-import org.tasks.GrpcProto.Settings
 import org.tasks.WearServiceGrpcKt
 import org.tasks.extensions.wearDataLayerRegistry
 import org.tasks.presentation.MyPagingSource
+import org.tasks.presentation.RefreshTrigger
 
 @OptIn(ExperimentalHorologistApi::class)
 class MenuViewModel(
@@ -59,12 +57,7 @@ class MenuViewModel(
     }
 
     init {
-        registry
-            .protoFlow<LastUpdate>(targetNodeId)
-            .onEach { invalidate() }
-            .launchIn(viewModelScope)
-        registry
-            .protoFlow<Settings>(targetNodeId)
+        RefreshTrigger.flow
             .onEach { invalidate() }
             .launchIn(viewModelScope)
     }

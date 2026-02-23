@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import org.tasks.GrpcProto
 import org.tasks.WearServiceGrpcKt
 import org.tasks.extensions.wearDataLayerRegistry
+import org.tasks.presentation.WearSettings
 import timber.log.Timber
 
 data class UiState(
@@ -34,6 +35,7 @@ class TaskEditViewModel(
     private val _uiState = MutableStateFlow(UiState(taskId = taskId))
     val uiState = _uiState.asStateFlow()
     private val registry = applicationContext.wearDataLayerRegistry(viewModelScope)
+    private val wearSettings = WearSettings.getInstance(applicationContext)
 
     private val wearService : WearServiceGrpcKt.WearServiceCoroutineStub = registry.grpcClient(
         nodeId = applicationContext.phoneTargetNodeId(),
@@ -71,6 +73,11 @@ class TaskEditViewModel(
         val response = wearService.saveTask(
             GrpcProto.SaveTaskRequest.newBuilder()
                 .setTitle(uiState.value.title)
+                .apply {
+                    wearSettings.stateFlow.value.filter
+                        ?.takeIf { it.isNotBlank() }
+                        ?.let { setFilter(it) }
+                }
                 .build()
         )
         fetchTask(response.taskId)

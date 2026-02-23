@@ -1,11 +1,9 @@
 package org.tasks.wear
 
-import androidx.datastore.core.DataStore
 import com.todoroo.astrid.core.SortHelper.SORT_DUE
 import com.todoroo.astrid.dao.TaskDao
 import com.todoroo.astrid.service.TaskCompleter
 import com.todoroo.astrid.service.TaskCreator
-import kotlinx.coroutines.flow.firstOrNull
 import org.tasks.GrpcProto
 import org.tasks.GrpcProto.CompleteTaskRequest
 import org.tasks.GrpcProto.CompleteTaskResponse
@@ -21,7 +19,6 @@ import org.tasks.GrpcProto.ToggleGroupResponse
 import org.tasks.WearServiceGrpcKt
 import org.tasks.analytics.Firebase
 import org.tasks.billing.Inventory
-import org.tasks.copy
 import org.tasks.data.NO_COUNT
 import org.tasks.data.isHidden
 import org.tasks.filters.AstridOrderingFilter
@@ -48,7 +45,6 @@ class WearService(
     private val appPreferences: Preferences,
     private val taskCompleter: TaskCompleter,
     private val headerFormatter: HeaderFormatter,
-    private val settings: DataStore<GrpcProto.Settings>,
     private val firebase: Firebase,
     private val filterProvider: FilterProvider,
     private val inventory: Inventory,
@@ -60,11 +56,18 @@ class WearService(
     override suspend fun getTasks(request: GetTasksRequest): Tasks {
         val position = request.position
         val limit = request.limit.takeIf { it > 0 } ?: Int.MAX_VALUE
-        val settingsData = settings.data.firstOrNull() ?: GrpcProto.Settings.getDefaultInstance()
-        val filter =
-            defaultFilterProvider.getFilterFromPreference(settingsData.filter.takeIf { it.isNotBlank() })
-        val preferences = WearPreferences(appPreferences, settingsData)
-        val collapsed = settingsData?.collapsedList?.toSet() ?: emptySet()
+        val filterPref = if (request.hasFilter()) {
+            request.filter.takeIf { it.isNotBlank() }
+        } else {
+            null
+        }
+        val filter = defaultFilterProvider.getFilterFromPreference(filterPref)
+        val preferences = WearPreferences(
+            appPreferences,
+            wearShowHidden = request.showHidden,
+            wearShowCompleted = request.showCompleted,
+        )
+        val collapsed = request.collapsedList.toSet()
         val payload = SectionedDataSource(
             tasks = taskDao.fetchTasks(preferences, filter),
             disableHeaders = filter.disableHeaders()
@@ -139,30 +142,6 @@ class WearService(
         return CompleteTaskResponse.newBuilder().setSuccess(true).build()
     }
 
-    override suspend fun toggleGroup(request: ToggleGroupRequest): ToggleGroupResponse {
-        settings.updateData {
-            it.copy {
-                if (request.collapsed) {
-                    if (!collapsed.contains(request.value)) {
-                        collapsed.add(request.value)
-                    }
-                } else {
-                    if (collapsed.contains(request.value)) {
-                        collapsed.clear()
-                        collapsed.addAll(
-                            it.collapsedList.toMutableList().apply { remove(request.value) })
-                    }
-                }
-            }
-        }
-
-        return ToggleGroupResponse.getDefaultInstance()
-    }
-
-    override suspend fun updateSettings(request: GrpcProto.UpdateSettingsRequest): GrpcProto.Settings {
-        return settings.updateData { request.settings }
-    }
-
     override suspend fun toggleSubtasks(request: ToggleGroupRequest): ToggleGroupResponse {
         taskDao.setCollapsed(request.value, request.collapsed)
         return ToggleGroupResponse.newBuilder().build()
@@ -171,8 +150,6 @@ class WearService(
     override suspend fun getLists(request: GrpcProto.GetListsRequest): GetListsResponse {
         val position = request.position
         val limit = request.limit.takeIf { it > 0 } ?: Int.MAX_VALUE
-        val selected = settings.data.firstOrNull()?.filter?.takeIf { it.isNotBlank() }
-            ?: defaultFilterProvider.getFilterPreferenceValue(MyTasksFilter.create())
         val filters = filterProvider.wearableFilters()
         return GetListsResponse.newBuilder()
             .setTotalItems(filters.size)
@@ -227,9 +204,12 @@ class WearService(
     override suspend fun saveTask(request: GrpcProto.SaveTaskRequest): SaveTaskResponse {
         Timber.d("saveTask($request)")
         if (request.taskId == 0L) {
-            val filter = defaultFilterProvider.getFilterFromPreference(
-                settings.data.firstOrNull()?.filter?.takeIf { it.isNotBlank() }
-            )
+            val filterPref = if (request.hasFilter()) {
+                request.filter.takeIf { it.isNotBlank() }
+            } else {
+                null
+            }
+            val filter = defaultFilterProvider.getFilterFromPreference(filterPref)
             val task = taskCreator.basicQuickAddTask(
                 title = request.title,
                 filter = filter,
