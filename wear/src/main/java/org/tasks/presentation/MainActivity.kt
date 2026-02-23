@@ -39,6 +39,7 @@ import org.tasks.presentation.screens.MenuScreen
 import org.tasks.presentation.screens.MenuViewModel
 import org.tasks.presentation.screens.SettingsScreen
 import org.tasks.presentation.screens.SettingsViewModel
+import org.tasks.presentation.screens.SortPickerScreen
 import org.tasks.presentation.screens.TaskEditScreen
 import org.tasks.presentation.screens.TaskEditViewModel
 import org.tasks.presentation.screens.TaskEditViewModelFactory
@@ -222,8 +223,40 @@ class MainActivity : ComponentActivity() {
                             SettingsScreen(
                                 showHidden = viewState.showHidden,
                                 showCompleted = viewState.showCompleted,
+                                sortMode = viewState.sortMode,
+                                groupMode = viewState.groupMode,
                                 toggleShowHidden = { settingsViewModel.setShowHidden(it) },
                                 toggleShowCompleted = { settingsViewModel.setShowCompleted(it) },
+                                openSortPicker = { navController.navigate("sort_picker") },
+                                openGroupPicker = { navController.navigate("group_picker") },
+                            )
+                        }
+                        composable(
+                            route = "sort_picker",
+                        ) {
+                            val viewState =
+                                settingsViewModel.viewState.collectAsStateWithLifecycle().value
+                            SortPickerScreen(
+                                selected = viewState.sortMode,
+                                includeNone = false,
+                                onSelect = {
+                                    settingsViewModel.setSortMode(it)
+                                    navController.popBackStack()
+                                },
+                            )
+                        }
+                        composable(
+                            route = "group_picker",
+                        ) {
+                            val viewState =
+                                settingsViewModel.viewState.collectAsStateWithLifecycle().value
+                            SortPickerScreen(
+                                selected = viewState.groupMode,
+                                includeNone = true,
+                                onSelect = {
+                                    settingsViewModel.setGroupMode(it)
+                                    navController.popBackStack()
+                                },
                             )
                         }
                     }

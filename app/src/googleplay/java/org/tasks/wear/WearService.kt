@@ -66,6 +66,8 @@ class WearService(
             appPreferences,
             wearShowHidden = request.showHidden,
             wearShowCompleted = request.showCompleted,
+            wearSortMode = if (request.hasSortMode()) request.sortMode else null,
+            wearGroupMode = if (request.hasGroupMode()) request.groupMode else null,
         )
         val collapsed = request.collapsedList.toSet()
         val payload = SectionedDataSource(

@@ -60,6 +60,8 @@ class TaskListViewModel(
                                 settings.filter?.takeIf { it.isNotBlank() }?.let {
                                     setFilter(it)
                                 }
+                                setSortMode(settings.sortMode)
+                                setGroupMode(settings.groupMode)
                             }
                             .build()
                     )

@@ -21,4 +21,12 @@ class SettingsViewModel(
     fun setFilter(filter: String) {
         wearSettings.setFilter(filter)
     }
+
+    fun setSortMode(sortMode: Int) {
+        wearSettings.setSortMode(sortMode)
+    }
+
+    fun setGroupMode(groupMode: Int) {
+        wearSettings.setGroupMode(groupMode)
+    }
 }

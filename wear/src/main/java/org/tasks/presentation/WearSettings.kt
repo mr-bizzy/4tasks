@@ -2,6 +2,7 @@ package org.tasks.presentation
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.todoroo.astrid.core.SortHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +13,8 @@ data class WearSettingsState(
     val showHidden: Boolean = false,
     val showCompleted: Boolean = false,
     val collapsed: Set<Long> = setOf(HEADER_COMPLETED),
+    val sortMode: Int = SortHelper.SORT_DUE,
+    val groupMode: Int = SortHelper.SORT_DUE,
 )
 
 class WearSettings private constructor(
@@ -36,11 +39,15 @@ class WearSettings private constructor(
             ?.mapNotNull { it.toLongOrNull() }
             ?.toSet()
             ?: setOf(HEADER_COMPLETED)
+        val sortMode = prefs.getInt(KEY_SORT_MODE, SortHelper.SORT_DUE)
+        val groupMode = prefs.getInt(KEY_GROUP_MODE, SortHelper.SORT_DUE)
         return WearSettingsState(
             filter = filter,
             showHidden = showHidden,
             showCompleted = showCompleted,
             collapsed = collapsed,
+            sortMode = sortMode,
+            groupMode = groupMode,
         )
     }
 
@@ -59,6 +66,14 @@ class WearSettings private constructor(
         prefs.edit().putBoolean(KEY_SHOW_COMPLETED, showCompleted).apply()
     }
 
+    fun setSortMode(sortMode: Int) {
+        prefs.edit().putInt(KEY_SORT_MODE, sortMode).apply()
+    }
+
+    fun setGroupMode(groupMode: Int) {
+        prefs.edit().putInt(KEY_GROUP_MODE, groupMode).apply()
+    }
+
     fun toggleGroup(value: Long) {
         val current = _stateFlow.value.collapsed
         val updated = if (current.contains(value)) current - value else current + value
@@ -73,6 +88,8 @@ class WearSettings private constructor(
         private const val KEY_SHOW_HIDDEN = "show_hidden"
         private const val KEY_SHOW_COMPLETED = "show_completed"
         private const val KEY_COLLAPSED = "collapsed"
+        private const val KEY_SORT_MODE = "sort_mode"
+        private const val KEY_GROUP_MODE = "group_mode"
 
         @Volatile
         private var instance: WearSettings? = null

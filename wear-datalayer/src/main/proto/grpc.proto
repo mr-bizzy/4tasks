@@ -36,6 +36,8 @@ message GetTasksRequest {
   bool showHidden = 4;
   bool showCompleted = 5;
   repeated uint64 collapsed = 6;
+  optional int32 sortMode = 7;
+  optional int32 groupMode = 8;
 }
 message CompleteTaskRequest {
   uint64 id = 1;

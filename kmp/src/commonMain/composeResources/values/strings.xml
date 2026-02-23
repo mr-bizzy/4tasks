@@ -36,4 +36,13 @@
     <string name="new_task">New task</string>
     <string name="save">Save</string>
     <string name="enter_title">Enter title</string>
+    <string name="sort_mode">Sort</string>
+    <string name="group_mode">Group</string>
+<string name="sort_due_date">Due date</string>
+    <string name="sort_priority">Priority</string>
+    <string name="sort_alphabetical">Alphabetical</string>
+    <string name="sort_created">Created</string>
+    <string name="sort_modified">Modified</string>
+    <string name="sort_start_date">Start date</string>
+    <string name="group_none">None</string>
 </resources>
