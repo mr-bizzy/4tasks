@@ -34,6 +34,7 @@ import org.tasks.presentation.screens.MenuScreen
 import org.tasks.presentation.screens.MenuViewModel
 import org.tasks.presentation.theme.TasksTheme
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.filter
 import tasks.kmp.generated.resources.filter_my_tasks
 import tasks.kmp.generated.resources.show_unstarted
 
@@ -134,7 +135,7 @@ private fun FilterSettingsScreen(
                 Chip(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = openFilterPicker,
-                    label = { Text("Filter") },
+                    label = { Text(stringResource(Res.string.filter)) },
                     secondaryLabel = {
                         Text(filterTitle ?: stringResource(Res.string.filter_my_tasks))
                     },

@@ -31,6 +31,23 @@ import tasks.kmp.generated.resources.sort_modified
 import tasks.kmp.generated.resources.sort_priority
 import tasks.kmp.generated.resources.sort_start_date
 
+@Composable
+fun sortModeLabel(sortMode: Int): String = when (sortMode) {
+    SortHelper.SORT_DUE -> stringResource(Res.string.sort_due_date)
+    SortHelper.SORT_IMPORTANCE -> stringResource(Res.string.sort_priority)
+    SortHelper.SORT_ALPHA -> stringResource(Res.string.sort_alphabetical)
+    SortHelper.SORT_CREATED -> stringResource(Res.string.sort_created)
+    SortHelper.SORT_MODIFIED -> stringResource(Res.string.sort_modified)
+    SortHelper.SORT_START -> stringResource(Res.string.sort_start_date)
+    else -> stringResource(Res.string.sort_due_date)
+}
+
+@Composable
+fun groupModeLabel(groupMode: Int): String = when (groupMode) {
+    SortHelper.GROUP_NONE -> stringResource(Res.string.group_none)
+    else -> sortModeLabel(groupMode)
+}
+
 data class SortOption(
     val value: Int,
     val label: @Composable () -> String,

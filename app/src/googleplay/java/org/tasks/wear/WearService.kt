@@ -25,10 +25,10 @@ import org.tasks.analytics.Firebase
 import org.tasks.billing.Inventory
 import org.tasks.data.NO_COUNT
 import org.tasks.data.isHidden
+import org.tasks.db.QueryUtils
 import org.tasks.filters.AstridOrderingFilter
 import org.tasks.filters.Filter
 import org.tasks.filters.FilterProvider
-import org.tasks.filters.MyTasksFilter
 import org.tasks.filters.NavigationDrawerSubheader
 import org.tasks.filters.getIcon
 import org.tasks.kmp.org.tasks.time.DateStyle
@@ -58,15 +58,15 @@ class WearService(
     private val is24HourTime: Boolean,
     private val versionCode: Int,
 ) : WearServiceGrpcKt.WearServiceCoroutineImplBase() {
+    private suspend fun resolveFilter(hasFilter: Boolean, filter: String): Filter =
+        defaultFilterProvider.getFilterFromPreference(
+            filter.takeIf { hasFilter && it.isNotBlank() }
+        )
+
     override suspend fun getTasks(request: GetTasksRequest): Tasks {
         val position = request.position
         val limit = request.limit.takeIf { it > 0 } ?: Int.MAX_VALUE
-        val filterPref = if (request.hasFilter()) {
-            request.filter.takeIf { it.isNotBlank() }
-        } else {
-            null
-        }
-        val filter = defaultFilterProvider.getFilterFromPreference(filterPref)
+        val filter = resolveFilter(request.hasFilter(), request.filter)
         val preferences = WearPreferences(
             appPreferences,
             wearShowHidden = request.showHidden,
@@ -211,12 +211,7 @@ class WearService(
     override suspend fun saveTask(request: GrpcProto.SaveTaskRequest): SaveTaskResponse {
         Timber.d("saveTask($request)")
         if (request.taskId == 0L) {
-            val filterPref = if (request.hasFilter()) {
-                request.filter.takeIf { it.isNotBlank() }
-            } else {
-                null
-            }
-            val filter = defaultFilterProvider.getFilterFromPreference(filterPref)
+            val filter = resolveFilter(request.hasFilter(), request.filter)
             val task = taskCreator.basicQuickAddTask(
                 title = request.title,
                 filter = filter,
@@ -241,20 +236,17 @@ class WearService(
     }
 
     override suspend fun getTaskCount(request: GetTaskCountRequest): GetTaskCountResponse {
-        val filterPref = if (request.hasFilter()) {
-            request.filter.takeIf { it.isNotBlank() }
-        } else {
-            null
+        val filter = resolveFilter(request.hasFilter(), request.filter)
+        var sql = filter.sql ?: return GetTaskCountResponse.getDefaultInstance()
+        if (request.showHidden) {
+            sql = QueryUtils.showHidden(sql)
         }
-        val filter = defaultFilterProvider.getFilterFromPreference(filterPref)
-        val preferences = WearPreferences(
-            appPreferences,
-            wearShowHidden = request.showHidden,
-            wearShowCompleted = request.showCompleted,
-        )
-        val tasks = taskDao.fetchTasks(preferences, filter)
-        val count = tasks.count { !it.task.isCompleted }
-        val completedCount = tasks.count { it.task.isCompleted }
+        val count = taskDao.countSql(sql)
+        val completedCount = if (request.showCompleted) {
+            taskDao.countCompletedSql(sql)
+        } else {
+            0
+        }
         return GetTaskCountResponse.newBuilder()
             .setCount(count)
             .setCompletedCount(completedCount)

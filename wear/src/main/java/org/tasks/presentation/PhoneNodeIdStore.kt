@@ -11,14 +11,14 @@ fun Context.savePhoneNodeId(nodeId: String) {
     getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         .edit()
         .putString(KEY_NODE_ID, nodeId)
-        .apply()
+        .commit()
 }
 
 fun Context.clearPhoneNodeId() {
     getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         .edit()
         .remove(KEY_NODE_ID)
-        .apply()
+        .commit()
 }
 
 fun Context.phoneTargetNodeId(): TargetNodeId {
@@ -39,5 +39,5 @@ fun Context.setCachedPhoneVersion(nodeId: String, versionCode: Int) {
     getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         .edit()
         .putInt("$KEY_VERSION_PREFIX$nodeId", versionCode)
-        .apply()
+        .commit()
 }

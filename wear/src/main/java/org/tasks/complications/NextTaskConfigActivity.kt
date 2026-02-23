@@ -30,22 +30,17 @@ import com.google.android.horologist.compose.layout.ScreenScaffold
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnState
 import com.google.android.horologist.compose.material.ToggleChip
 import com.google.android.horologist.compose.material.ToggleChipToggleControl
-import com.todoroo.astrid.core.SortHelper
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.presentation.screens.MenuScreen
 import org.tasks.presentation.screens.MenuViewModel
 import org.tasks.presentation.screens.SortPickerScreen
+import org.tasks.presentation.screens.sortModeLabel
 import org.tasks.presentation.theme.TasksTheme
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.filter
 import tasks.kmp.generated.resources.filter_my_tasks
-import tasks.kmp.generated.resources.sort_alphabetical
-import tasks.kmp.generated.resources.sort_created
-import tasks.kmp.generated.resources.sort_due_date
 import tasks.kmp.generated.resources.sort_mode
-import tasks.kmp.generated.resources.sort_modified
-import tasks.kmp.generated.resources.sort_priority
 import tasks.kmp.generated.resources.show_unstarted
-import tasks.kmp.generated.resources.sort_start_date
 
 class NextTaskConfigActivity : ComponentActivity() {
 
@@ -162,7 +157,7 @@ private fun NextTaskSettingsScreen(
                 Chip(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = openFilterPicker,
-                    label = { Text("Filter") },
+                    label = { Text(stringResource(Res.string.filter)) },
                     secondaryLabel = {
                         Text(filterTitle ?: stringResource(Res.string.filter_my_tasks))
                     },
@@ -188,15 +183,4 @@ private fun NextTaskSettingsScreen(
             }
         }
     }
-}
-
-@Composable
-private fun sortModeLabel(sortMode: Int): String = when (sortMode) {
-    SortHelper.SORT_DUE -> stringResource(Res.string.sort_due_date)
-    SortHelper.SORT_IMPORTANCE -> stringResource(Res.string.sort_priority)
-    SortHelper.SORT_ALPHA -> stringResource(Res.string.sort_alphabetical)
-    SortHelper.SORT_CREATED -> stringResource(Res.string.sort_created)
-    SortHelper.SORT_MODIFIED -> stringResource(Res.string.sort_modified)
-    SortHelper.SORT_START -> stringResource(Res.string.sort_start_date)
-    else -> stringResource(Res.string.sort_due_date)
 }

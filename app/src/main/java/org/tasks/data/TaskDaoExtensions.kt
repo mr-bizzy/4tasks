@@ -27,10 +27,11 @@ suspend fun TaskDao.fetchFiltered(queryTemplate: String): List<Task> {
     return tasks.map(TaskContainer::task)
 }
 
-suspend fun TaskDao.count(filter: Filter): Int = count(getQuery(filter.sql!!, Field.COUNT))
+suspend fun TaskDao.count(filter: Filter): Int = countSql(filter.sql!!)
 
-suspend fun TaskDao.countCompleted(filter: Filter): Int {
-    val sql = filter.sql ?: return 0
+suspend fun TaskDao.countSql(sql: String): Int = count(getQuery(sql, Field.COUNT))
+
+suspend fun TaskDao.countCompletedSql(sql: String): Int {
     val completedSql = sql.replace("tasks.completed<=0", "tasks.completed>0")
     return if (completedSql != sql) {
         count(getQuery(completedSql, Field.COUNT))

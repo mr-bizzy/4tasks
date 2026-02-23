@@ -55,31 +55,31 @@ class WearSettings private constructor(
         prefs.edit()
             .putString(KEY_FILTER, filter)
             .putStringSet(KEY_COLLAPSED, setOf(HEADER_COMPLETED.toString()))
-            .apply()
+            .commit()
     }
 
     fun setShowHidden(showHidden: Boolean) {
-        prefs.edit().putBoolean(KEY_SHOW_HIDDEN, showHidden).apply()
+        prefs.edit().putBoolean(KEY_SHOW_HIDDEN, showHidden).commit()
     }
 
     fun setShowCompleted(showCompleted: Boolean) {
-        prefs.edit().putBoolean(KEY_SHOW_COMPLETED, showCompleted).apply()
+        prefs.edit().putBoolean(KEY_SHOW_COMPLETED, showCompleted).commit()
     }
 
     fun setSortMode(sortMode: Int) {
-        prefs.edit().putInt(KEY_SORT_MODE, sortMode).apply()
+        prefs.edit().putInt(KEY_SORT_MODE, sortMode).commit()
     }
 
     fun setGroupMode(groupMode: Int) {
-        prefs.edit().putInt(KEY_GROUP_MODE, groupMode).apply()
+        prefs.edit().putInt(KEY_GROUP_MODE, groupMode).commit()
     }
 
-    fun toggleGroup(value: Long) {
+    fun setCollapsed(value: Long, collapsed: Boolean) {
         val current = _stateFlow.value.collapsed
-        val updated = if (current.contains(value)) current - value else current + value
+        val updated = if (collapsed) current + value else current - value
         prefs.edit()
             .putStringSet(KEY_COLLAPSED, updated.map { it.toString() }.toSet())
-            .apply()
+            .commit()
     }
 
     companion object {

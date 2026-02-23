@@ -53,5 +53,5 @@ fun Context.clearComplicationFilter(complicationId: Int) {
         .remove("$KEY_FILTER_TITLE_PREFIX$complicationId")
         .remove("$KEY_SORT_MODE_PREFIX$complicationId")
         .remove("$KEY_SHOW_HIDDEN_PREFIX$complicationId")
-        .apply()
+        .commit()
 }

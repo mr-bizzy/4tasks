@@ -83,7 +83,7 @@ class TaskListViewModel(
     }
 
     fun toggleGroup(value: Long, setCollapsed: Boolean) {
-        wearSettings.toggleGroup(value)
+        wearSettings.setCollapsed(value, setCollapsed)
         invalidate()
     }
 

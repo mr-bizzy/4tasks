@@ -229,18 +229,15 @@ class TaskProgressComplicationService : BaseComplicationService() {
         return try {
             val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
             val showHidden = applicationContext.getComplicationShowHidden(request.complicationInstanceId)
-            val baseRequest = GetTaskCountRequest.newBuilder()
-                .setShowHidden(showHidden)
-                .apply { if (filter != null) setFilter(filter) }
-
-            val incompleteResponse = wearService.getTaskCount(
-                baseRequest.clone().setShowCompleted(false).build()
+            val response = wearService.getTaskCount(
+                GetTaskCountRequest.newBuilder()
+                    .setShowHidden(showHidden)
+                    .setShowCompleted(true)
+                    .apply { if (filter != null) setFilter(filter) }
+                    .build()
             )
-            val allResponse = wearService.getTaskCount(
-                baseRequest.clone().setShowCompleted(true).build()
-            )
-            val incompleteCount = incompleteResponse.count.toInt()
-            val completedCount = allResponse.completedCount.toInt()
+            val incompleteCount = response.count
+            val completedCount = response.completedCount
 
             val text = PlainComplicationText.Builder("$incompleteCount").build()
             val contentDescription = PlainComplicationText.Builder("$incompleteCount tasks").build()
@@ -342,29 +339,34 @@ class AddTaskComplicationService : SuspendingComplicationDataSourceService() {
 class ShortcutComplicationService : BaseComplicationService() {
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
-        val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
-        val label = applicationContext.getComplicationFilterTitle(request.complicationInstanceId)
-            ?: "Tasks"
-        val contentDescription = PlainComplicationText.Builder(label).build()
-        val monoImage = monoImage()
-        val tapAction = tapIntent(request.complicationInstanceId, filter)
+        return try {
+            val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
+            val label = applicationContext.getComplicationFilterTitle(request.complicationInstanceId)
+                ?: "Tasks"
+            val contentDescription = PlainComplicationText.Builder(label).build()
+            val monoImage = monoImage()
+            val tapAction = tapIntent(request.complicationInstanceId, filter)
 
-        return when (request.complicationType) {
-            ComplicationType.SHORT_TEXT ->
-                ShortTextComplicationData.Builder(
-                    PlainComplicationText.Builder(label).build(),
-                    contentDescription,
-                )
-                    .setMonochromaticImage(monoImage)
-                    .setTapAction(tapAction)
-                    .build()
+            when (request.complicationType) {
+                ComplicationType.SHORT_TEXT ->
+                    ShortTextComplicationData.Builder(
+                        PlainComplicationText.Builder(label).build(),
+                        contentDescription,
+                    )
+                        .setMonochromaticImage(monoImage)
+                        .setTapAction(tapAction)
+                        .build()
 
-            ComplicationType.MONOCHROMATIC_IMAGE ->
-                MonochromaticImageComplicationData.Builder(monoImage, contentDescription)
-                    .setTapAction(tapAction)
-                    .build()
+                ComplicationType.MONOCHROMATIC_IMAGE ->
+                    MonochromaticImageComplicationData.Builder(monoImage, contentDescription)
+                        .setTapAction(tapAction)
+                        .build()
 
-            else -> null
+                else -> null
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            null
         }
     }
 
