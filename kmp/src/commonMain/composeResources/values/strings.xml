@@ -34,6 +34,7 @@
     <string name="wear_install_app">Install on phone</string>
     <string name="wear_phone_update_required">Phone update required</string>
     <string name="wear_unknown_error">Unknown error</string>
+    <string name="wear_connecting_to_phone">Connecting to phone…</string>
     <string name="new_task">New task</string>
     <string name="save">Save</string>
     <string name="enter_title">Enter title</string>

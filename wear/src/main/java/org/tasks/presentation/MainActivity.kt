@@ -10,8 +10,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.compose.ui.Alignment
@@ -51,6 +57,7 @@ import org.tasks.complications.EXTRA_COMPLICATION_FILTER
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.wear_install_app
 import tasks.kmp.generated.resources.wear_phone_update_required
+import tasks.kmp.generated.resources.wear_connecting_to_phone
 import tasks.kmp.generated.resources.wear_unknown_error
 
 class MainActivity : ComponentActivity() {
@@ -72,6 +79,8 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberSwipeDismissableNavController()
                     val taskListViewModel: TaskListViewModel = viewModel()
                     val taskListItems = taskListViewModel.uiItems.collectAsLazyPagingItems()
+                    val menuViewModel: MenuViewModel = viewModel()
+                    val menuItems = menuViewModel.uiItems.collectAsLazyPagingItems()
                     val settingsViewModel: SettingsViewModel = viewModel()
                     val connected = viewModel.uiState.collectAsStateWithLifecycle().value
                     LifecycleResumeEffect(Unit) {
@@ -191,10 +200,26 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
 
-                                    else ->
-                                        Text(
-                                            text = stringResource(Res.string.wear_unknown_error),
-                                        )
+                                    else -> {
+                                        LaunchedEffect(Unit) {
+                                            while (true) {
+                                                delay(5000)
+                                                viewModel.loadNodes()
+                                            }
+                                        }
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            verticalArrangement = Arrangement.Center,
+                                        ) {
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.size(24.dp),
+                                            )
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                            Text(
+                                                text = stringResource(Res.string.wear_connecting_to_phone),
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -245,8 +270,6 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = "menu",
                         ) {
-                            val menuViewModel: MenuViewModel = viewModel()
-                            val menuItems = menuViewModel.uiItems.collectAsLazyPagingItems()
                             MenuScreen(
                                 items = menuItems,
                                 selectFilter = {
