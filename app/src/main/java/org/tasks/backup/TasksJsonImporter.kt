@@ -136,7 +136,7 @@ class TasksJsonImporter @Inject constructor(
         } catch (e: FileNotFoundException) {
             throw IllegalStateException(e)
         }
-        val bufferedReader = `is`!!.bufferedReader()
+        val bufferedReader = `is`!!.bufferedReader(Charsets.UTF_8)
         val reader = JsonReader(bufferedReader)
         reader.isLenient = true
         val ignoreKeys = ignorePrefs.map { context.getString(it) }
@@ -288,7 +288,7 @@ class TasksJsonImporter @Inject constructor(
         } catch (e: FileNotFoundException) {
             throw IllegalStateException(e)
         }
-        val bufferedReader = `is`!!.bufferedReader()
+        val bufferedReader = `is`!!.bufferedReader(Charsets.UTF_8)
         val reader = JsonReader(bufferedReader)
         reader.isLenient = true
         reader.beginObject()
