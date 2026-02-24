@@ -113,6 +113,7 @@ abstract class BaseComplicationService : SuspendingComplicationDataSourceService
         this,
         complicationId,
         Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             if (filter != null) {
                 putExtra(EXTRA_COMPLICATION_FILTER, filter)
             }
@@ -124,29 +125,31 @@ abstract class BaseComplicationService : SuspendingComplicationDataSourceService
 class TaskCountComplicationService : BaseComplicationService() {
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
-        return try {
-            val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
-            val state = fetchState(request.complicationInstanceId, needsNextTask = false)
-            val text = PlainComplicationText.Builder("${state.count}").build()
-            val contentDescription = PlainComplicationText.Builder("${state.count} tasks").build()
-
-            when (request.complicationType) {
-                ComplicationType.SHORT_TEXT ->
-                    ShortTextComplicationData.Builder(text, contentDescription)
-                        .setMonochromaticImage(monoImage())
-                        .setTapAction(tapIntent(request.complicationInstanceId, filter))
-                        .build()
-
-                ComplicationType.MONOCHROMATIC_IMAGE ->
-                    MonochromaticImageComplicationData.Builder(monoImage(), contentDescription)
-                        .setTapAction(tapIntent(request.complicationInstanceId, filter))
-                        .build()
-
-                else -> null
-            }
+        val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
+        val tapAction = tapIntent(request.complicationInstanceId, filter)
+        val state = try {
+            fetchState(request.complicationInstanceId, needsNextTask = false)
         } catch (e: Exception) {
             Timber.e(e)
             null
+        }
+        val label = state?.count?.toString() ?: "--"
+        val text = PlainComplicationText.Builder(label).build()
+        val contentDescription = PlainComplicationText.Builder("$label tasks").build()
+
+        return when (request.complicationType) {
+            ComplicationType.SHORT_TEXT ->
+                ShortTextComplicationData.Builder(text, contentDescription)
+                    .setMonochromaticImage(monoImage())
+                    .setTapAction(tapAction)
+                    .build()
+
+            ComplicationType.MONOCHROMATIC_IMAGE ->
+                MonochromaticImageComplicationData.Builder(monoImage(), contentDescription)
+                    .setTapAction(tapAction)
+                    .build()
+
+            else -> null
         }
     }
 
@@ -171,43 +174,51 @@ class TaskCountComplicationService : BaseComplicationService() {
 class NextTaskComplicationService : BaseComplicationService() {
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
-        return try {
-            val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
-            val state = fetchState(request.complicationInstanceId, needsNextTask = true)
-            val contentDescription = PlainComplicationText.Builder("${state.count} tasks").build()
-            val tapAction = tapIntent(request.complicationInstanceId, filter)
-
-            when (request.complicationType) {
-                ComplicationType.LONG_TEXT -> {
-                    val nextTask = state.nextTask
-                    if (nextTask != null && nextTask.title.isNotBlank()) {
-                        val taskText = PlainComplicationText.Builder(nextTask.title).build()
-                        val titleText = if (nextTask.hasTimestamp()) {
-                            PlainComplicationText.Builder(nextTask.timestamp).build()
-                        } else {
-                            PlainComplicationText.Builder("${state.count} tasks").build()
-                        }
-                        LongTextComplicationData.Builder(taskText, contentDescription)
-                            .setTitle(titleText)
-                            .setMonochromaticImage(monoImage())
-                            .setTapAction(tapAction)
-                            .build()
-                    } else {
-                        LongTextComplicationData.Builder(
-                            PlainComplicationText.Builder(getString(Res.string.all_done)).build(),
-                            contentDescription,
-                        )
-                            .setMonochromaticImage(monoImage())
-                            .setTapAction(tapAction)
-                            .build()
-                    }
-                }
-
-                else -> null
-            }
+        val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
+        val tapAction = tapIntent(request.complicationInstanceId, filter)
+        val contentDescription = PlainComplicationText.Builder("Tasks").build()
+        val state = try {
+            fetchState(request.complicationInstanceId, needsNextTask = true)
         } catch (e: Exception) {
             Timber.e(e)
             null
+        }
+
+        return when (request.complicationType) {
+            ComplicationType.LONG_TEXT -> {
+                val nextTask = state?.nextTask
+                if (nextTask != null && nextTask.title.isNotBlank()) {
+                    val taskText = PlainComplicationText.Builder(nextTask.title).build()
+                    val titleText = if (nextTask.hasTimestamp()) {
+                        PlainComplicationText.Builder(nextTask.timestamp).build()
+                    } else {
+                        PlainComplicationText.Builder("${state.count} tasks").build()
+                    }
+                    LongTextComplicationData.Builder(taskText, contentDescription)
+                        .setTitle(titleText)
+                        .setMonochromaticImage(monoImage())
+                        .setTapAction(tapAction)
+                        .build()
+                } else if (state != null) {
+                    LongTextComplicationData.Builder(
+                        PlainComplicationText.Builder(getString(Res.string.all_done)).build(),
+                        contentDescription,
+                    )
+                        .setMonochromaticImage(monoImage())
+                        .setTapAction(tapAction)
+                        .build()
+                } else {
+                    LongTextComplicationData.Builder(
+                        PlainComplicationText.Builder("--").build(),
+                        contentDescription,
+                    )
+                        .setMonochromaticImage(monoImage())
+                        .setTapAction(tapAction)
+                        .build()
+                }
+            }
+
+            else -> null
         }
     }
 
@@ -226,41 +237,42 @@ class NextTaskComplicationService : BaseComplicationService() {
 class TaskProgressComplicationService : BaseComplicationService() {
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
-        return try {
-            val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
+        val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
+        val tapAction = tapIntent(request.complicationInstanceId, filter)
+        val response = try {
             val showHidden = applicationContext.getComplicationShowHidden(request.complicationInstanceId)
-            val response = wearService.getTaskCount(
+            wearService.getTaskCount(
                 GetTaskCountRequest.newBuilder()
                     .setShowHidden(showHidden)
                     .setShowCompleted(true)
                     .apply { if (filter != null) setFilter(filter) }
                     .build()
             )
-            val incompleteCount = response.count
-            val completedCount = response.completedCount
-
-            val text = PlainComplicationText.Builder("$incompleteCount").build()
-            val contentDescription = PlainComplicationText.Builder("$incompleteCount tasks").build()
-            val total = (completedCount + incompleteCount).toFloat().coerceAtLeast(1f)
-
-            when (request.complicationType) {
-                ComplicationType.RANGED_VALUE ->
-                    RangedValueComplicationData.Builder(
-                        value = completedCount.toFloat(),
-                        min = 0f,
-                        max = total,
-                        contentDescription = contentDescription,
-                    )
-                        .setText(text)
-                        .setMonochromaticImage(monoImage())
-                        .setTapAction(tapIntent(request.complicationInstanceId, filter))
-                        .build()
-
-                else -> null
-            }
         } catch (e: Exception) {
             Timber.e(e)
             null
+        }
+        val incompleteCount = response?.count ?: 0
+        val completedCount = response?.completedCount ?: 0
+        val label = if (response != null) "$incompleteCount" else "--"
+        val text = PlainComplicationText.Builder(label).build()
+        val contentDescription = PlainComplicationText.Builder("$label tasks").build()
+        val total = (completedCount + incompleteCount).toFloat().coerceAtLeast(1f)
+
+        return when (request.complicationType) {
+            ComplicationType.RANGED_VALUE ->
+                RangedValueComplicationData.Builder(
+                    value = completedCount.toFloat(),
+                    min = 0f,
+                    max = total,
+                    contentDescription = contentDescription,
+                )
+                    .setText(text)
+                    .setMonochromaticImage(monoImage())
+                    .setTapAction(tapAction)
+                    .build()
+
+            else -> null
         }
     }
 
@@ -291,6 +303,7 @@ class AddTaskComplicationService : SuspendingComplicationDataSourceService() {
             this,
             request.complicationInstanceId,
             Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 putExtra(EXTRA_ADD_TASK, true)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
@@ -339,34 +352,29 @@ class AddTaskComplicationService : SuspendingComplicationDataSourceService() {
 class ShortcutComplicationService : BaseComplicationService() {
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
-        return try {
-            val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
-            val label = applicationContext.getComplicationFilterTitle(request.complicationInstanceId)
-                ?: "Tasks"
-            val contentDescription = PlainComplicationText.Builder(label).build()
-            val monoImage = monoImage()
-            val tapAction = tapIntent(request.complicationInstanceId, filter)
+        val filter = applicationContext.getComplicationFilter(request.complicationInstanceId)
+        val label = applicationContext.getComplicationFilterTitle(request.complicationInstanceId)
+            ?: "Tasks"
+        val contentDescription = PlainComplicationText.Builder(label).build()
+        val monoImage = monoImage()
+        val tapAction = tapIntent(request.complicationInstanceId, filter)
 
-            when (request.complicationType) {
-                ComplicationType.SHORT_TEXT ->
-                    ShortTextComplicationData.Builder(
-                        PlainComplicationText.Builder(label).build(),
-                        contentDescription,
-                    )
-                        .setMonochromaticImage(monoImage)
-                        .setTapAction(tapAction)
-                        .build()
+        return when (request.complicationType) {
+            ComplicationType.SHORT_TEXT ->
+                ShortTextComplicationData.Builder(
+                    PlainComplicationText.Builder(label).build(),
+                    contentDescription,
+                )
+                    .setMonochromaticImage(monoImage)
+                    .setTapAction(tapAction)
+                    .build()
 
-                ComplicationType.MONOCHROMATIC_IMAGE ->
-                    MonochromaticImageComplicationData.Builder(monoImage, contentDescription)
-                        .setTapAction(tapAction)
-                        .build()
+            ComplicationType.MONOCHROMATIC_IMAGE ->
+                MonochromaticImageComplicationData.Builder(monoImage, contentDescription)
+                    .setTapAction(tapAction)
+                    .build()
 
-                else -> null
-            }
-        } catch (e: Exception) {
-            Timber.e(e)
-            null
+            else -> null
         }
     }
 
