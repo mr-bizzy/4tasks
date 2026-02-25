@@ -70,7 +70,7 @@ class CreateTaskWorker(
             WorkManager.getInstance(context)
                 .enqueueUniqueWork(
                     WORK_NAME,
-                    ExistingWorkPolicy.REPLACE,
+                    ExistingWorkPolicy.APPEND_OR_REPLACE,
                     OneTimeWorkRequestBuilder<CreateTaskWorker>()
                         .setBackoffCriteria(
                             BackoffPolicy.EXPONENTIAL,
