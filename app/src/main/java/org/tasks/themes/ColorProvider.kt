@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.annotation.ColorInt
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.R
-import org.tasks.themes.darkModeColor
 import org.tasks.kmp.org.tasks.themes.ColorProvider.BLACK
 import org.tasks.kmp.org.tasks.themes.ColorProvider.WHITE
 import org.tasks.kmp.org.tasks.themes.ColorProvider.priorityColor
@@ -13,12 +12,14 @@ import javax.inject.Inject
 class ColorProvider @Inject constructor(
     @param:ApplicationContext private val context: Context,
 ) {
-
     private val isDark = context.resources.getBoolean(R.bool.is_dark)
+    private val presetColors: Set<Int> by lazy {
+        ThemeColor.COLORS.map { context.getColor(it) }.toSet() - WHITE
+    }
 
     private fun getColor(@ColorInt color: Int, adjust: Boolean) =
         when {
-            adjust && isDark -> darkModeColor(color)
+            adjust && isDark && color in presetColors -> darkModeColor(color)
             !isDark && color == WHITE -> BLACK
             else -> color
         }

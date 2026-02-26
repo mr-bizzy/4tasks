@@ -19,7 +19,7 @@ object ColorProvider {
             else -> GREY_500
         }
         return if (isDarkMode) {
-            darkModeColor(color)
+            darkModeColor(color, tone = 70)
         } else {
             color
         }

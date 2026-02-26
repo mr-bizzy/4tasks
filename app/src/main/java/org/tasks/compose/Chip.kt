@@ -1,7 +1,6 @@
 package org.tasks.compose
 
 import android.content.res.Configuration
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -62,8 +61,7 @@ fun Chip(
     onClick: () -> Unit = {},
     clear: (() -> Unit)? = null,
 ) {
-    val isDark = isSystemInDarkTheme()
-    val colors = remember(color, isDark) { chipColors(color.toArgb(), isDark) }
+    val colors = chipColors(color.toArgb())
     val bgColor = Color(colors.backgroundColor)
     val onColor = Color(colors.contentColor)
     CompositionLocalProvider(
