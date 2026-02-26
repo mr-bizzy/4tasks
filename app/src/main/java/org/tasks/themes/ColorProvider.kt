@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.annotation.ColorInt
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tasks.R
+import org.tasks.themes.darkModeColor
 import org.tasks.kmp.org.tasks.themes.ColorProvider.BLACK
 import org.tasks.kmp.org.tasks.themes.ColorProvider.WHITE
 import org.tasks.kmp.org.tasks.themes.ColorProvider.priorityColor
-import org.tasks.kmp.org.tasks.themes.ColorProvider.saturated
 import javax.inject.Inject
 
 class ColorProvider @Inject constructor(
@@ -18,7 +18,7 @@ class ColorProvider @Inject constructor(
 
     private fun getColor(@ColorInt color: Int, adjust: Boolean) =
         when {
-            adjust && isDark -> saturated[color] ?: color
+            adjust && isDark -> darkModeColor(color)
             !isDark && color == WHITE -> BLACK
             else -> color
         }

@@ -2,6 +2,9 @@ package org.tasks.themes
 
 import com.materialkolor.palettes.TonalPalette
 
+fun darkModeColor(seedColor: Int): Int =
+    TonalPalette.fromInt(seedColor).tone(80)
+
 data class ChipColors(val backgroundColor: Int, val contentColor: Int)
 
 fun chipColors(seedColor: Int, isDark: Boolean): ChipColors {
