@@ -82,9 +82,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.BasicAlertDialog
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.Serializable
@@ -99,6 +101,8 @@ import org.tasks.compose.drawer.TaskListDrawer
 import org.tasks.auth.TasksServerEnvironment
 import org.tasks.compose.NavigationBarScrim
 import org.tasks.compose.PlatformBackHandler
+import org.tasks.compose.settings.CaldavAccountSettingsDetail
+import org.tasks.compose.settings.CaldavAccountSettingsPane
 import org.tasks.compose.settings.LocalAccountSettingsDetail
 import org.tasks.compose.settings.LocalAccountSettingsPane
 import org.tasks.compose.settings.MainSettingsScreen
@@ -178,6 +182,9 @@ data object AddAccountDestination : NavKey
 data object TaskListDestination : NavKey
 
 @Serializable
+data object CaldavSignInDestination : NavKey
+
+@Serializable
 data object SettingsDestination : NavKey
 
 @Serializable
@@ -222,6 +229,7 @@ fun App(
                         polymorphic(NavKey::class) {
                             subclass(WelcomeDestination::class, WelcomeDestination.serializer())
                             subclass(AddAccountDestination::class, AddAccountDestination.serializer())
+                            subclass(CaldavSignInDestination::class, CaldavSignInDestination.serializer())
                             subclass(TaskListDestination::class, TaskListDestination.serializer())
                             subclass(SettingsDestination::class, SettingsDestination.serializer())
                             subclass(LinkDesktopDestination::class, LinkDesktopDestination.serializer())
@@ -253,6 +261,10 @@ fun App(
 
             NavDisplay(
                 backStack = backStack,
+                entryDecorators = listOf(
+                    rememberSaveableStateHolderNavEntryDecorator(),
+                    rememberViewModelStoreNavEntryDecorator(),
+                ),
                 entryProvider = entryProvider {
                     entry<WelcomeDestination> {
                         LaunchedEffect(Unit) {
@@ -307,6 +319,7 @@ fun App(
                                 }
                                 when (platform) {
                                     Platform.TASKS_ORG -> showProviderPicker = true
+                                    Platform.CALDAV -> backStack.add(CaldavSignInDestination)
                                     else -> addAccountViewModel.signIn(platform)
                                 }
                             },
@@ -377,6 +390,16 @@ fun App(
                                 }
                             }
                         }
+                    }
+                    entry<CaldavSignInDestination> {
+                        org.tasks.compose.settings.CaldavSignInScreen(
+                            onNavigateBack = { backStack.removeLastOrNull() },
+                            onAccountCreated = {
+                                // Pop CaldavSignInDestination and AddAccountDestination
+                                backStack.removeLastOrNull()
+                                backStack.removeLastOrNull()
+                            },
+                        )
                     }
                     entry<TaskListDestination> {
                         val taskListViewModel = koinViewModel<TaskListViewModel>()
@@ -1410,12 +1433,22 @@ private fun SettingsScreen(
                                 && !purchaseState.hasTasksAccount,
                         onLinkDesktopClick = onLinkDesktopClick,
                         onAccountClick = { account ->
-                            if (account.isLocalList) {
-                                scope.launch {
-                                    navigator.navigateTo(
-                                        ListDetailPaneScaffoldRole.Detail,
-                                        LocalAccountSettingsPane(account),
-                                    )
+                            when {
+                                account.isLocalList -> {
+                                    scope.launch {
+                                        navigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            LocalAccountSettingsPane(account),
+                                        )
+                                    }
+                                }
+                                account.isCaldavAccount -> {
+                                    scope.launch {
+                                        navigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            CaldavAccountSettingsPane(account),
+                                        )
+                                    }
                                 }
                             }
                         },
@@ -1500,6 +1533,14 @@ private fun SettingsScreen(
                                 scope.launch { navigator.navigateBack() }
                             },
                             onAddAccountClick = onAddAccountClick,
+                        )
+                    }
+                    is CaldavAccountSettingsPane -> {
+                        CaldavAccountSettingsDetail(
+                            pane = selectedContent,
+                            onNavigateBack = {
+                                scope.launch { navigator.navigateBack() }
+                            },
                         )
                     }
 

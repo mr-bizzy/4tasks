@@ -463,7 +463,7 @@
     <activity android:name=".activities.FilterSettingsActivity"/>
 
     <activity
-      android:name=".caldav.CaldavAccountSettingsActivity"
+      android:name=".caldav.CaldavSignInActivity"
       android:theme="@style/Tasks"/>
 
     <activity

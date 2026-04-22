@@ -49,6 +49,7 @@ import org.tasks.preferences.Preferences
 import org.tasks.preferences.PreferencesViewModel
 import org.tasks.preferences.ProCardViewModel
 import org.tasks.preferences.fragments.GoogleTasksAccount.Companion.newGoogleTasksAccountPreference
+import org.tasks.preferences.fragments.CaldavAccountFragment.Companion.newCaldavAccountFragment
 import org.tasks.preferences.fragments.LocalAccount.Companion.newLocalAccountPreference
 import org.tasks.preferences.fragments.MicrosoftAccount.Companion.newMicrosoftAccountPreference
 import org.tasks.preferences.fragments.TasksAccount.Companion.newTasksAccountPreference
@@ -235,6 +236,12 @@ class MainSettingsComposeFragment : Fragment() {
                 activity.startPreference(
                     newLocalAccountPreference(account),
                     getString(R.string.local_lists)
+                )
+            }
+            account.isCaldavAccount -> {
+                activity.startPreference(
+                    newCaldavAccountFragment(account),
+                    getString(R.string.caldav)
                 )
             }
             else -> {

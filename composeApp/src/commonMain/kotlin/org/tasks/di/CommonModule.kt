@@ -53,6 +53,7 @@ import org.tasks.sync.SyncSource
 import org.tasks.tasklist.HeaderFormatter
 import org.tasks.compose.accounts.AddAccountViewModel
 import org.tasks.viewmodel.AppViewModel
+import org.tasks.viewmodel.CaldavAccountSettingsViewModel
 import org.tasks.viewmodel.DrawerViewModel
 import org.tasks.viewmodel.SortSettingsViewModel
 import org.tasks.viewmodel.TaskEditViewModel
@@ -188,9 +189,9 @@ val commonModule = module {
                         pending.set(false)
                         val synchronizer = get<CaldavSynchronizer>()
                         val caldavDao = get<org.tasks.data.dao.CaldavDao>()
-                        val purchaseState = get<org.tasks.billing.PurchaseState>()
+                        val hasPro = get<org.tasks.billing.PurchaseState>().hasPro
                         caldavDao.getAccounts(TYPE_CALDAV, TYPE_TASKS).forEach { account ->
-                            synchronizer.sync(account, hasPro = purchaseState.hasPro)
+                            synchronizer.sync(account, hasPro = hasPro)
                         }
                     } while (pending.getAndSet(false))
                 } finally {
@@ -290,6 +291,16 @@ val commonModule = module {
             tasksPreferences = get(),
             subscriptionProvider = get(),
             caldavUrl = get<org.tasks.auth.TasksServerEnvironment>().caldavUrl,
+        )
+    }
+    viewModel {
+        CaldavAccountSettingsViewModel(
+            caldavDao = get(),
+            caldavClientProvider = get(),
+            encryption = get(),
+            taskDeleter = get(),
+            backgroundWork = get(),
+            reporting = get(),
         )
     }
     viewModel {

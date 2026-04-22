@@ -36,6 +36,7 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.EPr_edit_screen_options
 import tasks.kmp.generated.resources.add_account
 import tasks.kmp.generated.resources.backup_BPr_header
+import tasks.kmp.generated.resources.caldav
 import tasks.kmp.generated.resources.date_and_time
 import tasks.kmp.generated.resources.debug
 import tasks.kmp.generated.resources.about
@@ -80,6 +81,12 @@ data class TasksAccountSettingsPane(
     val account: CaldavAccount,
 ) : SettingsPane {
     override val titleRes: StringResource = Res.string.tasks_org
+}
+
+data class CaldavAccountSettingsPane(
+    val account: CaldavAccount,
+) : SettingsPane {
+    override val titleRes: StringResource = Res.string.caldav
 }
 
 @Composable

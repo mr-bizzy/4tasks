@@ -39,7 +39,14 @@ import org.tasks.Strings.isNullOrEmpty
 import kotlinx.coroutines.runBlocking
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.add_account
+import tasks.kmp.generated.resources.error_adding_account
+import tasks.kmp.generated.resources.invalid_username_or_password
+import tasks.kmp.generated.resources.network_error
 import tasks.kmp.generated.resources.password_required
+import tasks.kmp.generated.resources.url_host_name_required
+import tasks.kmp.generated.resources.url_invalid_scheme
+import tasks.kmp.generated.resources.url_required
+import tasks.kmp.generated.resources.username_required
 import org.tasks.analytics.Firebase
 import org.tasks.billing.Inventory
 import org.tasks.billing.PurchaseActivity
@@ -112,7 +119,7 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
             caldavAccount?.error?.takeIf { it.isNotBlank() }?.let {
                 binding.description.visibility = View.VISIBLE
                 binding.description.setTextColor(ContextCompat.getColor(this, R.color.overdue))
-                binding.description.text = getString(R.string.error_adding_account, it)
+                binding.description.text = runBlocking { org.jetbrains.compose.resources.getString(Res.string.error_adding_account, it) }
             }
         }
         if (savedInstanceState == null) {
@@ -245,7 +252,7 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
             failed = true
         }
         if (isNullOrEmpty(url)) {
-            binding.urlLayout.error = getString(R.string.url_required)
+            binding.urlLayout.error = org.jetbrains.compose.resources.getString(Res.string.url_required)
             failed = true
         } else {
             val baseURL = Uri.parse(url)
@@ -253,7 +260,7 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
             if ("https".equals(scheme, ignoreCase = true) || "http".equals(scheme, ignoreCase = true)) {
                 var host = baseURL.host
                 if (isNullOrEmpty(host)) {
-                    binding.urlLayout.error = getString(R.string.url_host_name_required)
+                    binding.urlLayout.error = org.jetbrains.compose.resources.getString(Res.string.url_host_name_required)
                     failed = true
                 } else {
                     try {
@@ -271,12 +278,12 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
                     }
                 }
             } else {
-                binding.urlLayout.error = getString(R.string.url_invalid_scheme)
+                binding.urlLayout.error = org.jetbrains.compose.resources.getString(Res.string.url_invalid_scheme)
                 failed = true
             }
         }
         if (isNullOrEmpty(username)) {
-            binding.userLayout.error = getString(R.string.username_required)
+            binding.userLayout.error = org.jetbrains.compose.resources.getString(Res.string.username_required)
             failed = true
         }
         if (isNullOrEmpty(password)) {
@@ -312,16 +319,16 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
         when (t) {
             is HttpException ->
                 if (t.statusCode == 401)
-                    showSnackbar(R.string.invalid_username_or_password)
+                    showSnackbar(runBlocking { org.jetbrains.compose.resources.getString(Res.string.invalid_username_or_password) })
                 else
                     showSnackbar(t.message)
             is DisplayableException -> lifecycleScope.launch {
                 showSnackbar(org.jetbrains.compose.resources.getString(t.resource))
             }
-            is ConnectException -> showSnackbar(R.string.network_error)
+            is ConnectException -> showSnackbar(runBlocking { org.jetbrains.compose.resources.getString(Res.string.network_error) })
             else -> {
                 Timber.e(t)
-                showSnackbar(R.string.error_adding_account, t.message!!)
+                showSnackbar(runBlocking { org.jetbrains.compose.resources.getString(Res.string.error_adding_account, t.message!!) })
             }
         }
     }

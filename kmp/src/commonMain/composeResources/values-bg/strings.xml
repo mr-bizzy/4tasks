@@ -179,4 +179,15 @@
         <item quantity="one">%1$d списък</item>
         <item quantity="other">%1$d списъка</item>
     </plurals>
+    <string name="caldav_server_other">Друг</string>
+    <string name="caldav_server_type">Вид на сървъра</string>
+    <string name="caldav_server_unknown">Неизвестен</string>
+    <string name="error_adding_account">Грешка: %s</string>
+    <string name="invalid_username_or_password">Невалидно потребителско име или парола</string>
+    <string name="network_error">Не може да бъде осъществена връзка</string>
+    <string name="sign_in">Вход</string>
+    <string name="url_host_name_required">Името на хоста е задължително</string>
+    <string name="url_invalid_scheme">Трябва да започва с http(s)://</string>
+    <string name="url_required">Адресът е задължителен</string>
+    <string name="username_required">Потребителското име е задължително</string>
 </resources>

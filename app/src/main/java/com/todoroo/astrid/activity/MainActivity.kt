@@ -59,7 +59,7 @@ import org.tasks.analytics.Firebase
 import org.tasks.auth.SignInActivity
 import org.tasks.auth.TasksServerEnvironment
 import org.tasks.billing.Inventory
-import org.tasks.caldav.CaldavAccountSettingsActivity
+import org.tasks.caldav.CaldavSignInActivity
 import org.tasks.compose.AddAccountDestination
 import org.tasks.compose.HomeDestination
 import org.tasks.compose.ImportTasksViewModel
@@ -321,7 +321,7 @@ class MainActivity : AppCompatActivity() {
 
                                 Platform.CALDAV ->
                                     syncLauncher.launch(
-                                        Intent(this@MainActivity, CaldavAccountSettingsActivity::class.java)
+                                        Intent(this@MainActivity, CaldavSignInActivity::class.java)
                                     )
 
                                 Platform.ETEBASE ->

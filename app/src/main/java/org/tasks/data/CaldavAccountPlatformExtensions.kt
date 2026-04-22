@@ -5,7 +5,6 @@ import android.content.Context
 import org.tasks.R
 import org.tasks.activities.GoogleTaskListSettingsActivity
 import org.tasks.caldav.BaseCaldavAccountSettingsActivity
-import org.tasks.caldav.CaldavAccountSettingsActivity
 import org.tasks.caldav.CaldavCalendarSettingsActivity
 import org.tasks.caldav.LocalListSettingsActivity
 import org.tasks.data.entity.CaldavAccount
@@ -62,7 +61,6 @@ fun CaldavAccount.listSettingsClass(): Class<out Activity> = when(accountType) {
 
 val CaldavAccount.accountSettingsClass: Class<out BaseCaldavAccountSettingsActivity>
     get() = when {
-        isCaldavAccount -> CaldavAccountSettingsActivity::class.java
         isEtebaseAccount -> EtebaseAccountSettingsActivity::class.java
         isOpenTasks -> OpenTaskAccountSettingsActivity::class.java
         else -> throw IllegalArgumentException("Unexpected account type: $this")
