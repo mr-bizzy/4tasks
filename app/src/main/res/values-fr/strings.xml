@@ -332,7 +332,6 @@
     <string name="pro_dashclock_extension">Extension du tableau de bord</string>
     <string name="requires_pro_subscription">Nécessite un abonnement pro</string>
     <string name="logout">Se déconnecter</string>
-    <string name="logout_warning">Toutes les données liées à ce compte seront supprimées de votre appareil</string>
     <string name="cannot_access_account">Impossible d\'accéder au compte</string>
     <string name="reinitialize_account">Réinitialiser</string>
     <string name="action_create_new_task">Créer une nouvelle tâche</string>

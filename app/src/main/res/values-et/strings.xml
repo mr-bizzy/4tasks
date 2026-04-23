@@ -543,7 +543,6 @@
     <string name="repeats_on">Kordub</string>
     <string name="repeats_plural">Kordub iga %s</string>
     <string name="repeats_plural_on">Kordub iga %1$s / %2$s</string>
-    <string name="logout_warning">Kõik selle kasutajakonto andmed eemaldatakse sellest seadmest</string>
     <string name="reinitialize_account">Initsialiseeri uuesti</string>
     <string name="location_arrived">Saabusid: %s</string>
     <string name="cost_money">Hind: $</string>

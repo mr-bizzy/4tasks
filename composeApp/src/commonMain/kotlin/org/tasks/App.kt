@@ -401,20 +401,13 @@ fun App(
                     entry<CaldavSignInDestination> {
                         org.tasks.compose.settings.CaldavSignInScreen(
                             onNavigateBack = { backStack.removeLastOrNull() },
-                            onAccountCreated = {
-                                // Pop CaldavSignInDestination and AddAccountDestination
-                                backStack.removeLastOrNull()
-                                backStack.removeLastOrNull()
-                            },
+                            onAccountCreated = { backStack.removeLastOrNull() },
                         )
                     }
                     entry<EtebaseSignInDestination> {
                         org.tasks.compose.settings.EtebaseSignInScreen(
                             onNavigateBack = { backStack.removeLastOrNull() },
-                            onAccountCreated = {
-                                backStack.removeLastOrNull()
-                                backStack.removeLastOrNull()
-                            },
+                            onAccountCreated = { backStack.removeLastOrNull() },
                         )
                     }
                     entry<TaskListDestination> {

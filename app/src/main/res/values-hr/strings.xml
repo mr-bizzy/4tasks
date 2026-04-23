@@ -50,7 +50,6 @@
     <string name="show_description">Pokaži opis</string>
     <string name="action_create_new_task">Stvori novi zadatak</string>
     <string name="cannot_access_account">Nije moguće pristupiti računu</string>
-    <string name="logout_warning">Svi podaci za ovaj račun uklonit će se s uređaja</string>
     <string name="logout">Odjavi se</string>
     <string name="license_summary">Tasks je slobodan program otvorenog koda, licenciran pod GNU General Public License v3.0</string>
     <string name="no_time">Bez vremena</string>

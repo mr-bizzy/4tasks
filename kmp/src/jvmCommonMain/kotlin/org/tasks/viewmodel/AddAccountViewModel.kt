@@ -24,7 +24,7 @@ open class AddAccountViewModel(
 
     val hasPro: Boolean get() = purchaseState.hasPro
 
-    private val _accountAdded = MutableSharedFlow<Unit>()
+    private val _accountAdded = MutableSharedFlow<Unit>(replay = 1)
     val accountAdded: SharedFlow<Unit> = _accountAdded
 
     init {

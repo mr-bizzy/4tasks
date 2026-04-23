@@ -30,24 +30,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.PlatformBackHandler
 import org.tasks.data.entity.CaldavAccount
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.cancel
-import tasks.kmp.generated.resources.delete_tag_confirmation
-import tasks.kmp.generated.resources.delete_tasks_warning
 import tasks.kmp.generated.resources.discard
 import tasks.kmp.generated.resources.discard_changes
 import tasks.kmp.generated.resources.display_name
 import tasks.kmp.generated.resources.logout
+import tasks.kmp.generated.resources.logout_confirmation
 import tasks.kmp.generated.resources.logout_warning
 import tasks.kmp.generated.resources.ok
 import tasks.kmp.generated.resources.password
 import tasks.kmp.generated.resources.save
 import tasks.kmp.generated.resources.sign_in
-import tasks.kmp.generated.resources.task_count
 import tasks.kmp.generated.resources.show_advanced_settings
 import tasks.kmp.generated.resources.url
 import tasks.kmp.generated.resources.user
@@ -64,6 +61,7 @@ data class EtebaseAccountState(
     val snackbar: String? = null,
     val account: CaldavAccount? = null,
     val showUrl: Boolean = false,
+    val hasCustomUrl: Boolean = false,
 ) {
     val hasChanges: Boolean
         get() = if (account == null) {
@@ -107,20 +105,6 @@ fun EtebaseAccountScreen(
     ) {
         if (state.isLoading) {
             LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-        }
-
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        ) {
-            SettingsItemCard {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.show_advanced_settings),
-                    checked = state.showUrl,
-                    onCheckedChange = onShowUrlChange,
-                )
-            }
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
@@ -177,6 +161,21 @@ fun EtebaseAccountScreen(
                 ),
                 visualTransformation = PasswordVisualTransformation(),
             )
+        }
+
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        Column(
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        ) {
+            SettingsItemCard {
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.show_advanced_settings),
+                    checked = state.showUrl,
+                    onCheckedChange = onShowUrlChange,
+                    enabled = !state.hasCustomUrl,
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
@@ -243,22 +242,17 @@ fun EtebaseAccountScreen(
     }
 
     if (showDeleteDialog) {
-        val taskCountString = pluralStringResource(Res.plurals.task_count, state.taskCount, state.taskCount)
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
             title = {
                 Text(
-                    text = stringResource(Res.string.delete_tag_confirmation, accountName),
+                    text = stringResource(Res.string.logout_confirmation, accountName),
                     style = MaterialTheme.typography.headlineSmall,
                 )
             },
             text = {
                 Text(
-                    text = if (state.taskCount > 0) {
-                        stringResource(Res.string.delete_tasks_warning, taskCountString)
-                    } else {
-                        stringResource(Res.string.logout_warning)
-                    },
+                    text = stringResource(Res.string.logout_warning),
                 )
             },
             confirmButton = {

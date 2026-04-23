@@ -39,7 +39,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.PlatformBackHandler
 import org.tasks.data.entity.CaldavAccount
@@ -62,8 +61,6 @@ import tasks.kmp.generated.resources.caldav_server_synology_calendar
 import tasks.kmp.generated.resources.caldav_server_type
 import tasks.kmp.generated.resources.caldav_server_unknown
 import tasks.kmp.generated.resources.cancel
-import tasks.kmp.generated.resources.delete_tag_confirmation
-import tasks.kmp.generated.resources.delete_tasks_warning
 import tasks.kmp.generated.resources.discard
 import tasks.kmp.generated.resources.discard_changes
 import tasks.kmp.generated.resources.display_name
@@ -74,7 +71,6 @@ import tasks.kmp.generated.resources.ok
 import tasks.kmp.generated.resources.password
 import tasks.kmp.generated.resources.save
 import tasks.kmp.generated.resources.sign_in
-import tasks.kmp.generated.resources.task_count
 import tasks.kmp.generated.resources.url
 import tasks.kmp.generated.resources.user
 

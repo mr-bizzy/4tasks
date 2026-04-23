@@ -321,7 +321,6 @@
     <string name="help">Axuda</string>
     <string name="help_and_feedback">Axuda e soporte</string>
     <string name="refresh_purchases">Anovar as compras</string>
-    <string name="logout_warning">Todos dos datos desta conta vabse a borrar deste dispositivo</string>
     <string name="sign_in_with_google">Acceso con Google</string>
     <string name="authentication_required">Precísase autenticación</string>
     <string name="migrate">migrar</string>

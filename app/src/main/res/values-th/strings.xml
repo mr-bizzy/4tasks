@@ -62,7 +62,6 @@
     <string name="social">สังคม</string>
     <string name="follow_reddit">เข้าร่วม r/tasks</string>
     <string name="cannot_access_account">ไม่สามารถเข้าถึงบัญชี</string>
-    <string name="logout_warning">ข้อมูลทั้งหมดสําหรับบัญชีนี้จะถูกลบออกจากอุปกรณ์ของคุณ</string>
     <string name="logout">ออกจากระบบ</string>
     <string name="this_feature_requires_a_subscription">คุณลักษณะนี้ต้องการการสมัครใช้งาน</string>
     <string name="authorization_cancelled">ยกเลิกการตรวจสอบแล้ว</string>

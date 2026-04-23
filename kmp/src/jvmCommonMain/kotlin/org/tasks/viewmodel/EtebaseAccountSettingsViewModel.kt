@@ -64,7 +64,9 @@ open class EtebaseAccountSettingsViewModel(
         }
     }
 
-    fun setAccount(account: CaldavAccount) {
+    suspend fun setAccount(account: CaldavAccount) {
+        val defaultUrl = getString(Res.string.etebase_url)
+        val hasCustomUrl = !account.url.isNullOrBlank() && account.url != defaultUrl
         accountId.value = account.id
         _state.value = EtebaseAccountState(
             url = account.url.orEmpty(),
@@ -72,6 +74,8 @@ open class EtebaseAccountSettingsViewModel(
             password = "",
             displayName = account.name.orEmpty(),
             account = account,
+            showUrl = hasCustomUrl,
+            hasCustomUrl = hasCustomUrl,
         )
     }
 

@@ -26,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import at.bitfire.dav4jvm.okhttp.exception.HttpException
 import com.franmontiel.persistentcookiejar.persistence.CookiePersistor
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -39,9 +38,8 @@ import org.tasks.Strings.isNullOrEmpty
 import kotlinx.coroutines.runBlocking
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.add_account
+import tasks.kmp.generated.resources.logout_warning
 import tasks.kmp.generated.resources.error_adding_account
-import tasks.kmp.generated.resources.invalid_username_or_password
-import tasks.kmp.generated.resources.network_error
 import tasks.kmp.generated.resources.password_required
 import tasks.kmp.generated.resources.url_host_name_required
 import tasks.kmp.generated.resources.url_invalid_scheme
@@ -67,9 +65,7 @@ import org.tasks.extensions.addBackPressedCallback
 import org.tasks.injection.ThemedInjectingAppCompatActivity
 import org.tasks.security.KeyStoreEncryption
 import org.tasks.themes.TasksTheme
-import org.tasks.ui.DisplayableException
 import timber.log.Timber
-import java.net.ConnectException
 import java.net.IDN
 import java.net.URI
 import java.net.URISyntaxException
@@ -314,33 +310,6 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
     protected abstract suspend fun updateAccount()
     protected abstract val helpUrl: Int
 
-    protected fun requestFailed(t: Throwable) {
-        hideProgressIndicator()
-        when (t) {
-            is HttpException ->
-                if (t.statusCode == 401)
-                    showSnackbar(runBlocking { org.jetbrains.compose.resources.getString(Res.string.invalid_username_or_password) })
-                else
-                    showSnackbar(t.message)
-            is DisplayableException -> lifecycleScope.launch {
-                showSnackbar(org.jetbrains.compose.resources.getString(t.resource))
-            }
-            is ConnectException -> showSnackbar(runBlocking { org.jetbrains.compose.resources.getString(Res.string.network_error) })
-            else -> {
-                Timber.e(t)
-                showSnackbar(runBlocking { org.jetbrains.compose.resources.getString(Res.string.error_adding_account, t.message!!) })
-            }
-        }
-    }
-
-    private fun showSnackbar(resId: Int, vararg formatArgs: Any) {
-        showSnackbar(getString(resId, *formatArgs))
-    }
-
-    private fun showSnackbar(message: String?) {
-        newSnackbar(message).show()
-    }
-
     private fun newSnackbar(message: String?): Snackbar {
         val snackbar = Snackbar.make(binding.rootLayout, message!!, 8000)
             .setBackgroundTint(getColor(R.color.dialog_background))
@@ -383,7 +352,7 @@ abstract class BaseCaldavAccountSettingsActivity : ThemedInjectingAppCompatActiv
         }
         dialogBuilder
                 .newDialog()
-                .setMessage(R.string.logout_warning)
+                .setMessage(org.jetbrains.compose.resources.getString(Res.string.logout_warning))
                 .setPositiveButton(R.string.remove) { _, _ -> lifecycleScope.launch { removeAccount() } }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
