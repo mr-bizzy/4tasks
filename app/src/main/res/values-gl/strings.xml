@@ -527,7 +527,6 @@
     <string name="banner_app_updated_description">Tarefas acaba de actualizarse a %s. Queres ver as notas da versión?</string>
     <string name="name_your_price">Prezo flexible</string>
     <string name="subtasks_multilevel_microsoft">Subtarefas multinivel non compatibles con Microsoft To Do</string>
-    <string name="etesync_account_description">Require unha conta con EteSync.com ou un servidor autoaloxado</string>
     <string name="wearable_notifications">Notificacións de reloxo intelixente</string>
     <string name="wearable_notifications_summary">Amosar notificacións no teu reloxo intelixente</string>
     <string name="notification_troubleshooting_summary">Toca aquí se tes problemas coas notificacións</string>

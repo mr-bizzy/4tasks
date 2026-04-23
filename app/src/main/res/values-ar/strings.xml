@@ -444,7 +444,6 @@
     <string name="more_notification_settings_summary">نغمة الرنين والاهتزازات والمزيد</string>
     <string name="disable_battery_optimizations">تعطيل تحسينات البطارية</string>
     <string name="wearable_notifications">اخطارات الساعة الذكية</string>
-    <string name="etesync_account_description">يتطلب حسابًا مع EteSync.com أو خادمًا مستضافًا ذاتيًا</string>
     <string name="davx5_selection_description">مزامنة مهامك مع تطبيق DAVx⁵</string>
     <string name="decsync_selection_description">مزامنة على اساس الملف</string>
     <string name="etesync_selection_description">مزامنة مشفرة من طرف إلى طرف</string>

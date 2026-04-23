@@ -432,7 +432,6 @@
     <string name="preferences_advanced">Avançado</string>
     <string name="documentation">Documentação</string>
     <string name="help_and_feedback">Ajuda &amp; sugestões</string>
-    <string name="etesync_account_description">Precisa de uma conta no EteSync.com ou de um servidor auto-alojado</string>
     <string name="show_advanced_settings">Mostrar configurações avançadas</string>
     <string name="etesync_selection_description">Sincronização com encriptação ponta-a-ponta</string>
     <string name="choose_synchronization_service">Selecione uma plataforma</string>

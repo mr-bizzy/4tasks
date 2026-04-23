@@ -177,4 +177,5 @@
     <string name="url_invalid_scheme">Moet beginnen met http(s)://</string>
     <string name="url_required">URL vereist</string>
     <string name="username_required">Gebruikersnaam vereist</string>
+    <string name="etesync_account_description">Voorwaarde is een account op www.EteSync.com of een eigen server</string>
 </resources>

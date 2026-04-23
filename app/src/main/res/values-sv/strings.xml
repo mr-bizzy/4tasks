@@ -405,7 +405,6 @@
     <string name="CFC_list_name">I lista…</string>
     <string name="email">E-post</string>
     <string name="upgrade_blurb_2">Jag har ägnat tusentals timmar åt Tasks och jag publicerar all källkod fritt på nätet. För att stöda mitt arbete kräver vissa funktioner ett abonnemang</string>
-    <string name="etesync_account_description">Kräver ett konto hos EteSync.com eller en egen värdserver</string>
     <string name="menu_discard_changes">Ignorera ändringar</string>
     <string name="astrid_sort_order_summary">Aktivera Astrids manuella sorteringsläge för \"Mina uppgifter\", \"Idag\" och taggar. Detta sorteringsläge kommer att ersättas av \"Min sortering\" i en framtida uppdatering.</string>
     <string name="markdown_description">Aktivera Markdown i titel och beskrivning</string>

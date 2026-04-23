@@ -140,7 +140,6 @@
     <string name="wearable_notifications">Wearables-meddelelser</string>
     <string name="documentation">Dokumentation</string>
     <string name="preferences_advanced">Avanceret</string>
-    <string name="etesync_account_description">Kræver en konto hos EteSync.com eller en selvhostet server</string>
     <string name="show_advanced_settings">Vis avancerede indstillinger</string>
     <string name="davx5_selection_description">Synkroniser dine opgaver med DAVx⁵-appen</string>
     <string name="etesync_selection_description">End-to-end-krypteret synkronisering</string>

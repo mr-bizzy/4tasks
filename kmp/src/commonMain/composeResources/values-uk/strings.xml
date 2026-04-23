@@ -163,4 +163,5 @@
     <string name="url_invalid_scheme">Має починатися з http(s)://</string>
     <string name="url_required">Потрібний URL</string>
     <string name="username_required">Потрібне ім\\'я користувача</string>
+    <string name="etesync_account_description">Потрібний обліковий запис у EteSync.com або власний сервер</string>
 </resources>

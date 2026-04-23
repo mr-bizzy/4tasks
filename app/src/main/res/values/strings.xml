@@ -512,7 +512,6 @@ File %1$s contained %2$s.\n\n
   <string name="decsync_selection_description">File-based synchronization</string>
   <string name="davx5_selection_description">Synchronize your tasks with the DAVx⁵ app</string>
   <string name="show_advanced_settings">Show advanced settings</string>
-  <string name="etesync_account_description">Requires an account with EteSync.com or a self-hosted server</string>
   <string name="preferences_advanced">Advanced</string>
   <string name="documentation">Documentation</string>
   <string name="wearable_notifications">Wearable notifications</string>

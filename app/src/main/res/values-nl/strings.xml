@@ -380,7 +380,6 @@
     <string name="caldav_selection_description">Synchroniseren op eigen open source CalDAV-server of bij derden</string>
     <string name="etesync_selection_description">End-to-end versleuteld synchroniseren met EteSync</string>
     <string name="show_advanced_settings">Geavanceerde instellingen tonen</string>
-    <string name="etesync_account_description">Voorwaarde is een account op www.EteSync.com of een eigen server</string>
     <string name="help_and_feedback">Hulp &amp; feedback</string>
     <string name="documentation">Documentatie (website)</string>
     <string name="preferences_advanced">Geavanceerd</string>

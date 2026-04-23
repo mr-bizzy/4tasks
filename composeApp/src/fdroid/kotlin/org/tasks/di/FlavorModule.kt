@@ -9,6 +9,8 @@ val flavorModule = module {
     single {
         PlatformConfiguration(
             isLibre = true,
+            supportsCaldav = true,
+            supportsEteSync = true,
         )
     }
     single<QrScanner> { object : QrScanner { override suspend fun scan(): String? = null } }

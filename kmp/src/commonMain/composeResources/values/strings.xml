@@ -207,6 +207,8 @@
         <item quantity="one">%1$d list</item>
         <item quantity="other">%1$d lists</item>
     </plurals>
+    <string name="etesync_account_description">Requires an account with EteSync.com or a self-hosted server</string>
+    <string name="show_advanced_settings">Show advanced settings</string>
     <string name="link_desktop">Link desktop app</string>
     <string name="link_desktop_description">Unlock the desktop app with your Google Play subscription</string>
     <string name="link_desktop_instructions">Open the Tasks.org desktop app and go to Add Account to see the QR code. Then tap the button below to scan it.</string>

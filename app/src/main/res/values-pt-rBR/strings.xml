@@ -402,7 +402,6 @@
     <string name="wearable_notifications">Notificações em dispositivos Weareables</string>
     <string name="documentation">Documentação</string>
     <string name="preferences_advanced">Avançado</string>
-    <string name="etesync_account_description">Precisa de uma conta com EteSync.com ou uma instância desse serviço auto-hospedada</string>
     <string name="show_advanced_settings">Mostrar configurações avançadas</string>
     <string name="etesync_selection_description">Sincronização criptografada de ponta a ponta</string>
     <string name="caldav_selection_description">Sincronização usando protocolos padrões e livres da Internet</string>

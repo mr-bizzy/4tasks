@@ -313,7 +313,6 @@
     <string name="etesync_selection_description">Enkripsi klien-ke-klien bersumber terbuka</string>
     <string name="theme_wallpaper">Latar</string>
     <string name="show_advanced_settings">Tampilkan pengaturan lanjutan</string>
-    <string name="etesync_account_description">Membutuhkan akun EteSync.com atau server hosting-mandiri</string>
     <string name="help_and_feedback">Bantuan &amp; umpanbalik</string>
     <string name="documentation">Dokumentasi</string>
     <string name="preferences_advanced">Lanjutan</string>

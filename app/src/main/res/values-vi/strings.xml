@@ -508,7 +508,6 @@
     <string name="default_location_reminder_on_arrival">Khi đến</string>
     <string name="no_reminders">Không có lời nhắc</string>
     <string name="preferences_advanced">Nâng cao</string>
-    <string name="etesync_account_description">Yêu cầu một tài khoản trên EteSync.com hoặc một máy chủ mà bạn vận hành</string>
     <string name="next_week">Tuần sau</string>
     <string name="day_after_tomorrow">Ngày kia</string>
     <string name="priority_low">Thấp</string>

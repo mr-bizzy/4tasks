@@ -384,7 +384,6 @@
     <string name="caldav_selection_description">Synchronisierung basierend auf offenen Internetstandards</string>
     <string name="etesync_selection_description">Ende-zu-Ende-verschlüsselte Synchronisierung</string>
     <string name="show_advanced_settings">Erweiterte Einstellungen anzeigen</string>
-    <string name="etesync_account_description">Erfordert ein Konto bei EteSync.com oder einen selbst gehosteten Server</string>
     <string name="preferences_advanced">Erweitert</string>
     <string name="documentation">Dokumentation</string>
     <string name="more_settings">Weitere Einstellungen</string>

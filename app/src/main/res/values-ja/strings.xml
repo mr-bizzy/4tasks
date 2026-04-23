@@ -499,7 +499,6 @@
     <string name="customize_edit_screen_summary">フィールドの並び替えや削除</string>
     <string name="widget_due_date_below_title">タイトルの下</string>
     <string name="widget_due_date_after_title">タイトルの後ろ</string>
-    <string name="etesync_account_description">EteSync.com またはセルフホストサーバーのアカウントが必要です</string>
     <string name="documentation">ドキュメント</string>
     <string name="color_wheel">カラーホイール</string>
     <string name="more_notification_settings_summary">通知音、バイブレーションなど</string>

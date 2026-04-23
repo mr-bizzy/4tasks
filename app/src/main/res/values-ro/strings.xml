@@ -496,7 +496,6 @@
     <string name="wearable_notifications">Notificări pe dispozitive portabile</string>
     <string name="documentation">Documentație</string>
     <string name="preferences_advanced">Avansat</string>
-    <string name="etesync_account_description">Necesită un cont cu EteSync.com sau un server auto-găzduit</string>
     <string name="show_advanced_settings">Afișează setările avansate</string>
     <string name="davx5_selection_description">Sincronizează-ți sarcinile cu aplicația DAVx⁵</string>
     <string name="decsync_selection_description">Sincronizare pe bază de fișiere</string>

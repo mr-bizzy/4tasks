@@ -518,7 +518,6 @@
     <string name="decsync_selection_description">Sincronització per fitxers</string>
     <string name="davx5_selection_description">Sincronitza les teves tasques amb l\'aplicació DAVx5</string>
     <string name="show_advanced_settings">Mostreu la configuració avançada</string>
-    <string name="etesync_account_description">Requereix un compte amb EteSync.com o un servidor allotjat</string>
     <string name="preferences_advanced">Avançat</string>
     <string name="documentation">Documentació</string>
     <string name="wearable_notifications">Notificacions de rellotge intel·ligent</string>

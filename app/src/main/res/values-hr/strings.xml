@@ -478,7 +478,6 @@
     <string name="troubleshooting">Rješavanje problema</string>
     <string name="wearable_notifications_summary">Prikaži obavijesti na nosivim uređajima</string>
     <string name="wearable_notifications">Obavijesti nosivih uređaja</string>
-    <string name="etesync_account_description">Zahtijeva račun na EteSync.com ili vlastiti poslužitelj</string>
     <string name="widget_show_header">Pokaži zaglavlje</string>
     <string name="widget_show_checkboxes">Pokaži potvrdne okvire</string>
     <plurals name="Ntasks">

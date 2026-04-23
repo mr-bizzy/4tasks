@@ -455,7 +455,6 @@
     <string name="more_notification_settings_summary">Звънене, вибрация и други</string>
     <string name="disable_battery_optimizations">Изключване на оптимизацията на батерията</string>
     <string name="preferences_advanced">Разширени</string>
-    <string name="etesync_account_description">Необходим е профил при доставчик на услуга за EteSync.com или собствен сървър</string>
     <string name="show_advanced_settings">Разширени настройки</string>
     <string name="caldav_selection_description">Синхронизиране посредством отворени стандарти</string>
     <string name="choose_synchronization_service">Избор на услуга</string>

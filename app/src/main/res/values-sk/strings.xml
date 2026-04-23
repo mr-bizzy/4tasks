@@ -538,7 +538,6 @@
     <string name="automatic_backups">Automatické zálohovanie</string>
     <string name="follow_reddit">Pripojte sa k r/tasks</string>
     <string name="custom_filter_has_reminder">Má pripomienku</string>
-    <string name="etesync_account_description">Vyžaduje účet na EteSync.com alebo vlastný server</string>
     <string name="whats_new">Čo je nové</string>
     <string name="list_separator_with_space">", "</string>
     <string name="repeat_monthly_on_the_nth_weekday">%1$s. %2$s v mesiaci</string>

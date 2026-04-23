@@ -23,7 +23,7 @@ import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_FEATURE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_NAME_YOUR_PRICE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SOURCE
 import org.tasks.caldav.CaldavSignInActivity
-import org.tasks.etebase.EtebaseAccountSettingsActivity
+import org.tasks.etebase.EtebaseSignInActivity
 import org.tasks.extensions.Context.openUri
 import org.tasks.preferences.TasksPreferences
 import org.tasks.sync.microsoft.MicrosoftSignInViewModel
@@ -84,7 +84,7 @@ class AddAccountActivity : ComponentActivity() {
             Platform.CALDAV ->
                 syncLauncher.launch(Intent(this, CaldavSignInActivity::class.java))
             Platform.ETEBASE ->
-                syncLauncher.launch(Intent(this, EtebaseAccountSettingsActivity::class.java))
+                syncLauncher.launch(Intent(this, EtebaseSignInActivity::class.java))
             else -> throw IllegalArgumentException()
         }
     }

@@ -12,7 +12,6 @@ import org.tasks.data.entity.CaldavAccount.Companion.isDavx5
 import org.tasks.data.entity.CaldavAccount.Companion.isDavx5Managed
 import org.tasks.data.entity.CaldavAccount.Companion.isDecSync
 import org.tasks.data.entity.CaldavAccount.Companion.isEteSync
-import org.tasks.etebase.EtebaseAccountSettingsActivity
 import org.tasks.etebase.EtebaseCalendarSettingsActivity
 import org.tasks.opentasks.OpenTaskAccountSettingsActivity
 import org.tasks.opentasks.OpenTasksListSettingsActivity
@@ -61,7 +60,6 @@ fun CaldavAccount.listSettingsClass(): Class<out Activity> = when(accountType) {
 
 val CaldavAccount.accountSettingsClass: Class<out BaseCaldavAccountSettingsActivity>
     get() = when {
-        isEtebaseAccount -> EtebaseAccountSettingsActivity::class.java
         isOpenTasks -> OpenTaskAccountSettingsActivity::class.java
         else -> throw IllegalArgumentException("Unexpected account type: $this")
     }

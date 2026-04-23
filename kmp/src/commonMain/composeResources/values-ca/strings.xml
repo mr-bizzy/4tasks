@@ -162,4 +162,5 @@
     <string name="url_invalid_scheme">Ha de començar amb http(s)://</string>
     <string name="url_required">La URL és necessària</string>
     <string name="username_required">El nom d\\'usuari és necessari</string>
+    <string name="etesync_account_description">Requereix un compte amb EteSync.com o un servidor allotjat</string>
 </resources>

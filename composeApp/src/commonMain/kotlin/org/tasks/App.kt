@@ -103,6 +103,8 @@ import org.tasks.compose.NavigationBarScrim
 import org.tasks.compose.PlatformBackHandler
 import org.tasks.compose.settings.CaldavAccountSettingsDetail
 import org.tasks.compose.settings.CaldavAccountSettingsPane
+import org.tasks.compose.settings.EtebaseAccountSettingsDetail
+import org.tasks.compose.settings.EtebaseAccountSettingsPane
 import org.tasks.compose.settings.LocalAccountSettingsDetail
 import org.tasks.compose.settings.LocalAccountSettingsPane
 import org.tasks.compose.settings.MainSettingsScreen
@@ -185,6 +187,9 @@ data object TaskListDestination : NavKey
 data object CaldavSignInDestination : NavKey
 
 @Serializable
+data object EtebaseSignInDestination : NavKey
+
+@Serializable
 data object SettingsDestination : NavKey
 
 @Serializable
@@ -230,6 +235,7 @@ fun App(
                             subclass(WelcomeDestination::class, WelcomeDestination.serializer())
                             subclass(AddAccountDestination::class, AddAccountDestination.serializer())
                             subclass(CaldavSignInDestination::class, CaldavSignInDestination.serializer())
+                            subclass(EtebaseSignInDestination::class, EtebaseSignInDestination.serializer())
                             subclass(TaskListDestination::class, TaskListDestination.serializer())
                             subclass(SettingsDestination::class, SettingsDestination.serializer())
                             subclass(LinkDesktopDestination::class, LinkDesktopDestination.serializer())
@@ -320,6 +326,7 @@ fun App(
                                 when (platform) {
                                     Platform.TASKS_ORG -> showProviderPicker = true
                                     Platform.CALDAV -> backStack.add(CaldavSignInDestination)
+                                    Platform.ETEBASE -> backStack.add(EtebaseSignInDestination)
                                     else -> addAccountViewModel.signIn(platform)
                                 }
                             },
@@ -396,6 +403,15 @@ fun App(
                             onNavigateBack = { backStack.removeLastOrNull() },
                             onAccountCreated = {
                                 // Pop CaldavSignInDestination and AddAccountDestination
+                                backStack.removeLastOrNull()
+                                backStack.removeLastOrNull()
+                            },
+                        )
+                    }
+                    entry<EtebaseSignInDestination> {
+                        org.tasks.compose.settings.EtebaseSignInScreen(
+                            onNavigateBack = { backStack.removeLastOrNull() },
+                            onAccountCreated = {
                                 backStack.removeLastOrNull()
                                 backStack.removeLastOrNull()
                             },
@@ -1450,6 +1466,14 @@ private fun SettingsScreen(
                                         )
                                     }
                                 }
+                                account.isEtebaseAccount -> {
+                                    scope.launch {
+                                        navigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            EtebaseAccountSettingsPane(account),
+                                        )
+                                    }
+                                }
                             }
                         },
                         onAddAccountClick = onAddAccountClick,
@@ -1537,6 +1561,14 @@ private fun SettingsScreen(
                     }
                     is CaldavAccountSettingsPane -> {
                         CaldavAccountSettingsDetail(
+                            pane = selectedContent,
+                            onNavigateBack = {
+                                scope.launch { navigator.navigateBack() }
+                            },
+                        )
+                    }
+                    is EtebaseAccountSettingsPane -> {
+                        EtebaseAccountSettingsDetail(
                             pane = selectedContent,
                             onNavigateBack = {
                                 scope.launch { navigator.navigateBack() }

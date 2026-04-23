@@ -149,4 +149,5 @@
     <string name="url_invalid_scheme">Phải bắt đầu bằng http(s)://</string>
     <string name="url_required">Yêu cầu URL</string>
     <string name="username_required">Yêu cầu tên người dùng</string>
+    <string name="etesync_account_description">Yêu cầu một tài khoản trên EteSync.com hoặc một máy chủ mà bạn vận hành</string>
 </resources>

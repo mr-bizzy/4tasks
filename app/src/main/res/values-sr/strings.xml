@@ -540,7 +540,6 @@
     <string name="subtasks_multilevel_google_task">Подзадаци у више нивоа нису подржани од стране Гугл Задатака</string>
     <string name="subtasks_multilevel_microsoft">Подзадаци у више нивоа нису подржани од стране ,,Microsoft To Do\'\'</string>
     <string name="caldav_selection_description">Синхронизација заснована на стандардима отвореног интернета</string>
-    <string name="etesync_account_description">Захтева налог код ,,EteSync.com\'\' или приватни сервер</string>
     <string name="troubleshooting">Решавање проблема</string>
     <string name="notification_troubleshooting_summary">Тапни овде уколико постоје проблеми са обавештењима</string>
     <string name="color_wheel">Палета боја</string>

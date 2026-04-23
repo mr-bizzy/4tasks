@@ -200,4 +200,5 @@
     <string name="url_invalid_scheme">Muss mit „http(s)://“ beginnen</string>
     <string name="url_required">URL benötigt</string>
     <string name="username_required">Benutzername benötigt</string>
+    <string name="etesync_account_description">Erfordert ein Konto bei EteSync.com oder einen selbst gehosteten Server</string>
 </resources>

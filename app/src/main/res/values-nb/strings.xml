@@ -383,7 +383,6 @@
     <string name="this_feature_requires_a_subscription">Denne funksjonen krever abonnement</string>
     <string name="choose_synchronization_service">Velg en plattform</string>
     <string name="show_advanced_settings">Vis avanserte innstillinger</string>
-    <string name="etesync_account_description">Krever en konto hos EteSync.com eller selvdrevet tjener</string>
     <string name="help_and_feedback">Hjelp og tilbakemelding</string>
     <string name="documentation">Dokumentasjon</string>
     <string name="preferences_advanced">Avansert</string>

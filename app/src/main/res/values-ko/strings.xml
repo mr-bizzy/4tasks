@@ -376,7 +376,6 @@
     <string name="caldav_selection_description">개방형 인터넷 표준을 바탕으로 한 동기화</string>
     <string name="etesync_selection_description">종단간 암호화된 동기화</string>
     <string name="show_advanced_settings">고급 설정 표시</string>
-    <string name="etesync_account_description">EteSync.com이나 자체호스팅 서버의 계정 필요</string>
     <string name="share">공유</string>
     <string name="select_all">모두 선택</string>
     <string name="no_time">마감시간 없음</string>

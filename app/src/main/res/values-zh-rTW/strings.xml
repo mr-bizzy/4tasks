@@ -507,7 +507,6 @@
     <string name="repeats_every">每次重複</string>
     <string name="alarm_before_due">到期前 %s</string>
     <string name="alarm_after_start">開始後 %s</string>
-    <string name="etesync_account_description">需要 EteSync.com 帳戶或自架伺服器</string>
     <string name="repeats_weekly_on">重複於</string>
     <string name="repeats_on">在</string>
     <string name="repeats_never">永不</string>

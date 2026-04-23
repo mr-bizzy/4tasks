@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.tasks.billing.SubscriptionProvider
 import org.tasks.caldav.FileStorage
 import org.tasks.caldav.VtodoCache
+import org.tasks.etebase.EtebaseClientProvider
 import org.tasks.http.AndroidOkHttpClientFactory
 import org.tasks.http.OkHttpClientFactory
 import org.tasks.data.db.Database
@@ -62,5 +63,13 @@ actual fun platformModule(): Module = module {
         }
     }
     factory { FileStorage(androidContext().filesDir.absolutePath) }
+    factory {
+        EtebaseClientProvider(
+            filesDir = androidContext().filesDir.absolutePath,
+            encryption = get(),
+            caldavDao = get(),
+            httpClientFactory = get(),
+        )
+    }
     factoryOf(::VtodoCache)
 }

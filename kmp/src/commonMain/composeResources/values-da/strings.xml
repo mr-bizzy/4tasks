@@ -181,4 +181,5 @@
     <string name="url_invalid_scheme">Skal begynde med http(s)://</string>
     <string name="url_required">URL påkrævet</string>
     <string name="username_required">Brugernavn påkrævet</string>
+    <string name="etesync_account_description">Kræver en konto hos EteSync.com eller en selvhostet server</string>
 </resources>

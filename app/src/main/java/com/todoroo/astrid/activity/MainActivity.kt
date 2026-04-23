@@ -81,7 +81,7 @@ import org.tasks.data.newLocalAccount
 import org.tasks.data.dao.TagDataDao
 import org.tasks.data.entity.Task
 import org.tasks.dialogs.NewFilterDialog
-import org.tasks.etebase.EtebaseAccountSettingsActivity
+import org.tasks.etebase.EtebaseSignInActivity
 import org.tasks.extensions.Context.nightMode
 import org.tasks.extensions.Context.openUri
 import org.tasks.extensions.Context.toast
@@ -326,7 +326,7 @@ class MainActivity : AppCompatActivity() {
 
                                 Platform.ETEBASE ->
                                     syncLauncher.launch(
-                                        Intent(this@MainActivity, EtebaseAccountSettingsActivity::class.java)
+                                        Intent(this@MainActivity, EtebaseSignInActivity::class.java)
                                     )
 
                                 else -> throw IllegalArgumentException()

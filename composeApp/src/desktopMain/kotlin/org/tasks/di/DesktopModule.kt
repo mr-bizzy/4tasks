@@ -27,6 +27,7 @@ import org.tasks.billing.SubscriptionProvider
 import org.tasks.caldav.FileStorage
 import org.tasks.caldav.VtodoCache
 import org.tasks.data.db.Database
+import org.tasks.etebase.EtebaseClientProvider
 import org.tasks.fcm.FcmTokenProvider
 import org.tasks.fcm.PushTokenManager
 import org.tasks.http.DefaultOkHttpClientFactory
@@ -56,6 +57,7 @@ actual fun platformModule(): Module = module {
             versionCode = JvmBuildConfig.VERSION_CODE,
             billingProvider = BillingProvider.PADDLE,
             supportsCaldav = true,
+            supportsEteSync = true,
         )
     }
     single<Reporting> {
@@ -88,6 +90,14 @@ actual fun platformModule(): Module = module {
     }
     factory {
         FileStorage(dataDir().absolutePath)
+    }
+    factory {
+        EtebaseClientProvider(
+            filesDir = dataDir().absolutePath,
+            encryption = get(),
+            caldavDao = get(),
+            httpClientFactory = get(),
+        )
     }
     factoryOf(::VtodoCache)
     single {

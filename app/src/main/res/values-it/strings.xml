@@ -398,7 +398,6 @@
     <string name="wearable_notifications">Notifiche dispositivi indossabili</string>
     <string name="documentation">Documentazione (online)</string>
     <string name="preferences_advanced">Avanzate</string>
-    <string name="etesync_account_description">Richiede un account EteSync.com o un server self-hosted</string>
     <string name="show_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="etesync_selection_description">Sincronizzazione con crittografia end-to-end</string>
     <string name="caldav_selection_description">Sincronizzazione basata su standard aperti di internet</string>

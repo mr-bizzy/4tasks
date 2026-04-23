@@ -426,7 +426,6 @@
     <string name="decsync_selection_description">Συγχρονισμός βάσει αρχείων</string>
     <string name="davx5_selection_description">Συγχρονίστε τις εργασίες σας με την εφαρμογή DAVx⁵</string>
     <string name="show_advanced_settings">Εμφάνιση σύνθετων ρυθμίσεων</string>
-    <string name="etesync_account_description">Απαιτείται λογαριασμός στο EteSync.com ή σε αυτο-φιλοξενούμενο διακομιστή</string>
     <string name="preferences_advanced">Συνθέτες</string>
     <string name="documentation">Έγγραφα</string>
     <string name="wearable_notifications">Ενημερώσεις φορητών συσκευών</string>

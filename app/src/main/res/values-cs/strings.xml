@@ -386,7 +386,6 @@
     <string name="caldav_selection_description">Synchronizace založená na otevřených internetových standardech</string>
     <string name="etesync_selection_description">Synchronizace šifrovaná mezi koncovými body</string>
     <string name="show_advanced_settings">Zobrazit pokročilé možnosti</string>
-    <string name="etesync_account_description">Vyžaduje účet na EteSync.com nebo vlastní server</string>
     <string name="documentation">Dokumentace</string>
     <string name="preferences_advanced">Pokročilé možnosti</string>
     <string name="wearable_notifications">Upozornění na hodinkách</string>

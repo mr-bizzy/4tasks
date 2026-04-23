@@ -50,6 +50,7 @@ import org.tasks.preferences.PreferencesViewModel
 import org.tasks.preferences.ProCardViewModel
 import org.tasks.preferences.fragments.GoogleTasksAccount.Companion.newGoogleTasksAccountPreference
 import org.tasks.preferences.fragments.CaldavAccountFragment.Companion.newCaldavAccountFragment
+import org.tasks.preferences.fragments.EtebaseAccountFragment.Companion.newEtebaseAccountFragment
 import org.tasks.preferences.fragments.LocalAccount.Companion.newLocalAccountPreference
 import org.tasks.preferences.fragments.MicrosoftAccount.Companion.newMicrosoftAccountPreference
 import org.tasks.preferences.fragments.TasksAccount.Companion.newTasksAccountPreference
@@ -242,6 +243,12 @@ class MainSettingsComposeFragment : Fragment() {
                 activity.startPreference(
                     newCaldavAccountFragment(account),
                     getString(R.string.caldav)
+                )
+            }
+            account.isEtebaseAccount -> {
+                activity.startPreference(
+                    newEtebaseAccountFragment(account),
+                    getString(R.string.etesync)
                 )
             }
             else -> {

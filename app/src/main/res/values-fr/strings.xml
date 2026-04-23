@@ -396,8 +396,7 @@
     <string name="caldav_selection_description">Synchronisation basée sur des normes d\'Internet ouvertes</string>
     <string name="etesync_selection_description">Synchronisation du chiffrement de bout en bout</string>
     <string name="show_advanced_settings">Afficher les paramètres avancés</string>
-    <string name="etesync_account_description">Nécessite un compte « EteSync.com » ou un serveur auto-hébergé</string>
-    <string name="help_and_feedback">Aide et remarques</string>
+    <string name="help_and_feedback">Aide et remarques</string>
     <string name="documentation">Documentation</string>
     <string name="preferences_advanced">Avancé</string>
     <string name="wearable_notifications">Notifications de la montre</string>
