@@ -28,6 +28,7 @@ import org.tasks.caldav.FileStorage
 import org.tasks.caldav.VtodoCache
 import org.tasks.data.db.Database
 import org.tasks.etebase.EtebaseClientProvider
+import org.tasks.opentasks.OpenTasksSyncer
 import org.tasks.fcm.FcmTokenProvider
 import org.tasks.fcm.PushTokenManager
 import org.tasks.http.DefaultOkHttpClientFactory
@@ -98,6 +99,19 @@ actual fun platformModule(): Module = module {
             caldavDao = get(),
             httpClientFactory = get(),
         )
+    }
+    factory<OpenTasksSyncer> {
+        val caldavDao = get<org.tasks.data.dao.CaldavDao>()
+        val refreshBroadcaster = get<org.tasks.broadcast.RefreshBroadcaster>()
+        object : OpenTasksSyncer {
+            override suspend fun sync(hasPro: Boolean) {
+                caldavDao.getAccounts(org.tasks.data.entity.CaldavAccount.TYPE_OPENTASKS).forEach { account ->
+                    account.error = "OpenTasks sync is not supported on desktop"
+                    caldavDao.update(account)
+                    refreshBroadcaster.broadcastRefresh()
+                }
+            }
+        }
     }
     factoryOf(::VtodoCache)
     single {

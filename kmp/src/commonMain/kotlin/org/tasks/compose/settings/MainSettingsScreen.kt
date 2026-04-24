@@ -47,6 +47,7 @@ import tasks.kmp.generated.resources.navigation_drawer
 import tasks.kmp.generated.resources.notifications
 import tasks.kmp.generated.resources.preferences_advanced
 import tasks.kmp.generated.resources.preferences_look_and_feel
+import tasks.kmp.generated.resources.settings
 import tasks.kmp.generated.resources.task_defaults
 import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.link_desktop
@@ -94,6 +95,12 @@ data class EtebaseAccountSettingsPane(
     val account: CaldavAccount,
 ) : SettingsPane {
     override val titleRes: StringResource = Res.string.etesync
+}
+
+data class OpenTaskAccountSettingsPane(
+    val account: CaldavAccount,
+) : SettingsPane {
+    override val titleRes: StringResource = Res.string.settings
 }
 
 @Composable

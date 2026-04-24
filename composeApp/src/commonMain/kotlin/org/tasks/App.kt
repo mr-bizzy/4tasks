@@ -98,6 +98,7 @@ import org.tasks.auth.OAuthProvider
 import org.tasks.compose.drawer.DrawerItem
 import org.tasks.compose.drawer.TaskListDrawer
 
+import co.touchlab.kermit.Logger
 import org.tasks.auth.TasksServerEnvironment
 import org.tasks.compose.NavigationBarScrim
 import org.tasks.compose.PlatformBackHandler
@@ -108,6 +109,8 @@ import org.tasks.compose.settings.EtebaseAccountSettingsPane
 import org.tasks.compose.settings.LocalAccountSettingsDetail
 import org.tasks.compose.settings.LocalAccountSettingsPane
 import org.tasks.compose.settings.MainSettingsScreen
+import org.tasks.compose.settings.OpenTaskAccountSettingsDetail
+import org.tasks.compose.settings.OpenTaskAccountSettingsPane
 import org.tasks.compose.settings.ProCardState
 import org.tasks.compose.settings.SettingsPane
 import org.tasks.compose.settings.TasksAccountSettingsDetail
@@ -1467,6 +1470,17 @@ private fun SettingsScreen(
                                         )
                                     }
                                 }
+                                account.isOpenTasks -> {
+                                    scope.launch {
+                                        navigator.navigateTo(
+                                            ListDetailPaneScaffoldRole.Detail,
+                                            OpenTaskAccountSettingsPane(account),
+                                        )
+                                    }
+                                }
+                                else -> {
+                                    Logger.w("App") { "Unhandled account click: ${account.accountType}" }
+                                }
                             }
                         },
                         onAddAccountClick = onAddAccountClick,
@@ -1562,6 +1576,14 @@ private fun SettingsScreen(
                     }
                     is EtebaseAccountSettingsPane -> {
                         EtebaseAccountSettingsDetail(
+                            pane = selectedContent,
+                            onNavigateBack = {
+                                scope.launch { navigator.navigateBack() }
+                            },
+                        )
+                    }
+                    is OpenTaskAccountSettingsPane -> {
+                        OpenTaskAccountSettingsDetail(
                             pane = selectedContent,
                             onNavigateBack = {
                                 scope.launch { navigator.navigateBack() }

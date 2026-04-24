@@ -18,6 +18,7 @@ val flavorModule = module {
         PlatformConfiguration(
             supportsCaldav = true,
             supportsEteSync = true,
+            supportsOpenTasks = true,
             supportsDesktopLinking = true,
         )
     }

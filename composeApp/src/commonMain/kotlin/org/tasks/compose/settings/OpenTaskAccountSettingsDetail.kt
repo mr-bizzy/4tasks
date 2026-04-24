@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,35 +21,32 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.tasks.viewmodel.LocalAccountViewModel
+import org.tasks.viewmodel.OpenTaskAccountViewModel
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.back
-import tasks.kmp.generated.resources.local_lists
+import tasks.kmp.generated.resources.settings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LocalAccountSettingsDetail(
-    pane: LocalAccountSettingsPane,
+fun OpenTaskAccountSettingsDetail(
+    pane: OpenTaskAccountSettingsPane,
     onNavigateBack: () -> Unit,
 ) {
-    val viewModel = koinViewModel<LocalAccountViewModel>()
-    remember(pane.account.id) { viewModel.setAccount(pane.account) }
+    val viewModel = koinViewModel<OpenTaskAccountViewModel>()
+    LaunchedEffect(pane.account.id) { viewModel.setAccount(pane.account) }
     val displayName by viewModel.displayName.collectAsState()
     val nameError by viewModel.nameError.collectAsState()
-    val taskCount by viewModel.taskCount.collectAsState()
+    val serverType by viewModel.serverType.collectAsState()
     val account by viewModel.account.collectAsState()
     val hasChanges by viewModel.hasChanges.collectAsState()
     var showDiscardDialog by remember { mutableStateOf(false) }
+    val accountName = account?.name?.takeIf { it.isNotBlank() }
+        ?: stringResource(Res.string.settings)
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        account?.name?.takeIf { it.isNotBlank() }
-                            ?: stringResource(Res.string.local_lists)
-                    )
-                },
+                title = { Text(accountName) },
                 navigationIcon = {
                     IconButton(
                         onClick = {
@@ -73,19 +71,15 @@ fun LocalAccountSettingsDetail(
                 .fillMaxSize()
                 .padding(padding),
         ) {
-            LocalAccountScreen(
+            OpenTaskAccountScreen(
                 displayName = displayName,
                 nameError = nameError,
-                taskCount = taskCount,
-                accountName = account?.name?.takeIf { it.isNotBlank() }
-                    ?: stringResource(Res.string.local_lists),
+                serverType = serverType,
                 hasChanges = hasChanges,
                 showDiscardDialog = showDiscardDialog,
                 onNameChange = viewModel::setDisplayName,
+                onServerTypeChange = viewModel::setServerType,
                 onSave = { viewModel.save(onNavigateBack) },
-                onDelete = {
-                    viewModel.delete(onNavigateBack)
-                },
                 onNavigateBack = onNavigateBack,
                 onDiscardDialogChange = { showDiscardDialog = it },
             )

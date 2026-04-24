@@ -3,6 +3,7 @@ package org.tasks.preferences.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.BundleCompat
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,26 +15,23 @@ import androidx.fragment.app.viewModels
 import androidx.fragment.compose.content
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import org.jetbrains.compose.resources.stringResource
 import org.tasks.R
-import org.tasks.compose.settings.LocalAccountScreen
+import org.tasks.compose.settings.OpenTaskAccountScreen
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.preferences.BasePreferences
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
-import tasks.kmp.generated.resources.Res
-import tasks.kmp.generated.resources.local_lists
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LocalAccount : Fragment() {
+class OpenTaskAccountFragment : Fragment() {
 
     @Inject lateinit var theme: Theme
 
-    private val viewModel: LocalAccountViewModel by viewModels()
+    private val viewModel: OpenTaskAccountHiltViewModel by viewModels()
 
     private val initialAccount: CaldavAccount
-        get() = requireArguments().getParcelable(EXTRA_ACCOUNT)!!
+        get() = BundleCompat.getParcelable(requireArguments(), EXTRA_ACCOUNT, CaldavAccount::class.java)!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,25 +45,22 @@ class LocalAccount : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
-            val displayName = viewModel.displayName.collectAsStateWithLifecycle().value
-            val nameError = viewModel.nameError.collectAsStateWithLifecycle().value
-            val taskCount = viewModel.taskCount.collectAsStateWithLifecycle().value
-            val account = viewModel.account.collectAsStateWithLifecycle().value
-            val hasChanges = viewModel.hasChanges.collectAsStateWithLifecycle().value
+            val displayName by viewModel.displayName.collectAsStateWithLifecycle()
+            val nameError by viewModel.nameError.collectAsStateWithLifecycle()
+            val serverType by viewModel.serverType.collectAsStateWithLifecycle()
+            val hasChanges by viewModel.hasChanges.collectAsStateWithLifecycle()
             var showDiscardDialog by rememberSaveable { mutableStateOf(false) }
             val navigateBack = { parentFragmentManager.popBackStack(); Unit }
 
-            LocalAccountScreen(
+            OpenTaskAccountScreen(
                 displayName = displayName,
                 nameError = nameError,
-                taskCount = taskCount,
-                accountName = account?.name?.takeIf { it.isNotBlank() }
-                    ?: stringResource(Res.string.local_lists),
+                serverType = serverType,
                 hasChanges = hasChanges,
                 showDiscardDialog = showDiscardDialog,
                 onNameChange = viewModel::setDisplayName,
+                onServerTypeChange = viewModel::setServerType,
                 onSave = { viewModel.save(navigateBack) },
-                onDelete = { viewModel.delete(navigateBack) },
                 onNavigateBack = navigateBack,
                 onDiscardDialogChange = { showDiscardDialog = it },
             )
@@ -93,8 +88,8 @@ class LocalAccount : Fragment() {
     companion object {
         private const val EXTRA_ACCOUNT = "extra_account"
 
-        fun newLocalAccountPreference(account: CaldavAccount): Fragment {
-            val fragment = LocalAccount()
+        fun newOpenTaskAccountFragment(account: CaldavAccount): Fragment {
+            val fragment = OpenTaskAccountFragment()
             fragment.arguments = Bundle().apply {
                 putParcelable(EXTRA_ACCOUNT, account)
             }

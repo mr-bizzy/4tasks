@@ -33,6 +33,7 @@ import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_ETEBASE
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_TASKS
 import org.tasks.etebase.EtebaseSynchronizer
+import org.tasks.opentasks.OpenTasksSyncer
 import org.tasks.data.entity.Place
 import org.tasks.data.entity.Task
 import org.tasks.filters.FilterProvider
@@ -57,6 +58,7 @@ import org.tasks.compose.accounts.AddAccountViewModel
 import org.tasks.viewmodel.AppViewModel
 import org.tasks.viewmodel.CaldavAccountSettingsViewModel
 import org.tasks.viewmodel.EtebaseAccountSettingsViewModel
+import org.tasks.viewmodel.OpenTaskAccountViewModel
 import org.tasks.viewmodel.DrawerViewModel
 import org.tasks.viewmodel.SortSettingsViewModel
 import org.tasks.viewmodel.TaskEditViewModel
@@ -200,6 +202,7 @@ val commonModule = module {
                         caldavDao.getAccounts(TYPE_ETEBASE).forEach { account ->
                             etebaseSynchronizer.sync(account, hasPro = hasPro)
                         }
+                        get<OpenTasksSyncer>().sync(hasPro = hasPro)
                     } while (pending.getAndSet(false))
                 } finally {
                     mutex.unlock()
@@ -284,6 +287,11 @@ val commonModule = module {
         LocalAccountViewModel(
             caldavDao = get(),
             taskDeleter = get(),
+        )
+    }
+    viewModel {
+        OpenTaskAccountViewModel(
+            caldavDao = get(),
         )
     }
     viewModel {

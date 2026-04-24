@@ -31,14 +31,12 @@ import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_FEATURE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_NAME_YOUR_PRICE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SHOW_MORE_OPTIONS
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SOURCE
-import org.tasks.caldav.BaseCaldavAccountSettingsActivity
 import org.tasks.compose.accounts.AddAccountActivity
 import org.tasks.compose.settings.AndroidMainSettingsScreen
 import org.tasks.compose.settings.ManageSubscriptionSheetContent
 import org.tasks.compose.settings.ProCardState
 import org.tasks.compose.settings.SettingsDestination
 import org.tasks.themes.TasksSettingsTheme
-import org.tasks.data.accountSettingsClass
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.extensions.Context.openUri
 import android.view.View
@@ -52,6 +50,7 @@ import org.tasks.preferences.fragments.GoogleTasksAccount.Companion.newGoogleTas
 import org.tasks.preferences.fragments.CaldavAccountFragment.Companion.newCaldavAccountFragment
 import org.tasks.preferences.fragments.EtebaseAccountFragment.Companion.newEtebaseAccountFragment
 import org.tasks.preferences.fragments.LocalAccount.Companion.newLocalAccountPreference
+import org.tasks.preferences.fragments.OpenTaskAccountFragment.Companion.newOpenTaskAccountFragment
 import org.tasks.preferences.fragments.MicrosoftAccount.Companion.newMicrosoftAccountPreference
 import org.tasks.preferences.fragments.TasksAccount.Companion.newTasksAccountPreference
 import org.tasks.PlatformConfiguration
@@ -251,12 +250,13 @@ class MainSettingsComposeFragment : Fragment() {
                     getString(R.string.etesync)
                 )
             }
-            else -> {
-                val intent = Intent(context, account.accountSettingsClass).apply {
-                    putExtra(BaseCaldavAccountSettingsActivity.EXTRA_CALDAV_DATA, account)
-                }
-                startActivityForResult(intent, REQUEST_CALDAV_SETTINGS)
+            account.isOpenTasks -> {
+                activity.startPreference(
+                    newOpenTaskAccountFragment(account),
+                    account.name ?: ""
+                )
             }
+            else -> {}
         }
     }
 
