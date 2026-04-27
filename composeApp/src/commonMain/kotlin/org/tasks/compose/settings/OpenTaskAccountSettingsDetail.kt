@@ -77,6 +77,7 @@ fun OpenTaskAccountSettingsDetail(
                 serverType = serverType,
                 hasChanges = hasChanges,
                 showDiscardDialog = showDiscardDialog,
+                accountError = account?.error,
                 onNameChange = viewModel::setDisplayName,
                 onServerTypeChange = viewModel::setServerType,
                 onSave = { viewModel.save(onNavigateBack) },

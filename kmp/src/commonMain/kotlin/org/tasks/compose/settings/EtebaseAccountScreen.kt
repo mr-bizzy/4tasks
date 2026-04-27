@@ -109,6 +109,16 @@ fun EtebaseAccountScreen(
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
+        if (!isNewAccount) {
+            state.account?.error?.takeIf { it.isNotBlank() }?.let { error ->
+                AccountErrorBanner(
+                    error = error,
+                    modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                )
+                Spacer(modifier = Modifier.height(SettingsContentPadding))
+            }
+        }
+
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),

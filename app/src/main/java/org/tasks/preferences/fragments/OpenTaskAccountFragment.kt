@@ -49,6 +49,7 @@ class OpenTaskAccountFragment : Fragment() {
             val nameError by viewModel.nameError.collectAsStateWithLifecycle()
             val serverType by viewModel.serverType.collectAsStateWithLifecycle()
             val hasChanges by viewModel.hasChanges.collectAsStateWithLifecycle()
+            val account by viewModel.account.collectAsStateWithLifecycle()
             var showDiscardDialog by rememberSaveable { mutableStateOf(false) }
             val navigateBack = { parentFragmentManager.popBackStack(); Unit }
 
@@ -58,6 +59,7 @@ class OpenTaskAccountFragment : Fragment() {
                 serverType = serverType,
                 hasChanges = hasChanges,
                 showDiscardDialog = showDiscardDialog,
+                accountError = account?.error,
                 onNameChange = viewModel::setDisplayName,
                 onServerTypeChange = viewModel::setServerType,
                 onSave = { viewModel.save(navigateBack) },

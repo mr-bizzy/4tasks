@@ -32,6 +32,7 @@ fun OpenTaskAccountScreen(
     serverType: Int,
     hasChanges: Boolean,
     showDiscardDialog: Boolean,
+    accountError: String?,
     onNameChange: (String) -> Unit,
     onServerTypeChange: (Int) -> Unit,
     onSave: () -> Unit,
@@ -49,6 +50,14 @@ fun OpenTaskAccountScreen(
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(SettingsContentPadding))
+
+        accountError?.takeIf { it.isNotBlank() }?.let { error ->
+            AccountErrorBanner(
+                error = error,
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+        }
 
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
