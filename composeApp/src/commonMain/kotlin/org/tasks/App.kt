@@ -416,6 +416,7 @@ fun App(
                     }
                     entry<DesktopProDestination> {
                         val desktopLinkClient = koinInject<org.tasks.billing.DesktopLinkClient>()
+                        val gitHubSponsorClient = koinInject<org.tasks.billing.GitHubSponsorClient>()
                         DesktopProScreen(
                             onBack = { backStack.removeLastOrNull() },
                             onCreateLink = { desktopLinkClient.createLink() },
@@ -423,6 +424,8 @@ fun App(
                             onLinkSuccess = { jwt, refreshToken, sku, formattedPrice ->
                                 desktopLinkClient.onLinkSuccess(jwt, refreshToken, sku, formattedPrice)
                             },
+                            onGitHubSignIn = { gitHubSponsorClient.signIn(openUrl) },
+                            onOpenSponsorPage = { openUrl("https://github.com/sponsors/abaker") },
                         )
                     }
                 },

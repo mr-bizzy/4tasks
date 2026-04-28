@@ -21,6 +21,8 @@ import org.tasks.billing.BillingProvider
 import org.tasks.billing.DesktopEntitlement
 import org.tasks.billing.DesktopLinkClient
 import org.tasks.billing.DesktopLinkClientImpl
+import org.tasks.billing.GitHubSponsorClient
+import org.tasks.billing.GitHubSponsorClientImpl
 import org.tasks.billing.SubscriptionProvider
 import org.tasks.caldav.FileStorage
 import org.tasks.caldav.VtodoCache
@@ -119,6 +121,14 @@ actual fun platformModule(): Module = module {
     }
     single<DesktopLinkClient> {
         DesktopLinkClientImpl(
+            httpClientFactory = get(),
+            serverEnvironment = get(),
+            desktopEntitlement = get(),
+            json = get(),
+        )
+    }
+    single<GitHubSponsorClient> {
+        GitHubSponsorClientImpl(
             httpClientFactory = get(),
             serverEnvironment = get(),
             desktopEntitlement = get(),
