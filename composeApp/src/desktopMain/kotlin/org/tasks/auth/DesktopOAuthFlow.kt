@@ -84,7 +84,7 @@ class DesktopOAuthFlow(
                     <html><body>
                     <h2>Sign in successful!</h2>
                     <p>You can close this window and return to Tasks.</p>
-                    <script>window.close()</script>
+                    <script>setTimeout(function(){ window.close(); }, 2000)</script>
                     </body></html>
                 """.trimIndent()
                 else -> """
