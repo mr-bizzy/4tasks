@@ -43,7 +43,7 @@ import org.tasks.sse.SseClient
 import org.tasks.sse.SseTokenProvider
 import java.io.File
 
-private fun dataDir(): File {
+fun dataDir(): File {
     val override = System.getProperty("tasks.dataDir")?.takeIf { it.isNotBlank() }
     val home = System.getProperty("user.home")
     val file = override?.let { File(it) }
