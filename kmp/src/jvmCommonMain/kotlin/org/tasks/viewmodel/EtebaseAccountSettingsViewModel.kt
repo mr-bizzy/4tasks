@@ -238,8 +238,8 @@ open class EtebaseAccountSettingsViewModel(
                     "sync_add_account",
                     "type" to Constants.SYNC_TYPE_ETEBASE,
                 )
-                backgroundWork.sync(SyncSource.ACCOUNT_ADDED)
                 onComplete()
+                backgroundWork.sync(SyncSource.ACCOUNT_ADDED)
             } catch (e: Exception) {
                 handleError(e)
             } finally {

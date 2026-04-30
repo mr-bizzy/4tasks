@@ -301,7 +301,9 @@ fun App(
                         val addAccountViewModel = koinViewModel<AddAccountViewModel>()
                         LaunchedEffect(Unit) {
                             addAccountViewModel.accountAdded.collect {
-                                backStack.removeLastOrNull()
+                                if (backStack.lastOrNull() is AddAccountDestination) {
+                                    backStack.removeLastOrNull()
+                                }
                             }
                         }
                         val signInState by addAccountViewModel.signInState.collectAsState()

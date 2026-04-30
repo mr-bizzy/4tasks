@@ -185,27 +185,29 @@ val commonModule = module {
                 }
             }
             override suspend fun sync(source: SyncSource) {
-                if (!mutex.tryLock()) {
-                    pending.set(true)
-                    return
-                }
-                try {
-                    do {
-                        pending.set(false)
-                        val caldavSynchronizer = get<CaldavSynchronizer>()
-                        val etebaseSynchronizer = get<EtebaseSynchronizer>()
-                        val caldavDao = get<org.tasks.data.dao.CaldavDao>()
-                        val hasPro = get<org.tasks.billing.PurchaseState>().hasPro
-                        caldavDao.getAccounts(TYPE_CALDAV, TYPE_TASKS).forEach { account ->
-                            caldavSynchronizer.sync(account, hasPro = hasPro)
-                        }
-                        caldavDao.getAccounts(TYPE_ETEBASE).forEach { account ->
-                            etebaseSynchronizer.sync(account, hasPro = hasPro)
-                        }
-                        get<OpenTasksSyncer>().sync(hasPro = hasPro)
-                    } while (pending.getAndSet(false))
-                } finally {
-                    mutex.unlock()
+                scope.launch {
+                    if (!mutex.tryLock()) {
+                        pending.set(true)
+                        return@launch
+                    }
+                    try {
+                        do {
+                            pending.set(false)
+                            val caldavSynchronizer = get<CaldavSynchronizer>()
+                            val etebaseSynchronizer = get<EtebaseSynchronizer>()
+                            val caldavDao = get<org.tasks.data.dao.CaldavDao>()
+                            val hasPro = get<org.tasks.billing.PurchaseState>().hasPro
+                            caldavDao.getAccounts(TYPE_CALDAV, TYPE_TASKS).forEach { account ->
+                                caldavSynchronizer.sync(account, hasPro = hasPro)
+                            }
+                            caldavDao.getAccounts(TYPE_ETEBASE).forEach { account ->
+                                etebaseSynchronizer.sync(account, hasPro = hasPro)
+                            }
+                            get<OpenTasksSyncer>().sync(hasPro = hasPro)
+                        } while (pending.getAndSet(false))
+                    } finally {
+                        mutex.unlock()
+                    }
                 }
             }
         }

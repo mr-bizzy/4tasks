@@ -223,8 +223,8 @@ open class CaldavAccountSettingsViewModel(
                     "sync_add_account",
                     "type" to Constants.SYNC_TYPE_CALDAV,
                 )
-                backgroundWork.sync(SyncSource.ACCOUNT_ADDED)
                 onComplete()
+                backgroundWork.sync(SyncSource.ACCOUNT_ADDED)
             } catch (e: Exception) {
                 handleError(e)
             } finally {
