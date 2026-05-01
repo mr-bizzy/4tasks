@@ -39,12 +39,11 @@ import org.tasks.di.commonModule
 import org.tasks.di.dataDir
 import org.tasks.di.platformModule
 import org.tasks.logging.FileLogWriter
-import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.event.WindowEvent
 import java.awt.event.WindowFocusListener
 import java.io.File
-import java.net.URI
+import org.tasks.extensions.openInBrowser
 
 private val MIN_WIDTH = 400.dp
 private val MIN_HEIGHT = 300.dp
@@ -169,7 +168,7 @@ fun main() {
             var currentEnv by remember { mutableStateOf(serverEnv.currentEnvironment) }
             App(
                 openUrl = { url ->
-                    Desktop.getDesktop().browse(URI(url))
+                    openInBrowser(url)
                 },
                 environments = serverEnv.environments,
                 currentEnvironment = currentEnv,
