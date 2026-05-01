@@ -8,6 +8,8 @@ build/
 *.apks
 *.aab
 *.pbw
+*.AppImage
+*.AppImage.zsync
 local.properties
 Thumbs.db
 /captures/

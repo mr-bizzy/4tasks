@@ -39,6 +39,10 @@ jobs:
         with:
           name: pebble.pbw
           path: artifacts
+      - uses: actions/download-artifact@v8
+        with:
+          name: desktop-linux-appimage
+          path: artifacts
 
       - name: Set up JDK 21
         uses: actions/setup-java@v5
@@ -101,6 +105,8 @@ jobs:
             composeApp/output/*.tar.gz
             composeApp/output/*.msix
             composeApp/output/*.deb
+            artifacts/*.AppImage
+            artifacts/*.AppImage.zsync
 
       - name: Create GitHub Release
         env:
@@ -122,3 +128,5 @@ jobs:
           composeApp/output/Packages.xz
           composeApp/output/Release
           composeApp/output/InRelease
+          artifacts/*.AppImage
+          artifacts/*.AppImage.zsync
