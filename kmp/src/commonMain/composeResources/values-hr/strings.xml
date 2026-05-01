@@ -198,4 +198,6 @@
     <string name="url_required">URL-adresa je obavezna</string>
     <string name="username_required">Korisničko ime je obavezno</string>
     <string name="etesync_account_description">Zahtijeva račun na EteSync.com ili vlastiti poslužitelj</string>
+    <string name="already_subscribed">Već jesi pretplatnik?</string>
+    <string name="sign_in_subtitle">Već jesi pretplatnik ili pozvani gost?</string>
 </resources>

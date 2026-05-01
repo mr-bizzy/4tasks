@@ -681,8 +681,6 @@
     <string name="upgrade_friends_and_family">Amikoj kaj Familianoj</string>
     <string name="advanced_tools">Altnivelaj iloj</string>
     <string name="advanced_tools_description">Google Places, CalDAV, EteSync, kaj pli!</string>
-    <string name="already_subscribed">Ĉu vi jam abonis?</string>
-    <string name="sign_in_subtitle">Ĉu vi jam estas abonanto aŭ invitita gasto?</string>
     <string name="rmd_time_enabled_on">Aldoni defaŭltajn memorigilojn al tuttagaj taskoj</string>
     <string name="rmd_time_enabled_off">Ne aldoni defaŭltajn memorigilojn al tuttagaj taskoj</string>
     <string name="email_to_task">Retpoŝto al tasko</string>

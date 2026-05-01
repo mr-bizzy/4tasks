@@ -188,4 +188,6 @@
     <string name="url_required">URL bezonata</string>
     <string name="username_required">Uzantnomo bezonata</string>
     <string name="etesync_account_description">Bezonas konton de EteSync.com aŭ memgastigan servilon</string>
+    <string name="already_subscribed">Ĉu vi jam abonis?</string>
+    <string name="sign_in_subtitle">Ĉu vi jam estas abonanto aŭ invitita gasto?</string>
 </resources>

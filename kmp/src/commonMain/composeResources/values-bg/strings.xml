@@ -191,4 +191,6 @@
     <string name="url_required">Адресът е задължителен</string>
     <string name="username_required">Потребителското име е задължително</string>
     <string name="etesync_account_description">Необходим е профил при доставчик на услуга за EteSync.com или собствен сървър</string>
+    <string name="already_subscribed">Вече имате абонамент?</string>
+    <string name="sign_in_subtitle">Имате абонамент или покана?</string>
 </resources>

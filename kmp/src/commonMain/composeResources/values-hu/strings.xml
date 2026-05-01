@@ -198,4 +198,6 @@
     <string name="url_required">Link szükséges</string>
     <string name="username_required">Felhasználónév szükséges</string>
     <string name="etesync_account_description">EteSync.com accountot, vagy saját szervert igényel</string>
+    <string name="already_subscribed">Már előfizettél?</string>
+    <string name="sign_in_subtitle">Már előfizettél vagy meghívtak, mint vendéget?</string>
 </resources>

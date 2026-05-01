@@ -672,12 +672,10 @@
     <string name="advanced_tools_description">Google Places、CalDAV、EteSync 等！</string>
     <string name="invalid_email_address">电子邮件地址无效</string>
     <string name="share_list">共享 \"%1$s\"</string>
-    <string name="already_subscribed">已是订阅者？</string>
     <string name="send">发送</string>
     <string name="guest_create_list_message">你当前有共享清单的来宾权限。要创建并同步自己的私人清单到云端需要 Tasks.org 订阅。也可以创建保留在此设备上的免费本地清单。</string>
     <string name="upgrade_friends_and_family">好友和家庭</string>
     <string name="upgrade_friends_and_family_description">共享清单可以有 5 位免费来宾。可与 Apple Reminders 配合使用</string>
-    <string name="sign_in_subtitle">已是订阅者或受邀来宾？</string>
     <string name="per_list_sort_title">清单单独排序</string>
     <string name="per_list_sort_summary">记住每个清单不同的排序和分组设置</string>
     <string name="p_per_list_sort">per_list_sort</string>

@@ -698,13 +698,11 @@
     <string name="upgrade_email_to_task_description">הפיכת הודעות דוא\"ל למשימות על ידי העברתן לדואר הנכנס הפרטי שלך</string>
     <string name="advanced_tools">כלים מתקדמים</string>
     <string name="advanced_tools_description">‪Google Places, CalDAV, EteSync‬, ועוד!</string>
-    <string name="already_subscribed">כבר מנוי/ה?</string>
     <string name="upgrade_subscription_banner">תודה על תמיכתך! יש לשדרג את המינוי שלך כדי להפעיל גיבוי בענן Tasks.org</string>
     <string name="alarm_before">לפני</string>
     <string name="alarm_after">אחרי</string>
     <string name="alarm_start">התחלה</string>
     <string name="alarm_due">יעד</string>
-    <string name="sign_in_subtitle">כבר מנוי/ה או אורח/ת מוזמן/ת?</string>
     <string name="legal_disclosure_prefix_using">על ידי שימוש ב־Tasks.org</string>
     <string name="terms_of_service">תנאי השירות</string>
     <string name="tos_updated_title">עדכנו את תנאי השירות שלנו</string>

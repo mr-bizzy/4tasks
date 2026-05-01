@@ -648,7 +648,6 @@
     <string name="upgrade_email_to_task_description">Ubah email menjadi tugas dengan meneruskannya ke kotak masuk pribadi Anda</string>
     <string name="advanced_tools">Alat lanjutan</string>
     <string name="advanced_tools_description">Google Places, CalDAV, EteSync, dan lainnya!</string>
-    <string name="already_subscribed">Sudah berlangganan?</string>
     <string name="upgrade_subscription_banner">Terima kasih atas dukungan Anda! Tingkatkan langganan Anda untuk mengaktifkan Sinkronisasi Cloud Tasks.org</string>
     <string name="snackbar_tasks_completed">%d tugas diselesaikan</string>
     <string name="alarm_before_due">%s sebelum jatuh tempo</string>
@@ -662,7 +661,6 @@
     <string name="enable_reminders_description">Pengingat dinonaktifkan di Pengaturan Android</string>
     <string name="enable_alarms">Dapatkan notifikasi pada waktu yang tepat</string>
     <string name="enable_alarms_description">Untuk memastikan Anda mendapat notifikasi pada waktu yang tepat, berikan izin untuk mengatur alarm dan pengingat di Pengaturan</string>
-    <string name="sign_in_subtitle">Sudah berlangganan atau diundang sebagai tamu?</string>
     <string name="legal_disclosure_prefix_using">Dengan menggunakan Tasks.org</string>
     <string name="terms_of_service">Ketentuan layanan</string>
     <string name="tos_updated_title">Kami telah memperbarui Ketentuan Layanan kami</string>

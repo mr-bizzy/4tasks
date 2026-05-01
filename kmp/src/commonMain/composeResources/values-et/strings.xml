@@ -196,4 +196,6 @@
     <string name="url_required">URL on nõutud</string>
     <string name="username_required">Kasutajanimi on nõutud</string>
     <string name="etesync_account_description">Eeldab, et sul on olemas kasutajakonto EteSync.com teenusepakkuja serveris või sinu omas vastavas serveris</string>
+    <string name="already_subscribed">Kas juba oled tellija?</string>
+    <string name="sign_in_subtitle">Kas oled juba tellija või kutsud külaline?</string>
 </resources>

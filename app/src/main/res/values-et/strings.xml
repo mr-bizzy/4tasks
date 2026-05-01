@@ -680,7 +680,6 @@
     <string name="advanced_tools_description">Google Places, CalDAV, EteSync ja palju muud!</string>
     <string name="invalid_email_address">Vigane e-posti aadress</string>
     <string name="share_list">Jaga „%1$s“ loendit</string>
-    <string name="already_subscribed">Kas juba oled tellija?</string>
     <string name="location_update_interval_title">Asukoha uuendused taustal</string>
     <string name="location_update_interval_summary">Aeg-ajalt toimuvad asukoha uuendused parandavad geotarastuse töökindlust</string>
     <string name="location_update_interval_disabled">Pole kasutusel</string>
@@ -696,7 +695,6 @@
     <string name="upgrade_desktop_app_description">Varajane ligipääs töölauarakendusele</string>
     <string name="upgrade_friends_and_family">Sõbrad ja pere</string>
     <string name="upgrade_friends_and_family_description">5 tasuta külalist jagatud loendites. Töötab ka „Apple Reminders“ rakendusega</string>
-    <string name="sign_in_subtitle">Kas oled juba tellija või kutsud külaline?</string>
     <string name="blog_feed_announcements">Vaid teated</string>
     <string name="blog_feed_all">Kõik postitused</string>
     <string name="blog_notifications">Ajaveebi teavitused</string>

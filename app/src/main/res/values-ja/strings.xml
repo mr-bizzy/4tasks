@@ -679,8 +679,6 @@
     <string name="guest_create_list_message">あなたは共有リストへのゲストアクセスがあります。自分の個人的なリストを作成してクラウドに同期するにはTasks.orgの購読が必要です。または、端末内に保存する無料のローカルリストを作成することができます。</string>
     <string name="upgrade_friends_and_family">家族・友人</string>
     <string name="upgrade_friends_and_family_description">共有リストに無料のゲスト5名。Apple Remindersで利用可能</string>
-    <string name="already_subscribed">すでにサブスクリプションを購入していますか？</string>
-    <string name="sign_in_subtitle">すでに購読しているか、招待されたゲストですか？</string>
     <string name="location_update_interval_title">バックグラウンドでの場所の更新</string>
     <string name="location_update_interval_15_minutes">15分ごとに</string>
     <string name="location_update_interval_30_minutes">30分ごとに</string>

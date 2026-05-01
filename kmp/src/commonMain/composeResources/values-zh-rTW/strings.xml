@@ -194,4 +194,6 @@
     <string name="url_required">需要URL</string>
     <string name="username_required">需要使用者名稱</string>
     <string name="etesync_account_description">需要 EteSync.com 帳戶或自架伺服器</string>
+    <string name="already_subscribed">已經是訂閱者了嗎？</string>
+    <string name="sign_in_subtitle">已經是訂閱者或受邀訪客？</string>
 </resources>

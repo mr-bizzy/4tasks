@@ -686,8 +686,6 @@
     <string name="share_list">„%1$s“ teilen</string>
     <string name="guest_create_list_message">Du hast derzeit Gastzugriff auf freigegebene Listen. Um deine eigenen privaten Listen zu erstellen und mit der Cloud zu synchronisieren, benötigst du ein Tasks.org-Abo. Alternativ kannst du kostenlos eine lokale Liste erstellen, die auf diesem Gerät gespeichert bleibt.</string>
     <string name="upgrade_friends_and_family_description">5 kostenlose Gäste auf gemeinsamen Listen. Funktioniert mit Apple Reminders</string>
-    <string name="already_subscribed">Schon abonniert?</string>
-    <string name="sign_in_subtitle">Schon abonniert oder als Gast eingeladen worden?</string>
     <string name="per_list_sort_summary">Sortier- und Gruppierungseinstellungen für jede Liste unabhängig speichern</string>
     <string name="per_list_sort_title">Individuelle Listen-Sortierung</string>
     <string name="location_update_interval_title">Hintergrund-Standort-Updates</string>

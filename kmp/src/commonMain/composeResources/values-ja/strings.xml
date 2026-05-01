@@ -213,4 +213,6 @@
     <string name="url_required">URL が必要です</string>
     <string name="username_required">ユーザー名が必要です</string>
     <string name="etesync_account_description">EteSync.com またはセルフホストサーバーのアカウントが必要です</string>
+    <string name="already_subscribed">すでにサブスクリプションを購入していますか？</string>
+    <string name="sign_in_subtitle">すでに購読しているか、招待されたゲストですか？</string>
 </resources>

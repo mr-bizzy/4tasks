@@ -65,6 +65,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import tasks.kmp.generated.resources.sign_in
+import tasks.kmp.generated.resources.sign_in_subtitle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -494,7 +495,7 @@ object PurchaseText {
             if (!showMoreOptions && !existingSubscriber && !hasTasksAccount) {
                 Spacer(Modifier.height(32.dp))
                 Text(
-                    text = stringResource(R.string.sign_in_subtitle),
+                    text = org.jetbrains.compose.resources.stringResource(Res.string.sign_in_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )

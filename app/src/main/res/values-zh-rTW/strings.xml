@@ -633,7 +633,6 @@
     <string name="upgrade_email_to_task_description">將電子郵件轉發至您的私人收件匣即可將其轉為任務</string>
     <string name="advanced_tools">進階工具</string>
     <string name="advanced_tools_description">Google Places、CalDAV、EteSync 等！</string>
-    <string name="already_subscribed">已經是訂閱者了嗎？</string>
     <string name="upgrade_subscription_banner">感謝您的支持！升級您的訂閱以啟用 Tasks.org 雲端同步</string>
     <string name="alarm_before">之前</string>
     <string name="alarm_after">之後</string>
@@ -667,5 +666,4 @@
     <string name="guest_create_list_message">您目前擁有共享清單的訪客存取權限。若要建立並同步自己的私人清單至雲端，您需要 Tasks.org 訂閱。或者，您可以建立免費的本地清單，留在此裝置上。</string>
     <string name="upgrade_friends_and_family">家人和朋友</string>
     <string name="upgrade_friends_and_family_description">共享清單 5 個免費訪客。支援 Apple Reminders</string>
-    <string name="sign_in_subtitle">已經是訂閱者或受邀訪客？</string>
 </resources>

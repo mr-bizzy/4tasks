@@ -231,4 +231,26 @@
     <string name="unlock_pro_via_mobile">Via mobile app</string>
     <string name="unlock_pro_via_github">Via GitHub Sponsor</string>
     <string name="error_github_verification_failed">Verification failed. Please try again.</string>
+    <string name="pricing_subtitle">Free and open source. Subscriptions support development and unlock additional features.</string>
+    <string name="pricing_cloud_description">Unlock all in-app features and connect to Tasks.org Cloud sync.</string>
+    <string name="pricing_nyp_title">Name-your-price</string>
+    <string name="pricing_from">From %1$s</string>
+    <string name="pricing_nyp_description">Choose your own subscription price. Unlocks all in-app features.</string>
+    <string name="pricing_recommended">Recommended</string>
+    <string name="annual">Annual</string>
+    <string name="monthly">Monthly</string>
+    <string name="restore_purchases">Restore purchases</string>
+    <string name="pricing_cloud_annual_note">Billed annually (%1$s)</string>
+    <string name="pricing_cloud_monthly_note">Billed monthly</string>
+    <string name="pricing_cloud_feature_1">Instant sync between Android and desktop</string>
+    <string name="pricing_cloud_feature_2">Friends &amp; Family list sharing</string>
+    <string name="pricing_cloud_feature_3">Email-to-task with a private inbox</string>
+    <string name="pricing_cloud_feature_4">Connect to Apple Reminders on iOS</string>
+    <string name="pricing_nyp_feature_1">Custom themes and icons</string>
+    <string name="pricing_nyp_feature_2">Self-hosted synchronization with CalDAV and EteSync</string>
+    <string name="pricing_nyp_feature_3">Support open source software</string>
+    <string name="pricing_subscribe_google_play">Subscribe on Google Play</string>
+    <string name="pricing_sponsor">Or sponsor on GitHub for %1$s</string>
+    <string name="already_subscribed">Already a subscriber?</string>
+    <string name="sign_in_subtitle">Already a subscriber or invited guest?</string>
 </resources>

@@ -127,6 +127,8 @@ import org.tasks.compose.WelcomeScreenLayout
 import org.tasks.compose.accounts.AddAccountScreen
 import org.tasks.compose.accounts.AddAccountViewModel
 import org.tasks.compose.accounts.Platform
+import org.tasks.compose.pricing.PricingMode
+import org.tasks.compose.pricing.PricingScreen
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import com.mikepenz.markdown.m3.markdownTypography
@@ -175,7 +177,6 @@ import tasks.kmp.generated.resources.back
 import tasks.kmp.generated.resources.settings
 import tasks.kmp.generated.resources.show_less
 import tasks.kmp.generated.resources.show_more
-import tasks.kmp.generated.resources.url_donate
 
 @Serializable
 data object WelcomeDestination : NavKey
@@ -200,6 +201,9 @@ data object LinkDesktopDestination : NavKey
 
 @Serializable
 data object DesktopProDestination : NavKey
+
+@Serializable
+data class PricingDestination(val mode: PricingMode = PricingMode.BOTH) : NavKey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -243,6 +247,7 @@ fun App(
                             subclass(SettingsDestination::class, SettingsDestination.serializer())
                             subclass(LinkDesktopDestination::class, LinkDesktopDestination.serializer())
                             subclass(DesktopProDestination::class, DesktopProDestination.serializer())
+                            subclass(PricingDestination::class, PricingDestination.serializer())
                         }
                     }
                 },
@@ -307,7 +312,6 @@ fun App(
                             }
                         }
                         val signInState by addAccountViewModel.signInState.collectAsState()
-                        var showProviderPicker by remember { mutableStateOf(false) }
                         AddAccountScreen(
                             configuration = configuration,
                             hasTasksAccount = addAccountViewModel.hasTasksAccount,
@@ -325,11 +329,13 @@ fun App(
                                     && (platform == Platform.CALDAV || platform == Platform.ETEBASE)
                                     && !addAccountViewModel.hasPro
                                 ) {
-                                    backStack.add(DesktopProDestination)
+                                    backStack.add(PricingDestination(mode = PricingMode.NYP_ONLY))
                                     return@AddAccountScreen
                                 }
                                 when (platform) {
-                                    Platform.TASKS_ORG -> showProviderPicker = true
+                                    Platform.TASKS_ORG -> {
+                                        backStack.add(PricingDestination(mode = PricingMode.CLOUD_ONLY))
+                                    }
                                     Platform.CALDAV -> backStack.add(CaldavSignInDestination)
                                     Platform.ETEBASE -> backStack.add(EtebaseSignInDestination)
                                     else -> addAccountViewModel.signIn(platform)
@@ -340,68 +346,11 @@ fun App(
                             },
                             openLegalUrl = openUrl,
                         )
-                        if (showProviderPicker) {
-                            BasicAlertDialog(onDismissRequest = { showProviderPicker = false }) {
-                                SignInProviderDialog(
-                                    onSelected = { provider ->
-                                        showProviderPicker = false
-                                        val oauthProvider = when (provider) {
-                                            SignInProvider.GOOGLE -> OAuthProvider.GOOGLE
-                                            SignInProvider.GITHUB -> OAuthProvider.GITHUB
-                                        }
-                                        reporting.logEvent(
-                                            AnalyticsEvents.SIGN_IN_PROVIDER_SELECTED,
-                                            AnalyticsEvents.PARAM_PROVIDER to oauthProvider.name,
-                                        )
-                                        addAccountViewModel.signIn(
-                                            platform = Platform.TASKS_ORG,
-                                            provider = oauthProvider,
-                                            openUrl = openUrl,
-                                        )
-                                    },
-                                    onHelp = {
-                                        showProviderPicker = false
-                                        openUrl("https://tasks.org/docs/sync")
-                                    },
-                                    onCancel = { showProviderPicker = false },
-                                )
-                            }
-                        }
-                        val errorState = signInState as? AddAccountViewModel.SignInState.Error
-                        if (errorState != null) {
-                            LaunchedEffect(errorState) {
-                                reporting.logEvent(
-                                    AnalyticsEvents.SIGN_IN_ERROR,
-                                    AnalyticsEvents.PARAM_MESSAGE to errorState.message,
-                                )
-                            }
-                            BasicAlertDialog(onDismissRequest = { addAccountViewModel.dismissError() }) {
-                                Surface(
-                                    shape = MaterialTheme.shapes.medium,
-                                    color = MaterialTheme.colorScheme.surface,
-                                ) {
-                                    Column(modifier = Modifier.padding(16.dp)) {
-                                        Text(
-                                            text = "Sign in failed",
-                                            style = MaterialTheme.typography.titleMedium,
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                        )
-                                        Text(
-                                            text = errorState.message,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface,
-                                            modifier = Modifier.padding(top = 8.dp),
-                                        )
-                                        TextButton(
-                                            onClick = { addAccountViewModel.dismissError() },
-                                            modifier = Modifier.align(Alignment.End).padding(top = 8.dp),
-                                        ) {
-                                            Text("OK")
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        SignInErrorDialog(
+                            signInState = signInState,
+                            onDismiss = { addAccountViewModel.dismissError() },
+                            reporting = reporting,
+                        )
                     }
                     entry<CaldavSignInDestination> {
                         org.tasks.compose.settings.CaldavSignInScreen(
@@ -440,6 +389,7 @@ fun App(
                                         .e { "Link desktop clicked without pro subscription" }
                                 }
                             },
+                            onUpgradeClick = { backStack.add(PricingDestination()) },
                         )
                     }
                     entry<LinkDesktopDestination> {
@@ -465,11 +415,101 @@ fun App(
                             onOpenSponsorPage = { openUrl("https://github.com/sponsors/abaker") },
                         )
                     }
+                    entry<PricingDestination> { destination ->
+                        var showSignInDialog by remember { mutableStateOf(false) }
+                        val addAccountViewModel = koinViewModel<AddAccountViewModel>()
+                        val signInState by addAccountViewModel.signInState.collectAsState()
+                        LaunchedEffect(Unit) {
+                            addAccountViewModel.accountAdded.collect {
+                                backStack.removeLastOrNull()
+                            }
+                        }
+                        PricingScreen(
+                            mode = destination.mode,
+                            onBack = { backStack.removeLastOrNull() },
+                            onSignIn = { showSignInDialog = true },
+                            onRestorePurchases = { backStack.add(DesktopProDestination) },
+                        )
+                        if (showSignInDialog) {
+                            BasicAlertDialog(onDismissRequest = { showSignInDialog = false }) {
+                                SignInProviderDialog(
+                                    onSelected = { provider ->
+                                        showSignInDialog = false
+                                        val oauthProvider = when (provider) {
+                                            SignInProvider.GOOGLE -> OAuthProvider.GOOGLE
+                                            SignInProvider.GITHUB -> OAuthProvider.GITHUB
+                                        }
+                                        reporting.logEvent(
+                                            AnalyticsEvents.SIGN_IN_PROVIDER_SELECTED,
+                                            AnalyticsEvents.PARAM_PROVIDER to oauthProvider.name,
+                                        )
+                                        addAccountViewModel.signIn(
+                                            platform = Platform.TASKS_ORG,
+                                            provider = oauthProvider,
+                                            openUrl = openUrl,
+                                        )
+                                    },
+                                    onHelp = {
+                                        showSignInDialog = false
+                                        openUrl("https://tasks.org/docs/sync")
+                                    },
+                                    onCancel = { showSignInDialog = false },
+                                )
+                            }
+                        }
+                        SignInErrorDialog(
+                            signInState = signInState,
+                            onDismiss = { addAccountViewModel.dismissError() },
+                            reporting = reporting,
+                        )
+                    }
                 },
             )
         }
     }
     } // CompositionLocalProvider
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SignInErrorDialog(
+    signInState: AddAccountViewModel.SignInState?,
+    onDismiss: () -> Unit,
+    reporting: Reporting,
+) {
+    val errorState = signInState as? AddAccountViewModel.SignInState.Error ?: return
+    LaunchedEffect(errorState) {
+        reporting.logEvent(
+            AnalyticsEvents.SIGN_IN_ERROR,
+            AnalyticsEvents.PARAM_MESSAGE to errorState.message,
+        )
+    }
+    BasicAlertDialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surface,
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Sign in failed",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = errorState.message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
+                TextButton(
+                    onClick = onDismiss,
+                    modifier = Modifier.align(Alignment.End).padding(top = 8.dp),
+                ) {
+                    Text("OK")
+                }
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -1387,6 +1427,7 @@ private fun SettingsScreen(
     onBack: () -> Unit,
     onAddAccountClick: () -> Unit,
     onLinkDesktopClick: () -> Unit = {},
+    onUpgradeClick: () -> Unit,
 ) {
     val viewModel = koinViewModel<MainSettingsViewModel>()
     val proCardViewModel = koinViewModel<ProCardViewModel>()
@@ -1394,7 +1435,6 @@ private fun SettingsScreen(
     val proCardState by proCardViewModel.proCardState.collectAsState()
     val environmentLabel by proCardViewModel.environmentLabel.collectAsState()
     val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
-    val donateUrl = stringResource(Res.string.url_donate)
     val navigator = rememberListDetailPaneScaffoldNavigator<SettingsPane>()
     val scope = androidx.compose.runtime.rememberCoroutineScope()
     val selectedContent = navigator.currentDestination
@@ -1505,11 +1545,13 @@ private fun SettingsScreen(
                                     }
                                 }
                                 is ProCardState.Upgrade -> {
-                                    uriHandler.openUri(donateUrl)
+                                    onUpgradeClick()
                                 }
                                 is ProCardState.Subscribed -> {}
                                 is ProCardState.SignIn -> {}
-                                is ProCardState.Donate -> {}
+                                is ProCardState.Donate -> {
+                                    onUpgradeClick()
+                                }
                             }
                         },
                     )
