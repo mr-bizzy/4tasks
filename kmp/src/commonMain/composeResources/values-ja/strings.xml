@@ -193,8 +193,6 @@
     <string name="scan_qr_code">QRコード読み取り</string>
     <string name="link_desktop_success">デスクトップアプリと接続できました！</string>
     <string name="link_desktop_error">デスクトップアプリとの接続ができませんでした。もう一度お試しください。</string>
-    <string name="unlock_pro">プロ版を使用可能にする</string>
-    <string name="unlock_pro_instructions">プロ版の機能を使用可能にするため、下のQRコードをTasks.orgのAndroidアプリで読み取ってください</string>
     <string name="done">完了</string>
     <string name="retry">再試行</string>
     <string name="qr_code">QRコード</string>

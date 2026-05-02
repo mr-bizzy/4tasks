@@ -177,6 +177,8 @@ import tasks.kmp.generated.resources.back
 import tasks.kmp.generated.resources.settings
 import tasks.kmp.generated.resources.show_less
 import tasks.kmp.generated.resources.show_more
+import tasks.kmp.generated.resources.url_google_play
+import tasks.kmp.generated.resources.url_sponsor
 
 @Serializable
 data object WelcomeDestination : NavKey
@@ -203,7 +205,10 @@ data object LinkDesktopDestination : NavKey
 data object DesktopProDestination : NavKey
 
 @Serializable
-data class PricingDestination(val mode: PricingMode = PricingMode.BOTH) : NavKey
+data class PricingDestination(
+    val mode: PricingMode = PricingMode.BOTH,
+    val source: String = AnalyticsEvents.SOURCE_SETTINGS,
+) : NavKey
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -329,12 +334,12 @@ fun App(
                                     && (platform == Platform.CALDAV || platform == Platform.ETEBASE)
                                     && !addAccountViewModel.hasPro
                                 ) {
-                                    backStack.add(PricingDestination(mode = PricingMode.NYP_ONLY))
+                                    backStack.add(PricingDestination(mode = PricingMode.NYP_ONLY, source = platform.name))
                                     return@AddAccountScreen
                                 }
                                 when (platform) {
                                     Platform.TASKS_ORG -> {
-                                        backStack.add(PricingDestination(mode = PricingMode.CLOUD_ONLY))
+                                        backStack.add(PricingDestination(mode = PricingMode.CLOUD_ONLY, source = platform.name))
                                     }
                                     Platform.CALDAV -> backStack.add(CaldavSignInDestination)
                                     Platform.ETEBASE -> backStack.add(EtebaseSignInDestination)
@@ -404,15 +409,58 @@ fun App(
                     entry<DesktopProDestination> {
                         val desktopLinkClient = koinInject<org.tasks.billing.DesktopLinkClient>()
                         val gitHubSponsorClient = koinInject<org.tasks.billing.GitHubSponsorClient>()
+                        LaunchedEffect(Unit) {
+                            reporting.logEvent(AnalyticsEvents.SCREEN_RESTORE_PURCHASES)
+                        }
                         DesktopProScreen(
                             onBack = { backStack.removeLastOrNull() },
                             onCreateLink = { desktopLinkClient.createLink() },
                             onPollStatus = { code -> desktopLinkClient.pollStatus(code) },
                             onLinkSuccess = { jwt, refreshToken, sku, formattedPrice ->
+                                reporting.logEvent(
+                                    AnalyticsEvents.RESTORE_SUCCESS,
+                                    AnalyticsEvents.PARAM_SELECTION to AnalyticsEvents.SELECTION_GOOGLE_PLAY,
+                                )
                                 desktopLinkClient.onLinkSuccess(jwt, refreshToken, sku, formattedPrice)
                             },
                             onGitHubSignIn = { gitHubSponsorClient.signIn(openUrl) },
-                            onOpenSponsorPage = { openUrl("https://github.com/sponsors/abaker") },
+                            onOpenSponsorPage = {
+                                reporting.logEvent(AnalyticsEvents.RESTORE_SPONSOR_CLICK)
+                                openUrl("https://github.com/sponsors/abaker")
+                            },
+                            onGooglePlaySelected = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.RESTORE_SELECTION,
+                                    AnalyticsEvents.PARAM_SELECTION to AnalyticsEvents.SELECTION_GOOGLE_PLAY,
+                                )
+                            },
+                            onGitHubSelected = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.RESTORE_SELECTION,
+                                    AnalyticsEvents.PARAM_SELECTION to AnalyticsEvents.SELECTION_GITHUB,
+                                )
+                            },
+                            onNotSponsor = {
+                                reporting.logEvent(AnalyticsEvents.RESTORE_NOT_SPONSOR)
+                            },
+                            onLinkError = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.RESTORE_ERROR,
+                                    AnalyticsEvents.PARAM_SELECTION to AnalyticsEvents.SELECTION_GOOGLE_PLAY,
+                                )
+                            },
+                            onGitHubSuccess = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.RESTORE_SUCCESS,
+                                    AnalyticsEvents.PARAM_SELECTION to AnalyticsEvents.SELECTION_GITHUB,
+                                )
+                            },
+                            onGitHubFailed = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.RESTORE_ERROR,
+                                    AnalyticsEvents.PARAM_SELECTION to AnalyticsEvents.SELECTION_GITHUB,
+                                )
+                            },
                         )
                     }
                     entry<PricingDestination> { destination ->
@@ -420,15 +468,59 @@ fun App(
                         val addAccountViewModel = koinViewModel<AddAccountViewModel>()
                         val signInState by addAccountViewModel.signInState.collectAsState()
                         LaunchedEffect(Unit) {
+                            reporting.logEvent(
+                                AnalyticsEvents.SCREEN_PRICING,
+                                AnalyticsEvents.PARAM_SOURCE to destination.source,
+                                AnalyticsEvents.PARAM_TYPE to destination.mode.name,
+                            )
                             addAccountViewModel.accountAdded.collect {
                                 backStack.removeLastOrNull()
                             }
                         }
+                        val googlePlayUrl = stringResource(Res.string.url_google_play)
+                        val sponsorUrl = stringResource(Res.string.url_sponsor)
                         PricingScreen(
                             mode = destination.mode,
                             onBack = { backStack.removeLastOrNull() },
-                            onSignIn = { showSignInDialog = true },
+                            onSignIn = {
+                                reporting.logEvent(AnalyticsEvents.PRICING_SIGN_IN_CLICK)
+                                showSignInDialog = true
+                            },
                             onRestorePurchases = { backStack.add(DesktopProDestination) },
+                            onCloudSubscribeClick = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.PRICING_SUBSCRIBE_CLICK,
+                                    AnalyticsEvents.PARAM_TIER to AnalyticsEvents.TIER_CLOUD,
+                                )
+                                openUrl(googlePlayUrl)
+                            },
+                            onCloudSponsorClick = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.PRICING_SPONSOR_CLICK,
+                                    AnalyticsEvents.PARAM_TIER to AnalyticsEvents.TIER_CLOUD,
+                                )
+                                openUrl(sponsorUrl)
+                            },
+                            onNypSubscribeClick = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.PRICING_SUBSCRIBE_CLICK,
+                                    AnalyticsEvents.PARAM_TIER to AnalyticsEvents.TIER_NYP,
+                                )
+                                openUrl(googlePlayUrl)
+                            },
+                            onNypSponsorClick = {
+                                reporting.logEvent(
+                                    AnalyticsEvents.PRICING_SPONSOR_CLICK,
+                                    AnalyticsEvents.PARAM_TIER to AnalyticsEvents.TIER_NYP,
+                                )
+                                openUrl(sponsorUrl)
+                            },
+                            onBillingToggle = { isAnnual ->
+                                reporting.logEvent(
+                                    AnalyticsEvents.PRICING_BILLING_TOGGLE,
+                                    AnalyticsEvents.PARAM_PERIOD to if (isAnnual) AnalyticsEvents.PERIOD_ANNUAL else AnalyticsEvents.PERIOD_MONTHLY,
+                                )
+                            },
                         )
                         if (showSignInDialog) {
                             BasicAlertDialog(onDismissRequest = { showSignInDialog = false }) {

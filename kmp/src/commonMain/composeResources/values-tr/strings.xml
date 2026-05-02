@@ -195,8 +195,6 @@
     <string name="scan_qr_code">QR Kodunu Tara</string>
     <string name="link_desktop_success">Masaüstü başarıyla bağlandı!</string>
     <string name="link_desktop_error">Masaüstü bağlanamadı. Lütfen tekrar deneyin.</string>
-    <string name="unlock_pro">Pro Kilidini Aç</string>
-    <string name="unlock_pro_instructions">Tasks.org Android uygulamasıyla aşağıdaki QR kodunu tarayarak Pro özelliklerinin kilidini açın</string>
     <string name="done">Bitti</string>
     <string name="retry">Yeniden Dene</string>
     <string name="qr_code">QR Kodu</string>

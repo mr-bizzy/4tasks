@@ -197,8 +197,6 @@
     <string name="scan_qr_code">Scanner le code QR</string>
     <string name="link_desktop_success">Le bureau a été connecté avec succès !</string>
     <string name="link_desktop_error">Échec de la connexion au bureau. Veuillez réessayer.</string>
-    <string name="unlock_pro_instructions">Scannez le code QR ci-dessous à l\'aide de l\'application Android Tasks.org pour débloquer les fonctionnalités Pro</string>
-    <string name="unlock_pro">Déverrouiller Pro</string>
     <string name="done">Terminer</string>
     <string name="retry">Réessayer</string>
     <string name="qr_code">Code QR</string>

@@ -67,11 +67,12 @@ fun PricingScreen(
     onBack: () -> Unit,
     onSignIn: () -> Unit,
     onRestorePurchases: () -> Unit,
+    onCloudSubscribeClick: () -> Unit = {},
+    onCloudSponsorClick: () -> Unit = {},
+    onNypSubscribeClick: () -> Unit = {},
+    onNypSponsorClick: () -> Unit = {},
+    onBillingToggle: (isAnnual: Boolean) -> Unit = {},
 ) {
-    val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
-    val googlePlayUrl = stringResource(Res.string.url_google_play)
-    val sponsorUrl = stringResource(Res.string.url_sponsor)
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -122,14 +123,15 @@ fun PricingScreen(
                         CloudTierCard(
                             modifier = Modifier.weight(1f).fillMaxHeight(),
                             isRecommended = true,
-                            onCtaClick = { uriHandler.openUri(googlePlayUrl) },
-                            onSponsorClick = { uriHandler.openUri(sponsorUrl) },
+                            onCtaClick = onCloudSubscribeClick,
+                            onSponsorClick = onCloudSponsorClick,
                             onSignIn = onSignIn,
+                            onBillingToggle = onBillingToggle,
                         )
                         NameYourPriceTierCard(
                             modifier = Modifier.weight(1f).fillMaxHeight(),
-                            onCtaClick = { uriHandler.openUri(googlePlayUrl) },
-                            onSponsorClick = { uriHandler.openUri(sponsorUrl) },
+                            onCtaClick = onNypSubscribeClick,
+                            onSponsorClick = onNypSponsorClick,
                             onRestorePurchases = onRestorePurchases,
                         )
                     }
@@ -143,16 +145,17 @@ fun PricingScreen(
                             CloudTierCard(
                                 modifier = Modifier.fillMaxWidth(),
                                 isRecommended = showBoth,
-                                onCtaClick = { uriHandler.openUri(googlePlayUrl) },
-                                onSponsorClick = { uriHandler.openUri(sponsorUrl) },
+                                onCtaClick = onCloudSubscribeClick,
+                                onSponsorClick = onCloudSponsorClick,
                                 onSignIn = onSignIn,
+                                onBillingToggle = onBillingToggle,
                             )
                         }
                         if (mode != PricingMode.CLOUD_ONLY) {
                             NameYourPriceTierCard(
                                 modifier = Modifier.fillMaxWidth(),
-                                onCtaClick = { uriHandler.openUri(googlePlayUrl) },
-                                onSponsorClick = { uriHandler.openUri(sponsorUrl) },
+                                onCtaClick = onNypSubscribeClick,
+                                onSponsorClick = onNypSponsorClick,
                                 onRestorePurchases = onRestorePurchases,
                             )
                         }
@@ -172,6 +175,7 @@ private fun CloudTierCard(
     onCtaClick: () -> Unit,
     onSponsorClick: () -> Unit,
     onSignIn: () -> Unit,
+    onBillingToggle: (Boolean) -> Unit = {},
 ) {
     var isAnnual by remember { mutableStateOf(true) }
 
@@ -203,7 +207,10 @@ private fun CloudTierCard(
         billingToggle = {
             BillingPeriodToggle(
                 isAnnual = isAnnual,
-                onToggle = { isAnnual = it },
+                onToggle = {
+                    isAnnual = it
+                    onBillingToggle(it)
+                },
             )
         },
         secondaryLabel = stringResource(

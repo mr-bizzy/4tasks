@@ -198,8 +198,6 @@
     <string name="scan_qr_code">Naksenovat QR kód</string>
     <string name="link_desktop_success">Aplikace úspěšně propojena!</string>
     <string name="link_desktop_error">Nepodařilo se propojit aplikaci. Zkuste to prosím znovu.</string>
-    <string name="unlock_pro">Odemknout verzi Pro</string>
-    <string name="unlock_pro_instructions">Naskenujte QR kód níže pomocí aplikace Tasks.org pro Android pro odemčení funkcí Pro</string>
     <string name="done">Hotovo</string>
     <string name="retry">Zkusit znovu</string>
     <string name="qr_code">QR kód</string>

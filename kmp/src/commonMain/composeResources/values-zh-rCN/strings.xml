@@ -197,8 +197,6 @@
     <string name="link_desktop_instructions">打开 Tasks.org 桌面应用，前往“添加账号”查看二维码。然后点击下方按钮进行扫描。</string>
     <string name="link_desktop_success">桌面应用已成功关联！</string>
     <string name="link_desktop_error">桌面应用关联失败。请重试。</string>
-    <string name="unlock_pro">解锁专业版</string>
-    <string name="unlock_pro_instructions">使用 Tasks.org Android 应用扫描下方二维码，解锁专业版功能</string>
     <string name="error_create_link_failed">创建关联失败。请检查您的互联网连接并重试。</string>
     <string name="error_confirmation_failed">确认关联失败。二维码可能无效或已过期。</string>
     <string name="caldav_server_other">其他</string>
