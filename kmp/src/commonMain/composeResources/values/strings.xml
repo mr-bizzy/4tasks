@@ -212,6 +212,9 @@
     <string name="link_desktop">Link desktop app</string>
     <string name="link_desktop_description">Unlock the desktop app with your Google Play subscription</string>
     <string name="link_desktop_instructions">Open the Tasks.org desktop app and go to Add Account to see the QR code. Then tap the button below to scan it.</string>
+    <string name="link_desktop_step_1">Open the Tasks.org desktop app</string>
+    <string name="link_desktop_step_2">Click on '%1$s' and select '%2$s'</string>
+    <string name="link_desktop_step_3">Select '%1$s'</string>
     <string name="scan_qr_code">Scan QR Code</string>
     <string name="link_desktop_success">Desktop linked successfully!</string>
     <string name="link_desktop_error">Failed to link desktop. Please try again.</string>

@@ -54,6 +54,7 @@ import io.github.alexzhirkevich.qrose.rememberQrCodePainter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.tasks.kmp.formatNumber
 import org.tasks.billing.GitHubSponsorClient
 import org.tasks.billing.LinkResult
 import org.tasks.billing.StatusResult
@@ -453,7 +454,7 @@ private fun QrInstructions() {
 @Composable
 private fun StepText(number: Int, text: String) {
     Text(
-        text = "$number. $text",
+        text = "${formatNumber(number)}. $text",
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(vertical = 2.dp),
     )

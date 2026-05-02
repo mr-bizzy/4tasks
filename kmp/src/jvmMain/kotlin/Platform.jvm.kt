@@ -9,7 +9,8 @@ import org.tasks.kmp.org.tasks.time.toLocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-actual fun formatNumber(number: Int) = number.toString()
+actual fun formatNumber(number: Int): String =
+    java.text.NumberFormat.getIntegerInstance(Locale.getDefault()).format(number)
 
 actual val PROD_ID = "+//IDN tasks.org//desktop-${JvmBuildConfig.VERSION_CODE}//EN"
 
