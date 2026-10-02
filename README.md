@@ -1,52 +1,56 @@
-Astrid was a popular cross-platform productivity service that was [acquired](https://web.archive.org/web/20130811052500/http://blog.astrid.com/blog/2013/05/01/yahoo-acquires-astrid/) and [discontinued](https://techcrunch.com/2013/07/06/astrid-goes-dark-august-5-goodnight-sweet-squid/) in 2013. The source code from Astrid's open source Android app serves as the basis of Tasks.
+# 4Tasks
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
-    alt="Get it on Google Play"
-    height="80">](https://play.google.com/store/apps/details?id=org.tasks)
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-    alt="Get it on F-Droid"
-    height="80">](https://f-droid.org/packages/org.tasks)
+A private to-do and reminder app for Android that works with
+[4Dictate](https://mr-biz.uk/): say "remind me tomorrow at 3 to get back to Sandra about her
+reservation" and it is a task, with its due time and reminder.
 
-**Desktop (alpha):** [tasks.org/download](https://tasks.org/download)
+- **No account and no internet permission.** Your tasks stay on your phone.
+- No analytics, advertising, crash reporting or payments.
+- Reminders at the minute you set (allow *Alarms & reminders*); if you do not, 4Tasks still sets
+  an inexact alarm, so a reminder always comes.
+- Other apps can use 4Tasks over **4Link** ([spec](4link/docs/4LINK-SPEC.md)): our own apps are
+  recognised by their signing certificate, any other app only after you allow it by name. There is
+  no delete function.
 
-**Pebble:**
-[Rebble store](https://apps.rebble.io/en_US/application/69c598c0f20a0a0009e54acf) ·
-[Repebble store](https://apps.repebble.com/13e39c547aee442eb19a4755)
+## This is a fork of Tasks.org
 
-Please visit [tasks.org](https://tasks.org) for end user documentation and support
+4Tasks is a modified version of [Tasks.org](https://github.com/tasks/tasks) (tag 15.12), free
+software from Todoroo (Astrid) and the Tasks.org contributors. It is **not** made or supported by
+the Tasks.org project. Tasks.org's own README is kept in
+[docs/TASKS_ORG_README.md](docs/TASKS_ORG_README.md); its copyright notices are kept in the source.
 
----
+What changed: its own name, icon and application id (`uk.mr_biz.fourtasks`); no Google, Firebase,
+Play Billing, analytics or crash reporting; no network, location or calendar permission; accounts
+and sync switched off (the CalDAV code is kept, dormant, for a later version); Tasks.org's
+exported content providers and AppFunctions service removed; Android auto-backup off; a 4Link
+door; and a different About screen. The Kotlin package stays `org.tasks`, so upstream changes
+merge cleanly. The decisions are in [docs/PHASE0-PLAN.md](docs/PHASE0-PLAN.md) and
+[docs/JOURNAL.md](docs/JOURNAL.md).
 
-[![Donate with Bitcoin](https://img.shields.io/badge/bitcoin-donate-yellow.svg?logo=bitcoin)](https://tasks.org/docs/donate)
-[![PayPal donate button](https://img.shields.io/badge/paypal-donate-yellow.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=alex@tasks.org)
-[![Liberapay donate button](https://img.shields.io/liberapay/receives/tasks.svg?logo=liberapay)](https://liberapay.com/tasks/donate)
+## Licence
 
-[![build](https://github.com/tasks/tasks/actions/workflows/bundle.yml/badge.svg)](https://github.com/tasks/tasks/actions/workflows/bundle.yml) [![weblate](https://hosted.weblate.org/widgets/tasks/-/android/svg-badge.svg)](https://hosted.weblate.org/engage/tasks/?utm_source=widget) 
+GNU General Public License v3 (see [LICENSE](LICENSE)). The 4Link library in `4link/` is
+Apache-2.0.
 
-### Verifying release signatures
+## Building
 
-**Google Play (`org.tasks` on Play Store, `tasks-googleplay-*.apk` on GitHub Releases)**
+You need JDK 21 with `javac` (Android Studio's bundled runtime is Java 25, which Mockito cannot
+instrument, so use a Temurin or other JDK 21 for Gradle), and the Android SDK with platform 37.
 
-- SHA-256: `9F:78:EE:B2:7C:90:2A:98:1B:3B:FB:51:F6:FE:78:90:49:A0:0C:C1:AA:F0:83:B4:ED:16:B9:85:4B:3D:28:83`
-- SHA-1: `B0:47:B4:F2:45:F9:9C:62:62:E2:68:85:5F:75:64:35:72:02:0B:F6`
+```
+git clone --recurse-submodules https://github.com/mr-bizzy/4tasks.git
+cd 4tasks
+./gradlew :app:assembleGenericDebug        # debug build
+./gradlew :app:testGenericDebugUnitTest :kmp:jvmTest :kmp:testDebugUnitTest :data:jvmTest
+```
 
-**F-Droid APK (`tasks-fdroid-*.apk` on GitHub Releases, _not_ official F-Droid release)**
+A release build is signed with the family release key, which is not in this repository. Point
+`FOURTASKS_SIGNING_PROPERTIES` at a properties file with `storeFile`, `storePassword`, `keyAlias`
+and `keyPassword`; without it `assembleGenericRelease` produces an unsigned APK.
 
-- SHA-256: `5E:FD:4E:D0:BA:CC:BF:D3:C1:17:98:7E:BE:AC:34:CF:60:1D:08:31:EC:4B:B3:E5:97:46:77:42:13:05:69:FD`
-- SHA-1: `4B:0D:89:62:ED:F2:39:DD:7E:9C:87:A4:BD:EB:A1:90:75:85:14:4C`
+`devtools/fourlink-caller` is a tiny 4Link caller for trying the door from `adb` (see its source).
 
-**macOS** (`tasks-org-*-mac-*.zip` on GitHub Releases)
+## Play Store drafts
 
-- Team ID: `447244PVXH`
-- SHA-256: `49:5E:DF:DA:F2:C9:DD:F7:BF:B1:12:BA:D3:1B:EF:BB:50:2E:2E:DC:ED:3D:9A:8A:AE:86:5B:DE:F5:F6:C9:F6`
-
-**Linux apt repo** (`update.tasks.org`)
-
-- Fingerprint: `224F A88A 5A19 A03B 0682 7A1B F60C E212 7D6B BBDE`
-- Public key: https://update.tasks.org/keys.asc
-
-### Communication
-
-You can submit questions to [GitHub Discussions](https://github.com/tasks/tasks/discussions).
-
-If you have a suggestion or want to report a bug, please see [CONTRIBUTING.md](CONTRIBUTING.md).
+`play/` holds the store listing, privacy policy (and its web page source), Data safety answers
+and permission declarations. They are drafts for the owner and are not published.
