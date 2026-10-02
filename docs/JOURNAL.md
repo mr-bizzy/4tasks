@@ -41,3 +41,14 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Tests:** 1,924 pass (app 611, kmp 1,240, data 73) under a Temurin 21 JDK.
 - **The S25 is fragile** (Android 17 beta in DeX; SystemUI died during my test installs). No
   further adb use on it without the owner's go-ahead.
+
+## 2026-10-02 (later) — owner's second set of rulings
+
+- 4link and 4tasks to be made public as they are (no history rewrite), before any APK goes to
+  a tester, for the GPL source obligation.
+- **Microphone button removed** (4Dictate is the voice input): menu item, handler, result
+  handler and the speech-recogniser query in the manifest. The privacy and Data safety drafts no
+  longer mention it. (Voice *reminders*, which read a due task aloud with the phone's own
+  text-to-speech, are a different feature and stay.)
+- Android 13 minimum accepted. Sync code stays switched off; CalDAV to the owner's own server is
+  phase 2.

@@ -18,13 +18,10 @@ INTERNET or ACCESS_NETWORK_STATE.)
 
 1. **Android's own backup is off** (`allowBackup="false"`), so no data goes to Google Drive through
    Auto Backup.
-2. **The microphone button** hands over to Android's speech recogniser. 4Tasks has no
-   RECORD_AUDIO permission and receives no audio, so the recogniser's data handling is not
-   4Tasks' to declare. The privacy policy says so (section 5).
-3. **4Link** passes task data to *other apps on the same phone* only: our own family apps
+2. **4Link** passes task data to *other apps on the same phone* only: our own family apps
    automatically, anyone else only after the user allows that app, by name, on a screen listing
    what it may do. No data leaves the device through 4Link, so it is not "collection" or
    "sharing" under the form. The privacy policy describes it (section 4) because a user may allow
    a third-party app. **Revisit this if the Play review asks.**
-4. No ads, no advertising ID, no analytics SDK, no crash-reporting SDK, no third-party SDK that
+3. No ads, no advertising ID, no analytics SDK, no crash-reporting SDK, no third-party SDK that
    transmits anything (the Tasks.org Firebase, PostHog and Play Billing code is removed).

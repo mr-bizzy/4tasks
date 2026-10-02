@@ -14,7 +14,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Parcelable
-import android.speech.RecognizerIntent
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
@@ -744,7 +743,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             menu.findItem(R.id.menu_collapse_subtasks).isVisible = false
             menu.findItem(R.id.menu_expand_subtasks).isVisible = false
         }
-        menu.findItem(R.id.menu_voice_add).isVisible = device.voiceInputAvailable() && filter.isWritable
         menu.findItem(R.id.menu_clear_completed).isVisible = filter.isWritable
     }
 
@@ -760,23 +758,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                     search.isVisible = true
                     search.expandActionView()
                 }
-                true
-            }
-            R.id.menu_voice_add -> {
-                safeStartActivityForResult(
-                        Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                            putExtra(
-                                    RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-                            )
-                            putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1)
-                            putExtra(
-                                    RecognizerIntent.EXTRA_PROMPT,
-                                    getString(R.string.voice_create_prompt)
-                            )
-                        },
-                        VOICE_RECOGNITION_REQUEST_CODE
-                )
                 true
             }
             R.id.menu_sort -> {
@@ -979,19 +960,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            VOICE_RECOGNITION_REQUEST_CODE -> if (resultCode == RESULT_OK) {
-                lifecycleScope.launch {
-                    val match: List<String>? = data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                    if (!match.isNullOrEmpty() && match[0].isNotEmpty()) {
-                        var recognizedSpeech = match[0]
-                        recognizedSpeech = (recognizedSpeech.substring(0, 1)
-                            .uppercase(Locale.getDefault())
-                                + recognizedSpeech.substring(1).lowercase(Locale.getDefault()))
-                        onTaskListItemClicked(addTask(recognizedSpeech))
-                        firebase.addTask("voice")
-                    }
-                }
-            }
             REQUEST_TAG_TASKS -> if (resultCode == RESULT_OK) {
                 lifecycleScope.launch {
                     tagDataDao.applyTags(
@@ -1383,7 +1351,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         const val ACTION_DELETED = "action_deleted"
         private const val EXTRA_SELECTED_TASK_IDS = "extra_selected_task_ids"
         private const val EXTRA_RECYCLER_STATE = "extra_recycler_state"
-        private const val VOICE_RECOGNITION_REQUEST_CODE = 1234
         const val EXTRA_FILTER = "extra_filter"
         private const val FRAG_TAG_DATE_TIME_PICKER = "frag_tag_date_time_picker"
         private const val FRAG_TAG_PRIORITY_PICKER = "frag_tag_priority_picker"

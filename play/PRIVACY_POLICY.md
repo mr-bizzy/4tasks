@@ -40,7 +40,7 @@ to, for example) is your choice and that service's policy applies.
 | Keep the device awake, vibrate | to show a reminder and vibrate if you chose that |
 
 4Tasks does not ask for the internet, your location, contacts, calendar, camera, microphone or
-storage.
+storage. It has no microphone button; voice input is 4Dictate's job.
 
 ## 4. Other apps (4Link)
 
@@ -61,38 +61,32 @@ its own and works only on this phone.
 When you allow an app, that app receives what the allowed functions return (for example, the
 titles of your tasks). What it does with them is governed by that app's own policy.
 
-## 5. The microphone button
-
-The list screen has a microphone button for adding a task by voice. It hands over to Android's
-own speech recogniser, which your phone provides (often Google's). 4Tasks has no microphone
-permission and does not see the audio. The recogniser's own privacy policy applies to the audio.
-
-## 6. Links
+## 5. Links
 
 Some screens open a web page in your browser (this policy, the source code). Your browser, not
 4Tasks, connects to the site.
 
-## 7. Open source, and where it comes from
+## 6. Open source, and where it comes from
 
 4Tasks is free software under the GNU General Public License v3, based on **Tasks.org**
 (https://github.com/tasks/tasks). The source is at https://github.com/mr-bizzy/4tasks. It has
 **removed** Tasks.org's accounts and sync, Google and Firebase services, analytics, crash
 reporting, payments, maps, location and calendar features.
 
-## 8. Children
+## 7. Children
 
 4Tasks is not directed at children and collects no personal information from anyone.
 
-## 9. Deleting your data
+## 8. Deleting your data
 
 Everything is on your phone. Delete a task in the app, or clear 4Tasks' storage, or uninstall it.
 Nothing is held anywhere else, so there is nothing to ask us to delete.
 
-## 10. Changes
+## 9. Changes
 
 If this policy changes, the new version will be published on this page with a new effective
 date.
 
-## 11. Contact
+## 10. Contact
 
 John Paul Bizeray, trading as Mr-Bizzy, United Kingdom — support@mr-biz.uk
