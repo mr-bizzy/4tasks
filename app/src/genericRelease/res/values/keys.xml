@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="google_oauth_scheme">com.googleusercontent.apps.363426363175-rg39b1q2302l6mlkup40l4d6ids4osiv</string>
+  <!-- 4Tasks has no sign-in with Google: an unused placeholder, not Tasks.org's client. -->
+  <string name="google_oauth_scheme">uk.mr_biz.fourtasks.unused</string>
 </resources>
