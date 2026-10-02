@@ -122,8 +122,6 @@ class TaskListViewModel @Inject constructor(
                         isTasksOrg = account.isTasksOrg,
                     )
                 }
-                preferences.getBoolean(R.string.p_just_updated, false) ->
-                    Banner.AppUpdated
                 preferences.warnNotificationsDisabled && !permissionChecker.hasNotificationPermission() ->
                     Banner.NotificationsDisabled
                 preferences.warnAlarmsDisabled && !applicationContext.canScheduleExactAlarms() ->

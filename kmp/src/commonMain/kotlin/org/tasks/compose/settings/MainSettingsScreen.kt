@@ -140,6 +140,8 @@ fun MainSettingsScreen(
     onProCardClick: () -> Unit,
     showDesktopLinking: Boolean = false,
     onLinkDesktopClick: () -> Unit = {},
+    showAddAccount: Boolean = true,
+    showWorksWith: Boolean = true,
     bottomContent: @Composable () -> Unit = {},
 ) {
     Column(
@@ -163,8 +165,9 @@ fun MainSettingsScreen(
 
         // Accounts card group
         val hasTasksOrg = proCardState is ProCardState.TasksOrgAccount
-        if (accounts.isNotEmpty() || !hasTasksOrg) {
-            val totalAccountItems = accounts.size + if (!hasTasksOrg) 1 else 0
+        val addVisible = !hasTasksOrg && showAddAccount
+        if (accounts.isNotEmpty() || addVisible) {
+            val totalAccountItems = accounts.size + if (addVisible) 1 else 0
             Column(
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),
                 verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
@@ -179,7 +182,7 @@ fun MainSettingsScreen(
                         )
                     }
                 }
-                if (!hasTasksOrg) {
+                if (addVisible) {
                     SettingsItemCard(
                         position = if (accounts.isEmpty()) CardPosition.Only else CardPosition.Last,
                     ) {
@@ -208,18 +211,20 @@ fun MainSettingsScreen(
                     )
                 }
             }
-            SettingsItemCard(
-                position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
-            ) {
-                PreferenceRow(
-                    title = stringResource(Res.string.works_with_tasks),
-                    summary = stringResource(Res.string.works_with_tasks_description),
-                    icon = Icons.Outlined.Extension,
-                    onClick = { onSettingsClick(SettingsDestination.WorksWith) },
-                )
+            if (showWorksWith) {
+                SettingsItemCard(
+                    position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
+                ) {
+                    PreferenceRow(
+                        title = stringResource(Res.string.works_with_tasks),
+                        summary = stringResource(Res.string.works_with_tasks_description),
+                        icon = Icons.Outlined.Extension,
+                        onClick = { onSettingsClick(SettingsDestination.WorksWith) },
+                    )
+                }
             }
         }
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        if (showWorksWith || showDesktopLinking) Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         SettingsCategories(
             showBackupWarning = showBackupWarning,

@@ -60,8 +60,9 @@ class Inventory @Inject constructor(
     override val hasTasksSubscription: Boolean
         get() = subscription.value?.isTasksSubscription == true || hasTasksAccount
 
+    /** 4Tasks never asks for money. */
     val begForMoney: Boolean
-        get() = if (IS_GENERIC) !hasTasksAccount else !hasPro
+        get() = false
 
     override fun purchasedThemes() = hasPro || purchases.containsKey(SKU_THEMES)
 

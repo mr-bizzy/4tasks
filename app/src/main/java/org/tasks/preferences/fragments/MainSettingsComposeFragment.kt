@@ -95,8 +95,10 @@ class MainSettingsComposeFragment : Fragment() {
 
             AndroidMainSettingsScreen(
                 accounts = filteredAccounts,
-                proCardState = proCardState,
-                environmentLabel = environmentLabel,
+                proCardState = null, // no Pro, no donation card in 4Tasks
+                environmentLabel = null,
+                showAddAccount = false,
+                showWorksWith = false,
                 showBackupWarning = showBackupWarning,
                 showWidgets = viewModel.supportsWidgets,
                 onAccountClick = { account -> handleAccountClick(account) },

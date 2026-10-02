@@ -23,6 +23,9 @@ fun AndroidMainSettingsScreen(
     onProCardClick: () -> Unit,
     showDesktopLinking: Boolean = false,
     onLinkDesktopClick: () -> Unit = {},
+    showAddAccount: Boolean = true,
+    showWorksWith: Boolean = true,
+    extraContent: @Composable () -> Unit = {},
 ) {
     MainSettingsScreen(
         accounts = accounts,
@@ -37,7 +40,10 @@ fun AndroidMainSettingsScreen(
         onProCardClick = onProCardClick,
         showDesktopLinking = showDesktopLinking,
         onLinkDesktopClick = onLinkDesktopClick,
+        showAddAccount = showAddAccount,
+        showWorksWith = showWorksWith,
         bottomContent = {
+            extraContent()
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         },
     )

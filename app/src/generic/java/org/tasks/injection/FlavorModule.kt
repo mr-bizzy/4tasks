@@ -13,7 +13,7 @@ import org.tasks.billing.QrScanner
 import org.tasks.location.Geocoder
 import org.tasks.location.GeocoderNominatim
 import org.tasks.location.LocationService
-import org.tasks.location.LocationServiceAndroid
+import org.tasks.location.NoLocationService
 import org.tasks.location.MapFragment
 import org.tasks.location.OsmMapFragment
 import org.tasks.wear.WearRefresher
@@ -22,16 +22,18 @@ import org.tasks.wear.WearRefresher
 @InstallIn(SingletonComponent::class)
 class FlavorModule {
     @Provides
+    // 4Tasks phase 1: every sync provider, location and calendar feature is switched off.
+    // CalDAV (to the owner's own server) comes back in phase 2 by flipping supportsCaldav.
     fun getPlatformConfiguration() = PlatformConfiguration(
-        supportsTasksOrg = true,
-        supportsCaldav = true,
-        supportsGoogleTasks = true,
-        supportsMicrosoft = true,
-        supportsOpenTasks = true,
-        supportsEteSync = true,
+        supportsTasksOrg = false,
+        supportsCaldav = false,
+        supportsGoogleTasks = false,
+        supportsMicrosoft = false,
+        supportsOpenTasks = false,
+        supportsEteSync = false,
         supportsBackupImport = true,
-        supportsGeofences = true,
-        supportsCalendarEvents = true,
+        supportsGeofences = false,
+        supportsCalendarEvents = false,
         appStore = AppStore.FDROID,
         isAndroid = true,
         isLibre = true,
@@ -54,7 +56,7 @@ class FlavorModule {
     )
 
     @Provides
-    fun getLocationService(service: LocationServiceAndroid): LocationService = service
+    fun getLocationService(service: NoLocationService): LocationService = service
 
     @Provides
     fun getMapFragment(osm: OsmMapFragment): MapFragment = osm

@@ -8,7 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import org.tasks.TasksApplication.Companion.IS_GENERIC
 import org.tasks.auth.TasksServerEnvironment
 
 @Composable
@@ -45,7 +44,8 @@ fun WelcomeScreen(
     BackHandler(onBack = onBack)
 
     WelcomeScreenLayout(
-        showLegalDisclosure = !IS_GENERIC,
+        showLegalDisclosure = false,
+        showSignIn = false,
         onSignIn = onSignIn,
         onContinueWithoutSync = onContinueWithoutSync,
         onImportBackup = {

@@ -62,6 +62,7 @@ import org.tasks.auth.TasksServerEnvironment
 fun WelcomeScreenLayout(
     showLegalDisclosure: Boolean,
     showImportBackup: Boolean = true,
+    showSignIn: Boolean = true,
     onSignIn: () -> Unit,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit = {},
@@ -127,6 +128,7 @@ fun WelcomeScreenLayout(
                         WelcomeContent(
                             showLegalDisclosure = showLegalDisclosure,
                             showImportBackup = showImportBackup,
+                    showSignIn = showSignIn,
                             onSignIn = onSignIn,
                             onContinueWithoutSync = onContinueWithoutSync,
                             onImportBackup = onImportBackup,
@@ -155,6 +157,7 @@ fun WelcomeScreenLayout(
                         WelcomeContent(
                             showLegalDisclosure = showLegalDisclosure,
                             showImportBackup = showImportBackup,
+                    showSignIn = showSignIn,
                             onSignIn = onSignIn,
                             onContinueWithoutSync = onContinueWithoutSync,
                             onImportBackup = onImportBackup,
@@ -236,6 +239,7 @@ private fun EnvironmentSelectorDialog(
 private fun WelcomeContent(
     showLegalDisclosure: Boolean,
     showImportBackup: Boolean,
+    showSignIn: Boolean,
     onSignIn: () -> Unit,
     onContinueWithoutSync: () -> Unit,
     onImportBackup: () -> Unit,
@@ -260,18 +264,20 @@ private fun WelcomeContent(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Button(
-            onClick = onSignIn,
-            modifier = buttonModifier
-        ) {
-            Text(
-                text = stringResource(Res.string.add_account),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-            )
-        }
+        if (showSignIn) {
+            Button(
+                onClick = onSignIn,
+                modifier = buttonModifier
+            ) {
+                Text(
+                    text = stringResource(Res.string.add_account),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+            }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+        }
 
         OutlinedButton(
             onClick = onContinueWithoutSync,
