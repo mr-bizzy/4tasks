@@ -1,7 +1,7 @@
 [versions]
 versionCode = "151202" # increment by 2
 versionName = "15.12"
-applicationId = "org.tasks"
+applicationId = "uk.mr_biz.fourtasks"
 agp = "9.4.0"
 android-compileSdk = "37"
 android-minSdk = "26"

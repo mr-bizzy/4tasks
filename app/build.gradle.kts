@@ -1,15 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
     kotlin("android")
     id("dagger.hilt.android.plugin")
-    id("com.google.android.gms.oss-licenses-plugin")
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
@@ -81,9 +77,6 @@ android {
     @Suppress("LocalVariableName")
     buildTypes {
         debug {
-            configure<CrashlyticsExtension> {
-                mappingFileUploadEnabled = false
-            }
             val tasks_mapbox_key_debug: String? by project
             val tasks_google_key_debug: String? by project
             resValue("string", "mapbox_key", tasks_mapbox_key_debug ?: "")
@@ -107,9 +100,6 @@ android {
 
     productFlavors {
         create("generic") {
-            dimension = "store"
-        }
-        create("googleplay") {
             isDefault = true
             dimension = "store"
         }
@@ -155,7 +145,6 @@ configurations.all {
 }
 
 val genericImplementation by configurations
-val googleplayImplementation by configurations
 
 dependencies {
     implementation(projects.data)
@@ -181,7 +170,6 @@ dependencies {
     implementation(libs.dagger.hilt)
     ksp(libs.dagger.hilt.compiler)
     ksp(libs.androidx.hilt.compiler)
-    ksp(libs.androidx.appfunctions.compiler)
     implementation(libs.androidx.hilt.navigation)
     implementation(libs.androidx.hilt.work)
 
@@ -196,7 +184,6 @@ dependencies {
     implementation(libs.androidx.room)
     implementation(libs.androidx.sqlite)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.appfunctions)
     implementation(libs.iconics)
     implementation(libs.markwon)
     implementation(libs.markwon.editor)
@@ -257,26 +244,6 @@ dependencies {
     implementation(libs.ktor.serialization)
 
     implementation(libs.accompanist.permissions)
-
-    googleplayImplementation(platform(libs.firebase))
-    googleplayImplementation(libs.firebase.crashlytics)
-    googleplayImplementation(libs.posthog.android)
-    googleplayImplementation(libs.firebase.config)
-    googleplayImplementation(libs.firebase.messaging)
-    googleplayImplementation(libs.play.services.location)
-    googleplayImplementation(libs.play.services.maps)
-    googleplayImplementation(libs.play.billing.ktx)
-    googleplayImplementation(libs.play.review)
-    googleplayImplementation(libs.play.services.oss.licenses)
-    googleplayImplementation(libs.horologist.datalayer.phone)
-    googleplayImplementation(libs.horologist.datalayer.grpc)
-    googleplayImplementation(libs.horologist.datalayer.core)
-    googleplayImplementation(libs.play.services.wearable)
-    googleplayImplementation(libs.play.services.code.scanner)
-    googleplayImplementation(libs.microsoft.authentication) {
-        exclude("com.microsoft.device.display", "display-mask")
-    }
-    googleplayImplementation(projects.wearDatalayer)
 
     androidTestImplementation(libs.dagger.hilt.testing)
     kspAndroidTest(libs.dagger.hilt.compiler)
