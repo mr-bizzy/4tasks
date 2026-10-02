@@ -1,7 +1,7 @@
 # 4Tasks — Play store listing text
 
 **DRAFT 2026-10-02 for owner review.** Graphics: `play/graphics/icon-512.png` (from
-`graphics/4tasks-icon.svg`). Screenshots: to be taken from the final build.
+`graphics/4tasks-icon.svg`). Screenshots: `play/screenshots/` (two, from an emulator running the release build, 1080x2160). Replace or add to them with shots taken on a real phone; the allowed-apps screen needs a real third-party app, not the dev caller.
 
 **Name:** 4Tasks
 **Category:** Productivity

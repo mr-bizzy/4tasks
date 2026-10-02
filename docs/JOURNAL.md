@@ -28,7 +28,7 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   the numbering scheme is kept and only the visible name changed.
 - **Two upstream bugs found by running it.** (1) Tasks.org's `matches` text filter never matched
   on a phone: its watchdog wrapper has no `toString` and Android's regex reads input with
-  `toString`. Fixed in `Deadline.Watched`, and bypassed in the door with a plain substring match.
+  `toString`. The door uses a plain substring match instead (proved on a phone). A one-line fix is also in `Deadline.Watched`, but that fix has not been exercised on a phone.
   (2) Without the exact alarm permission upstream sets no alarm at all, so a reminder never
   fires. 4Tasks now falls back to `setAndAllowWhileIdle`.
 - **Cold start race.** A 4Link call can reach the provider before the Application has finished
