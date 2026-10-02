@@ -1,6 +1,6 @@
 [versions]
-versionCode = "151202" # increment by 2
-versionName = "15.12"
+versionCode = "151204" # increment by 2; keep Tasks.org's numbering, its upgrade steps compare against it
+versionName = "0.1.0-beta"
 applicationId = "uk.mr_biz.fourtasks"
 agp = "9.4.0"
 android-compileSdk = "37"

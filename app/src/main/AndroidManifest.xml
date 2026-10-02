@@ -281,6 +281,11 @@
         android:label="Apps allowed to use 4Tasks"
         android:theme="@android:style/Theme.DeviceDefault.DayNight" />
 
+    <activity
+        android:name=".fourlink.LicensesActivity"
+        android:exported="false"
+        android:theme="@android:style/Theme.DeviceDefault.DayNight" />
+
     <!-- Uninstalling an allowed app removes its permission. -->
     <receiver
         android:name="uk.mr_biz.fourlink.android.PackageRemovedReceiver"

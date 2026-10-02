@@ -21,7 +21,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.tasks.R
 import org.tasks.TasksUrls
-import org.tasks.compose.settings.HelpAndFeedbackContent
+import org.tasks.BuildConfig
+import org.tasks.compose.settings.AboutScreen
+import org.tasks.fourlink.LicensesActivity
 import org.tasks.extensions.Context.openUri
 import org.tasks.logging.FileLogger
 import org.tasks.preferences.BasePreferences
@@ -51,49 +53,25 @@ class HelpAndFeedback : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
-            HelpAndFeedbackContent(
-                viewModel = viewModel,
-                openUri = { context?.openUri(it) },
-                onRestartApplication = { exitProcess(0) },
-                onRateTasks = {
-                    context?.openUri(R.string.market_url)
-                },
-                onContactDeveloper = {
-                    val uri = Uri.fromParts(
-                        "mailto",
-                        "Alex <${TasksUrls.SUPPORT_EMAIL}>",
-                        null
+            AboutScreen(
+                versionName = BuildConfig.VERSION_NAME,
+                onTasksOrgSource = { context?.openUri("https://github.com/tasks/tasks") },
+                onFourTasksSource = { context?.openUri("https://github.com/mr-bizzy/4tasks") },
+                onGpl = {
+                    startActivity(
+                        Intent(requireContext(), LicensesActivity::class.java)
+                            .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.GPL)
+                            .putExtra(LicensesActivity.EXTRA_TITLE, "GNU General Public License v3"),
                     )
-                    val intent = Intent(Intent.ACTION_SENDTO, uri)
-                        .putExtra(Intent.EXTRA_SUBJECT, "Tasks Feedback")
-                        .putExtra(Intent.EXTRA_TEXT, diagnosticInfo.debugInfo)
-                    startActivity(intent)
                 },
-                onSendLogs = {
-                    lifecycleScope.launch {
-                        val file = FileProvider.getUriForFile(
-                            requireContext(),
-                            Constants.FILE_PROVIDER_AUTHORITY,
-                            fileLogger.getZipFile()
-                        )
-                        val intent = Intent(Intent.ACTION_SEND)
-                            .setType("message/rfc822")
-                            .putExtra(Intent.EXTRA_EMAIL, arrayOf(TasksUrls.SUPPORT_EMAIL))
-                            .putExtra(Intent.EXTRA_SUBJECT, "Tasks logs")
-                            .putExtra(Intent.EXTRA_TEXT, diagnosticInfo.debugInfo)
-                            .putExtra(Intent.EXTRA_STREAM, file)
-                            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        startActivity(intent)
-                    }
+                onThirdParty = {
+                    startActivity(
+                        Intent(requireContext(), LicensesActivity::class.java)
+                            .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.THIRD_PARTY)
+                            .putExtra(LicensesActivity.EXTRA_TITLE, "Notices and licences"),
+                    )
                 },
-                onThirdPartyLicenses = {
-                    val intent = Intent()
-                        .setClassName(requireContext(), "com.google.android.gms.oss.licenses.OssLicensesMenuActivity")
-                    startActivity(intent)
-                },
-                onCollectStatisticsChanged = { enabled ->
-                    preferences.setBoolean(R.string.p_collect_statistics, enabled)
-                },
+                onPrivacyPolicy = { context?.openUri("https://mr-biz.uk/4tasks/privacy/") },
                 bottomInsets = {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 },
