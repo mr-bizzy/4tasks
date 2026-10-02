@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -53,17 +54,30 @@ android {
         manifestPlaceholders["appAuthRedirectScheme"] = "org.tasks"
     }
 
-    signingConfigs {
-        create("release") {
-            val tasksKeyAlias: String? by project
-            val tasksStoreFile: String? by project
-            val tasksStorePassword: String? by project
-            val tasksKeyPassword: String? by project
+    // Release builds are signed with the family release key, so 4Tasks is "family" to 4Dictate.
+    // The key never lives in this repository: point FOURTASKS_SIGNING_PROPERTIES (or the Gradle
+    // property fourtasksSigningProperties) at a properties file with storeFile, storePassword,
+    // keyAlias and keyPassword. Without it the release build is unsigned.
+    val signingProperties = Properties().apply {
+        val path = System.getenv("FOURTASKS_SIGNING_PROPERTIES")
+            ?: (findProperty("fourtasksSigningProperties") as String?)
+        if (path != null) file(path).takeIf { it.isFile }?.inputStream()?.use { load(it) }
+    }
+    val canSignRelease = listOf("storeFile", "storePassword", "keyAlias", "keyPassword")
+        .all { !signingProperties.getProperty(it).isNullOrBlank() }
 
-            keyAlias = tasksKeyAlias
-            storeFile = file(tasksStoreFile ?: "none")
-            storePassword = tasksStorePassword
-            keyPassword = tasksKeyPassword
+    signingConfigs {
+        if (canSignRelease) {
+            create("release") {
+                storeFile = file(signingProperties.getProperty("storeFile").trim())
+                storePassword = signingProperties.getProperty("storePassword").trim()
+                keyAlias = signingProperties.getProperty("keyAlias").trim()
+                keyPassword = signingProperties.getProperty("keyPassword").trim()
+                storeType = "PKCS12"
+                enableV1Signing = false
+                enableV2Signing = true
+                enableV3Signing = true
+            }
         }
     }
 
@@ -95,7 +109,7 @@ android {
             resValue("string", "posthog_key", tasks_posthog_key ?: "")
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.pro")
-            signingConfig = signingConfigs.getByName("release")
+            if (canSignRelease) signingConfig = signingConfigs.getByName("release")
         }
     }
 

@@ -39,6 +39,32 @@ android {
         }
     }
 }
+// A copy signed with the FAMILY RELEASE key, to prove a release build of 4Tasks treats it as family.
+// Set FOURTASKS_SIGNING_PROPERTIES (storeFile, storePassword, keyAlias, keyPassword) and build assembleFamilyRelease.
+def familyProps = new Properties()
+def familyPath = System.getenv('FOURTASKS_SIGNING_PROPERTIES')
+if (familyPath && new File(familyPath).isFile()) new File(familyPath).withInputStream { familyProps.load(it) }
+if (familyProps.getProperty('storeFile')) {
+    android {
+        signingConfigs {
+            family {
+                storeFile file(familyProps.getProperty('storeFile').trim())
+                storePassword familyProps.getProperty('storePassword').trim()
+                keyAlias familyProps.getProperty('keyAlias').trim()
+                keyPassword familyProps.getProperty('keyPassword').trim()
+                storeType 'PKCS12'
+            }
+        }
+        buildTypes {
+            familyRelease {
+                initWith buildTypes.debug
+                applicationIdSuffix '.family'
+                signingConfig signingConfigs.family
+                matchingFallbacks = ['debug']
+            }
+        }
+    }
+}
 dependencies {
     implementation project(':fourlink')
 }
