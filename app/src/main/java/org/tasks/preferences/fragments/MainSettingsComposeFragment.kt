@@ -99,6 +99,9 @@ class MainSettingsComposeFragment : Fragment() {
                 environmentLabel = null,
                 showAddAccount = false,
                 showWorksWith = false,
+                onConnectedAppsClick = {
+                    startActivity(Intent(requireContext(), org.tasks.fourlink.ConnectedAppsActivity::class.java))
+                },
                 showBackupWarning = showBackupWarning,
                 showWidgets = viewModel.supportsWidgets,
                 onAccountClick = { account -> handleAccountClick(account) },

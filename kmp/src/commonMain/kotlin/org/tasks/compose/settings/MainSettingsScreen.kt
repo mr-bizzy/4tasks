@@ -58,6 +58,8 @@ import tasks.kmp.generated.resources.task_list_options
 import tasks.kmp.generated.resources.link_desktop
 import tasks.kmp.generated.resources.link_desktop_description
 import tasks.kmp.generated.resources.widget_settings
+import tasks.kmp.generated.resources.fourlink_apps
+import tasks.kmp.generated.resources.fourlink_apps_summary
 import tasks.kmp.generated.resources.works_with_tasks
 import tasks.kmp.generated.resources.works_with_tasks_description
 
@@ -142,6 +144,7 @@ fun MainSettingsScreen(
     onLinkDesktopClick: () -> Unit = {},
     showAddAccount: Boolean = true,
     showWorksWith: Boolean = true,
+    onConnectedAppsClick: (() -> Unit)? = null,
     bottomContent: @Composable () -> Unit = {},
 ) {
     Column(
@@ -225,6 +228,19 @@ fun MainSettingsScreen(
             }
         }
         if (showWorksWith || showDesktopLinking) Spacer(modifier = Modifier.height(SettingsContentPadding))
+        if (onConnectedAppsClick != null) {
+            Column(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+                SettingsItemCard(position = CardPosition.Only) {
+                    PreferenceRow(
+                        title = stringResource(Res.string.fourlink_apps),
+                        summary = stringResource(Res.string.fourlink_apps_summary),
+                        icon = Icons.Outlined.Extension,
+                        onClick = onConnectedAppsClick,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+        }
 
         SettingsCategories(
             showBackupWarning = showBackupWarning,

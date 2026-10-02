@@ -251,6 +251,46 @@
           android:value="true" />
     </service>
 
+    <!-- ======================================================== 4Link = -->
+    <!-- The one door into 4Tasks' data for other apps (docs/4LINK-SPEC.md). Who may call is
+         decided inside, from the caller's signing certificate: our own apps are family,
+         anyone else must be allowed by the user on the screen below. -->
+    <provider
+        android:name=".fourlink.TasksFourLinkProvider"
+        android:authorities="${applicationId}.4link"
+        android:exported="true" />
+
+    <!-- Shown ONLY when another app sends the PAIR intent, never on its own. The intent
+         filter is also what makes 4Tasks discoverable as a 4Link member. -->
+    <activity
+        android:name=".fourlink.PairingActivity"
+        android:exported="true"
+        android:excludeFromRecents="true"
+        android:label="Pair with 4Tasks"
+        android:theme="@android:style/Theme.DeviceDefault.DayNight">
+      <intent-filter>
+        <action android:name="uk.mr_biz.4link.action.PAIR" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
+
+    <!-- Settings: the apps the user has allowed, what they may do, and the call log. -->
+    <activity
+        android:name=".fourlink.ConnectedAppsActivity"
+        android:exported="false"
+        android:label="Apps allowed to use 4Tasks"
+        android:theme="@android:style/Theme.DeviceDefault.DayNight" />
+
+    <!-- Uninstalling an allowed app removes its permission. -->
+    <receiver
+        android:name="uk.mr_biz.fourlink.android.PackageRemovedReceiver"
+        android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.PACKAGE_FULLY_REMOVED" />
+        <data android:scheme="package" />
+      </intent-filter>
+    </receiver>
+
     <!-- ======================================================= Providers = -->
 
     <provider

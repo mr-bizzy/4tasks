@@ -47,3 +47,7 @@ include("data")
 include(":kmp")
 include(":icons")
 include(":cert4android")
+
+// The 4Link library (Apache-2.0), a git submodule.
+include(":fourlink")
+project(":fourlink").projectDir = file("4link/library")

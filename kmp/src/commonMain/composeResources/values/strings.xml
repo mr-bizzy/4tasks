@@ -60,6 +60,8 @@
     <string name="filter">Filter</string>
     <string name="add_account">Add account</string>
     <string name="add_platform_account">Add %1$s account</string>
+    <string name="fourlink_apps">Apps allowed to use 4Tasks</string>
+    <string name="fourlink_apps_summary">Other apps that may add and read your tasks, and the call log</string>
     <string name="continue_without_sync">Get started</string>
     <string name="returning_user_import_backup">Import a backup</string>
     <string name="legal_disclosure">%1$s, you agree to the %2$s and %3$s. Tasks is open source software provided under the %4$s.</string>

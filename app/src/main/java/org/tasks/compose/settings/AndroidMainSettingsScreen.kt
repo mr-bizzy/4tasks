@@ -25,7 +25,7 @@ fun AndroidMainSettingsScreen(
     onLinkDesktopClick: () -> Unit = {},
     showAddAccount: Boolean = true,
     showWorksWith: Boolean = true,
-    extraContent: @Composable () -> Unit = {},
+    onConnectedAppsClick: (() -> Unit)? = null,
 ) {
     MainSettingsScreen(
         accounts = accounts,
@@ -42,8 +42,8 @@ fun AndroidMainSettingsScreen(
         onLinkDesktopClick = onLinkDesktopClick,
         showAddAccount = showAddAccount,
         showWorksWith = showWorksWith,
+        onConnectedAppsClick = onConnectedAppsClick,
         bottomContent = {
-            extraContent()
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         },
     )

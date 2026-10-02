@@ -47,7 +47,8 @@ android {
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        // The 4Link library needs Android 13 (API 33), the same floor as 4Dictate.
+        minSdk = 33
         testInstrumentationRunner = "org.tasks.TestRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "org.tasks"
     }
@@ -148,6 +149,7 @@ val genericImplementation by configurations
 
 dependencies {
     implementation(projects.data)
+    implementation(project(":fourlink"))
     implementation(projects.kmp)
     implementation(libs.kermit)
     implementation(projects.icons)
@@ -256,6 +258,8 @@ dependencies {
     androidTestImplementation(libs.okhttp.mockwebserver)
 
     testImplementation(libs.junit)
+    // android.jar's org.json is stubbed in unit tests; the real one lets the 4Link tests read and write JSON.
+    testImplementation("org.json:json:20231013")
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.make.it.easy)
     testImplementation(libs.androidx.test.core)
