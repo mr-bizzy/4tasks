@@ -15,7 +15,7 @@ import org.tasks.api.findLists
 import org.tasks.api.findTasks
 import org.tasks.api.setTaskReminders
 import org.tasks.extensions.Context.canScheduleExactAlarms
-import java.util.regex.Pattern
+import java.util.Locale
 
 /**
  * The door's view of Tasks.org, through the same write layer ([ApiWriter]) and
@@ -75,16 +75,23 @@ class EnginePort(
     override suspend fun task(id: Long): TaskInfo? =
         engine.findTasks(TaskQuery(ids = listOf(id), status = "any")).rows.firstOrNull()?.let { info(it, lists()) }
 
+    /**
+     * Open tasks whose title contains [text], ignoring case. Done here rather than with the
+     * engine's own `matches` filter, which is a regular expression and, on a phone, never
+     * matched (see the note in ApiModels.kt); a plain substring is also what a person means.
+     */
     override suspend fun openTasksMatching(text: String): List<TaskInfo> {
         val lists = lists()
-        return engine.findTasks(
-            TaskQuery(
-                status = "open",
-                matches = Pattern.quote(text),
-                matchFields = listOf("title"),
-                limit = 50,
-            ),
-        ).rows.map { info(it, lists) }
+        val needle = text.trim().lowercase(Locale.ROOT)
+        val found = mutableListOf<TaskInfo>()
+        var offset = 0
+        while (true) {
+            val page = engine.findTasks(TaskQuery(status = "open", limit = PAGE, offset = offset))
+            page.rows.filter { it.title.lowercase(Locale.ROOT).contains(needle) }.forEach { found += info(it, lists) }
+            offset += page.rows.size
+            if (page.rows.isEmpty() || offset >= page.total) break
+        }
+        return found
     }
 
     override suspend fun complete(id: Long): CompletionInfo {
@@ -107,4 +114,8 @@ class EnginePort(
         completed = row.completed != null && row.completed!! > 0,
         repeats = !row.recurrence.isNullOrEmpty(),
     )
+
+    private companion object {
+        const val PAGE = 500
+    }
 }

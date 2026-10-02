@@ -235,6 +235,10 @@ class Deadline(private val expiresAt: Long) {
     fun watch(text: CharSequence): CharSequence = if (expiresAt == Long.MAX_VALUE) text else Watched(text)
 
     private inner class Watched(private val text: CharSequence) : CharSequence by text {
+        // Android's regex engine reads its input with toString(); without this the wrapper
+        // turned every `matches` search into a search for "Watched@1a2b3c".
+        override fun toString(): String = text.toString()
+
         override fun get(index: Int): Char {
             if (++calls and 0x3FF == 0 && System.nanoTime() > expiresAt) throw Expired()
             return text[index]

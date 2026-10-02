@@ -1,5 +1,7 @@
 package org.tasks.fourlink
 
+import android.os.Handler
+import android.os.Looper
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -16,6 +18,8 @@ import uk.mr_biz.fourlink.Catalogue
 import uk.mr_biz.fourlink.FunctionSpec
 import uk.mr_biz.fourlink.Outcome
 import uk.mr_biz.fourlink.android.FourLinkProvider
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 /**
  * 4Tasks' 4Link door, at authority `<applicationId>.4link`. The library decides
@@ -40,6 +44,7 @@ class TasksFourLinkProvider : FourLinkProvider() {
 
     override fun perform(function: FunctionSpec, arguments: JSONObject, caller: Caller): Outcome {
         val context = requireNotNull(context)
+        awaitApplicationStart()
         val entry = EntryPointAccessors.fromApplication(context.applicationContext, DoorEntryPoint::class.java)
         val logic = TasksDoorLogic(EnginePort(entry.queryEngine, entry.writer, context))
         return try {
@@ -50,7 +55,22 @@ class TasksFourLinkProvider : FourLinkProvider() {
         }
     }
 
+    /**
+     * A call can arrive on a binder thread while a cold-started process is still inside
+     * Application.onCreate (providers are installed in the same main-thread step), when
+     * Tasks.org's WorkManager is not yet configured. A message posted to the main thread
+     * only runs after that step, so waiting for it waits for the app to be ready.
+     */
+    private fun awaitApplicationStart() {
+        val main = Looper.getMainLooper()
+        if (Looper.myLooper() == main) return // same-process call: the app is already up
+        val turn = CountDownLatch(1)
+        Handler(main).post { turn.countDown() }
+        turn.await(START_WAIT_MS, TimeUnit.MILLISECONDS)
+    }
+
     private companion object {
+        const val START_WAIT_MS = 5_000L
         const val TIMEOUT_MS = 10_000L
     }
 }
