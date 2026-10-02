@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <provider android:authorities="uk.mr_biz.fourtasks.4link" />
+        <intent><action android:name="uk.mr_biz.4link.action.PAIR" /></intent>
+    </queries>
+    <application android:label="4Link caller (dev tool)">
+        <activity android:name=".CallActivity" android:exported="true" android:theme="@android:style/Theme.NoDisplay" />
+    </application>
+</manifest>

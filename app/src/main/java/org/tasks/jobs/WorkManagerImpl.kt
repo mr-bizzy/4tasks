@@ -163,6 +163,10 @@ class WorkManagerImpl(
             val pendingIntent = notificationPendingIntent
             if (!atLeastS() || alarmManager.canScheduleExactAlarms()) {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+            } else {
+                // 4Tasks: without the "Alarms & reminders" permission an alarm is still set, so
+                // a reminder always comes. Android may deliver it a few minutes late.
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
             }
         }
     }

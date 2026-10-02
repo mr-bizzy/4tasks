@@ -1,0 +1,9 @@
+// A developer tool, not part of the 4Tasks app: a tiny 4Link CALLER that signs with the
+// debug key (so it is "family" to a debug build of 4Tasks) and logs what the door answers.
+// Build:  ../../gradlew -p . assembleDebug      (JDK 21 with javac, as for 4Tasks)
+pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+dependencyResolutionManagement { repositories { google(); mavenCentral() } }
+rootProject.name = 'fourlink-caller'
+include ':app'
+include ':fourlink'
+project(':fourlink').projectDir = file('../../4link/library')

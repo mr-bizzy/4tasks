@@ -426,8 +426,8 @@ File %1$s contained %2$s.\n\n
   <string name="dismiss">Dismiss</string>
   <string name="hint_customize_edit_title">Too much information?</string>
   <string name="hint_customize_edit_body">You can customize this screen by rearranging or removing fields</string>
-  <string name="enable_alarms">Get notified at the right time</string>
-  <string name="enable_alarms_description">To make sure you\'re notified at the right time, grant permission to set alarms and reminders in Settings</string>
+  <string name="enable_alarms">Allow alarms &amp; reminders</string>
+  <string name="enable_alarms_description">4Tasks needs the “Alarms &amp; reminders” permission to remind you at the right minute. Without it, reminders can come late.</string>
   <string name="legal_disclosure_prefix_using">By using Tasks.org</string>
   <string name="tos_updated_title">We\'ve updated our Terms of Service</string>
   <string name="accept">Accept</string>
