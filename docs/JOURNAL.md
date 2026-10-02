@@ -58,3 +58,15 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   merged manifest by libraries, so my earlier manifest edits had not removed them. The OpenTasks
   provider was an exported data door. All are now removed with `tools:node="remove"`; the merged
   manifest has only 4Tasks' own authorities. (An emulator without Tasks.org could not show this.)
+
+## 2026-10-03 — found on the A9 during the voice test
+
+- **4Tasks crashed at every start beside the real Tasks.org.** The OpenTasks authority was still
+  the hard-coded `org.tasks.opentasks`, which on that phone is Tasks.org's own provider, so the
+  startup observer's `registerContentObserver` was denied (SecurityException, seven crashes, then
+  Samsung stopped the app). The authority is now `uk.mr_biz.fourtasks.opentasks` and the observer is
+  only registered when OpenTasks sync is switched on (it is not in phase 1).
+- **Reproduced before fixing:** the real Tasks.org 15.12, built from the tag, installed on the
+  emulator beside the unfixed 4Tasks gave the same exception. After the fix, three cold-start
+  calls (add with reminder, list, complete) and 20 s of background work gave no crash.
+- **Lesson:** test beside the real Tasks.org, not only on a clean emulator.

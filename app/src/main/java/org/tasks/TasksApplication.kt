@@ -75,6 +75,7 @@ class TasksApplication : Application(), Configuration.Provider {
     @Inject lateinit var syncAdapters: Lazy<SyncAdapters>
     @Inject lateinit var firebase: Firebase
     @Inject lateinit var pebbleService: PebbleService
+    @Inject lateinit var platformConfiguration: PlatformConfiguration
     @Inject lateinit var pushTokenManager: Lazy<PushTokenManager>
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -194,7 +195,10 @@ class TasksApplication : Application(), Configuration.Provider {
             scheduleRefresh()
             scheduleBlogFeedCheck()
         }
-        OpenTaskContentObserver.registerObserver(context, contentObserver.get())
+        // OpenTasks sync is switched off in 4Tasks (PlatformConfiguration); do not touch its provider.
+        if (platformConfiguration.supportsOpenTasks) {
+            OpenTaskContentObserver.registerObserver(context, contentObserver.get())
+        }
         locationService.get().registerAllGeofences()
         CaldavSynchronizer.registerFactories()
         pushTokenManager.get().registerTokenForAllAccounts()

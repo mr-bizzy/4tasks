@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="opentasks_authority" translatable="false">org.tasks.opentasks</string>
+    <!-- 4Tasks' own name, never Tasks.org's: with the real Tasks.org installed beside 4Tasks, org.tasks.opentasks is ITS provider and opening it is denied. -->
+    <string name="opentasks_authority" translatable="false">uk.mr_biz.fourtasks.opentasks</string>
 </resources>
