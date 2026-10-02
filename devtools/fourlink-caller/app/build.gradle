@@ -17,6 +17,27 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlin { jvmToolchain(17) }
+    // A second copy signed with a key that is NOT in the family list, to prove a stranger is refused.
+    // Pass -PstrangerKeystore=/path.jks (store and key password "strangerpw", alias "stranger"),
+    // then build assembleStranger. Its package is uk.mr_biz.fourlink.caller.stranger.
+    if (project.hasProperty('strangerKeystore')) {
+        signingConfigs {
+            stranger {
+                storeFile file(project.property('strangerKeystore'))
+                storePassword 'strangerpw'
+                keyAlias 'stranger'
+                keyPassword 'strangerpw'
+            }
+        }
+        buildTypes {
+            stranger {
+                initWith buildTypes.debug
+                applicationIdSuffix '.stranger'
+                signingConfig signingConfigs.stranger
+                matchingFallbacks = ['debug']
+            }
+        }
+    }
 }
 dependencies {
     implementation project(':fourlink')
