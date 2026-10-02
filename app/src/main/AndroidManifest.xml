@@ -245,6 +245,14 @@
           android:value="true" />
     </service>
 
+    <!-- Components that libraries bring in and 4Tasks does not use. The OpenTasks provider is an
+         exported data door (and its authority collides with a Tasks.org installed beside 4Tasks). -->
+    <provider android:name="org.dmfs.provider.tasks.TaskProvider" tools:node="remove" />
+    <receiver android:name="org.dmfs.provider.tasks.TaskProviderBroadcastReceiver" tools:node="remove" />
+    <receiver android:name="org.tasks.location.LocationUpdateReceiver" tools:node="remove" />
+    <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" tools:node="remove" />
+    <activity android:name="at.bitfire.cert4android.TrustCertificateActivity" tools:node="remove" />
+
     <!-- ======================================================== 4Link = -->
     <!-- The one door into 4Tasks' data for other apps (docs/4LINK-SPEC.md). Who may call is
          decided inside, from the caller's signing certificate: our own apps are family,

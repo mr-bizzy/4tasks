@@ -52,3 +52,9 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   text-to-speech, are a different feature and stay.)
 - Android 13 minimum accepted. Sync code stays switched off; CalDAV to the owner's own server is
   phase 2.
+- **Found on the A9, which has the real Tasks.org installed:** 4Tasks would not install
+  (INSTALL_FAILED_CONFLICTING_PROVIDER, `org.tasks.opentasks`). The OpenTasks provider and its
+  receiver, the AppAuth redirect activity and cert4android's trust activity are added to the
+  merged manifest by libraries, so my earlier manifest edits had not removed them. The OpenTasks
+  provider was an exported data door. All are now removed with `tools:node="remove"`; the merged
+  manifest has only 4Tasks' own authorities. (An emulator without Tasks.org could not show this.)
