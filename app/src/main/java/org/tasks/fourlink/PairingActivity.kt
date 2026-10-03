@@ -64,7 +64,7 @@ class PairingActivity : ThemedInjectingAppCompatActivity() {
                         iconBitmap?.let { Image(it, contentDescription = null, modifier = Modifier.size(40.dp)) }
                     }
                     Text(
-                        "Tick what it may do. Each line says what the app will receive.",
+                        "Tick what it may do. Each line says what the app will send.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -78,7 +78,7 @@ class PairingActivity : ThemedInjectingAppCompatActivity() {
                             val fields = f.input.properties.entries.joinToString { (k, s) -> k + (s.description?.let { " ($it)" } ?: "") }
                             FamilyCard(
                                 title = f.title,
-                                body = "${f.description}\nReceives: ${fields.ifBlank { "nothing" }}",
+                                body = "${f.description}\nSends: ${fields.ifBlank { "nothing" }}",
                                 onClick = { ticks[f.id] = ticks[f.id] != true },
                                 trailing = { Checkbox(checked = ticks[f.id] == true, onCheckedChange = null) },
                             )

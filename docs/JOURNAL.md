@@ -287,3 +287,13 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Left alone, for the owner:** the pairing screen says "Each line says what the app will receive" but shows the fields the app
   SENDS ("Receives: title, due"); the static "New task" launcher shortcut (res/xml/shortcuts.xml) names package org.tasks, not
   uk.mr_biz.fourtasks, so it probably never appears.
+
+## 2026-10-03 — Three app corrections after the audit
+
+- **Pairing screen:** "Each line says what the app will receive" and "Receives: title, due" now say "will send" and "Sends:" (the
+  list is the fields the asking app sends to 4Tasks, not what it gets back). The rest of the screen's words are unchanged.
+- **"New task" launcher shortcut:** res/xml/shortcuts.xml named package org.tasks (Tasks.org's id), so it never worked; now
+  uk.mr_biz.fourtasks. Checked with dumpsys shortcut on the emulator: registered, and its intent resolves to our MainActivity.
+- **4Link and 4Dictate wording (manual §7, privacy §5):** 4Link itself sends nothing over the internet; what 4Dictate does with
+  spoken words (it may send them to its tidy-up service to choose a function, even with tidy-up off) is 4Dictate's policy, linked.
+- The Apps-allowed empty state and the notices text (earlier today) ship in the same build.
