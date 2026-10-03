@@ -125,7 +125,11 @@ class Dev:
         return bool(self.sh(f"pidof {PKG}").strip())
 
     def install(self, apk):
-        self.adb("install", "-r", "-g", apk, timeout=300)
+        if "caller" not in apk:
+            self.adb("uninstall", PKG)
+        out = self.adb("install", "-r", "-d", "-g", apk, timeout=300)
+        if "Success" not in out:
+            raise RuntimeError(f"{self.serial}: install of {apk} failed: {out}")
 
     def reset_app(self, server, settle=60):
         """A clean app: data cleared, permissions as a user would give them, the harness account added and synced once."""

@@ -1,0 +1,10 @@
+push widget tick bg None op failed
+push widget add bg None op failed
+push door add doze 4.0 
+push door tick doze 4.1 
+push inapp tick doze 2.4 
+push inapp add doze 3.6 
+push share add doze 3.9 
+push notification tick doze 4.5 
+push notification tick killed 4.5 
+push door add bg 4.9 

@@ -50,6 +50,7 @@ class HarnessReceiver : BroadcastReceiver() {
                         ACTION_DUMP -> dump(entry)
                         ACTION_SETDEFAULT -> setDefault(entry, intent)
                         ACTION_ADDWIDGET -> addWidget(context)
+                        ACTION_PROBEJOBS -> probeJobs(context, intent)
                     }
                 }
             } catch (e: Exception) {
@@ -98,6 +99,41 @@ class HarnessReceiver : BroadcastReceiver() {
         if (manager.isRequestPinAppWidgetSupported) manager.requestPinAppWidget(provider, null, null)
     }
 
+    /**
+     * PROBEJOBS --es url U [--ei delay S] [--ei period M]: enqueues one probe job of each kind (delayed or expedited, with or without a
+     * network constraint, one-time or periodic every M minutes) and logs `JOB|<mode>|enqueued`. See [HarnessProbeWork].
+     */
+    private fun probeJobs(context: Context, intent: Intent) {
+        val url = intent.getStringExtra("url") ?: return
+        val delay = intent.getIntExtra("delay", 20).toLong()
+        val period = intent.getIntExtra("period", 15).toLong()
+        val wm = androidx.work.WorkManager.getInstance(context)
+        val connected = androidx.work.Constraints.Builder().setRequiredNetworkType(androidx.work.NetworkType.CONNECTED).build()
+        fun data(mode: String) = androidx.work.Data.Builder().putString("mode", mode).putString("url", url).build()
+        fun once(mode: String, constrained: Boolean, expedited: Boolean) {
+            val b = androidx.work.OneTimeWorkRequest.Builder(HarnessProbeWork::class.java).setInputData(data(mode))
+            if (constrained) b.setConstraints(connected)
+            if (expedited) b.setExpedited(androidx.work.OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            else b.setInitialDelay(delay, java.util.concurrent.TimeUnit.SECONDS)
+            wm.enqueueUniqueWork("probe-$mode", androidx.work.ExistingWorkPolicy.REPLACE, b.build())
+            Log.i(TAG, "JOB|$mode|enqueued")
+        }
+        fun periodic(mode: String, constrained: Boolean) {
+            val b = androidx.work.PeriodicWorkRequest.Builder(HarnessProbeWork::class.java, period, java.util.concurrent.TimeUnit.MINUTES)
+                .setInputData(data(mode))
+            if (constrained) b.setConstraints(connected)
+            wm.enqueueUniquePeriodicWork("probe-$mode", androidx.work.ExistingPeriodicWorkPolicy.REPLACE, b.build())
+            Log.i(TAG, "JOB|$mode|enqueued")
+        }
+        once("delayed-connected", constrained = true, expedited = false)
+        once("delayed-free", constrained = false, expedited = false)
+        once("expedited-connected", constrained = true, expedited = true)
+        once("expedited-free", constrained = false, expedited = true)
+        periodic("periodic-connected", constrained = true)
+        periodic("periodic-free", constrained = false)
+        periodic("periodic-kick", constrained = false)
+    }
+
     private suspend fun dump(entry: HarnessEntryPoint) {
         val lists = entry.queryEngine.findLists(ListQuery(limit = 500)).rows.associate { it.id to it.title }
         entry.queryEngine.findTasks(TaskQuery(status = "any", limit = 2000)).rows.forEach {
@@ -112,5 +148,6 @@ class HarnessReceiver : BroadcastReceiver() {
         const val ACTION_DUMP = "org.tasks.harness.DUMP"
         const val ACTION_SETDEFAULT = "org.tasks.harness.SETDEFAULT"
         const val ACTION_ADDWIDGET = "org.tasks.harness.ADDWIDGET"
+        const val ACTION_PROBEJOBS = "org.tasks.harness.PROBEJOBS"
     }
 }

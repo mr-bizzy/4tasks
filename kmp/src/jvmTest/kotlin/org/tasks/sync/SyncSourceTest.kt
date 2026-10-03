@@ -16,21 +16,22 @@ class SyncSourceTest {
         assertEquals(SyncSource.USER_INITIATED, SyncSource.TASK_CHANGE.upgrade(SyncSource.USER_INITIATED))
     }
 
-    @Test fun `a changed task is pushed at once as expedited work, a metadata change still waits`() {
-        assertEquals(false, SyncSource.TASK_CHANGE.waitsInWorkManager)
+    @Test fun `a changed task or its metadata is pushed at once as expedited work, nothing waits in the background scheduler`() {
         assertEquals(true, SyncSource.TASK_CHANGE.expedited)
-        assertEquals(true, SyncSource.METADATA_CHANGE.waitsInWorkManager)
-        assertEquals(false, SyncSource.METADATA_CHANGE.expedited)
+        assertEquals(true, SyncSource.METADATA_CHANGE.expedited)
     }
 
     @Test fun `the pushes a person waits on are expedited`() {
         assertEquals(true, SyncSource.USER_INITIATED.expedited)
         assertEquals(true, SyncSource.APP_BACKGROUND.expedited)
-        assertEquals(false, SyncSource.BACKGROUND.expedited)
     }
 
     @Test fun `after boot a pull is requested and it is expedited`() {
         assertEquals(true, SyncSource.BOOT_COMPLETED.expedited)
         assertEquals(SyncSource.BOOT_COMPLETED, SyncSource.NONE.upgrade(SyncSource.BOOT_COMPLETED))
+    }
+
+    @Test fun `the periodic sync is requested as expedited work, because an ordinary job gets no network for a cached app`() {
+        assertEquals(true, SyncSource.BACKGROUND.expedited)
     }
 }

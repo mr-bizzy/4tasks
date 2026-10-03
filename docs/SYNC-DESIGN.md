@@ -46,6 +46,12 @@ the periodic job is only the net underneath.
   (30 s of delay became 50-60 s).
 * **Expedited jobs** run when scheduled, at the app's priority, within a quota (`OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST` falls back to ordinary work when the quota is
   used up).
+* **What the harness measured** (`devtools/sync-harness/probe_jobs.py`: a debug probe job of each kind, enqueued by the app, then the app is put in the background or killed;
+  each job reports when it ran and whether a socket to the server worked inside it; Android 16 emulator, results in `results/probe-*.log`):
+  an ordinary job with a 20 s delay, with or without a network constraint, **ran at 24 s but had no network** (`NET_CAPABILITY_INTERNET` absent, the HTTP request timed out);
+  an expedited job ran within 1 s **with** network; a periodic job's first run (at once) and its second run (15-16 min later, app in the background or killed) both had network.
+  So the failure is not "the job never runs": it is "an ordinary job that runs while the app is cached has no network", and on some phones (the S25) the job is not even started
+  because its CONNECTIVITY constraint is never satisfied for the blocked UID. What always works is an expedited job.
 
 ## 4. Inherited Tasks.org assumptions that no longer hold
 
@@ -67,8 +73,9 @@ the periodic job is only the net underneath.
 ## 5. What we cannot make Android do
 
 If Android blocks the network for a cached app, nothing in the app can force a background pull while the phone sits idle: not WorkManager, not an alarm. What we can do: make
-every foreground moment count (open, pull, widget refresh all sync), push before the app is cut off (flush on leaving), and keep the periodic job as unconstrained as it can
-safely be (see 7). The manual says so, and suggests setting the app's battery use to Unrestricted for phones that hold background network back.
+every foreground moment count (open, pull, widget refresh all sync), push before the app is cut off (flush on leaving), and make the periodic job a pure hand-off: it has no network
+constraint and does no network work, it only asks for an **expedited** sync (`PeriodicSyncWork`), because that is the one kind of job Android gives network to for a cached
+app. The manual says so, and suggests setting the app's battery use to Unrestricted for phones that hold background network back.
 
 ## 6. The harness
 

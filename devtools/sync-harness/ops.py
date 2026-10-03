@@ -19,6 +19,7 @@ ORIGINS = {
     "tile":   ["add"],
 }
 STATES = ["fg", "bg", "killed", "doze"]
+CACHED_STATES = ["cached"]      # door and notification only: the app has sat in the background for 75 s before the change
 
 
 class Op:
@@ -250,8 +251,9 @@ def ensure_widget(dev):
 
 
 def widget(dev, op, o):
-    dev.home()
-    time.sleep(1.2)
+    if not dev.find(desc="Sync now", exact=True):     # not on the home screen yet (a second Home press puts the launcher in edit mode)
+        dev.home()
+        time.sleep(1.2)
     if op == "add":
         dev.tap_text(desc="Create new task", tries=4)         # the widget's + button
         new_task_screen_ready(dev)

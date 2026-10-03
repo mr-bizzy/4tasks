@@ -1,0 +1,9 @@
+api 36 state killed: probes enqueued; waiting 1140s
+delayed-connected    ran at 23.9 s (network=no, http=SocketTimeoutException)
+delayed-free         ran at 23.9 s (network=no, http=SocketTimeoutException)
+expedited-connected  ran at 0.2 s (network=yes, http=401)
+expedited-free       ran at 0.1 s (network=yes, http=401)
+periodic-connected   ran at 0.2 s (network=yes, http=401); ran at 938.7 s (network=yes, http=401)
+periodic-free        ran at 1.6 s (network=yes, http=401); ran at 939.4 s (network=yes, http=401)
+periodic-kick        ran at 1.7 s (network=yes, http=401); ran at 939.1 s (network=yes, http=401)
+kicked-expedited     ran at 3.6 s (network=yes, http=401); ran at 940.1 s (network=yes, http=401)

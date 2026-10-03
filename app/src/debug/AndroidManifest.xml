@@ -25,6 +25,7 @@
         <action android:name="org.tasks.harness.DUMP" />
         <action android:name="org.tasks.harness.SETDEFAULT" />
         <action android:name="org.tasks.harness.ADDWIDGET" />
+        <action android:name="org.tasks.harness.PROBEJOBS" />
       </intent-filter>
     </receiver>
 

@@ -1,0 +1,26 @@
+api,apk,kind,origin_or_discovery,op,state,seconds,note
+37,after,push,door,add,fg,3.2,
+37,after,push,door,add,killed,3.6,
+37,after,push,door,tick,bg,3.9,
+37,after,push,inapp,add,bg,3.6,
+37,after,push,inapp,tick,bg,3.6,
+37,after,push,inapp,tick,killed,4.1,
+37,after,push,inapp,edit_title,fg,4.0,
+37,after,push,inapp,delete,bg,3.3,
+37,after,push,share,add,bg,3.6,
+37,after,push,tile,add,bg,3.8,
+37,after,push,widget,tick,bg,,op failed
+37,after,push,notification,tick,bg,4.3,
+37,after,recv,open,add,bg,6.1,
+37,after,recv,pull,add,fg,6.5,
+37,after,recv,widget,add,bg,8.4,
+37,after,push,widget,tick,bg,,op failed
+37,after,push,widget,add,bg,,op failed
+37,after,push,door,add,doze,4.0,
+37,after,push,door,tick,doze,4.1,
+37,after,push,inapp,tick,doze,2.4,
+37,after,push,inapp,add,doze,3.6,
+37,after,push,share,add,doze,3.9,
+37,after,push,notification,tick,doze,4.5,
+37,after,push,notification,tick,killed,4.5,
+37,after,push,door,add,bg,4.9,

@@ -1,0 +1,9 @@
+api 36 state bg: probes enqueued; waiting 1140s
+delayed-connected    ran at 24.6 s (network=no, http=SocketTimeoutException)
+delayed-free         ran at 24.6 s (network=no, http=SocketTimeoutException)
+expedited-connected  ran at 1.1 s (network=yes, http=401)
+expedited-free       ran at 0.3 s (network=yes, http=401)
+periodic-connected   ran at 1.1 s (network=yes, http=401); ran at 968.2 s (network=yes, http=401)
+periodic-free        ran at 1.6 s (network=yes, http=401); ran at 967.9 s (network=yes, http=401)
+periodic-kick        ran at 2.2 s (network=yes, http=401); ran at 968.1 s (network=yes, http=401)
+kicked-expedited     ran at 3.0 s (network=yes, http=401); ran at 969.2 s (network=yes, http=401)

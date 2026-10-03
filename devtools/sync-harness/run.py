@@ -41,6 +41,9 @@ def before(dev, origin, state):
         dev.start_app(); time.sleep(1.5); dev.home(); time.sleep(1)
     elif state == "killed":
         dev.force_stop(); time.sleep(1)
+    elif state == "cached":
+        # the app was used, left, and has sat in the background long enough for Android to cut its UID off the network (the S25's state)
+        dev.start_app(); time.sleep(1.5); dev.home(); time.sleep(75)
     elif state == "doze":
         dev.home(); time.sleep(1); dev.doze(True); time.sleep(1.5)
 
@@ -65,6 +68,8 @@ def push_cell(rig, origin, op, state, timeout=120):
     o = ops.make_op(s, op, stamp)
     s.wipe()
     alarm = 45 if origin == "notification" else None
+    if origin == "widget" and not ops.ensure_widget(d):      # force-stops and clears take widgets away; put it back
+        return None, "precondition: widget could not be placed"
     t_put = time.time()
     if o.needs or origin == "notification":
         s.put(o.title, completed=o.needs_completed, alarm_in=alarm)
@@ -76,7 +81,8 @@ def push_cell(rig, origin, op, state, timeout=120):
         d.home()
         time.sleep(max(0, t_put + 52 - time.time()))   # the reminder fires 45 s after the put
     if origin == "widget":
-        d.home(); time.sleep(1)
+        if not d.find(desc="Sync now", exact=True):
+            d.home(); time.sleep(1.5)
     elif origin in UI_ORIGINS:
         d.start_app(); time.sleep(1.5)
     before(d, origin, state)
@@ -96,6 +102,8 @@ def recv_cell(rig, disc, state, timeout=120):
     r, s = rig.receiver, rig.server
     r.doze(False)
     s.wipe()
+    if disc == "widget" and not ops.ensure_widget(r):
+        return None, "precondition: widget could not be placed"
     r.force_stop() if state == "killed" else None
     ops.open_list(r); ops.pull_refresh(r); time.sleep(6)       # receiver empty and freshly synced
     time.sleep(35)                                             # past the 30 s on-open guard

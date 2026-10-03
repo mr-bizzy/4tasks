@@ -1,0 +1,13 @@
+push door add fg 13.9 
+push door add bg 14.4 
+push door add killed 13.6 
+push door add doze 15.2 
+push inapp tick fg 13.8 
+push inapp tick bg 14.6 
+push inapp tick killed 13.3 
+push inapp tick doze None >120s
+push inapp add bg 13.8 
+push share add bg 14.3 
+push notification tick bg 14.3 
+push notification tick killed None precondition: task did not reach the origin
+push widget tick bg None precondition: task did not reach the origin

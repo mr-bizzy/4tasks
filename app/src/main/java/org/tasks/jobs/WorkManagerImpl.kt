@@ -105,11 +105,9 @@ class WorkManagerImpl(
         if (!openTaskDao.shouldSync()) {
             builder.setConstraints(networkConstraints)
         }
-        if (source.waitsInWorkManager) {
-            builder.setInitialDelay(SYNC_CHANGE_DEBOUNCE_SECONDS, TimeUnit.SECONDS)
-        } else if (source.expedited) {
-            // Runs now, with the app's own priority, rather than waiting for the system to find the network satisfied for a
-            // backgrounded app; out of quota it simply runs as ordinary work.
+        if (source.expedited) {
+            // Runs now, with the app's own priority. Nothing a person waits on goes through an ordinary delayed job: for a cached app
+            // Android gives such a job no network (docs/SYNC-DESIGN.md section 3). Out of quota it simply runs as ordinary work.
             builder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }
         val append = getSyncJob().any { it.state == WorkInfo.State.RUNNING }
@@ -132,9 +130,8 @@ class WorkManagerImpl(
             ).isNotEmpty()
             if (enabled) {
                 Timber.d("Enabling background sync")
-                val builder = PeriodicWorkRequest.Builder(SyncWork::class.java, preferences.syncIntervalMinutes.toLong(), TimeUnit.MINUTES)
-                    .setInputData(SyncWork.EXTRA_SOURCE to SyncSource.BACKGROUND.name)
-                    .setConstraints(networkConstraints)
+                // No network constraint, and no network work: it hands the sync to an expedited job (see PeriodicSyncWork).
+                val builder = PeriodicWorkRequest.Builder(PeriodicSyncWork::class.java, preferences.syncIntervalMinutes.toLong(), TimeUnit.MINUTES)
                 workManager.enqueueUniquePeriodicWork(
                     TAG_BACKGROUND_SYNC,
                     ExistingPeriodicWorkPolicy.UPDATE,
@@ -276,7 +273,6 @@ class WorkManagerImpl(
     }
 }
 
-private const val SYNC_CHANGE_DEBOUNCE_SECONDS = 10L
 
 private fun <B : WorkRequest.Builder<B, *>, W : WorkRequest> WorkRequest.Builder<B, W>.setInputData(
     vararg pairs: Pair<String, Any?>

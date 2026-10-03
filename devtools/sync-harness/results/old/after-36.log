@@ -1,0 +1,15 @@
+push door add fg 3.3 
+push door add killed 3.7 
+push door tick bg 4.1 
+push inapp add bg 3.1 
+push inapp tick bg 4.3 
+push inapp tick killed 3.3 
+push inapp edit_title fg 3.5 
+push inapp delete bg 3.3 
+push share add bg 3.6 
+push tile add bg 4.1 
+push widget tick bg None op failed
+push notification tick bg 4.3 
+recv open bg 6.1 
+recv pull fg 7.3 
+recv widget bg 7.0 

@@ -1,0 +1,15 @@
+push door add fg 3.9 
+push door add bg 4.0 
+push door add killed 3.9 
+push door add doze 3.0 
+push door add cached 5.0 
+push door tick bg 3.5 
+push door tick doze 2.9 
+push door tick cached 3.5 
+push inapp add bg 4.3 
+push inapp add doze 3.4 
+push inapp tick fg 3.8 
+push inapp tick bg 3.8 
+push inapp tick killed 4.1 
+push inapp tick doze 2.4 
+push inapp edit_title fg 3.8 
