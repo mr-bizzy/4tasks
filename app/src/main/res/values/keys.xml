@@ -198,6 +198,7 @@
   <string name="p_manual_sort">manual_sort</string>
   <string name="p_astrid_sort">astrid_sort</string>
   <string name="p_astrid_sort_enabled">astrid_sort_enabled</string>
+  <string name="p_allow_self_signed_certs">allow_self_signed_certificates</string>
   <string name="p_sort_mode">sort_mode</string>
   <string name="p_group_mode">group_mode</string>
   <string name="p_completed_mode">completed_mode</string>

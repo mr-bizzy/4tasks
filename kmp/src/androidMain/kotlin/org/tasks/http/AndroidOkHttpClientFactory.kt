@@ -17,6 +17,12 @@ open class AndroidOkHttpClientFactory(
     private val userAgent: String,
 ) : OkHttpClientFactory {
 
+    /**
+     * 4Tasks: whether the user may trust a certificate the system does not (Settings, Advanced, "Allow
+     * self-signed certificates"). Off unless a subclass says otherwise.
+     */
+    protected open val allowUserCertTrust: Boolean get() = false
+
     override suspend fun newClient(
         foreground: Boolean,
         cookieKey: String?,
@@ -28,6 +34,7 @@ open class AndroidOkHttpClientFactory(
                 settings = object : SettingsProvider {
                     override val appInForeground = foreground
                     override val trustSystemCerts = true
+                    override val allowUserTrust: Boolean get() = allowUserCertTrust
                 }
             )
         }

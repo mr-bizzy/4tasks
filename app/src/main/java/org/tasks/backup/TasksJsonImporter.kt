@@ -219,7 +219,14 @@ class TasksJsonImporter @Inject constructor(
                                 if (existing != null) {
                                     accountUuidMap[account.uuid!!] = existing.uuid!!
                                 } else {
-                                    caldavDao.insert(account)
+                                    // Credentials are not restored, even from an older backup that carries them:
+                                    // the account comes back needing sign-in.
+                                    caldavDao.insert(
+                                        account.copy(
+                                            password = "",
+                                            error = if (account.isLocalList) account.error else CaldavAccount.ERROR_UNAUTHORIZED,
+                                        )
+                                    )
                                 }
                             }
                             "caldavCalendars" -> reader.forEach<CaldavCalendar> { calendar ->

@@ -34,4 +34,10 @@ interface SettingsProvider {
      */
     val trustSystemCerts: Boolean
 
+    /**
+     * 4Tasks change. Whether the USER may make a certificate trusted at all ("allow self-signed
+     * certificates"). When `false`, no certificate the user trusted earlier counts, no prompt is shown,
+     * and only the system's trust store decides. Defaults to `true`, the library's own behaviour.
+     */
+    val allowUserTrust: Boolean get() = true
 }

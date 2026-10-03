@@ -5,8 +5,7 @@
     android:installLocation="internalOnly">
 
   <!-- ================================================== Used Permissions = -->
-  <!-- 4Tasks asks for the least it can. There is no network permission in
-       phase 1: tasks never leave the phone. -->
+  <!-- 4Tasks asks for the least it can. The network is for sync with the servers the user connects. -->
 
   <!-- reminders and notifications -->
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
@@ -18,6 +17,9 @@
   <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
   <!-- keep the device awake while a notification is posted -->
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
+  <!-- sync with the servers the user connects (CalDAV; Microsoft and Google later). Nothing goes to us. -->
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
   <uses-feature
       android:name="android.hardware.nfc"
@@ -27,9 +29,7 @@
       android:required="false" />
 
   <!-- Permissions that libraries would otherwise add, and the ones 4Tasks
-       refuses. Network is phase 2 (CalDAV sync to the owner's own server). -->
-  <uses-permission android:name="android.permission.INTERNET" tools:node="remove" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove" />
+       refuses. -->
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" tools:node="remove" />
   <uses-permission android:name="android.permission.GET_ACCOUNTS" tools:node="remove" />
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" tools:node="remove" />
@@ -251,7 +251,10 @@
     <receiver android:name="org.dmfs.provider.tasks.TaskProviderBroadcastReceiver" tools:node="remove" />
     <receiver android:name="org.tasks.location.LocationUpdateReceiver" tools:node="remove" />
     <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" tools:node="remove" />
-    <activity android:name="at.bitfire.cert4android.TrustCertificateActivity" tools:node="remove" />
+
+    <activity
+        android:name=".compose.accounts.AddAccountActivity"
+        android:theme="@style/Tasks" />
 
     <!-- ======================================================== 4Link = -->
     <!-- The one door into 4Tasks' data for other apps (docs/4LINK-SPEC.md). Who may call is

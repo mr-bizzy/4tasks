@@ -22,7 +22,13 @@ interface CertStore {
     /**
      * Determines whether a certificate chain is trusted.
      */
-    fun isTrusted(chain: Array<X509Certificate>, authType: String, trustSystemCerts: Boolean, appInForeground: Boolean?): Boolean
+    fun isTrusted(
+        chain: Array<X509Certificate>,
+        authType: String,
+        trustSystemCerts: Boolean,
+        appInForeground: Boolean?,
+        allowUserTrust: Boolean,
+    ): Boolean
 
     /**
      * Determines whether a certificate has been explicitly accepted by the user. In this case,

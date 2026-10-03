@@ -64,13 +64,14 @@ class DesktopCertStore(
         authType: String,
         trustSystemCerts: Boolean,
         appInForeground: Boolean?,
+        allowUserTrust: Boolean,
     ): Boolean {
         if (chain.isEmpty())
             throw IllegalArgumentException("Certificate chain must not be empty")
         val cert = chain[0]
 
         synchronized(this) {
-            if (isTrustedByUser(cert))
+            if (allowUserTrust && isTrustedByUser(cert))
                 return true
 
             if (untrustedCerts.contains(cert))
@@ -84,6 +85,8 @@ class DesktopCertStore(
                     // not trusted by system, ask user
                 }
         }
+
+        if (!allowUserTrust) return false
 
         if (appInForeground == null) {
             logger.log(Level.INFO, "Certificate not known and running in non-interactive mode, rejecting")

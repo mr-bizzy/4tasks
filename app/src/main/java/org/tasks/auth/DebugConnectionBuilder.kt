@@ -50,6 +50,7 @@ class DebugConnectionBuilder @Inject constructor(
             settings = object : SettingsProvider {
                 override val appInForeground = this@DebugConnectionBuilder.appInForeground
                 override val trustSystemCerts = true
+                override val allowUserTrust = false // OAuth providers have real certificates
             }
         )
         val hostnameVerifier = customCertManager.HostnameVerifier(OkHostnameVerifier)

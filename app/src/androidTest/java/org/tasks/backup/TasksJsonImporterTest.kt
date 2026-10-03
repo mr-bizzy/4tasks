@@ -4,6 +4,8 @@ import com.natpryce.makeiteasy.MakeItEasy.with
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.dao.TagDataDao
@@ -253,5 +255,39 @@ class TasksJsonImporterTest : InjectingTestCase() {
 
         assertEquals(1, tagDataDao.getAll().size)
         assertEquals("important", tagDataDao.getAll()[0].name)
+    }
+
+    // ---- sync credentials never travel in a backup file (owner's ruling, 2026-10-03) ----------------------
+
+    @Test
+    fun backupLeavesOutSyncCredentials() = runBlocking {
+        caldavDao.insert(
+            CaldavAccount(
+                uuid = "cred-1",
+                accountType = TYPE_CALDAV,
+                url = "https://dav.example/",
+                username = "me",
+                password = "SECRET-CIPHERTEXT-123",
+            )
+        )
+        val backup = String(export())
+        assertFalse("the password must not be in the file", backup.contains("SECRET-CIPHERTEXT-123"))
+        assertTrue("the account itself is", backup.contains("https://dav.example/") && backup.contains("cred-1"))
+    }
+
+    @Test
+    fun restoreIgnoresACredentialInTheFileAndLeavesTheAccountNeedingSignIn() = runBlocking {
+        caldavDao.insert(CaldavAccount(uuid = "cred-2", accountType = TYPE_CALDAV, url = "https://dav.example/", username = "me", password = ""))
+        // Make a file that carries a password (as an older backup would) for an account this phone does not have yet.
+        val file = String(export())
+            .replace(Regex("\"uuid\"\\s*:\\s*\"cred-2\""), "\"uuid\":\"cred-2b\",\"password\":\"INJECTED-PASSWORD\"")
+            .replace("https://dav.example/", "https://dav2.example/")
+        assertTrue("the test needs the injected password in the file", file.contains("INJECTED-PASSWORD"))
+
+        import(file.toByteArray())
+
+        val restored = caldavDao.getAccountByUuid("cred-2b")!!
+        assertEquals("", restored.password)
+        assertTrue("the restored account must need sign-in", restored.isLoggedOut())
     }
 }

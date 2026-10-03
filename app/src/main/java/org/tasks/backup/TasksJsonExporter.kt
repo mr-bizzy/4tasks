@@ -163,7 +163,9 @@ class TasksJsonExporter @Inject constructor(
             write("places", locationDao.getPlaces())
             write("tags", tagDataDao.getAll())
             write("filters", filterDao.getFilters())
-            write("caldavAccounts", caldavDao.getAccounts())
+            // Sync credentials never go into a backup file (owner's ruling): the account row is kept,
+            // without its password, token or session. A restore leaves the account needing sign-in.
+            write("caldavAccounts", caldavDao.getAccounts().map { it.copy(password = "") })
             write("caldavCalendars", caldavDao.getCalendars())
             write("taskListMetadata", taskListMetadataDao.getAll())
             write("taskAttachments", taskAttachmentDao.getAttachments())

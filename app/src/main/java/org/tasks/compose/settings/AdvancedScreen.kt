@@ -29,6 +29,8 @@ fun AdvancedScreen(
     calendarEndAtDueTime: Boolean,
     badgesEnabled: Boolean,
     badgeFilterName: String,
+    allowSelfSignedCerts: Boolean,
+    onAllowSelfSignedCerts: (Boolean) -> Unit,
     onAstridSort: (Boolean) -> Unit,
     onAttachmentDir: () -> Unit,
     onCalendarEndAtDueTime: (Boolean) -> Unit,
@@ -100,6 +102,22 @@ fun AdvancedScreen(
                 PreferenceRow(
                     title = stringResource(R.string.EPr_manage_delete_all_gcal),
                     onClick = onDeleteAllEvents,
+                )
+            }
+        }
+
+        // Security: self-signed certificates for servers the user runs (CalDAV)
+        SectionHeader(
+            R.string.advanced_security,
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        )
+        Column(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+            SettingsItemCard(position = CardPosition.Only) {
+                SwitchPreferenceRow(
+                    title = stringResource(R.string.allow_self_signed_certs),
+                    summary = stringResource(R.string.allow_self_signed_certs_summary),
+                    checked = allowSelfSignedCerts,
+                    onCheckedChange = onAllowSelfSignedCerts,
                 )
             }
         }

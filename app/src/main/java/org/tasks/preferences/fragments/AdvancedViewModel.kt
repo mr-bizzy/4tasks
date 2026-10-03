@@ -55,6 +55,8 @@ class AdvancedViewModel @Inject constructor(
         private set
     var badgesEnabled by mutableStateOf(false)
         private set
+    var allowSelfSignedCerts by mutableStateOf(false)
+        private set
     var badgeFilterName by mutableStateOf("")
         private set
     var showRestartDialog by mutableStateOf(false)
@@ -69,6 +71,7 @@ class AdvancedViewModel @Inject constructor(
         refreshAttachmentDirectory()
         calendarEndAtDueTime = preferences.getBoolean(R.string.p_end_at_deadline, true)
         badgesEnabled = preferences.getBoolean(R.string.p_badges_enabled, false)
+        allowSelfSignedCerts = preferences.getBoolean(R.string.p_allow_self_signed_certs, false)
         viewModelScope.launch {
             val filter = defaultFilterProvider.getBadgeFilter()
             badgeFilterName = filter.title ?: ""
@@ -86,6 +89,17 @@ class AdvancedViewModel @Inject constructor(
     fun updateCalendarEndAtDueTime(enabled: Boolean) {
         preferences.setBoolean(R.string.p_end_at_deadline, enabled)
         calendarEndAtDueTime = enabled
+    }
+
+    /** Turning it off also forgets every certificate the user trusted, so nothing trusted earlier lingers. */
+    fun updateAllowSelfSignedCerts(enabled: Boolean) {
+        preferences.setBoolean(R.string.p_allow_self_signed_certs, enabled)
+        allowSelfSignedCerts = enabled
+        if (!enabled) {
+            viewModelScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+                at.bitfire.cert4android.CustomCertStore.getInstance(context).clearUserDecisions()
+            }
+        }
     }
 
     fun updateBadges(enabled: Boolean) {

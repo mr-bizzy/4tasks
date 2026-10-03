@@ -23,10 +23,14 @@ class HttpClientFactory @Inject constructor(
     @ApplicationContext context: Context,
     private val encryption: KeyStoreEncryption,
     private val microsoftTokenProvider: MicrosoftTokenProvider,
+    private val preferences: org.tasks.preferences.Preferences,
 ) : AndroidOkHttpClientFactory(
     context = context,
     userAgent = "${BuildConfig.APPLICATION_ID}/${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}) Android/${android.os.Build.VERSION.RELEASE}",
 ), MicrosoftClientProvider {
+
+    override val allowUserCertTrust: Boolean
+        get() = preferences.getBoolean(org.tasks.R.string.p_allow_self_signed_certs, false)
 
     override suspend fun getService(account: CaldavAccount): MicrosoftService =
         getMicrosoftService(account)

@@ -74,13 +74,19 @@ class CustomCertStore internal constructor(
     /**
      * Determines whether a certificate chain is trusted.
      */
-    override fun isTrusted(chain: Array<X509Certificate>, authType: String, trustSystemCerts: Boolean, appInForeground: Boolean?): Boolean {
+    override fun isTrusted(
+        chain: Array<X509Certificate>,
+        authType: String,
+        trustSystemCerts: Boolean,
+        appInForeground: Boolean?,
+        allowUserTrust: Boolean,
+    ): Boolean {
         if (chain.isEmpty())
             throw IllegalArgumentException("Certificate chain must not be empty")
         val cert = chain[0]
 
         synchronized(this) {
-            if (isTrustedByUser(cert))
+            if (allowUserTrust && isTrustedByUser(cert))
                 // explicitly accepted by user
                 return true
 
@@ -98,6 +104,12 @@ class CustomCertStore internal constructor(
                 } catch (_: CertificateException) {
                     // not trusted by system, ask user
                 }
+        }
+
+        if (!allowUserTrust) {
+            // 4Tasks: "allow self-signed certificates" is off. The system said no, and the user is not asked.
+            logger.log(Level.INFO, "Certificate not trusted by the system and user trust is switched off, rejecting")
+            return false
         }
 
         if (appInForeground == null) {

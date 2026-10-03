@@ -45,7 +45,6 @@ fun WelcomeScreen(
 
     WelcomeScreenLayout(
         showLegalDisclosure = false,
-        showSignIn = false,
         onSignIn = onSignIn,
         onContinueWithoutSync = onContinueWithoutSync,
         onImportBackup = {

@@ -97,7 +97,6 @@ class MainSettingsComposeFragment : Fragment() {
                 accounts = filteredAccounts,
                 proCardState = null, // no Pro, no donation card in 4Tasks
                 environmentLabel = null,
-                showAddAccount = false,
                 showWorksWith = false,
                 onConnectedAppsClick = {
                     startActivity(Intent(requireContext(), org.tasks.fourlink.ConnectedAppsActivity::class.java))

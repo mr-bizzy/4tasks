@@ -88,3 +88,23 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Library:** `Suggestion`, `Outcome.BadArguments(message, suggestion)`, `InvokeResult.Error.suggestion`,
   Bundle key `suggestion`, spec §11a (draft 4), 4link 0c12b19. 4Dictate 0.3.151 follows it.
 - **Tests:** 86 door tests (18 new), 81 library tests.
+
+## 2026-10-03 — Phase A (CalDAV), first part (owner's go-ahead, with his rulings)
+
+- **Network is back:** INTERNET and ACCESS_NETWORK_STATE (seven permissions in all); `supportsCaldav` on; Add account
+  and the welcome screen offer it again; the add-account and certificate-trust screens are back in the manifest.
+  Tasks.org's account, Etebase, OpenTasks, geofences and calendar stay off. Release still has no
+  network-security-config, so plain HTTP is refused; only the debug build allows it.
+- **Backup without credentials:** the exporter writes accounts with the password column blank; the importer
+  ignores a password even in an older file and marks the restored account "needs sign-in" (HTTP 401 state).
+  Instrumented tests on an emulator: the file contains no password; an injected password is dropped.
+- **Self-signed certificates:** Settings, Advanced, "Allow self-signed certificates", off by default. Off: the
+  system's trust store decides, no prompt, anything trusted earlier is ignored; turning it off also forgets the
+  certificates the user trusted. On: the user may trust one exact certificate, as before. Errors say which case it is.
+- **Hostname always matches:** `cert4android`'s `HostnameVerifier` no longer consults user trust. Upstream accepted
+  a trusted certificate under a wrong name and even asked about system-trusted ones. This is a deliberate change
+  to a third-party module (MPL-2.0, file-level: the changed files keep their MPL notices and stay available).
+  Tests use real certificates made with the JDK's keytool.
+- **Test pitfall avoided:** connected (instrumented) Gradle tasks install on EVERY attached device. They are only
+  run with ANDROID_SERIAL set to the emulator.
+- 1,959 unit tests and the 10 instrumented importer tests pass.

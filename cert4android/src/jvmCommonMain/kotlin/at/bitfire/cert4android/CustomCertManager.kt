@@ -49,7 +49,8 @@ class CustomCertManager @JvmOverloads constructor(
                 chain,
                 authType,
                 trustSystemCerts = settings.trustSystemCerts,
-                appInForeground = settings.appInForeground
+                appInForeground = settings.appInForeground,
+                allowUserTrust = settings.allowUserTrust,
             )
         )
             throw CertificateException("Certificate chain not trusted")
@@ -59,8 +60,12 @@ class CustomCertManager @JvmOverloads constructor(
 
 
     /**
-     * A HostnameVerifier that allows users to explicitly accept untrusted and
-     * non-matching (bad hostname) certificates.
+     * A HostnameVerifier that ALWAYS requires the host name to match the certificate.
+     *
+     * 4Tasks change (owner's ruling, 2026-10-03): upstream cert4android also accepted a certificate the user
+     * had trusted under a name it does not carry, and even asked the user about system-trusted ones. Here,
+     * trusting a certificate only lets it stand in for the system's CA check ([checkServerTrusted]); it never
+     * excuses a wrong host name. The check passed in (OkHttp's) decides; with none passed, nothing verifies.
      */
     inner class HostnameVerifier(
         private val defaultHostnameVerifier: javax.net.ssl.HostnameVerifier? = null
@@ -68,23 +73,9 @@ class CustomCertManager @JvmOverloads constructor(
 
         override fun verify(hostname: String, session: SSLSession): Boolean {
             if (defaultHostnameVerifier != null && defaultHostnameVerifier.verify(hostname, session))
-                // default HostnameVerifier says trusted → OK
                 return true
 
-            logger.warning("Host name \"$hostname\" not verified, checking whether certificate is explicitly trusted")
-            // Allow users to explicitly accept certificates that have a bad hostname here
-            (session.peerCertificates.firstOrNull() as? X509Certificate)?.let { cert ->
-                // Check without trusting system certificates so that the user will be asked even for system-trusted certificates
-                if (certStore.isTrusted(
-                        arrayOf(cert),
-                        "RSA",
-                        trustSystemCerts = false,
-                        appInForeground = settings.appInForeground
-                    )
-                )
-                    return true
-            }
-
+            logger.warning("Host name \"$hostname\" does not match the certificate, refusing (user trust does not excuse a wrong host name)")
             return false
         }
 

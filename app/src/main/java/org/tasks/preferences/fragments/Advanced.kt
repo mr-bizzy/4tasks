@@ -63,6 +63,8 @@ class Advanced : Fragment() {
                 calendarEndAtDueTime = viewModel.calendarEndAtDueTime,
                 badgesEnabled = viewModel.badgesEnabled,
                 badgeFilterName = viewModel.badgeFilterName,
+                allowSelfSignedCerts = viewModel.allowSelfSignedCerts,
+                onAllowSelfSignedCerts = { viewModel.updateAllowSelfSignedCerts(it) },
                 onAstridSort = { viewModel.updateAstridSort(it) },
                 onAttachmentDir = {
                     filesDirLauncher.launch(

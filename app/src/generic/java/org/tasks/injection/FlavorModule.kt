@@ -22,11 +22,11 @@ import org.tasks.wear.WearRefresher
 @InstallIn(SingletonComponent::class)
 class FlavorModule {
     @Provides
-    // 4Tasks phase 1: every sync provider, location and calendar feature is switched off.
-    // CalDAV (to the owner's own server) comes back in phase 2 by flipping supportsCaldav.
+    // Generic CalDAV (any server) is on. Microsoft To Do and Google Tasks come on in their own phases;
+    // Tasks.org's own account, Etebase, OpenTasks, geofences and calendar events stay off.
     fun getPlatformConfiguration() = PlatformConfiguration(
         supportsTasksOrg = false,
-        supportsCaldav = false,
+        supportsCaldav = true,
         supportsGoogleTasks = false,
         supportsMicrosoft = false,
         supportsOpenTasks = false,
