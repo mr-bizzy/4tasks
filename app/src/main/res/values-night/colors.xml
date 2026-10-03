@@ -7,9 +7,10 @@
   <color name="drawer_color_selected">@color/drawer_background_dark_selected</color>
   <color name="overdue">@color/error_color_material_dark</color>
   <color name="divider">@color/white_12</color>
+  <color name="surface_variant">#FF1E293B</color>
   <color name="surface_container_low">#FF172033</color>
   <color name="surface_container">#FF1E293B</color>
   <color name="surface_container_high">#FF243247</color>
   <color name="surface_container_highest">#FF2B3A52</color>
-  <color name="splash_background">@color/m3_sys_color_dynamic_dark_surface</color>
+  <color name="splash_background">@android:color/system_neutral1_900</color>
 </resources>

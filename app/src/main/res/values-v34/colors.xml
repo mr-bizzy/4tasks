@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Android 14+: the exact Material 3 surface, so the splash is the page colour. -->
+  <color name="splash_background">@android:color/system_surface_light</color>
+</resources>

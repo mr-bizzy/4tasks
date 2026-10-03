@@ -17,7 +17,7 @@ enum class ItemKind { OTHER, TASK, HEADER }
 
 /**
  * Each group of tasks sits in one rounded card, the way 4Dictate and 4Zones group their rows
- * (surfaceContainer, 16 dp corners). With [GroupStyle.LABEL_ABOVE_CARD] the group's label sits above
+ * (surfaceVariant like 4Dictate's Cards, 16 dp corners). With [GroupStyle.LABEL_ABOVE_CARD] the group's label sits above
  * the card; with [GroupStyle.TITLE_IN_CARD] the header is the top row of the card. The rows draw no
  * background of their own; the card is painted here, behind them.
  */
@@ -38,8 +38,8 @@ class GroupCardDecoration(
     init {
         paint.color = MaterialColors.getColor(
             context,
-            com.google.android.material.R.attr.colorSurfaceContainer,
-            ContextCompat.getColor(context, R.color.surface_container),
+            com.google.android.material.R.attr.colorSurfaceVariant,
+            ContextCompat.getColor(context, R.color.surface_variant),
         )
     }
 

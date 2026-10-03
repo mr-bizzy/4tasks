@@ -208,8 +208,8 @@ fun TasksSettingsTheme(
         val scheme = MaterialTheme.colorScheme
         MaterialTheme(
             colorScheme = if (LocalDynamicColors.current) {
-                // 4Dictate's way: the page is the scheme's surface and a card is its container colour.
-                scheme.copy(surfaceContainerLowest = scheme.surfaceContainer)
+                // 4Dictate's way: the page is the scheme's surface and a card is surfaceVariant.
+                scheme.copy(surfaceContainerLowest = scheme.surfaceVariant)
             } else {
                 scheme.copy(
                     surface = Color(if (isDark) SETTINGS_SURFACE_DARK else SETTINGS_SURFACE_LIGHT),

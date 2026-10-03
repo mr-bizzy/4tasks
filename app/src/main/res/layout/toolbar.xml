@@ -7,5 +7,6 @@
   android:elevation="@dimen/elevation_toolbar"
   android:theme="@style/ToolbarTheme"
   android:background="?attr/colorSurface"
+  app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
   app:titleTextColor="?attr/colorOnSurface"
   tools:ignore="UnusedAttribute" />

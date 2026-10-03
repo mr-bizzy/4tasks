@@ -15,6 +15,7 @@
     <!-- The Android 12+ splash is drawn before the dynamic overlay is applied, so it must not be the theme's
          fallback navy: it takes Material's own dynamic surface colour, the one the dynamic scheme uses. -->
     <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+    <item name="colorSurfaceVariant">@color/surface_variant</item>
     <item name="colorSurfaceContainerLow">@color/surface_container_low</item>
     <item name="colorSurfaceContainer">@color/surface_container</item>
     <item name="colorSurfaceContainerHigh">@color/surface_container_high</item>

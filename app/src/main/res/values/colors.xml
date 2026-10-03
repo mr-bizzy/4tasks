@@ -41,10 +41,11 @@
   <color name="map_circle_fill">#332196f3</color>
 
   <!-- Surfaces for the Material 3 views (bottom bar, sheets): the baseline light ones; the family navy ones are in values-night. -->
+  <color name="surface_variant">#FFE2E8F0</color>
   <color name="surface_container_low">#FFF7F2FA</color>
   <color name="surface_container">#FFF3EDF7</color>
   <color name="surface_container_high">#FFECE6F0</color>
   <color name="surface_container_highest">#FFE6E0E9</color>
-  <color name="splash_background">@color/m3_sys_color_dynamic_light_surface</color>
+  <color name="splash_background">@android:color/system_neutral1_10</color>
 </resources>
 
