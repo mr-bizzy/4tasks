@@ -39,10 +39,10 @@ import tasks.kmp.generated.resources.theme_black
 import tasks.kmp.generated.resources.theme_dark
 import tasks.kmp.generated.resources.theme_day_night
 import tasks.kmp.generated.resources.theme_dynamic
+import tasks.kmp.generated.resources.theme_dynamic_summary
 import tasks.kmp.generated.resources.theme_light
 import tasks.kmp.generated.resources.theme_system_default
 import tasks.kmp.generated.resources.theme_wallpaper
-import tasks.kmp.generated.resources.translations
 import tasks.kmp.generated.resources.widget_open_list
 
 @Composable
@@ -64,7 +64,6 @@ fun LookAndFeelScreen(
     onOpenLastViewedList: (Boolean) -> Unit,
     onDefaultFilter: () -> Unit,
     onLanguage: () -> Unit,
-    onTranslations: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -95,6 +94,7 @@ fun LookAndFeelScreen(
                         title = stringResource(Res.string.theme_dynamic),
                         checked = dynamicColorEnabled,
                         onCheckedChange = onDynamicColor,
+                        summary = stringResource(Res.string.theme_dynamic_summary),
                     )
                 }
             }
@@ -156,22 +156,13 @@ fun LookAndFeelScreen(
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
             if (showLanguage) {
-                SettingsItemCard(position = CardPosition.First) {
+                SettingsItemCard(position = CardPosition.Only) {
                     PreferenceRow(
                         title = stringResource(Res.string.language),
                         summary = localeName,
                         onClick = onLanguage,
                     )
                 }
-            }
-            SettingsItemCard(
-                position = if (showLanguage) CardPosition.Last else CardPosition.Only
-            ) {
-                PreferenceRow(
-                    title = stringResource(Res.string.translations),
-                    icon = Icons.AutoMirrored.Outlined.OpenInNew,
-                    onClick = onTranslations,
-                )
             }
         }
 

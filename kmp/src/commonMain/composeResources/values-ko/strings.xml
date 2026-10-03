@@ -421,7 +421,6 @@
     <string name="open_last_viewed_list">마지막으로 보던 목록 열기</string>
     <string name="settings_localization">현지화</string>
     <string name="theme">테마</string>
-    <string name="theme_dynamic">동적</string>
     <string name="translations">번역 참여하기</string>
     <string name="widget_open_list">목록 열기</string>
     <string name="theme_light">밝게</string>

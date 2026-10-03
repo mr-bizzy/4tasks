@@ -51,7 +51,6 @@ fun LookAndFeelContent(
     viewModel: LookAndFeelViewModel,
     onColor: () -> Unit,
     onDefaultFilter: () -> Unit,
-    onTranslations: () -> Unit,
     onRestartApplication: () -> Unit = {},
 ) {
     if (!viewModel.loaded) {
@@ -87,7 +86,6 @@ fun LookAndFeelContent(
         onOpenLastViewedList = { viewModel.setOpenLastViewedList(it) },
         onDefaultFilter = onDefaultFilter,
         onLanguage = { showLanguageDialog = true },
-        onTranslations = onTranslations,
     )
 
     if (showThemeDialog) {

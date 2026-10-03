@@ -695,7 +695,8 @@
     <string name="open_last_viewed_list">Open last viewed list</string>
     <string name="settings_localization">Localisation</string>
     <string name="theme">Theme</string>
-    <string name="theme_dynamic">Dynamic</string>
+    <string name="theme_dynamic">Wallpaper colour</string>
+    <string name="theme_dynamic_summary">Take the app's colours from your wallpaper</string>
     <string name="translations">Contribute translations</string>
     <string name="widget_open_list">Open list</string>
     <string name="theme_light">Light</string>
