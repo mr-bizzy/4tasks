@@ -1,6 +1,6 @@
 # 4Tasks — permissions and Play declarations
 
-**DRAFT 2026-10-03 for owner review.** From the merged manifest of the 0.1.0-beta release with CalDAV sync.
+**DRAFT 2026-10-03 for owner review.** From the merged manifest of the 0.1.0-beta release with CalDAV sync; Microsoft To Do and Google Tasks (Phases B and C) add no permission: Microsoft signs in through the browser, Google through Android's account chooser (no GET_ACCOUNTS needed on Android 8+; checked in the merged release manifest by the Phase C build).
 
 | Permission | Level | Needed for | Play declaration |
 |---|---|---|---|
@@ -9,7 +9,7 @@
 | RECEIVE_BOOT_COMPLETED | normal | re-setting reminders after a restart | none |
 | WAKE_LOCK | normal | keeping the device awake while a notification is posted | none |
 | VIBRATE | normal | vibrating with a reminder if the user chose that | none |
-| INTERNET | normal | syncing with a CalDAV server the user connects | none (Data safety, see DATA_SAFETY.md) |
+| INTERNET | normal | syncing with the CalDAV server, Microsoft or Google service the user connects | none (Data safety, see DATA_SAFETY.md) |
 | ACCESS_NETWORK_STATE | normal | knowing whether the phone is online before a sync | none |
 
 There is no location, calendar, contacts, camera, microphone,

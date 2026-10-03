@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+  THE SOURCE OF THE 4TASKS HOME PAGE. Proposed address: https://mr-biz.uk/4tasks/
+  PUBLISHED 2026-10-03. Any change is a publish: draft here, and the 4Dictate PM copies it to the site folder on the owner's word.
+  Styling is the site's own (copied from https://mr-biz.uk/), so 4Tasks reads as one developer's pages
+  beside 4Dictate and 4Zones. icon.png is play/graphics/icon-512.png (icon A, chosen by the owner 2026-10-03); mark-4.png is the family 4.
+  Describes the build in this repository (0.1.0-beta, CalDAV sync); the Microsoft and Google lines
+  must be changed when those phases ship. Lives at play/site/4tasks/ with the manual and the privacy page.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4Tasks — Private to-do lists and reminders</title>
+    <meta name="description" content="4Tasks is a private to-do and reminder app for Android. No account with us, optional CalDAV sync to your own server, and it works with 4Dictate by voice.">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --border: #334155;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #f8fafc;
+                --card-bg: #ffffff;
+                --text-main: #0f172a;
+                --text-muted: #475569;
+                --accent: #0284c7;
+                --border: #e2e8f0;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px 16px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .masthead {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 16px;
+        }
+        .masthead img {
+            width: 76px;
+            height: 76px;
+            flex: 0 0 auto;
+        }
+        h1 {
+            font-size: 1.85rem;
+            margin: 0;
+            color: var(--text-main);
+        }
+        h2 {
+            font-size: 1.35rem;
+            margin-top: 28px;
+            color: var(--accent);
+        }
+        p, li {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+        ul {
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .card {
+            background-color: rgba(56, 189, 248, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        dl {
+            margin: 0;
+        }
+        dt {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            margin-top: 14px;
+        }
+        dd {
+            margin: 2px 0 0 0;
+            font-size: 1rem;
+        }
+        a {
+            color: var(--accent);
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="masthead">
+            <img src="mark-4.png" alt="The 4 of the family" width="76" height="76">
+            <img src="icon.png" alt="4Tasks icon" width="76" height="76">
+            <h1>4Tasks</h1>
+        </div>
+        <div class="meta">Private to-do lists and reminders for Android &middot; by Mr-Bizzy, United Kingdom</div>
+
+        <p>
+            4Tasks keeps your lists and reminders on your phone. Say a task to 4Dictate and it is
+            added with its due time and reminder, and you can tick it off by voice too. Sync is
+            optional, and goes only to a server you choose.
+        </p>
+
+        <h2>What it does</h2>
+        <ul>
+            <li>Lists, tasks, notes, subtasks, tags and priorities, with due dates, repeating tasks and reminders that arrive at the minute you set (once you allow Alarms &amp; reminders).</li>
+            <li>Works with <a href="/4dictate/manual/">4Dictate</a>: &ldquo;remind me tomorrow at 3 to get back to Sandra about her reservation&rdquo;. You confirm, then the task is made.</li>
+            <li>Home-screen widgets, search, filters and sorting.</li>
+            <li>Backs up to a folder you choose (daily, keeping the newest seven, unless you turn it off) and restores from it. A backup never contains your sync passwords.</li>
+        </ul>
+
+        <h2>Private by default</h2>
+        <div class="card">
+            <p style="margin:0">
+                There is no account with us, no advertising, no analytics and no crash reporting.
+                Your tasks stay on your phone until you connect a sync account. Then they go
+                straight from your phone to the server you chose, over an encrypted connection,
+                and nowhere else. Other apps can use 4Tasks only if they are ours or you allow each one by name,
+                and none of them can delete anything.
+            </p>
+        </div>
+
+        <h2>Sync</h2>
+        <ul>
+            <li><strong>CalDAV</strong> works today, with servers that follow the standard, such as Nextcloud and SOGo (mailcow).</li>
+            <li>A server with its own self-signed certificate works if you turn that on in Settings, More, Advanced. It is off by default, and the certificate must still match the server&rsquo;s name.</li>
+            <li>Microsoft To Do and Google Tasks are coming.</li>
+        </ul>
+
+        <h2>Details</h2>
+        <dl>
+            <dt>Requires</dt><dd>Android 13 or later</dd>
+            <dt>User manual</dt><dd><a href="/4tasks/manual/">mr-biz.uk/4tasks/manual</a></dd>
+            <dt>Privacy policy</dt><dd><a href="/4tasks/privacy/">mr-biz.uk/4tasks/privacy</a></dd>
+            <dt>Source code</dt><dd><a href="https://github.com/mr-bizzy/4tasks">github.com/mr-bizzy/4tasks</a></dd>
+            <dt>Licence</dt><dd>GNU General Public Licence v3</dd>
+            <dt>Contact</dt><dd><a href="mailto:support@mr-biz.uk">support@mr-biz.uk</a></dd>
+        </dl>
+
+        <p class="meta" style="margin-top:24px">
+            4Tasks is free software based on <a href="https://github.com/tasks/tasks">Tasks.org</a> by
+            Todoroo (Astrid) and the Tasks.org contributors. It is a separate app and is not made or
+            supported by the Tasks.org project.
+        </p>
+
+        <footer>&copy; 2026 Mr-Bizzy, United Kingdom. 4Tasks is developed by Mr-Bizzy.</footer>
+    </div>
+</body>
+</html>
