@@ -1,6 +1,23 @@
 package org.tasks.compose.settings
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Visibility
+import androidx.compose.material.icons.outlined.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import org.jetbrains.compose.resources.stringResource
+import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.hide_password
+import tasks.kmp.generated.resources.show_password
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +52,15 @@ fun TextInputCard(
         capitalization = KeyboardCapitalization.Sentences,
     ),
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    /** A password field: hidden by default, with an eye button to show what was typed. */
+    isPassword: Boolean = false,
 ) {
+    var showPassword by rememberSaveable { mutableStateOf(false) }
+    val transformation = when {
+        isPassword && !showPassword -> PasswordVisualTransformation()
+        isPassword -> VisualTransformation.None
+        else -> visualTransformation
+    }
     SettingsItemCard(
         position = position,
         modifier = modifier,
@@ -67,23 +92,45 @@ fun TextInputCard(
                         ),
                     )
                 }
-                BasicTextField(
-                    value = value,
-                    onValueChange = { onValueChange(it.replace("\n", "")) },
-                    textStyle = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.onSurface,
-                    ),
-                    singleLine = true,
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                    keyboardOptions = keyboardOptions,
-                    visualTransformation = visualTransformation,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .then(
-                            if (contentType != null) Modifier.contentType(contentType)
-                            else Modifier
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    BasicTextField(
+                        value = value,
+                        onValueChange = { onValueChange(it.replace("\n", "")) },
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurface,
                         ),
-                )
+                        singleLine = true,
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                        keyboardOptions = keyboardOptions,
+                        visualTransformation = transformation,
+                        modifier = Modifier
+                            .weight(1f)
+                            .then(
+                                if (contentType != null) Modifier.contentType(contentType)
+                                else Modifier
+                            ),
+                    )
+                    if (isPassword) {
+                        IconButton(
+                            onClick = { showPassword = !showPassword },
+                            modifier = Modifier.size(32.dp),
+                        ) {
+                            Icon(
+                                imageVector = if (showPassword) Icons.Outlined.VisibilityOff
+                                else Icons.Outlined.Visibility,
+                                contentDescription = stringResource(
+                                    if (showPassword) Res.string.hide_password
+                                    else Res.string.show_password
+                                ),
+                                modifier = Modifier.size(22.dp),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
             }
             if (error != null) {
                 Spacer(modifier = Modifier.height(4.dp))

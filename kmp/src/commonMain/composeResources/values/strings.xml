@@ -179,6 +179,8 @@
     <string name="url">URL</string>
     <string name="user">User</string>
     <string name="password">Password</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
     <string name="regenerate_email_address_confirmation">Your current email address will stop working</string>
     <string name="migrating_tasks">Migrating tasks</string>
     <string name="migrate_count">Move %1$s to Tasks.org</string>

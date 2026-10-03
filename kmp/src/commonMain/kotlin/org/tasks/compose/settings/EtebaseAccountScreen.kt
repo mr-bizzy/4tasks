@@ -30,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.PlatformBackHandler
 import org.tasks.data.entity.CaldavAccount
@@ -173,7 +172,7 @@ fun EtebaseAccountScreen(
                     keyboardType = KeyboardType.Password,
                     capitalization = KeyboardCapitalization.None,
                 ),
-                visualTransformation = PasswordVisualTransformation(),
+                isPassword = true,
             )
         }
 

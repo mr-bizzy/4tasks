@@ -42,7 +42,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
@@ -209,7 +208,7 @@ fun CaldavAccountScreen(
                         keyboardType = KeyboardType.Password,
                         capitalization = KeyboardCapitalization.None,
                     ),
-                    visualTransformation = PasswordVisualTransformation(),
+                    isPassword = true,
                 )
             }
 
