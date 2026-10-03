@@ -171,13 +171,20 @@
         OAuth verification status: [IN TESTING / VERIFIED].</p>
 
         <h3>If your users are told access is blocked</h3>
-        <p>In the <a href="https://admin.google.com">Admin console</a> go to <em>Menu</em> &gt; <em>Security</em> &gt; <em>Access and data control</em> &gt; <em>API controls</em> &gt; <em>Manage App Access</em>
-        and configure 4Tasks (search for its name or its client ID above). Google's four settings are: <em>Trusted</em> (all Google services), <em>Limited</em> (only
-        unrestricted services), <em>Specific Google data</em> (only the scopes you list, here the Tasks scope above) and <em>Blocked</em>. Tasks is not one of Google's
-        restricted scopes, so <em>Limited</em> or <em>Specific Google data</em> is enough; <em>Blocked</em>, or an organisation-wide rule that blocks apps you have not
-        configured, stops 4Tasks. Source: Google's page on
-        <a href="https://knowledge.workspace.google.com/admin/apps/control-which-apps-access-google-workspace-data">controlling which apps access Google Workspace data</a>.
-        [VERIFY BEFORE PUBLISHING: whether Tasks can be limited separately by an administrator, and the exact route for an Android app, with a test domain.]</p>
+        <p>In the <a href="https://admin.google.com">Admin console</a>:</p>
+        <ol>
+            <li>Go to <em>Menu</em> &gt; <em>Security</em> &gt; <em>Access and data control</em> &gt; <em>API controls</em>.</li>
+            <li>Choose <em>Manage App Access</em>, then <em>Configure new app</em>.</li>
+            <li>Search for <strong>4Tasks</strong>, or for its client ID above, and choose it. (To add several apps at once you can upload a CSV with type <em>Android</em> and the package name <code>uk.mr_biz.fourtasks</code>; Google's bulk page says an Android app may be entered by OAuth client ID or by package ID.)</li>
+            <li>Choose who it applies to (the whole organisation or an organisational unit) and set access to <em>Limited</em> or <em>Specific Google data</em> (then add the Tasks scope above).</li>
+            <li>Save. Changes can take a while to apply.</li>
+        </ol>
+        <p>Google's four settings are <em>Trusted</em> (all Google services), <em>Limited</em> (only unrestricted services), <em>Specific Google data</em> (only the scopes you list) and
+        <em>Blocked</em>. Tasks is not one of Google's restricted scopes, so <em>Limited</em> should be enough; <em>Blocked</em>, or an organisation-wide rule that blocks apps you have not
+        configured, stops 4Tasks, and a blocked user sees your message or Google's default. Sources: Google's pages on
+        <a href="https://knowledge.workspace.google.com/admin/apps/control-which-apps-access-google-workspace-data">controlling which apps access Google Workspace data</a> and
+        <a href="https://knowledge.workspace.google.com/admin/apps/add-and-configure-third-party-apps-in-bulk">adding and configuring third-party apps in bulk</a>.
+        [VERIFY BEFORE PUBLISHING with a Workspace test domain: that <em>Limited</em> lets 4Tasks reach Google Tasks.]</p>
 
         <h2>Removing 4Tasks again</h2>
         <p>A user removes the account in 4Tasks (<em>Settings, Accounts</em>, the account, <em>Log out</em>), which deletes that account's copy on the phone. Access can also be revoked
