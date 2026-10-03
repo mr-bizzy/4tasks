@@ -356,3 +356,14 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   GoogleDiagnostics (org/tasks/sync/google): tag `4TasksGoogle`, warning level: the account manager's answer (token yes/no, Google
   screen needed), the Tasks API answering, and every failure with the exception class, its message and what 4Tasks made of it.
   Never a token. Read with `adb logcat -s 4TasksGoogle`. Not in the 0.1.1 upload (151206); rides with the next build.
+
+## 2026-10-03 — Play signing key is ours; release 0.1.2-beta (151208)
+
+- 4Tasks 0.1.1 from Play was signed with Google-managed keys (V3.0 CN=Android SHA-256 d2877ee5…; V3.2 hybrid classical 2fa74216…
+  plus a post-quantum signer), so Google sign-in failed with "UnregisteredOnApiConsole". Route (b) taken at ~16:52: Play Console,
+  Change the app signing key, "Export and upload from Java keystore" with the PEPK zip of ~/keys/4tasks-release.p12 (allowed
+  because nothing had reached open testing or production). Asset Links SHA-256 now reads 92:C5:1B:99:…, so the family digest, the Google
+  Android client SHA-1 and the Microsoft hash are all correct as built. The S25's Google-signed 0.1.1 must be uninstalled once.
+- 0.1.2-beta, versionCode 151208 (AAB sha256 131589f6…8a90, signed 92:C5:1B:99:…; tests app 704, kmp 1030, data 73, all green):
+  Google Tasks, the Google client ID in SyncClients, the `4TasksGoogle` diagnostic tag. Microsoft stays "not set up" until its
+  client ID comes; it follows as 0.1.3 (151210).
