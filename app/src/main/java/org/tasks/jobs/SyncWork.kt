@@ -39,6 +39,7 @@ import org.tasks.preferences.TasksPreferences
 import org.tasks.sync.microsoft.MicrosoftSynchronizer
 import org.tasks.sync.SyncSource
 import org.tasks.time.DateTimeUtils2.currentTimeMillis
+import org.tasks.util.awaitTrue
 import timber.log.Timber
 
 @HiltWorker
@@ -81,15 +82,25 @@ class SyncWork @AssistedInject constructor(
         setSyncSource(source)
         Timber.d("Sync started, source=$source")
         refreshBroadcaster.broadcastRefresh()
+        var reachedNetwork = true
         try {
-            doSync()
-            preferences.lastSync = currentTimeMillis()
+            reachedNetwork = doSync()
+            if (reachedNetwork) {
+                preferences.lastSync = currentTimeMillis()
+            }
         } catch (e: Exception) {
             firebase.reportException(e)
         } finally {
             tasksPreferences.set(TasksPreferences.syncOngoing, false)
             setSyncSource(SyncSource.NONE)
             refreshBroadcaster.broadcastRefresh()
+        }
+        if (!reachedNetwork) {
+            // WorkManager ran us because its own network tracker said "connected", but the system's answer was still "no network" a
+            // moment later (seen right after a process start). Reporting success here made the change wait for the next app open;
+            // ask to be run again instead.
+            Timber.w("No network yet, will retry, source=$source")
+            return Result.retry()
         }
         return Result.success()
     }
@@ -112,8 +123,9 @@ class SyncWork @AssistedInject constructor(
         return acceptedTosVersion >= currentTosVersion
     }
 
-    private suspend fun doSync() {
-        val hasNetworkConnectivity = context.hasNetworkConnectivity()
+    /** False when there was no network to sync over (after waiting a few seconds for it), so the caller can ask to be run again. */
+    private suspend fun doSync(): Boolean {
+        val hasNetworkConnectivity = awaitTrue(NETWORK_WAIT_ATTEMPTS, NETWORK_WAIT_MS) { context.hasNetworkConnectivity() }
         if (hasNetworkConnectivity && hasTosAcceptance()) {
             googleTaskJobs().plus(caldavJobs()).awaitAll()
         }
@@ -139,7 +151,11 @@ class SyncWork @AssistedInject constructor(
                     }
             }
         }
+        return hasNetworkConnectivity || !hasAccountsToSync()
     }
+
+    private suspend fun hasAccountsToSync() =
+        getGoogleAccounts().isNotEmpty() || getCaldavAccounts().isNotEmpty()
 
     private suspend fun googleTaskJobs(): List<Deferred<Unit>> = coroutineScope {
         getGoogleAccounts()
@@ -172,5 +188,7 @@ class SyncWork @AssistedInject constructor(
 
     companion object {
         const val EXTRA_SOURCE = "extra_source"
+        private const val NETWORK_WAIT_ATTEMPTS = 10
+        private const val NETWORK_WAIT_MS = 500L
     }
 }

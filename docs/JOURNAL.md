@@ -407,3 +407,19 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   (force-stopped, and killed): enqueued 1 s after the save, the PUT reached the server 57 and 60 s after the create. Share to
   4Tasks then Save, from a cold start: enqueued after 1 s, SyncWork started 50 s later. So the fix works, but the push takes
   30 s of WorkManager initial delay plus up to ~25 s of JobScheduler slack in a cold process, not "about 30 s".
+
+## 2026-10-03 — Sync within about 15 seconds, and no silent skip without a network (0.1.4-beta, 151212)
+
+- **Owner's priority:** a task made on one device must reach the server within about 30 s. 0.1.3 fixed "never until the app is
+  opened", but measured against a local CalDAV server (Radicale, 10.0.2.2, debug build) a push took 50-60 s in a cold process: 30 s
+  of WorkManager initial delay plus JobScheduler slack.
+- **Two changes:** (1) the WorkManager initial delay for a task change is 10 s (was 30; SyncAdapters already waits 1 s and merges
+  bursts). (2) With only that, the worker ran at +10 s and did NOTHING: WorkManager's own network tracker said connected, but
+  `getNetworkCapabilities(activeNetwork)` still said no network a moment after process start, and SyncWork then reported
+  success without syncing. The change waited for the next app open, with the dirty task counted as "handed off". Now SyncWork
+  looks for the network up to 10 times, 0.5 s apart, and if it is still missing returns `Result.retry()` instead of success
+  (org/tasks/util/AwaitTrue.kt, tested).
+- **Measured** (create to PUT on the server, emulator, 10 s delay with the retry): 4Link door tasks.add into a cold process 15, 14
+  and 16 s; share-to-4Tasks, then Save, cold: 16 s; in-app new task, Save: 16 s. The tile and the widget open the same new-task
+  screen and Save path as the share test (the tile's click could not be driven on the emulator: it is not in the quick-settings
+  panel). Before: 57-60 s door, 50 s share; and with the first fix and only a 10 s delay: no push at all.

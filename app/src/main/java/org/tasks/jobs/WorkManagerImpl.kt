@@ -272,7 +272,7 @@ class WorkManagerImpl(
     }
 }
 
-private const val SYNC_CHANGE_DEBOUNCE_SECONDS = 30L
+private const val SYNC_CHANGE_DEBOUNCE_SECONDS = 10L
 
 private fun <B : WorkRequest.Builder<B, *>, W : WorkRequest> WorkRequest.Builder<B, W>.setInputData(
     vararg pairs: Pair<String, Any?>
