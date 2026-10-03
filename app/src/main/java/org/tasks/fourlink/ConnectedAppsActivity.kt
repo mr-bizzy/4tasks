@@ -48,7 +48,7 @@ class ConnectedAppsActivity : ThemedInjectingAppCompatActivity() {
                     if (pairings.isEmpty()) {
                         FamilyCard(
                             title = null,
-                            body = "No other app is allowed. Only our own apps (4Dictate and 4Zones) can use 4Tasks.",
+                            body = "No other app is allowed. Only our own apps, such as 4Dictate, can use 4Tasks.",
                         )
                     }
                     for (p in pairings) {

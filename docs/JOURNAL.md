@@ -254,3 +254,9 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   one by name"; the privacy page has its effective date, 3 October 2026. The repo drafts now match, plus "press Do it" in place
   of "say yes" in the manual's confirmation line. Any further change to these pages is a publish: draft here, the PM copies on the
   owner's word.
+
+## 2026-10-03 — Empty state of "Apps allowed to use 4Tasks" corrected
+
+- "Only our own apps (4Dictate and 4Zones) can use 4Tasks." is now "Only our own apps, such as 4Dictate, can use 4Tasks." (4Zones
+  is not a 4Link caller; matches the published manual). Wording corrected on the 4Dictate PM's word; ships with the next build.
+  The manual draft now bolds Do it / Cancel as the live copy does.
