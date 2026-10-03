@@ -29,6 +29,10 @@ class WidgetPreferences(
         val headerOpacity: Int,
         val headerSpacing: Int,
         val isDark: Boolean,
+        val familyLook: Boolean,
+        val onSurface: Int,
+        val onSurfaceVariant: Int,
+        val compact: Boolean,
     )
 
     data class WidgetRowSettings(
@@ -64,6 +68,10 @@ class WidgetPreferences(
         headerOpacity = getAlphaValue(R.string.p_widget_header_opacity),
         headerSpacing = getSpacing(R.string.p_widget_header_spacing),
         isDark = isDark,
+        familyLook = familyLook,
+        onSurface = onSurface,
+        onSurfaceVariant = onSurfaceVariant,
+        compact = getBoolean(R.string.p_widget_compact, false),
     )
 
     fun getWidgetListSettings() = WidgetRowSettings(
@@ -87,6 +95,41 @@ class WidgetPreferences(
     )
 
     val dueDatePosition: Int get() = getIntegerFromString(R.string.p_widget_due_date_position)
+
+    /**
+     * The family look: the system's own (wallpaper) surface, on-surface text and accent, as the apps have it.
+     * It is the default. A widget the user gave an explicit colour keeps that colour and its filled header.
+     */
+    val familyLook: Boolean
+        get() = themeIndex == 4 || (themeIndex == 3 && !hasChosenColor)
+
+    /**
+     * Whether the user picked a colour. The old default (Tasks.org's blue) was stored the first time a widget was drawn,
+     * so a widget that still has exactly that blue never had a choice made for it.
+     */
+    private val hasChosenColor: Boolean
+        get() {
+            val stored = getInt(R.string.p_widget_color_v2, 0)
+            return stored != 0 && stored != org.tasks.kmp.org.tasks.themes.ColorProvider.BLUE_500
+        }
+
+    val onSurface: Int
+        get() = context.getColor(
+            when {
+                familyLook -> R.color.widget_on_surface
+                isDark -> R.color.white_87
+                else -> R.color.black_87
+            }
+        )
+
+    val onSurfaceVariant: Int
+        get() = context.getColor(
+            when {
+                familyLook -> R.color.widget_on_surface_variant
+                isDark -> R.color.white_60
+                else -> R.color.black_60
+            }
+        )
 
     private val isDark: Boolean
         get() = when (themeIndex) {
@@ -138,21 +181,29 @@ class WidgetPreferences(
         get() = getInt(R.string.p_widget_theme, 3)
     val color: Int
         get() {
+            val dynamicPrimary = ContextCompat.getColor(
+                context,
+                if (isDark) {
+                    com.google.android.material.R.color.m3_sys_color_dynamic_dark_primary
+                } else {
+                    com.google.android.material.R.color.m3_sys_color_dynamic_light_primary
+                }
+            )
             if (themeIndex == 4) {
-                return ContextCompat.getColor(
-                    context,
-                    if (isDark) {
-                        com.google.android.material.R.color.m3_sys_color_dynamic_dark_primary
-                    } else {
-                        com.google.android.material.R.color.m3_sys_color_dynamic_light_primary
-                    }
-                )
+                return dynamicPrimary
             }
             var color = getInt(R.string.p_widget_color_v2, 0)
-            if (color != 0) {
+            if (hasChosenColor) {
                 return color
             }
+            if (color == org.tasks.kmp.org.tasks.themes.ColorProvider.BLUE_500) {
+                return dynamicPrimary
+            }
             val index = getInt(R.string.p_widget_color, -1)
+            // Nothing was ever chosen: the wallpaper's accent (not Tasks.org's blue), and nothing is stored.
+            if (index == -1) {
+                return dynamicPrimary
+            }
             color = context.getColor(getLegacyColor(index, org.tasks.kmp.R.color.blue_500))
             setInt(R.string.p_widget_color_v2, color)
             return color

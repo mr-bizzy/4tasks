@@ -72,10 +72,10 @@ class TasksWidget : AppWidgetProvider() {
 
     private fun createWidget(context: Context, id: Int, options: Bundle): RemoteViews {
         val widgetPreferences = WidgetPreferences(context, preferences, id)
-        val settings = widgetPreferences.getWidgetHeaderSettings()
         widgetPreferences.setCompact(
             options.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH) < COMPACT_MAX
         )
+        val settings = widgetPreferences.getWidgetHeaderSettings()
         val filterId = widgetPreferences.filterId
         val filter = runBlocking {
             defaultFilterProvider.getFilterFromPreference(filterId)
@@ -132,9 +132,15 @@ class TasksWidget : AppWidgetProvider() {
         id: Int,
     ) {
         val color = ThemeColor(context, widgetPreferences.color)
+        // The family look: the header is the page surface with the title in on-surface at the bar's size, and the
+        // buttons in on-surface-variant, like the apps' bars. A colour the user chose keeps its filled header.
+        val family = widgetPreferences.familyLook
+        val headerColor = if (family) widgetPreferences.backgroundColor else color.primaryColor
+        val titleColor = if (family) widgetPreferences.onSurface else color.colorOnPrimary
+        val buttonColor = if (family) widgetPreferences.onSurfaceVariant else color.colorOnPrimary
         setBackgroundColor(
             viewId = R.id.widget_header,
-            color = color.primaryColor,
+            color = headerColor,
             opacity = widgetPreferences.headerOpacity,
         )
         val hPad = context.resources.getDimension(R.dimen.widget_padding).toInt()
@@ -142,7 +148,7 @@ class TasksWidget : AppWidgetProvider() {
         setupButton(
             viewId = R.id.widget_change_list,
             enabled = widgetPreferences.showMenu,
-            color = color,
+            color = buttonColor,
             vPad = vPad,
             hPad = hPad,
             onClick = getChooseListIntent(context, filter, id),
@@ -150,7 +156,7 @@ class TasksWidget : AppWidgetProvider() {
         setupButton(
             viewId = R.id.widget_reconfigure,
             enabled = widgetPreferences.showSettings,
-            color = color,
+            color = buttonColor,
             vPad = vPad,
             hPad = hPad,
             onClick = getWidgetConfigIntent(context, id),
@@ -158,7 +164,7 @@ class TasksWidget : AppWidgetProvider() {
         setupButton(
             viewId = R.id.widget_button,
             enabled = filter.isWritable,
-            color = color,
+            color = buttonColor,
             vPad = vPad,
             hPad = hPad,
             onClick = getNewTaskIntent(context, filter, id),
@@ -168,7 +174,13 @@ class TasksWidget : AppWidgetProvider() {
             R.id.widget_title,
             if (widgetPreferences.showMenu) 0 else hPad, vPad, 0, vPad
         )
-        setTextColor(R.id.widget_title, color.colorOnPrimary)
+        setTextColor(R.id.widget_title, titleColor)
+        // the bar's title size (titleLarge); the stock bodyMedium size when the widget is narrow, so the name still shows
+        if (family) setTextViewTextSize(
+            R.id.widget_title,
+            android.util.TypedValue.COMPLEX_UNIT_SP,
+            if (widgetPreferences.compact) 14f else 22f,
+        )
         setOnClickPendingIntent(R.id.widget_title, getOpenListIntent(context, filter, id))
         setTextViewText(
             R.id.widget_title,
@@ -179,16 +191,16 @@ class TasksWidget : AppWidgetProvider() {
     private fun RemoteViews.setupButton(
         viewId: Int,
         enabled: Boolean,
-        color: ThemeColor,
+        color: Int,
         vPad: Int,
         hPad: Int,
         onClick: PendingIntent,
     ) {
         if (enabled) {
             setViewVisibility(viewId, View.VISIBLE)
-            setColorFilter(viewId, color.colorOnPrimary)
+            setColorFilter(viewId, color)
             setViewPadding(viewId, hPad, vPad, hPad, vPad)
-            setRipple(viewId, color.isDark)
+            setRipple(viewId, androidx.core.graphics.ColorUtils.calculateLuminance(color) < 0.5)
             setOnClickPendingIntent(viewId, onClick)
         } else {
             setViewVisibility(viewId, View.GONE)

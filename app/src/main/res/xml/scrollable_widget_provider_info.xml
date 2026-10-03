@@ -8,6 +8,7 @@
   android:targetCellWidth="2"
   android:initialKeyguardLayout="@layout/scrollable_widget"
   android:initialLayout="@layout/scrollable_widget"
+  android:previewLayout="@layout/scrollable_widget_preview"
   android:minHeight="40dp"
   android:minResizeHeight="40dp"
   android:minResizeWidth="110dp"

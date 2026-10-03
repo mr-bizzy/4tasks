@@ -382,7 +382,9 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
                 resources.displayMetrics
             )
             val params = layoutParams
-            params.height = actionBarHeight + topInset
+            // The title and the list's name under it need 56 dp; a short window's actionBarSize is 48 dp.
+            val barHeight = maxOf(actionBarHeight, (56 * resources.displayMetrics.density).toInt())
+            params.height = barHeight + topInset
             layoutParams = params
             updatePadding(top = topInset)
         }

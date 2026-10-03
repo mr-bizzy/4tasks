@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What the widget picker shows (Android 12+): the widget as it looks by default, in the family look. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/widget_background_follow_system"
+  android:orientation="vertical">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
+      android:layout_centerVertical="true"
+      android:text="@string/widget_preview_title"
+      android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+      android:textColor="@color/widget_on_surface" />
+
+    <ImageView
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:layout_alignParentEnd="true"
+      android:layout_centerVertical="true"
+      android:importantForAccessibility="no"
+      android:src="@drawable/ic_outline_add_24px"
+      android:tint="@color/widget_on_surface_variant" />
+  </RelativeLayout>
+
+  <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="12dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp"
+    android:text="@string/widget_preview_group"
+    android:textAllCaps="true"
+    android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+    android:textColor="@color/widget_on_surface_variant" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/ic_outline_check_box_outline_blank_24px"
+      android:tint="@color/widget_on_surface_variant" />
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingStart="12dp"
+      android:text="@string/widget_preview_task_1"
+      android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+      android:textColor="@color/widget_on_surface" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp">
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/ic_outline_check_box_outline_blank_24px"
+      android:tint="@color/widget_on_surface_variant" />
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:paddingStart="12dp"
+      android:text="@string/widget_preview_task_2"
+      android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+      android:textColor="@color/widget_on_surface" />
+  </LinearLayout>
+</LinearLayout>

@@ -640,15 +640,13 @@ class MainActivity : AppCompatActivity() {
         actionMode = mode
     }
 
+    /**
+     * Applies what changed (theme, colours, sort) by recreating THIS activity, in the same task and the same
+     * window. It used to finish and start MainActivity afresh, which is a new task: on Samsung DeX and other
+     * freeform windows that opened a new window at the default size and lost the user's snapped one.
+     */
     fun restartActivity() {
-        finish()
-        startActivity(
-            Intent(this, MainActivity::class.java),
-            ActivityOptions.makeCustomAnimation(
-                this@MainActivity,
-                android.R.anim.fade_in, android.R.anim.fade_out
-            ).toBundle()
-        )
+        recreate()
     }
 
     companion object {

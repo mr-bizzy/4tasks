@@ -191,3 +191,20 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   bar top = status bar bottom, 48.0 dp high, title starts at 48.4 dp, tab row starts at the bar's bottom.
 - Group cards on the list: 12 dp corners, the stock Card shape (4Dictate HomeScreen.kt:420-424 passes no shape).
 - Tabs: four (Accounts, Tasks, Look, More), edge padding 16 dp as MainPager.kt:84-87. Backups, Advanced and About are on More.
+
+## 2026-10-03 — Window shape bug in freeform windows, and the widgets in the family look
+
+- **Bug, reproduced on the emulator in freeform:** returning from Settings opened a NEW task at new bounds. Measured: before
+  Settings, task 171 at Rect(276,694-804,1774); Settings opened in the same task; after Back, a new task 172 at
+  Rect(343,844-871,1924). Cause: TaskListFragment's settings result handler always called MainActivity.restartActivity(), which
+  did finish() and startActivity(MainActivity), a new task, and freeform windows open a new task at default bounds. Fix:
+  restartActivity() is recreate(), in the same task and window. After the fix: task 173 at Rect(276,694-804,1774) before,
+  during and after Settings. The "logo" was the white mark in the empty detail pane of the wide two-pane layout; removed (the
+  pane is the page surface). The subtitle clipped to half height because the bar height came from actionBarSize, 48 dp in a
+  short window; it is now at least 56 dp.
+- **Widgets:** the default look (system-default theme, no colour chosen) is the family look: the system's own dynamic surface
+  (system_neutral1_10 / 900, API 34: system_surface_light / dark), on-surface text and on-surface-variant icons and group
+  labels (system_neutral1 / 2 tokens), the wallpaper's accent instead of Tasks.org's blue, the header on the page surface with
+  the title at the bar's size (14 sp when the widget is narrow). A widget the user gave a colour keeps its filled header. The old
+  default blue that was stored the first time a widget was drawn counts as "not chosen". The widget picker has a preview in the
+  family look.

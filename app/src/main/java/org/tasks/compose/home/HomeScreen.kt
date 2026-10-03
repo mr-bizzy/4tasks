@@ -356,16 +356,8 @@ fun HomeScreen(
                                 ),
                             contentAlignment = Alignment.Center,
                         ) {
-                            if (state.task == null) {
-                                if (isListVisible && isDetailVisible) {
-                                    Icon(
-                                        painter = painterResource(org.tasks.kmp.R.drawable.ic_launcher_no_shadow_foreground),
-                                        contentDescription = null,
-                                        modifier = Modifier.size(192.dp),
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    )
-                                }
-                            } else {
+                            // The empty detail pane is just the page surface: no logo.
+                            if (state.task != null) {
                                 key(state.task) {
                                     AndroidFragment<TaskEditFragment>(
                                         fragmentState = rememberFragmentState(),

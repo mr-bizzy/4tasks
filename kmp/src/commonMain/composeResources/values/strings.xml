@@ -717,7 +717,7 @@
     <string name="date_and_time_summary">Times for morning to night, and when the date picker closes</string>
     <string name="notifications_summary">Reminder sounds, voice reminders and battery troubleshooting</string>
     <string name="look_and_feel_summary">Wallpaper colour, theme and which list opens first</string>
-    <string name="navigation_drawer_summary">Which filters, tags and places the drawer shows</string>
+    <string name="navigation_drawer_summary">Which filters and tags the drawer shows</string>
     <string name="widget_settings_summary">Add a shortcut or a widget to your home screen</string>
     <string name="backups_summary">Back up your tasks to a file, and bring them back</string>
     <string name="advanced_summary">Self-signed certificates, badges and resetting</string>

@@ -59,8 +59,8 @@ internal class TasksWidgetBuilder(
     private val disableGroups = !filter.supportsSorting()
             || (filter.supportsManualSort() && widgetPreferences.isManualSort)
             || (filter is AstridOrderingFilter && widgetPreferences.isAstridSort)
-    private val onSurface = context.getColor(if (settings.isDark) R.color.white_87 else R.color.black_87)
-    private val onSurfaceVariant = context.getColor(if (settings.isDark) R.color.white_60 else R.color.black_60)
+    private val onSurface = widgetPreferences.onSurface
+    private val onSurfaceVariant = widgetPreferences.onSurfaceVariant
 
     init {
         chipProvider.isDark = settings.isDark
@@ -96,7 +96,7 @@ internal class TasksWidgetBuilder(
                 section.headerColor(
                     context,
                     settings.groupMode,
-                    ContextCompat.getColor(context, if (settings.isDark) R.color.white_60 else R.color.black_60)
+                    onSurfaceVariant
                 )
             )
             if (!settings.showDividers) {

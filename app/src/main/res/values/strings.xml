@@ -460,4 +460,8 @@ File %1$s contained %2$s.\n\n
   <string name="allow_self_signed_certs">Allow self-signed certificates</string>
   <string name="allow_self_signed_certs_summary">For a server you run yourself whose certificate your phone does not trust. When you connect, you are asked to trust that one certificate. It must carry the name you connect by. Turning this off forgets the certificates you trusted.</string>
   <string name="advanced_security">Security</string>
+  <string name="widget_preview_title" translatable="false">My Tasks</string>
+  <string name="widget_preview_group" translatable="false">Due today</string>
+  <string name="widget_preview_task_1" translatable="false">Call the bank</string>
+  <string name="widget_preview_task_2" translatable="false">Book the dentist</string>
 </resources>

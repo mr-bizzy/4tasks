@@ -2,4 +2,5 @@
 <resources>
   <!-- Android 14+: the exact Material 3 surface, so the splash is the page colour. -->
   <color name="splash_background">@android:color/system_surface_light</color>
+  <color name="widget_background_follow_system">@android:color/system_surface_light</color>
 </resources>

@@ -34,7 +34,9 @@
   <color name="window_background">@color/md_background_light</color>
   <color name="content_background">@color/md_background_light</color>
   <color name="dialog_background">#FFEAEFF1</color>
-  <color name="widget_background_follow_system">@color/md_background_light</color>
+  <color name="widget_background_follow_system">@android:color/system_neutral1_10</color>
+  <color name="widget_on_surface">@android:color/system_neutral1_900</color>
+  <color name="widget_on_surface_variant">@android:color/system_neutral2_700</color>
   <color name="drawer_color_selected">@color/drawer_background_light_selected</color>
   <color name="divider">@color/black_12</color>
   <color name="map_circle_stroke">#2196f3</color>
