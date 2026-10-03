@@ -87,6 +87,34 @@ class SyncAdaptersDebounceTest {
         assertEquals(listOf(SyncSource.TASK_CHANGE), synced)
     }
 
+    /** Leaving the app with a change still in the debounce pushes it at once, and the debounce then sends nothing more. */
+    @Test
+    fun flushingPushesAChangeStillWaitingAndNothingFollows() = runBlocking {
+        setupAccount()
+        val adapters = syncAdapters()
+        quiet()
+
+        dirtyTask()
+        delay(DEBOUNCE / 10)
+        adapters.flushPending()
+        awaitSync()
+        delay(DEBOUNCE * 3)
+
+        assertEquals(listOf(SyncSource.TASK_CHANGE), synced)
+    }
+
+    @Test
+    fun flushingWithNothingWaitingDoesNothing() = runBlocking {
+        setupAccount()
+        val adapters = syncAdapters()
+        quiet()
+
+        adapters.flushPending()
+        delay(DEBOUNCE * 3)
+
+        assertEquals(emptyList<SyncSource>(), synced)
+    }
+
     @Test
     fun quietPeriodBetweenChangesSyncsTwice() = runBlocking {
         setupAccount()

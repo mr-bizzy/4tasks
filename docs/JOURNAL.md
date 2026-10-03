@@ -441,3 +441,26 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   USER_INITIATED sync and redraws.
 - **Measured (local Radicale, emulator):** another device creates a task: it appears in 4Tasks about 9-12 s after the app is opened,
   and about 8-11 s after tapping the widget refresh button; without a tap it did not appear within 30 s (control).
+
+## 2026-10-03 — A tick did not reach the server on the S25: the push no longer waits for a background job (0.1.6-beta, 151216)
+
+- **Report:** on the owner's S25 (Android 17, 0.1.5 from Play) a task made on the A9 arrived, was completed on the S25, and the
+  completion never reached the server for minutes.
+- **Cause (measured by the PM on the S25, read-only):** the SyncWork job for the tick (10 s initial delay) sat in JobScheduler for
+  9 minutes with CONNECTIVITY unsatisfied; the standby bucket was ACTIVE and Data Saver off, but `netpolicy` showed
+  `blocked=APP_BACKGROUND` for 4Tasks' UID (process cached-empty), so the job's network request was never satisfied until the app came
+  to the foreground. It was not the debounce, and not 0.1.5's SyncSource.upgrade or the 30 s on-open guard (the guard only governs
+  the on-open request; pushes are a separate path), which I checked on the emulator with a task that came from the server: the tick
+  is scheduled 1 s later whether it lands before, during or after the on-open sync.
+- **Fix:** a changed task is no longer handed to a delayed background job. SyncAdapters' 1 s debounce ends, then the sync runs as
+  EXPEDITED work with no initial delay (SyncSource.TASK_CHANGE: waitsInWorkManager = false, expedited = true; also the sync
+  button and the on-leave push); only METADATA_CHANGE still waits 10 s. And leaving the app now flushes anything still in the
+  debounce at once (SyncAdapters.flushPending, called from the process lifecycle's onPause). Tests: SyncSourceTest (policy),
+  SyncAdaptersDebounceTest (flush pushes a waiting change and nothing follows; flush with nothing waiting does nothing).
+- **Measured (local Radicale, emulator, a task from the server, debug build; tick to the server PUT):** tick and stay 4-5 s; tick
+  and leave after 3 s 3 s; tick and leave after 0.4 s 4-5 s; door add into a cold background process 4 s (was 14-16 s).
+- **NOT verified:** the S25's state itself (Android 17, Samsung, network blocked for a cached app) cannot be reproduced on the
+  Android 16 emulator, where delayed jobs do run in the cached state, only late. Whether a periodic (15-minute) job gets the network
+  on the S25 is unknown: if the UID is blocked, the CONNECTIVITY constraint may hold it until the app is opened. Mitigations that
+  do not depend on it: sync on every open, pull-to-refresh, widget refresh. The manual's troubleshooting table now says so and
+  suggests Battery: Unrestricted.

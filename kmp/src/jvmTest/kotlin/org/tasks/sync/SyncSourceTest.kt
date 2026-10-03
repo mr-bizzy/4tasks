@@ -15,4 +15,17 @@ class SyncSourceTest {
         assertEquals(SyncSource.APP_RESUME, SyncSource.TASK_CHANGE.upgrade(SyncSource.APP_RESUME))
         assertEquals(SyncSource.USER_INITIATED, SyncSource.TASK_CHANGE.upgrade(SyncSource.USER_INITIATED))
     }
+
+    @Test fun `a changed task is pushed at once as expedited work, a metadata change still waits`() {
+        assertEquals(false, SyncSource.TASK_CHANGE.waitsInWorkManager)
+        assertEquals(true, SyncSource.TASK_CHANGE.expedited)
+        assertEquals(true, SyncSource.METADATA_CHANGE.waitsInWorkManager)
+        assertEquals(false, SyncSource.METADATA_CHANGE.expedited)
+    }
+
+    @Test fun `the pushes a person waits on are expedited`() {
+        assertEquals(true, SyncSource.USER_INITIATED.expedited)
+        assertEquals(true, SyncSource.APP_BACKGROUND.expedited)
+        assertEquals(false, SyncSource.BACKGROUND.expedited)
+    }
 }

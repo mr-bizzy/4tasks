@@ -111,6 +111,7 @@ class TasksApplication : Application(), Configuration.Provider {
 
                 override fun onPause(owner: LifecycleOwner) {
                     Timber.d("Application.onPause")
+                    syncAdapters.get().flushPending()
                     owner.lifecycle.coroutineScope.launch {
                         workManager.get().startEnqueuedSync()
                     }

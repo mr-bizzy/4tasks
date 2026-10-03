@@ -73,9 +73,10 @@ class SyncAdapters(
 
     private var lastHandedOff: List<DirtyTaskVersion>? = null
 
+    private val pending = MutableStateFlow(PendingSync())
+
     init {
         scope.launch {
-            val pending = MutableStateFlow(PendingSync())
             merge(
                 dirtyDao.hasDirtyTasks().filter { it }.map { SyncSource.TASK_CHANGE },
                 syncRequests.receiveAsFlow(),
@@ -146,6 +147,17 @@ class SyncAdapters(
 
     fun sync(source: SyncSource) {
         syncRequests.trySend(source)
+    }
+
+    /**
+     * Sends whatever is waiting in the debounce now. For the moment the app leaves the screen, when the 1 s wait could otherwise
+     * run out after Android has already cut the app off from the network.
+     */
+    fun flushPending() {
+        scope.launch {
+            val (source, direct) = pending.getAndUpdate { PendingSync() }
+            runSync(source, skipDirtyCheck = direct)
+        }
     }
 
     private suspend fun presence(): AccountPresence = accountPresence.filterNotNull().first()

@@ -105,8 +105,12 @@ class WorkManagerImpl(
         if (!openTaskDao.shouldSync()) {
             builder.setConstraints(networkConstraints)
         }
-        if (!immediate) {
+        if (source.waitsInWorkManager) {
             builder.setInitialDelay(SYNC_CHANGE_DEBOUNCE_SECONDS, TimeUnit.SECONDS)
+        } else if (source.expedited) {
+            // Runs now, with the app's own priority, rather than waiting for the system to find the network satisfied for a
+            // backgrounded app; out of quota it simply runs as ordinary work.
+            builder.setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
         }
         val append = getSyncJob().any { it.state == WorkInfo.State.RUNNING }
         Timber.d("sync source=$source immediate=$immediate append=$append")

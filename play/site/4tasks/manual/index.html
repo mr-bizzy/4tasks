@@ -255,7 +255,7 @@ passwords</em> (mailcow, Nextcloud and others do), make one just for 4Tasks, lim
 then never stored on the phone, and you can revoke the app password on its own.</p>
 <h3>What syncs, and when</h3>
 <p>Titles, notes, dates and times, repeats, priority, tags, reminders, completion, and the list a task is in all sync, both ways.
-A change you make on the phone is sent about <strong>10 seconds</strong> after you make it, or at once when you leave the app.
+A change you make on the phone is sent within a few seconds, or at once when you leave the app.
 4Tasks also checks the server <strong>every time you open it</strong> (unless it synced less than 30 seconds ago), when you pull the list down,
 when you tap the <strong>refresh</strong> button on a widget, and in the background <strong>every 15, 30 or 60 minutes</strong> while the phone is
 online (15 to start with; choose in Settings, Accounts, <em>Sync interval</em>; Android's Data Saver stops the background sync). So a change made on
@@ -380,6 +380,7 @@ Switch it off to choose a colour yourself, or to use the plain palette (sky blue
 <tr><td><em>Plain http:// connections are not allowed</em></td><td>Use an <code>https://</code> address. 4Tasks never sends your password unencrypted.</td></tr>
 <tr><td><em>This phone does not trust the server&rsquo;s certificate</em></td><td>Fix the server&rsquo;s certificate, or, if it is your own server, turn on Allow self-signed certificates (<a href="#sync">section 5</a>).</td></tr>
 <tr><td><em>The server&rsquo;s certificate does not carry the name you connected by</em></td><td>Connect by a name the certificate has, or reissue the certificate with that name. This is never overridden.</td></tr>
+<tr><td>A change made on another device does not arrive until I open 4Tasks</td><td>Opening 4Tasks, pulling the list down or tapping the widget's refresh button always syncs. In the background Android decides when an app that is not on screen may use the network, and some phones hold it back for apps they think are idle: in Android settings, Apps, 4Tasks, Battery, choose <strong>Unrestricted</strong>, and choose a shorter Sync interval (Settings, Accounts).</td></tr>
 <tr><td>A task added by voice did not reach the server</td><td>It went into your default list. Make a server list your default (Settings, Tasks, Task defaults).</td></tr>
 <tr><td>An app cannot use 4Tasks</td><td>Check Settings, Accounts, Apps allowed to use 4Tasks. An app other than ours has to ask to be allowed, from its own screen, and then appears there; if you removed it, it has to ask again.</td></tr>
 </table>
