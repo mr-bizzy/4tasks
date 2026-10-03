@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.util.Locale
 
 /** A list of tasks, as the door needs to know it. */
-data class ListInfo(val id: Long, val title: String, val readOnly: Boolean)
+data class ListInfo(val id: Long, val title: String, val readOnly: Boolean, val googleTasks: Boolean = false)
 
 data class TaskInfo(
     val id: Long,
@@ -19,6 +19,7 @@ data class TaskInfo(
     val listTitle: String?,
     val completed: Boolean,
     val repeats: Boolean,
+    val listId: Long? = null,
 )
 
 data class NewTask(val title: String, val notes: String?, val due: Moment?, val listId: Long?)
@@ -138,6 +139,15 @@ class TasksDoorLogic(
             } else ""
         }
 
+        // Google Tasks cannot hold a reminder or a time of day (its API carries a due DATE only), so say what stays on the phone.
+        val onGoogle = port.lists().firstOrNull { it.id == (created.listId ?: list?.id) }?.googleTasks == true
+        val googleNote = when {
+            !onGoogle -> ""
+            reminder != null -> " Google Tasks cannot keep reminders, so this reminder stays on this phone and is not synced."
+            due is Moment.DayTime -> " Google Tasks keeps only the date of a due time, so the time of day stays on this phone."
+            else -> ""
+        }
+
         val today = now().toLocalDate()
         val parts = buildList {
             due?.let { add(DoorDates.describe(it, today, locale)) }
@@ -147,7 +157,7 @@ class TasksDoorLogic(
             (list?.title ?: created.listTitle)?.takeIf { listName != null }?.let { add("on $it") }
         }
         val summary = created.title + (if (parts.isEmpty()) " — added" else " — " + parts.joinToString(", ")) +
-            "." + reminderNote
+            "." + reminderNote + googleNote
         return Outcome.Ok(JSONObject().put("id", created.id).put("summary", summary).toString())
     }
 

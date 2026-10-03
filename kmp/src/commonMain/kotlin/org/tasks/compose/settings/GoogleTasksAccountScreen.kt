@@ -28,6 +28,8 @@ import org.jetbrains.compose.resources.stringResource
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.authentication_required
 import tasks.kmp.generated.resources.cancel
+import tasks.kmp.generated.resources.google_sync_limits_summary
+import tasks.kmp.generated.resources.google_sync_limits_title
 import tasks.kmp.generated.resources.logout
 import tasks.kmp.generated.resources.logout_confirmation
 import tasks.kmp.generated.resources.logout_warning
@@ -102,6 +104,14 @@ fun GoogleTasksAccountScreen(
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
         ) {
+            SettingsItemCard {
+                PreferenceRow(
+                    title = stringResource(Res.string.google_sync_limits_title),
+                    summary = stringResource(Res.string.google_sync_limits_summary),
+                    summaryMaxLines = 8,
+                )
+            }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
             SettingsItemCard {
                 PreferenceRow(
                     title = stringResource(Res.string.reinitialize_account),

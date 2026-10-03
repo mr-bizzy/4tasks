@@ -28,7 +28,7 @@ class FakePort(
         created += task
         val list = lists.firstOrNull { it.id == task.listId } ?: lists.first()
         val millis = task.due?.startMillis(ZoneId.of("Europe/London"))
-        return TaskInfo(nextId++, task.title, millis, task.due is Moment.Day, list.title, false, false).also { tasks += it }
+        return TaskInfo(nextId++, task.title, millis, task.due is Moment.Day, list.title, false, false, list.id).also { tasks += it }
     }
 
     override suspend fun addReminder(taskId: Long, triggerAtMillis: Long) {

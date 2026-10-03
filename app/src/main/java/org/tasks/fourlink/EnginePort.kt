@@ -1,6 +1,7 @@
 package org.tasks.fourlink
 
 import android.content.Context
+import org.tasks.api.AccountQuery
 import org.tasks.api.ApiQueryEngine
 import org.tasks.api.ApiWriter
 import org.tasks.api.ListQuery
@@ -11,6 +12,7 @@ import org.tasks.api.TaskWrite
 import org.tasks.api.TasksContract
 import org.tasks.api.completeTasks
 import org.tasks.api.createTasks
+import org.tasks.api.findAccounts
 import org.tasks.api.findLists
 import org.tasks.api.findTasks
 import org.tasks.api.setTaskReminders
@@ -29,8 +31,14 @@ class EnginePort(
     private val context: Context,
 ) : TasksPort {
 
-    override suspend fun lists(): List<ListInfo> =
-        engine.findLists(ListQuery(limit = 500)).rows.map { ListInfo(it.id, it.title, it.isReadOnly) }
+    override suspend fun lists(): List<ListInfo> {
+        val google = engine.findAccounts(AccountQuery(limit = 100)).rows
+            .filter { it.type == TasksContract.Accounts.TYPE_GOOGLE_TASKS }
+            .map { it.id }
+            .toSet()
+        return engine.findLists(ListQuery(limit = 500)).rows
+            .map { ListInfo(it.id, it.title, it.isReadOnly, googleTasks = it.accountId in google) }
+    }
 
     override suspend fun createTask(task: NewTask): TaskInfo {
         val creation = engine.createTasks(
@@ -119,6 +127,7 @@ class EnginePort(
         dueMillis = row.due?.takeIf { it > 0 },
         dueAllDay = row.dueAllDay,
         listTitle = lists.firstOrNull { it.id == row.listId }?.title,
+        listId = row.listId,
         completed = row.completed != null && row.completed!! > 0,
         repeats = !row.recurrence.isNullOrEmpty(),
     )

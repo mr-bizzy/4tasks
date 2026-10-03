@@ -367,3 +367,17 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - 0.1.2-beta, versionCode 151208 (AAB sha256 131589f6…8a90, signed 92:C5:1B:99:…; tests app 704, kmp 1030, data 73, all green):
   Google Tasks, the Google client ID in SyncClients, the `4TasksGoogle` diagnostic tag. Microsoft stays "not set up" until its
   client ID comes; it follows as 0.1.3 (151210).
+
+## 2026-10-03 — Google risk 1 proven; Google Tasks limits said plainly
+
+- **Risk 1 PROVEN** at 17:03 on the S25 (Android 17) with 0.1.2 from Play: token obtained from the account manager, Tasks API
+  answered, account kept (see SYNC-PLAN section 1). No AuthorizationClient, no Data safety change.
+- **Google Tasks cannot hold** reminders, repeats, times of day, priority or tags (its API carries titles, notes, due dates,
+  completion, subtasks); tasks.org's own page says the same (and calls verification expensive; our route is the free sensitive-scope
+  review). Now stated plainly in 4Tasks: the Add account row for Google; a card "What stays on this phone" on the Google account
+  screen; a voice add to a Google list (4Link tasks.add) answers "Google Tasks cannot keep reminders, so this reminder stays on this
+  phone and is not synced." (or, for a due time, "keeps only the date"), with tests; the manual draft says it too. The reminder
+  itself is still set and goes off on the phone.
+- **Help links:** the "Learn more" links for Google and Microsoft (url_google_tasks, url_microsoft, TasksUrls) now point to our own
+  manual (https://mr-biz.uk/4tasks/manual/#google, #microsoft) instead of tasks.org; the anchors exist once the drafted manual is
+  published. The other Tasks.org help links remain until open testing.

@@ -74,7 +74,9 @@
     <string name="davx5_selection_description">Synchronise your tasks with the DAVx⁵ app</string>
     <string name="decsync_selection_description">File-based synchronisation</string>
     <string name="etesync_selection_description">End-to-end encrypted synchronisation</string>
-    <string name="google_tasks_selection_description">Basic service that synchronises with your Google account</string>
+    <string name="google_tasks_selection_description">Syncs titles, notes, due dates, completion and subtasks with your Google account. Google Tasks cannot hold reminders, repeats, times of day, priority or tags, so those stay on this phone</string>
+    <string name="google_sync_limits_title">What stays on this phone</string>
+    <string name="google_sync_limits_summary">Google Tasks can only hold titles, notes, due dates, completion and subtasks. Reminders, repeats, times of day, priority and tags stay on this phone and are not synced. A reminder still goes off here, but you will not see it in Google Tasks or on your other devices.</string>
     <string name="legal_disclosure_prefix_using">By using Tasks.org</string>
     <string name="microsoft_selection_description">Synchronise with your personal Microsoft account</string>
     <string name="microsoft_selection_description_googleplay">Synchronise with your work, school, or personal Microsoft account</string>

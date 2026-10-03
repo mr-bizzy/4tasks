@@ -36,6 +36,28 @@ class TasksDoorLogicTest {
         assertEquals("Get back to Sandra Elaine about her reservation — tomorrow 15:00, reminder set.", r.getString("summary"))
     }
 
+    @Test fun `a reminder on a Google Tasks list is kept on the phone and the answer says it is not synced`() {
+        port.lists = port.lists + ListInfo(4, "Online", false, googleTasks = true)
+        val r = ok(call("tasks.add", """{"title":"Call Sandra","due":"2026-10-03T15:00","reminder":"2026-10-03T15:00","list":"Online"}"""))
+        assertEquals(1, port.reminders.size)
+        assertTrue(r.getString("summary"), r.getString("summary").endsWith(
+            " Google Tasks cannot keep reminders, so this reminder stays on this phone and is not synced."))
+    }
+
+    @Test fun `a due time on a Google Tasks list says only the date syncs`() {
+        port.lists = port.lists + ListInfo(4, "Online", false, googleTasks = true)
+        val r = ok(call("tasks.add", """{"title":"Pay rent","due":"2026-10-03T09:00","list":"Online"}"""))
+        assertTrue(port.reminders.isEmpty())
+        assertTrue(r.getString("summary"), r.getString("summary").endsWith(
+            " Google Tasks keeps only the date of a due time, so the time of day stays on this phone."))
+    }
+
+    @Test fun `a date alone on a Google Tasks list needs no warning, and other lists never get one`() {
+        port.lists = port.lists + ListInfo(4, "Online", false, googleTasks = true)
+        assertTrue(!ok(call("tasks.add", """{"title":"Bins","due":"2026-10-03","list":"Online"}""")).getString("summary").contains("Google"))
+        assertTrue(!ok(call("tasks.add", """{"title":"Call","due":"2026-10-03T15:00","reminder":"2026-10-03T15:00","list":"Work"}""")).getString("summary").contains("Google"))
+    }
+
     @Test fun `a due time alone sets no reminder`() {
         ok(call("tasks.add", """{"title":"Pay rent","due":"2026-10-03T09:00"}"""))
         assertTrue(port.reminders.isEmpty())

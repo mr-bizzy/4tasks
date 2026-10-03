@@ -35,6 +35,12 @@ could not confirm something, it says so.
 Two risks I found by reading, to be tested before anyone spends effort on verification:
 1. The Google path is the older account-manager token flow. I have not proved it still returns a token for a
    2026 phone with a project of our own. First job of the Google phase, before the consent screen is submitted.
+   **PROVEN 2026-10-03, 17:03:** on the owner's S25 (Android 17), 4Tasks 0.1.2 (151208) installed from Play internal testing,
+   signed with our own key (92:C5:1B:99:…), signed in to Google: `4TasksGoogle` log "answer from the account manager: token=true,
+   google screen needed=false", then "the Tasks API answered, the account is kept". The account-manager flow works with our own
+   project (diesel-horizon-510514-n3) and key: no AuthorizationClient, no Play Services library, no Data safety change.
+   (Before that, 0.1.1 had been signed by Google-managed keys, which fails with "UnregisteredOnApiConsole"; fixed by changing the
+   Play app signing key to ours, see the journal.)
 2. Releases refuse plain HTTP (only debug builds allow it), so a CalDAV server must be HTTPS. That is right
    for Play; say so in the app's "add account" help.
 
