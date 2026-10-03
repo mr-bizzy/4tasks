@@ -297,3 +297,10 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **4Link and 4Dictate wording (manual §7, privacy §5):** 4Link itself sends nothing over the internet; what 4Dictate does with
   spoken words (it may send them to its tidy-up service to choose a function, even with tidy-up off) is 4Dictate's policy, linked.
 - The Apps-allowed empty state and the notices text (earlier today) ship in the same build.
+
+## 2026-10-03 — Pages published; release bundle built
+
+- The home, manual and privacy pages were published (from b55bf82b86); the manual's HTML comment now says "Published 2026-10-03".
+- **Release AAB:** app/build/outputs/bundle/genericRelease/app-generic-release.aab (`:app:bundleGenericRelease`), 32,496,680 bytes,
+  sha256 4a8a33e7…45c4, uk.mr_biz.fourtasks versionCode 151204 / 0.1.0-beta, jarsigner "jar verified", signing certificate
+  CN=4Dictate, O=mr-biz apps, SHA-256 7F:FC:5B:0D:…:CF:D8:D9 = FourLink.FAMILY_RELEASE_DIGEST (the family key, same as 4Dictate).
