@@ -250,7 +250,9 @@
     <provider android:name="org.dmfs.provider.tasks.TaskProvider" tools:node="remove" />
     <receiver android:name="org.dmfs.provider.tasks.TaskProviderBroadcastReceiver" tools:node="remove" />
     <receiver android:name="org.tasks.location.LocationUpdateReceiver" tools:node="remove" />
-    <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" tools:node="remove" />
+    <!-- AppAuth's RedirectUriReceiverActivity (the way back from Microsoft's sign-in page) is declared in the
+         generic flavour's manifest with tools:node="replace", so the library's own intent filter (its
+         appAuthRedirectScheme) never reaches the merged manifest. It must not be removed here. -->
 
     <activity
         android:name=".compose.accounts.AddAccountActivity"

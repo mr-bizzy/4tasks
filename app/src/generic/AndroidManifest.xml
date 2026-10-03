@@ -6,17 +6,32 @@
     <activity
         android:name=".auth.MicrosoftAuthenticationActivity"
         android:theme="@style/TranslucentDialog"/>
+
+    <!-- Microsoft refused the sign-in, or it failed: Microsoft's own words, and for an organisation's refusal
+         what to tell its IT admin. Only 4Tasks opens it. -->
+    <activity
+        android:name=".auth.MicrosoftSignInProblemActivity"
+        android:exported="false"
+        android:theme="@style/Tasks" />
+
+    <!-- The way back from Microsoft's sign-in page: msauth://uk.mr_biz.fourtasks/<signature hash>.
+         The redirect Entra shows has the hash URL-encoded (XXD5Z%2FxW5wDyYUTXKmVbcimMDmo%3D); Android matches android:path against
+         the decoded path, so the path here is the raw hash, as in Microsoft's MSAL for Android. The path must equal
+         SyncClients.MICROSOFT_SIGNATURE_HASH (a unit test checks it).
+         tools:node="replace" drops the library's own declaration, whose intent filter would carry the
+         appAuthRedirectScheme. Exactly one such activity, exported, with this one redirect. -->
     <activity
         android:name="net.openid.appauth.RedirectUriReceiverActivity"
         android:exported="true"
-        tools:node="merge">
+        tools:node="replace">
         <intent-filter>
             <action android:name="android.intent.action.VIEW"/>
             <category android:name="android.intent.category.DEFAULT"/>
             <category android:name="android.intent.category.BROWSABLE"/>
             <data
+                android:scheme="msauth"
                 android:host="${applicationId}"
-                android:scheme="msauth" />
+                android:path="/XXD5Z/xW5wDyYUTXKmVbcimMDmo=" />
         </intent-filter>
     </activity>
   </application>
