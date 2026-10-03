@@ -119,7 +119,7 @@
 <p class="note">For 4Tasks 0.1.0 (beta), October 2026. Android 13 or later; works on phones, tablets and Samsung DeX.</p>
 
 <p>4Tasks is a <strong>private to-do and reminder app</strong>. Your lists, tasks and reminders live on your phone. If you want
-them on other devices, you can <strong>sync</strong> them with a CalDAV server of your choice. There is no account with us, no
+them on other devices, you can <strong>sync</strong> them with a CalDAV server of your choice, Microsoft To Do or Google Tasks. There is no account with us, no
 advertising, no analytics and no crash reporting. It also works with <strong>4Dictate</strong>, so you can add a task, ask what
 is due, or tick one off by voice.</p>
 
@@ -128,7 +128,7 @@ is due, or tick one off by voice.</p>
 <li><a href="#lists">Lists and the drawer</a></li>
 <li><a href="#tasks">Tasks</a></li>
 <li><a href="#reminders">Due dates and reminders</a></li>
-<li><a href="#sync">Sync with a CalDAV server</a></li>
+<li><a href="#sync">Sync: CalDAV, Microsoft To Do and Google Tasks</a></li>
 <li><a href="#voice">Voice, with 4Dictate</a></li>
 <li><a href="#apps">Apps allowed to use 4Tasks</a></li>
 <li><a href="#backup">Backup and restore</a></li>
@@ -143,7 +143,7 @@ is due, or tick one off by voice.</p>
 <h2 id="start">1. Getting started</h2>
 <p>The first time you open 4Tasks it offers three buttons:</p>
 <ul>
-<li><strong>Add account</strong> connects a CalDAV server so your tasks sync (<a href="#sync">section 5</a>).</li>
+<li><strong>Add account</strong> connects a CalDAV server, Microsoft To Do or Google Tasks so your tasks sync (<a href="#sync">section 5</a>).</li>
 <li><strong>Get started</strong> goes straight to your lists, kept on this phone only, with one list called <em>Default list</em> to begin with. You can add an account later.</li>
 <li><strong>Import a backup</strong> reads a backup file you made earlier (<a href="#backup">section 8</a>).</li>
 </ul>
@@ -236,10 +236,11 @@ minute.</p>
 <p>Reminders also need <strong>notifications</strong> to be allowed. If they are not, a banner says <em>Enable reminders</em>, with a
 <strong>Settings</strong> button.</p>
 
-<h2 id="sync">5. Sync with a CalDAV server</h2>
+<h2 id="sync">5. Sync: CalDAV, Microsoft To Do and Google Tasks</h2>
+<p>Settings, <strong>Accounts</strong>, <strong>Add account</strong> offers three kinds of account. Each syncs your lists both ways; you can have more than one.</p>
+<h3 id="caldav">CalDAV</h3>
 <p>CalDAV is an open standard for tasks and calendars. Nextcloud, SOGo (including mailcow), Radicale, Baikal and many hosts offer
-it. 4Tasks is built for <strong>any standards-following CalDAV server</strong> you can sign in to, and has been tried with mailcow (SOGo). <strong>Microsoft To Do and Google Tasks are
-coming</strong>; they are not in this version.</p>
+it. 4Tasks is built for <strong>any standards-following CalDAV server</strong> you can sign in to, and has been tried with mailcow (SOGo).</p>
 <h3>Adding an account</h3>
 <ol>
 <li>Settings, <strong>Accounts</strong>, <strong>Add account</strong>, then CalDAV.</li>
@@ -260,6 +261,31 @@ open it (if the last sync was more than five minutes ago), when you pull the lis
 while the phone is online (Android's Data Saver stops the background sync). A task added by voice goes into your default list unless
 the request names another list, so set a list on the server as the default (Settings, Tasks, Task defaults) if you want those tasks
 to sync.</p>
+<h3 id="microsoft">Microsoft To Do</h3>
+<p>Works with personal Microsoft accounts and with work or school accounts.</p>
+<ol>
+<li>Settings, <strong>Accounts</strong>, <strong>Add account</strong>, then Microsoft.</li>
+<li>Microsoft's own sign-in page opens in your browser. Enter your password <strong>there</strong>: 4Tasks never sees it. Microsoft shows
+what 4Tasks asks for: your tasks and task lists, and your basic profile.</li>
+<li>Back in 4Tasks your To Do lists appear in the drawer under the account's name.</li>
+</ol>
+<p>Titles, notes, due dates and times, repeats, completion, subtasks (To Do's <em>steps</em>) and High priority sync, both ways.
+<strong>If your organisation does not allow it:</strong> a work or school account is controlled by your administrator. If Microsoft says
+you need approval, 4Tasks shows <strong>What to tell your IT admin</strong>: what the app is, the one permission it asks for, how an
+administrator allows it, and a button to <strong>share</strong> or <strong>copy</strong> a ready-made message to send them. There is also a
+<a href="/4tasks/admin/#microsoft">page for IT administrators</a>. Nothing else is needed from you: once they allow it, add the account
+again.</p>
+<h3 id="google">Google Tasks</h3>
+<p>Works with personal Google accounts and Google Workspace accounts. You need a Google account already added to the phone.</p>
+<ol>
+<li>Settings, <strong>Accounts</strong>, <strong>Add account</strong>, then Google.</li>
+<li>Choose the Google account. Google asks you to allow 4Tasks to use your tasks: <em>&ldquo;Create, edit, organize, and delete all your
+tasks&rdquo;</em>. 4Tasks asks for nothing else, and never sees your Google password.</li>
+</ol>
+<p>Titles, notes, due dates (the day only: Google Tasks has no time of day), completion, subtasks and their order sync. Priority, tags and
+reminders stay on the phone. If a Workspace administrator has blocked the app, 4Tasks shows <strong>What to tell your Workspace
+admin</strong>, with the same share and copy buttons, and the <a href="/4tasks/admin/#google">page for IT administrators</a>. If Google asks
+you to sign in again, the account shows <em>Sign in</em>; tap it.</p>
 <h3>Secure connections only</h3>
 <ul>
 <li>The address must be <strong>https://</strong>. A plain <code>http://</code> address is refused, with a message saying so.</li>
@@ -385,11 +411,11 @@ Switch it off to choose a colour yourself, or to use the plain palette (sky blue
 
 <h2 id="privacy">13. Privacy</h2>
 <ul>
-<li>Your tasks stay on your phone. If you connect a CalDAV account, they go <strong>straight to the server you typed in and nowhere
+<li>Your tasks stay on your phone. If you connect a sync account, they go <strong>straight to the service you chose (your CalDAV server, Microsoft or Google) and nowhere
 else</strong>, over an encrypted connection.</li>
 <li>No account with us, no advertising, no analytics, no crash reporting, no tracking.</li>
-<li>Your sync password is stored encrypted on the phone and is left out of backup files.</li>
-<li>4Tasks does not ask for your location, contacts, camera, microphone or storage. What it does ask for: notifications and, if you allow it, <em>Alarms &amp; reminders</em> (to remind you at the right time), to set reminders again after a restart, to wake the phone and vibrate to show one, and to use the network, only to sync with the server you add.</li>
+<li>A CalDAV password or a Microsoft sign-in token is stored encrypted on the phone and is left out of backup files. For Microsoft and Google you sign in on their own screens, so 4Tasks never sees those passwords.</li>
+<li>4Tasks does not ask for your location, contacts, camera, microphone or storage. What it does ask for: notifications and, if you allow it, <em>Alarms &amp; reminders</em> (to remind you at the right time), to set reminders again after a restart, to wake the phone and vibrate to show one, and to use the network, only to sync with the service you add.</li>
 </ul>
 <p>The full policy is at <a href="/4tasks/privacy/">mr-biz.uk/4tasks/privacy</a>.</p>
 

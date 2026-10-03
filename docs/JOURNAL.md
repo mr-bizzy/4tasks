@@ -321,3 +321,31 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **SYNC-PLAN.md:** the Google Android client's SHA-1 and Microsoft's signature hash come from this key.
 - **A9:** the installed 4Tasks is signed with 4Dictate's key, so Android will refuse to update it: it has to be uninstalled and
   reinstalled (local data on the phone is lost; the Mailcow data is on the server). To be announced first.
+
+## 2026-10-03 — Phases B and C built (Microsoft To Do, Google Tasks), without the real registrations
+
+- **Owner's order (~15:15):** build everything that does not need the real IDs now. All registration facts are in ONE file,
+  app/src/main/java/org/tasks/sync/SyncClients.kt: Microsoft client ID (placeholder until the Entra app exists), signature hash
+  XXD5Z/xW5wDyYUTXKmVbcimMDmo= (= base64 of SHA-1 5D:70:F9:67:…:0E:6A of 4Tasks' own key; checked), authority `common`, scope;
+  Google: scope, both SHA-1s, the Android client ID (empty), GOOGLE_TESTING_MODE=true.
+- **Microsoft (branch phase-b-microsoft, merged):** Tasks.org's client ID is gone; sign-in on the `common` authority with
+  AppAuth; AppAuth would reject `common` ("Issuer mismatch": the discovery document names a literal {tenantid}), so the request
+  uses endpoints only and we check the issuer ourselves; one RedirectUriReceiverActivity in the merged manifest, scheme msauth,
+  host the package, path the hash, no `org.tasks` scheme left; failure classes (admin approval needed / declined / cancelled /
+  network / other) from Microsoft's AADSTS reference; "What to tell your IT admin" screen with share and copy buttons and a link
+  to https://mr-biz.uk/4tasks/admin/#microsoft; Graph 403 and mailbox errors in plain words (a guess, unverified); the app says so
+  and never calls Microsoft while the client ID is a placeholder. UNVERIFIED without the real ID: any real sign-in, Entra
+  accepting the redirect string, real refusal texts, tenant refresh through /common.
+- **Google (branch phase-c-google, merged):** the flow is Android's account manager (newChooseAccountIntent + getAuthToken with
+  `oauth2:` + the Tasks scope), no Play Services library, no new permission (GET_ACCOUNTS stays removed). RISK 1 is NOT proven:
+  Google's GoogleAuthUtil is deprecated and the migration guide points to AuthorizationClient, which needs play-services-auth
+  (an owner decision, since the privacy page and Data safety say no such SDK); no shutdown date for the `oauth2:` token type is
+  published. A debug-only token probe (GoogleTokenProbeActivity, tag 4TasksProbe) proves it the moment the Android client exists.
+  Failure kinds (cancelled, no account, admin-blocked, needs sign-in, not a test user, not set up, unavailable); the Testing-mode
+  7-day expiry shows as "needs sign-in"; "What to tell your Workspace admin" screen (Google's own admin path, cited).
+- **Merged to main** (conflicts only in FlavorModule and NoCallHomeTest allow-lists). versionCode 151206, versionName 0.1.1-beta
+  (151204 was the first internal upload; the toml says "increment by 2"). Tests: app 704 (1 skipped, pre-existing), kmp 1030,
+  data 73, all green. Signed AAB and APK (key 92:C5:1B:99:…): checked.
+- **Drafts (not in play/site/, so a copy of that folder cannot publish them):** play/drafts/sync-b-c/{admin/index.html,
+  privacy.html, manual.html, index.html}; play/DATA_SAFETY.md and PERMISSIONS.md amended. They move to play/site/4tasks/ on
+  the owner's "publish", with the client IDs filled in.
