@@ -56,4 +56,8 @@ data class GoogleTasksAccountState(
 
     val isUnauthorized: Boolean
         get() = account?.isUnauthorized() == true
+
+    /** What the last sync's stored error means (needs sign-in, blocked by an admin, ...). */
+    val googleState: org.tasks.googleapis.GoogleAccountState
+        get() = org.tasks.googleapis.GoogleAccountState.fromError(account?.error)
 }
