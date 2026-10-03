@@ -54,8 +54,13 @@ class GoogleTaskSynchronizer(
         Logger.d(TAG) { "$account: start sync" }
         try {
             synchronize(account, invoker)
+        } catch (e: GoogleAuthFailureException) {
+            // no token: classified where it happened (SYNC-PLAN 3, 3b); the app turns the stored code into words
+            Logger.e(TAG, e) { e.message.orEmpty() }
+            account.error = e.failure.stored()
         } catch (e: GoogleJsonResponseException) {
-            account.error = e.message
+            val failure = GoogleFailureClassifier.fromException(e)
+            account.error = if (failure == GoogleFailure.Other) e.message else failure.stored()
             when (e.statusCode) {
                 401, 503 -> Logger.e(TAG, e) { e.message.orEmpty() }
                 else -> reporting.reportException(e)
@@ -65,7 +70,8 @@ class GoogleTaskSynchronizer(
             reporting.reportException(e)
         } catch (e: IOException) {
             Logger.e(TAG, e) { e.message.orEmpty() }
-            account.error = e.message
+            val failure = GoogleFailureClassifier.fromException(e)
+            account.error = if (failure == GoogleFailure.Unavailable) failure.stored() else e.message
         } catch (e: Exception) {
             account.error = e.message
             reporting.reportException(e)

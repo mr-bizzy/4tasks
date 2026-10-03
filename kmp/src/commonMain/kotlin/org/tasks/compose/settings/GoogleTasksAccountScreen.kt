@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Login
 import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.Refresh
@@ -41,6 +42,12 @@ fun GoogleTasksAccountScreen(
     onSignIn: () -> Unit,
     onDelete: () -> Unit,
     signInTitle: StringResource = Res.string.sign_in_with_google,
+    /** Replaces "Authentication required" under the sign-in row, e.g. to say testers must sign in every week. */
+    unauthorizedSummary: String? = null,
+    /** When set, a row under the error opens "What to tell your Workspace admin" (the organisation blocked the app). */
+    adminHelpTitle: String? = null,
+    adminHelpSummary: String? = null,
+    onAdminHelp: (() -> Unit)? = null,
 ) {
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
 
@@ -60,7 +67,8 @@ fun GoogleTasksAccountScreen(
                     SettingsItemCard {
                         PreferenceRow(
                             title = stringResource(signInTitle),
-                            summary = stringResource(Res.string.authentication_required),
+                            summary = unauthorizedSummary ?: stringResource(Res.string.authentication_required),
+                            summaryMaxLines = 5,
                             icon = Icons.Outlined.Login,
                             onClick = onSignIn,
                         )
@@ -71,6 +79,22 @@ fun GoogleTasksAccountScreen(
                     error = error,
                     modifier = Modifier.padding(horizontal = SettingsContentPadding),
                 )
+                if (onAdminHelp != null && adminHelpTitle != null) {
+                    Spacer(modifier = Modifier.height(SettingsContentPadding))
+                    Column(
+                        modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                    ) {
+                        SettingsItemCard {
+                            PreferenceRow(
+                                title = adminHelpTitle,
+                                summary = adminHelpSummary,
+                                summaryMaxLines = 3,
+                                icon = Icons.Outlined.Info,
+                                onClick = onAdminHelp,
+                            )
+                        }
+                    }
+                }
             }
             Spacer(modifier = Modifier.height(SettingsContentPadding))
         }

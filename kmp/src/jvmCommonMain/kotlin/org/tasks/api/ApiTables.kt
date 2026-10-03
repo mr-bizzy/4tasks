@@ -108,7 +108,8 @@ internal object AccountErrors {
         }
         val account = CaldavAccount(error = stored)
         return when {
-            account.isLoggedOut() -> Accounts.ERROR_UNAUTHORIZED
+            account.isLoggedOut() || org.tasks.googleapis.GoogleFailure.fromStored(stored) == org.tasks.googleapis.GoogleFailure.NeedsSignIn ->
+                Accounts.ERROR_UNAUTHORIZED
             account.isPaymentRequired() || stored.isPurchaseTokenInUse() ->
                 Accounts.ERROR_PAYMENT_REQUIRED
             account.isTosRequired() -> Accounts.ERROR_TERMS_REQUIRED

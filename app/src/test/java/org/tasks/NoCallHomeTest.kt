@@ -24,7 +24,9 @@ class NoCallHomeTest {
     )
 
     private val networkCapable = Regex(
-        "okhttp3|HttpURLConnection|\\.openConnection\\(|OkHttpClientFactory|HttpClientFactory|java\\.net\\.URL\\b|\\bURL\\(|ktor|\\bHttpClient\\b"
+        // NetHttpTransport is Google's HTTP client library (Google Tasks, and Drive which is off): it makes the call without any
+        // of the other names, so it is listed too.
+        "okhttp3|HttpURLConnection|\\.openConnection\\(|OkHttpClientFactory|HttpClientFactory|java\\.net\\.URL\\b|\\bURL\\(|ktor|\\bHttpClient\\b|NetHttpTransport"
     )
     private val fixedHost = Regex("https?://([A-Za-z0-9.-]+\\.[A-Za-z]{2,})")
 
@@ -57,7 +59,7 @@ class NoCallHomeTest {
         "kmp/src/jvmCommonMain/kotlin/org/tasks/sse/SseClient.kt" to "Tasks.org account: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/etebase/EtebaseClientProvider.kt" to "Etebase: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/etebase/OkHttpBridge.kt" to "Etebase: off",
-        "kmp/src/jvmCommonMain/kotlin/org/tasks/googleapis/ProxyAuthProvider.kt" to "Google Tasks: off until its phase",
+        "kmp/src/jvmCommonMain/kotlin/org/tasks/googleapis/ProxyAuthProvider.kt" to "Tasks.org's Google proxy, desktop target only: not in the Android app",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/http/MicrosoftGraphClient.kt" to "Microsoft: off until its phase",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftService.kt" to "Microsoft: off until its phase",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftSynchronizer.kt" to "Microsoft: off until its phase",
@@ -67,6 +69,11 @@ class NoCallHomeTest {
         "app/src/main/java/org/tasks/location/GeocoderNominatim.kt" to "location: off",
         "app/src/main/java/org/tasks/location/PlaceSearchGoogle.kt" to "location: off",
         "app/src/main/java/org/tasks/location/PlaceSearchMapbox.kt" to "location: off",
+        // Google Tasks (phase C, ON): the user's own Google account. Google's client library (NetHttpTransport) calls
+        // tasks.googleapis.com with a token the phone's account manager gave for the Tasks scope only; nothing goes to us.
+        "kmp/src/jvmCommonMain/kotlin/org/tasks/googleapis/GtasksInvoker.kt" to "Google Tasks, the user's own Google account",
+        // Google Drive backup: OFF (no Drive scope is requested, no Drive screen is in the manifest). The class is still compiled.
+        "app/src/main/java/org/tasks/drive/DriveInvoker.kt" to "Google Drive backup: off, never reachable",
         // Switched off in code (see the last test): scheduleBlogFeedCheck() only cancels, the worker does nothing.
         "kmp/src/jvmCommonMain/kotlin/org/tasks/feed/BlogFeedChecker.kt" to "Tasks.org blog: DISABLED, see the last test",
     )
@@ -76,6 +83,10 @@ class NoCallHomeTest {
         "tasks.org" to "BlogFeedChecker: disabled",
         "api.mapbox.com" to "location: off",
         "graph.microsoft.com" to "Microsoft: off until its phase",
+        // Google Tasks (phase C): the only Google hosts the flow uses. The library names them itself; they are listed so that
+        // naming one in code is a decision. The token comes from the phone's account manager (no host of ours or Google's is named).
+        "tasks.googleapis.com" to "Google Tasks API: the user's own account",
+        "www.googleapis.com" to "Google OAuth scope URL and Tasks API discovery: the user's own account",
         "www.apache.org" to "a licence URL in a debug helper's text",
     )
 
