@@ -8,7 +8,7 @@
     <string name="trust_certificate_issued_for">Issued for</string>
     <string name="trust_certificate_press_back_to_reject">Press Back again to reject certificate</string>
     <string name="trust_certificate_reject">Reject</string>
-    <string name="trust_certificate_reset_info">You can reset all custom certificates in the app settings.</string>
+    <string name="trust_certificate_reset_info">To forget the certificates you trust, turn off Allow self-signed certificates in Settings, Advanced.</string>
     <string name="trust_certificate_unknown_certificate_found">%1$s has encountered an unknown certificate. Do you want to trust it?</string>
     <string name="trust_certificate_validity_period">Validity period</string>
     <string name="trust_certificate_validity_period_value">%1$s – %2$s (will not be enforced)</string>

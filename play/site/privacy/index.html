@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   THE SOURCE OF THE 4TASKS PRIVACY POLICY. Proposed address: https://mr-biz.uk/4tasks/privacy/
-  DRAFT 2026-10-02, written from the 0.1.0-beta code (see play/PRIVACY_POLICY.md). NOT PUBLISHED:
+  DRAFT 2026-10-03, written from the 0.1.0-beta code with CalDAV sync (see play/PRIVACY_POLICY.md). NOT PUBLISHED:
   nothing is copied to ~/Documents/mr-biz-uk without the owner's explicit "publish".
   The page must describe the build that is submitted, no more and no less.
   Styling copied from the 4Dictate policy page so the pages read as one developer's.
@@ -120,56 +120,65 @@
 
         <h2>The short version</h2>
         <ul>
-            <li>4Tasks is a to-do and reminder app. <strong>Your tasks stay on your phone.</strong></li>
-            <li><strong>4Tasks has no internet permission.</strong> It cannot send anything over the network.</li>
-            <li>There is <strong>no account, no analytics, no advertising, no crash reporting and no tracking</strong>. We run no server and receive none of your data.</li>
-            <li>Android's cloud backup and phone-to-phone transfer are <strong>switched off</strong> for 4Tasks.</li>
-            <li>Other apps can use 4Tasks only on this phone, and only as described in section 4.</li>
+            <li>4Tasks is a to-do and reminder app. <strong>Your tasks stay on your phone</strong> unless you connect a sync account.</li>
+            <li>If you connect a <strong>CalDAV account</strong>, your tasks sync <strong>directly between your phone and the server you chose</strong>. We run no server and receive none of your data.</li>
+            <li>There is <strong>no account with us, no analytics, no advertising, no crash reporting and no tracking</strong>.</li>
+            <li>Android's cloud backup and phone-to-phone transfer are <strong>switched off</strong> for 4Tasks, and 4Tasks' own backup file <strong>never contains your sync passwords</strong>.</li>
+            <li>Other apps can use 4Tasks only on this phone, and only as described in section 5.</li>
         </ul>
 
         <h2>1. What 4Tasks stores, and where</h2>
-        <p>Your lists, tasks, notes, due dates, reminders, tags and settings are stored in 4Tasks' private storage on your phone. Nothing else is stored. Uninstalling 4Tasks, or Android's <em>Settings &rarr; Apps &rarr; 4Tasks &rarr; Storage &rarr; Clear storage</em>, deletes it.</p>
+        <p>Your lists, tasks, notes, due dates, reminders, tags and settings are stored in 4Tasks' private storage on your phone. If you connect a sync account, 4Tasks also stores that account's address and user name, and its password or token, which is <strong>encrypted with a key held in the Android Keystore</strong> before it is saved. Nothing else is stored. Uninstalling 4Tasks, or Android's <em>Settings, Apps, 4Tasks, Storage, Clear storage</em>, deletes it all.</p>
 
-        <h2>2. Backups you make yourself</h2>
-        <p><em>Settings &rarr; Backups</em> can write a backup file, to a folder you choose, and read one back. 4Tasks does not upload it anywhere. Where that file goes afterwards (a cloud drive you sync the folder to, for example) is your choice, and that service's policy applies.</p>
+        <h2>2. Sync with a CalDAV server</h2>
+        <p>CalDAV is an open standard for tasks and calendars, offered by many services and by servers people run themselves. When you add a CalDAV account in <em>Settings, Add account</em>, 4Tasks connects to the address you typed.</p>
+        <ul>
+            <li><strong>What is sent:</strong> your tasks and lists (titles, notes, due dates, reminders, repeat rules, priority, tags, list names), and your user name and password, to that server only.</li>
+            <li><strong>Where it goes:</strong> only to the server you entered. It is <strong>not</strong> sent to us or to anyone else. That server's own privacy policy and security apply to what it keeps.</li>
+            <li><strong>How:</strong> over an encrypted (HTTPS) connection. Plain <code>http://</code> addresses are refused. By default only certificates your phone trusts are accepted. A server you run yourself with a self-signed certificate works only if you turn on <em>Settings, Advanced, Allow self-signed certificates</em>; you are then asked to trust that one certificate, and its name must still match the address. Turning the switch off forgets the certificates you trusted.</li>
+            <li><strong>When:</strong> while the app is in use, after changes, and from time to time in the background. You can remove the account at any time in <em>Settings</em>; syncing stops. Tasks already on the server stay there until you delete them there.</li>
+        </ul>
 
-        <h2>3. Permissions, and why</h2>
+        <h2>3. Backups you make yourself</h2>
+        <p><em>Settings, Backups</em> can write a backup file, to a folder you choose, and read one back. 4Tasks does not upload it anywhere. The file <strong>does not contain sync passwords or tokens</strong>: after a restore, a sync account comes back and asks you to sign in again. Where the file goes afterwards (a cloud drive you sync the folder to, for example) is your choice, and that service's policy applies.</p>
+
+        <h2>4. Permissions, and why</h2>
         <ul>
             <li><strong>Notifications:</strong> to show a reminder when it is due.</li>
             <li><strong>Alarms and reminders (exact alarms):</strong> so a reminder comes at the minute you set, not minutes late. If you do not allow it, 4Tasks still sets the reminder and Android may deliver it a little late.</li>
             <li><strong>Run at start-up:</strong> to set your reminders again after the phone restarts.</li>
             <li><strong>Keep the device awake, vibrate:</strong> to show a reminder, and to vibrate if you chose that.</li>
+            <li><strong>Internet and network state:</strong> only to sync with the servers you connect, and to know whether the phone is online.</li>
         </ul>
-        <p>4Tasks does not ask for the internet, your location, contacts, calendar, camera, microphone or storage. It has no microphone button; voice input is 4Dictate's job.</p>
+        <p>4Tasks does not ask for your location, contacts, calendar, camera, microphone or storage. It has no microphone button; voice input is 4Dictate's job.</p>
 
-        <h2>4. Other apps (4Link)</h2>
+        <h2>5. Other apps (4Link)</h2>
         <p>4Tasks has one door for other apps on the same phone, called 4Link. It never shows anything on its own and works only on this phone.</p>
         <ul>
             <li><strong>Our own apps</strong> (for example 4Dictate) are recognised by their signing certificate. They can add a task, list tasks, mark a task done, and list your lists. Anything that changes something is confirmed by you in that app before it is sent.</li>
-            <li><strong>Any other app</strong> can use 4Tasks only after you allow it on a screen that names the app, shows its certificate fingerprint and lists, in plain words, each thing it asks to do and the details it would receive. You choose what to allow. You can remove an app at any time in <em>Settings &rarr; Apps allowed to use 4Tasks</em>, which also shows what each app did and when.</li>
+            <li><strong>Any other app</strong> can use 4Tasks only after you allow it on a screen that names the app, shows its certificate fingerprint and lists, in plain words, each thing it asks to do and the details it would receive. You choose what to allow. You can remove an app at any time in <em>Settings, Apps allowed to use 4Tasks</em>, which also shows what each app did and when.</li>
             <li>There is <strong>no delete function</strong>: no app can delete a task or a list through 4Link.</li>
             <li>4Tasks keeps a log of the last 500 calls (time, app, function, result). It never records the details of a task. The log stays on your phone.</li>
         </ul>
-        <p>When you allow an app, that app receives what the allowed functions return (for example, the titles of your tasks). What it does with them is governed by that app's own policy.</p>
+        <p>When you allow an app, that app receives what the allowed functions return (for example, the titles of your tasks). What it does with them is governed by that app's own policy. Tasks you add or complete through 4Link sync like any other change.</p>
 
-        <h2>5. Links</h2>
-        <p>Some screens open a web page in your browser (this policy, the source code). Your browser, not 4Tasks, connects to the site.</p>
+        <h2>6. Links</h2>
+        <p>Some screens open a web page in your browser (this policy, the source code, help pages). Your browser, not 4Tasks, connects to the site.</p>
 
-        <h2>6. Open source, and where it comes from</h2>
-        <p>4Tasks is free software under the GNU General Public License v3, based on <a href="https://github.com/tasks/tasks">Tasks.org</a>. The source is at <a href="https://github.com/mr-bizzy/4tasks">github.com/mr-bizzy/4tasks</a>. It has <strong>removed</strong> Tasks.org's accounts and sync, Google and Firebase services, analytics, crash reporting, payments, maps, location and calendar features.</p>
+        <h2>7. Open source, and where it comes from</h2>
+        <p>4Tasks is free software under the GNU General Public License v3, based on <strong>Tasks.org</strong> (<a href="https://github.com/tasks/tasks">https://github.com/tasks/tasks</a>). The source is at <a href="https://github.com/mr-bizzy/4tasks.">https://github.com/mr-bizzy/4tasks.</a> It has <strong>removed</strong> Tasks.org's own account service, Google and Firebase services, analytics, crash reporting, payments, maps, location and calendar features. Sync with Microsoft To Do and Google Tasks is added in a later release; this policy will say so before it ships.</p>
 
-        <h2>7. Children</h2>
+        <h2>8. Children</h2>
         <p>4Tasks is not directed at children and collects no personal information from anyone.</p>
 
-        <h2 id="delete">8. Deleting your data</h2>
-        <p>Everything is on your phone. Delete a task in the app, or clear 4Tasks' storage, or uninstall it. Nothing is held anywhere else, so there is nothing to ask us to delete.</p>
+        <h2 id="delete">9. Deleting your data</h2>
+        <p>On your phone: delete a task in the app, remove a sync account, clear 4Tasks' storage, or uninstall it. Data that has been synced lives on the server you chose; delete it there. We hold nothing, so there is nothing to ask us to delete.</p>
 
-        <h2>9. Changes</h2>
+        <h2>10. Changes</h2>
         <p>If this policy changes, the new version will be published on this page with a new effective date.</p>
 
-        <h2>10. Contact &amp; Support</h2>
-        <p>4Tasks is developed by John Paul Bizeray, trading as Mr-Bizzy, United Kingdom.<br>
-        Support Email: <a href="mailto:support@mr-biz.uk">support@mr-biz.uk</a></p>
+        <h2>11. Contact</h2>
+        <p>John Paul Bizeray, trading as Mr-Bizzy, United Kingdom, <a href="mailto:support@mr-biz.uk">support@mr-biz.uk</a></p>
 
         <footer>&copy; 2026 Mr-Bizzy, United Kingdom. 4Tasks is developed by Mr-Bizzy.</footer>
     </div>

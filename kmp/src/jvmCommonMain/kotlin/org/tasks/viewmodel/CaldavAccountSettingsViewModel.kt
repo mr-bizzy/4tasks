@@ -36,6 +36,7 @@ import tasks.kmp.generated.resources.metadata_stored_on_account
 import tasks.kmp.generated.resources.metadata_stored_on_tasks_org
 import tasks.kmp.generated.resources.network_error
 import tasks.kmp.generated.resources.error_certificate_hostname
+import tasks.kmp.generated.resources.error_cleartext_not_allowed
 import tasks.kmp.generated.resources.error_certificate_not_trusted
 import tasks.kmp.generated.resources.password_required
 import tasks.kmp.generated.resources.sync_metadata_summary
@@ -44,6 +45,7 @@ import tasks.kmp.generated.resources.url_invalid_scheme
 import tasks.kmp.generated.resources.url_required
 import tasks.kmp.generated.resources.username_required
 import java.net.ConnectException
+import java.net.UnknownServiceException
 import java.security.cert.CertificateException
 import javax.net.ssl.SSLException
 import javax.net.ssl.SSLPeerUnverifiedException
@@ -469,6 +471,8 @@ open class CaldavAccountSettingsViewModel(
                     is DisplayableException -> getString(e.resource)
                     is ConnectException -> getString(Res.string.network_error)
                     else -> when {
+                        e.hasCause<UnknownServiceException>() && e.message.orEmpty().contains("CLEARTEXT", ignoreCase = true) ->
+                            getString(Res.string.error_cleartext_not_allowed)
                         e.hasCause<SSLPeerUnverifiedException>() -> getString(Res.string.error_certificate_hostname)
                         e.hasCause<SSLException>() || e.hasCause<CertificateException>() ->
                             getString(Res.string.error_certificate_not_trusted)

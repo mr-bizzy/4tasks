@@ -456,7 +456,7 @@ File %1$s contained %2$s.\n\n
   <string name="about_third_party">Notices and third-party licences</string>
   <string name="about_privacy">Privacy</string>
   <string name="about_privacy_policy">Privacy policy</string>
-  <string name="about_privacy_summary">4Tasks has no network permission. Your tasks stay on this phone.</string>
+  <string name="about_privacy_summary">No account with us. Your tasks stay on this phone unless you connect a sync account, and then they go only to that server.</string>
   <string name="allow_self_signed_certs">Allow self-signed certificates</string>
   <string name="allow_self_signed_certs_summary">For a server you run yourself whose certificate your phone does not trust. When you connect, you are asked to trust that one certificate. It must carry the name you connect by. Turning this off forgets the certificates you trusted.</string>
   <string name="advanced_security">Security</string>

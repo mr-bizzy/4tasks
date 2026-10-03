@@ -240,8 +240,9 @@
     <string name="username_required">Username required</string>
     <string name="invalid_username_or_password">Invalid username or password</string>
     <string name="network_error">Could not connect</string>
-    <string name="error_certificate_not_trusted">This phone does not trust the server\'s certificate. If you run the server yourself, you can turn on Settings, Advanced, Allow self-signed certificates, then try again.</string>
-    <string name="error_certificate_hostname">The server\'s certificate does not carry the name you connected by. Fix the certificate to include that name, or connect by a name it carries.</string>
+    <string name="error_certificate_not_trusted">This phone does not trust the server's certificate. If you run the server yourself, you can turn on Settings, Advanced, Allow self-signed certificates, then try again.</string>
+    <string name="error_cleartext_not_allowed">Plain http:// connections are not allowed. Use an https:// address.</string>
+    <string name="error_certificate_hostname">The server's certificate does not carry the name you connected by. Fix the certificate to include that name, or connect by a name it carries.</string>
     <string name="error_adding_account">Error: %1$s</string>
     <string name="caldav_server_type">Server type</string>
     <string name="caldav_server_unknown">Unknown</string>

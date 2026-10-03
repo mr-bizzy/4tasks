@@ -4,7 +4,10 @@ A private to-do and reminder app for Android that works with
 [4Dictate](https://mr-biz.uk/): say "remind me tomorrow at 3 to get back to Sandra about her
 reservation" and it is a task, with its due time and reminder.
 
-- **No account and no internet permission.** Your tasks stay on your phone.
+- **No account with us.** Your tasks stay on your phone. Optional **CalDAV sync** goes only to the
+  server you enter, over https; self-signed certificates are behind an Advanced switch, off by
+  default, and a certificate for the wrong hostname is always refused. Sync passwords are stored
+  encrypted and are left out of backup files.
 - No analytics, advertising, crash reporting or payments.
 - Reminders at the minute you set (allow *Alarms & reminders*); if you do not, 4Tasks still sets
   an inexact alarm, so a reminder always comes.
@@ -20,8 +23,8 @@ the Tasks.org project. Tasks.org's own README is kept in
 [docs/TASKS_ORG_README.md](docs/TASKS_ORG_README.md); its copyright notices are kept in the source.
 
 What changed: its own name, icon and application id (`uk.mr_biz.fourtasks`); no Google, Firebase,
-Play Billing, analytics or crash reporting; no network, location or calendar permission; accounts
-and sync switched off (the CalDAV code is kept, dormant, for a later version); Tasks.org's
+Play Billing, analytics or crash reporting; no location or calendar permission; Tasks.org's own account, Etebase, OpenTasks, Google Tasks
+and Microsoft sync switched off (CalDAV sync stays on; Microsoft and Google come later); Tasks.org's
 exported content providers and AppFunctions service removed; Android auto-backup off; a 4Link
 door; and a different About screen. The Kotlin package stays `org.tasks`, so upstream changes
 merge cleanly. The decisions are in [docs/PHASE0-PLAN.md](docs/PHASE0-PLAN.md) and
