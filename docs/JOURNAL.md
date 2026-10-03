@@ -159,3 +159,18 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   still the neutral surface (a resource cannot know the setting), so a flash is possible only in that case.
 - **Group style** is one switch (tasklist/FamilyLayout.kt): PLAIN, LABEL_ABOVE_CARD (shipped for now), TITLE_IN_CARD
   (4Zones' way, built, screenshots made). The owner chooses the family standard.
+
+## 2026-10-03 — Settings in the family's structure (owner's order after the side-by-side of the three Settings pages)
+
+- **Tabs:** Settings is the "← Settings" bar, then a scrollable tab row (Accounts, Tasks, Look, Backup, About) over a pager.
+  Each page is a column of cards; a card is a title and a one-line explanation and opens the detail screen it names (4Dictate's
+  SettingsLink). Accounts: local lists, each account, add account, apps allowed to use 4Tasks. Tasks: task defaults, task list
+  options, edit screen options, date and time, notifications. Look: look and feel, navigation drawer, widgets. Backup:
+  backups, advanced. About. The tab you were on is kept when you come back from a detail screen.
+- **Numbers (4Dictate's SettingsActivity Section / SettingsLink, MainPager):** Card() with its stock colours and shape;
+  14 dp inside; title titleSmall; explanation bodySmall in onSurfaceVariant; cards 8 dp apart; tabs titleSmall with the
+  stock primary indicator; no leading row icons. Measured on the emulator (density 420): card 64.4 dp high (14 + 14 + the two
+  text lines), 8.0 dp between cards; card colour = the dynamic surfaceContainerHighest; page colour = the scheme's surface.
+  Every detail screen uses the same shared card and row, so they follow it too. Slider titles are titleSmall.
+- **Not done and why:** 4Dictate's Settings could not be opened on the emulator without accepting its accessibility
+  disclosure, which is not mine to accept; the comparison is by its code and the measured numbers.

@@ -54,6 +54,9 @@ fun PreferenceRow(
     val errorColor = MaterialTheme.colorScheme.error
     val warningColor = WarningColor
 
+    // The family's card: 14 dp inside, the title at titleSmall, the one-line explanation at bodySmall in
+    // onSurfaceVariant. No leading icon (icon and iconDrawable are accepted and ignored); a leading
+    // composable is kept for the colour swatches that carry information.
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -64,45 +67,24 @@ fun PreferenceRow(
             .alpha(if (enabled) 1f else 0.38f),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        when {
-            leading != null -> {
-                leading()
-            }
-            icon != null -> {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = SettingsContentPadding, top = SettingsRowPadding, bottom = SettingsRowPadding)
-                        .size(SettingsIconSize),
-                    tint = iconTint ?: defaultTint
-                )
-            }
-            iconDrawable != null -> {
-                Icon(
-                    painter = painterResource(iconDrawable),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(start = SettingsContentPadding, top = SettingsRowPadding, bottom = SettingsRowPadding)
-                        .size(SettingsIconSize),
-                    tint = iconTint ?: defaultTint
-                )
-            }
-            indent -> {
-                Spacer(modifier = Modifier.width(SettingsContentPadding + SettingsIconSize))
-            }
+        if (leading != null) {
+            leading()
+            Spacer(modifier = Modifier.width(SettingsCardPadding))
         }
-
-        Spacer(modifier = Modifier.width(SettingsContentPadding))
 
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(end = SettingsContentPadding, top = SettingsRowPadding, bottom = SettingsRowPadding)
+                .padding(
+                    start = if (leading != null) 0.dp else SettingsCardPadding,
+                    end = SettingsCardPadding,
+                    top = SettingsCardPadding,
+                    bottom = SettingsCardPadding,
+                )
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = titleMaxLines,
                 overflow = TextOverflow.Ellipsis
@@ -137,7 +119,7 @@ fun PreferenceRow(
                     imageVector = trailingIcon,
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(end = SettingsContentPadding)
+                        .padding(end = SettingsCardPadding)
                         .size(SettingsIconSize),
                     tint = trailingTint
                 )
@@ -173,7 +155,7 @@ fun SwitchPreferenceRow(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 enabled = enabled,
-                modifier = Modifier.padding(end = SettingsContentPadding),
+                modifier = Modifier.padding(end = SettingsCardPadding),
             )
         },
     )

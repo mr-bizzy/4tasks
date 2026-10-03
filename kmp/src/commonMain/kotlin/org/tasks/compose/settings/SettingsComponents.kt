@@ -42,8 +42,9 @@ import tasks.kmp.generated.resources.icon
 
 val SettingsCardRadius = 20.dp
 val SettingsCardInnerRadius = 4.dp
-val SettingsCardGap = 2.dp
+val SettingsCardGap = 8.dp
 val SettingsRowPadding = 20.dp
+val SettingsCardPadding = 14.dp
 val SettingsContentPadding = 16.dp
 val SettingsIconSize = 24.dp
 val SettingsSectionGap = 8.dp
@@ -61,25 +62,19 @@ enum class CardPosition {
     }
 }
 
+/**
+ * A settings card, as in 4Dictate and 4Zones: the stock Material 3 filled Card, with its default colours,
+ * shape and no elevation of its own. [position] is kept for the callers that still pass it; every card is a
+ * whole card now.
+ */
 @Composable
+@Suppress("UNUSED_PARAMETER")
 fun SettingsItemCard(
     position: CardPosition = CardPosition.Only,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val shape = when (position) {
-        CardPosition.Only -> RoundedCornerShape(SettingsCardRadius)
-        CardPosition.First -> RoundedCornerShape(topStart = SettingsCardRadius, topEnd = SettingsCardRadius, bottomStart = SettingsCardInnerRadius, bottomEnd = SettingsCardInnerRadius)
-        CardPosition.Middle -> RoundedCornerShape(SettingsCardInnerRadius)
-        CardPosition.Last -> RoundedCornerShape(topStart = SettingsCardInnerRadius, topEnd = SettingsCardInnerRadius, bottomStart = SettingsCardRadius, bottomEnd = SettingsCardRadius)
-    }
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = shape,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        ),
-    ) {
+    Card(modifier = modifier.fillMaxWidth()) {
         content()
     }
 }

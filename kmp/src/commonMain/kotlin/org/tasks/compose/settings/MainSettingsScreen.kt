@@ -9,26 +9,42 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.BugReport
-import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material.icons.outlined.SdStorage
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material.icons.outlined.Laptop
-import androidx.compose.material.icons.outlined.Terminal
-import androidx.compose.material.icons.outlined.Widgets
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
+import kotlinx.coroutines.launch
+import tasks.kmp.generated.resources.add_account_summary
+import tasks.kmp.generated.resources.advanced_summary
+import tasks.kmp.generated.resources.about_summary
+import tasks.kmp.generated.resources.backups_summary
+import tasks.kmp.generated.resources.date_and_time_summary
+import tasks.kmp.generated.resources.edit_screen_summary
+import tasks.kmp.generated.resources.local_lists_summary
+import tasks.kmp.generated.resources.look_and_feel_summary
+import tasks.kmp.generated.resources.navigation_drawer_summary
+import tasks.kmp.generated.resources.notifications_summary
+import tasks.kmp.generated.resources.settings_tab_accounts
+import tasks.kmp.generated.resources.settings_tab_backup
+import tasks.kmp.generated.resources.settings_tab_look
+import tasks.kmp.generated.resources.settings_tab_tasks
+import tasks.kmp.generated.resources.task_defaults_summary
+import tasks.kmp.generated.resources.task_list_options_summary
+import tasks.kmp.generated.resources.widget_settings_summary
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.data.composeIcon
@@ -126,6 +142,10 @@ data class OpenTaskAccountSettingsPane(
     override val titleRes: StringResource = Res.string.settings
 }
 
+/**
+ * Settings, as in 4Dictate and 4Zones: a scrollable row of tabs, each page a column of cards, a card being a
+ * title and a one-line explanation, with no leading icon. A card opens the detail screen it names.
+ */
 @Composable
 fun MainSettingsScreen(
     accounts: List<CaldavAccount>,
@@ -147,262 +167,238 @@ fun MainSettingsScreen(
     onConnectedAppsClick: (() -> Unit)? = null,
     bottomContent: @Composable () -> Unit = {},
 ) {
+    val tabNames = listOf(
+        stringResource(Res.string.settings_tab_accounts),
+        stringResource(Res.string.settings_tab_tasks),
+        stringResource(Res.string.settings_tab_look),
+        stringResource(Res.string.settings_tab_backup),
+        stringResource(Res.string.about),
+    )
+    // The tab the user was on is kept, so coming back from a detail screen returns to it
+    var savedTab by rememberSaveable { mutableIntStateOf(0) }
+    val pagerState = rememberPagerState(initialPage = savedTab) { tabNames.size }
+    val scope = rememberCoroutineScope()
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { savedTab = it }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .verticalScroll(rememberScrollState())
+            .background(MaterialTheme.colorScheme.surface),
     ) {
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        // Pro/tasks.org card
-        if (proCardState != null) {
-            AccountSettingsCard(
-                state = proCardState,
-                onClick = onProCardClick,
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                environmentLabel = environmentLabel,
-            )
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-        }
-
-        // Accounts card group
-        val hasTasksOrg = proCardState is ProCardState.TasksOrgAccount
-        val addVisible = !hasTasksOrg && showAddAccount
-        if (accounts.isNotEmpty() || addVisible) {
-            val totalAccountItems = accounts.size + if (addVisible) 1 else 0
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-            ) {
-                accounts.forEachIndexed { index, account ->
-                    SettingsItemCard(
-                        position = CardPosition.forIndex(index, totalAccountItems),
-                    ) {
-                        AccountRow(
-                            account = account,
-                            onClick = { onAccountClick(account) },
-                        )
-                    }
-                }
-                if (addVisible) {
-                    SettingsItemCard(
-                        position = if (accounts.isEmpty()) CardPosition.Only else CardPosition.Last,
-                    ) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.add_account),
-                            icon = Icons.Outlined.Add,
-                            onClick = onAddAccountClick
-                        )
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-        }
-
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+        ScrollableTabRow(
+            selectedTabIndex = pagerState.currentPage,
+            edgePadding = SettingsContentPadding,
         ) {
-            if (showDesktopLinking) {
-                SettingsItemCard(position = CardPosition.First) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.link_desktop),
-                        summary = stringResource(Res.string.link_desktop_description),
-                        icon = Icons.Outlined.Laptop,
-                        onClick = onLinkDesktopClick,
-                    )
-                }
+            tabNames.forEachIndexed { index, name ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
+                    text = { Text(name, style = MaterialTheme.typography.titleSmall) },
+                )
             }
-            if (showWorksWith) {
-                SettingsItemCard(
-                    position = if (showDesktopLinking) CardPosition.Last else CardPosition.Only,
-                ) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.works_with_tasks),
-                        summary = stringResource(Res.string.works_with_tasks_description),
-                        icon = Icons.Outlined.Extension,
-                        onClick = { onSettingsClick(SettingsDestination.WorksWith) },
+        }
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.Top,
+        ) { page ->
+            SettingsPage(bottomContent) {
+                when (page) {
+                    0 -> AccountsPage(
+                        accounts = accounts,
+                        proCardState = proCardState,
+                        showAddAccount = showAddAccount,
+                        onAccountClick = onAccountClick,
+                        onAddAccountClick = onAddAccountClick,
+                        onConnectedAppsClick = onConnectedAppsClick,
                     )
+                    1 -> TasksPage(
+                        showNotifications = showNotifications,
+                        onSettingsClick = onSettingsClick,
+                    )
+                    2 -> LookPage(
+                        showWidgets = showWidgets,
+                        onSettingsClick = onSettingsClick,
+                    )
+                    3 -> BackupPage(
+                        showBackupWarning = showBackupWarning,
+                        showMcpServer = showMcpServer,
+                        onSettingsClick = onSettingsClick,
+                    )
+                    else -> AboutPage(isDebug = isDebug, onSettingsClick = onSettingsClick)
                 }
             }
         }
-        if (showWorksWith || showDesktopLinking) Spacer(modifier = Modifier.height(SettingsContentPadding))
-        if (onConnectedAppsClick != null) {
-            Column(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-                SettingsItemCard(position = CardPosition.Only) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.fourlink_apps),
-                        summary = stringResource(Res.string.fourlink_apps_summary),
-                        icon = Icons.Outlined.Extension,
-                        onClick = onConnectedAppsClick,
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(SettingsContentPadding))
-        }
+    }
+}
 
-        SettingsCategories(
-            showBackupWarning = showBackupWarning,
-            showWidgets = showWidgets,
-            showNotifications = showNotifications,
-            showMcpServer = showMcpServer,
-            isDebug = isDebug,
-            onSettingsClick = onSettingsClick,
-        )
-
+/** One page of the pager: a scrolling column of cards, 8 dp apart. */
+@Composable
+private fun SettingsPage(
+    bottomContent: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = SettingsContentPadding, vertical = SettingsContentPadding),
+        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+    ) {
+        content()
         bottomContent()
     }
 }
 
+/** A card that opens a detail screen: its title and a one-line explanation (4Dictate's SettingsLink). */
 @Composable
-fun SettingsCategories(
-    showBackupWarning: Boolean,
-    showWidgets: Boolean,
+private fun SettingsLinkCard(
+    title: String,
+    summary: String,
+    showWarning: Boolean = false,
+    onClick: () -> Unit,
+) {
+    SettingsItemCard {
+        PreferenceRow(
+            title = title,
+            summary = summary,
+            showWarning = showWarning,
+            onClick = onClick,
+        )
+    }
+}
+
+@Composable
+private fun AccountsPage(
+    accounts: List<CaldavAccount>,
+    proCardState: ProCardState?,
+    showAddAccount: Boolean,
+    onAccountClick: (CaldavAccount) -> Unit,
+    onAddAccountClick: () -> Unit,
+    onConnectedAppsClick: (() -> Unit)?,
+) {
+    accounts.forEach { account ->
+        SettingsItemCard { AccountRow(account = account, onClick = { onAccountClick(account) }) }
+    }
+    if (showAddAccount && proCardState !is ProCardState.TasksOrgAccount) {
+        SettingsLinkCard(
+            title = stringResource(Res.string.add_account),
+            summary = stringResource(Res.string.add_account_summary),
+            onClick = onAddAccountClick,
+        )
+    }
+    if (onConnectedAppsClick != null) {
+        SettingsLinkCard(
+            title = stringResource(Res.string.fourlink_apps),
+            summary = stringResource(Res.string.fourlink_apps_summary),
+            onClick = onConnectedAppsClick,
+        )
+    }
+}
+
+@Composable
+private fun TasksPage(
     showNotifications: Boolean,
-    showMcpServer: Boolean = false,
+    onSettingsClick: (SettingsDestination) -> Unit,
+) {
+    SettingsLinkCard(
+        title = stringResource(Res.string.task_defaults),
+        summary = stringResource(Res.string.task_defaults_summary),
+        onClick = { onSettingsClick(SettingsDestination.TaskDefaults) },
+    )
+    SettingsLinkCard(
+        title = stringResource(Res.string.task_list_options),
+        summary = stringResource(Res.string.task_list_options_summary),
+        onClick = { onSettingsClick(SettingsDestination.TaskList) },
+    )
+    SettingsLinkCard(
+        title = stringResource(Res.string.EPr_edit_screen_options),
+        summary = stringResource(Res.string.edit_screen_summary),
+        onClick = { onSettingsClick(SettingsDestination.TaskEdit) },
+    )
+    SettingsLinkCard(
+        title = stringResource(Res.string.date_and_time),
+        summary = stringResource(Res.string.date_and_time_summary),
+        onClick = { onSettingsClick(SettingsDestination.DateAndTime) },
+    )
+    if (showNotifications) {
+        SettingsLinkCard(
+            title = stringResource(Res.string.notifications),
+            summary = stringResource(Res.string.notifications_summary),
+            onClick = { onSettingsClick(SettingsDestination.Notifications) },
+        )
+    }
+}
+
+@Composable
+private fun LookPage(
+    showWidgets: Boolean,
+    onSettingsClick: (SettingsDestination) -> Unit,
+) {
+    SettingsLinkCard(
+        title = stringResource(Res.string.preferences_look_and_feel),
+        summary = stringResource(Res.string.look_and_feel_summary),
+        onClick = { onSettingsClick(SettingsDestination.LookAndFeel) },
+    )
+    SettingsLinkCard(
+        title = stringResource(Res.string.navigation_drawer),
+        summary = stringResource(Res.string.navigation_drawer_summary),
+        onClick = { onSettingsClick(SettingsDestination.NavigationDrawer) },
+    )
+    if (showWidgets) {
+        SettingsLinkCard(
+            title = stringResource(Res.string.widget_settings),
+            summary = stringResource(Res.string.widget_settings_summary),
+            onClick = { onSettingsClick(SettingsDestination.Widgets) },
+        )
+    }
+}
+
+@Composable
+private fun BackupPage(
+    showBackupWarning: Boolean,
+    showMcpServer: Boolean,
+    onSettingsClick: (SettingsDestination) -> Unit,
+) {
+    SettingsLinkCard(
+        title = stringResource(Res.string.backup_BPr_header),
+        summary = stringResource(Res.string.backups_summary),
+        showWarning = showBackupWarning,
+        onClick = { onSettingsClick(SettingsDestination.Backups) },
+    )
+    if (showMcpServer) {
+        SettingsLinkCard(
+            title = stringResource(Res.string.mcp_server),
+            summary = "",
+            onClick = { onSettingsClick(SettingsDestination.McpServer) },
+        )
+    }
+    SettingsLinkCard(
+        title = stringResource(Res.string.preferences_advanced),
+        summary = stringResource(Res.string.advanced_summary),
+        onClick = { onSettingsClick(SettingsDestination.Advanced) },
+    )
+}
+
+@Composable
+private fun AboutPage(
     isDebug: Boolean,
     onSettingsClick: (SettingsDestination) -> Unit,
 ) {
-    // Appearance island
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(
-            position = if (showNotifications) CardPosition.First else CardPosition.Only,
-        ) {
-            PreferenceRow(
-                title = stringResource(Res.string.preferences_look_and_feel),
-                icon = Icons.Outlined.Palette,
-                onClick = { onSettingsClick(SettingsDestination.LookAndFeel) }
-            )
-        }
-        if (showNotifications) {
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.notifications),
-                    icon = Icons.Outlined.Notifications,
-                    onClick = { onSettingsClick(SettingsDestination.Notifications) }
-                )
-            }
-        }
+    SettingsLinkCard(
+        title = stringResource(Res.string.about),
+        summary = stringResource(Res.string.about_summary),
+        onClick = { onSettingsClick(SettingsDestination.HelpAndFeedback) },
+    )
+    if (isDebug) {
+        SettingsLinkCard(
+            title = stringResource(Res.string.debug),
+            summary = "",
+            onClick = { onSettingsClick(SettingsDestination.Debug) },
+        )
     }
-
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-    // Tasks island
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(position = CardPosition.First) {
-            PreferenceRow(
-                title = stringResource(Res.string.task_defaults),
-                icon = Icons.Outlined.Add,
-                onClick = { onSettingsClick(SettingsDestination.TaskDefaults) }
-            )
-        }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.task_list_options),
-                icon = Icons.AutoMirrored.Outlined.List,
-                onClick = { onSettingsClick(SettingsDestination.TaskList) }
-            )
-        }
-        SettingsItemCard(position = CardPosition.Last) {
-            PreferenceRow(
-                title = stringResource(Res.string.EPr_edit_screen_options),
-                icon = Icons.Outlined.Edit,
-                onClick = { onSettingsClick(SettingsDestination.TaskEdit) }
-            )
-        }
-    }
-
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-    // Configuration island
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(position = CardPosition.First) {
-            PreferenceRow(
-                title = stringResource(Res.string.date_and_time),
-                icon = Icons.Outlined.Schedule,
-                onClick = { onSettingsClick(SettingsDestination.DateAndTime) }
-            )
-        }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.navigation_drawer),
-                icon = Icons.Outlined.Menu,
-                onClick = { onSettingsClick(SettingsDestination.NavigationDrawer) }
-            )
-        }
-        SettingsItemCard(position = CardPosition.Middle) {
-            PreferenceRow(
-                title = stringResource(Res.string.backup_BPr_header),
-                icon = Icons.Outlined.SdStorage,
-                showWarning = showBackupWarning,
-                onClick = { onSettingsClick(SettingsDestination.Backups) }
-            )
-        }
-        if (showWidgets) {
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.widget_settings),
-                    icon = Icons.Outlined.Widgets,
-                    onClick = { onSettingsClick(SettingsDestination.Widgets) }
-                )
-            }
-        }
-        if (showMcpServer) {
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.mcp_server),
-                    icon = Icons.Outlined.Terminal,
-                    onClick = { onSettingsClick(SettingsDestination.McpServer) }
-                )
-            }
-        }
-        SettingsItemCard(position = CardPosition.Last) {
-            PreferenceRow(
-                title = stringResource(Res.string.preferences_advanced),
-                icon = Icons.Outlined.Build,
-                onClick = { onSettingsClick(SettingsDestination.Advanced) }
-            )
-        }
-    }
-
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-    // About card group
-    Column(
-        modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-    ) {
-        SettingsItemCard(
-            position = if (isDebug) CardPosition.First else CardPosition.Only,
-        ) {
-            PreferenceRow(
-                title = stringResource(Res.string.about),
-                icon = Icons.Outlined.Info,
-                onClick = { onSettingsClick(SettingsDestination.HelpAndFeedback) }
-            )
-        }
-        if (isDebug) {
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.debug),
-                    icon = Icons.Outlined.BugReport,
-                    onClick = { onSettingsClick(SettingsDestination.Debug) }
-                )
-            }
-        }
-    }
-
-    Spacer(modifier = Modifier.height(SettingsContentPadding))
 }
 
 @Composable
@@ -410,13 +406,14 @@ private fun AccountRow(
     account: CaldavAccount,
     onClick: () -> Unit,
 ) {
-    val icon = account.composeIcon
     val title = account.composeTitle
     PreferenceRow(
         title = if (title != null) stringResource(title) else account.name.orEmpty(),
-        summary = account.name,
-        iconDrawable = icon?.drawable,
-        iconTint = if (icon?.tinted == true) null else Color.Unspecified,
+        summary = if (account.accountType == CaldavAccount.TYPE_LOCAL) {
+            stringResource(Res.string.local_lists_summary)
+        } else {
+            account.name
+        },
         showError = account.hasError,
         onClick = onClick,
     )

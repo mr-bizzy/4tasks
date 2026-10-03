@@ -207,14 +207,12 @@ fun TasksSettingsTheme(
         val isDark = MaterialTheme.colorScheme.surface.luminance() < 0.5f
         val scheme = MaterialTheme.colorScheme
         MaterialTheme(
+            // Cards are the stock Card colours. Under wallpaper colour the page is the scheme's own surface;
+            // only the family fallback lays its own page colour.
             colorScheme = if (LocalDynamicColors.current) {
-                // 4Dictate's way: the page is the scheme's surface and a card is surfaceVariant.
-                scheme.copy(surfaceContainerLowest = scheme.surfaceVariant)
+                scheme
             } else {
-                scheme.copy(
-                    surface = Color(if (isDark) SETTINGS_SURFACE_DARK else SETTINGS_SURFACE_LIGHT),
-                    surfaceContainerLowest = Color(if (isDark) SETTINGS_CARD_DARK else SETTINGS_CARD_LIGHT),
-                )
+                scheme.copy(surface = Color(if (isDark) SETTINGS_SURFACE_DARK else SETTINGS_SURFACE_LIGHT))
             },
         ) {
             content()
