@@ -94,6 +94,7 @@ class TasksApplication : Application(), Configuration.Provider {
             tasksPreferences.set(TasksPreferences.syncOngoing, false)
             tasksPreferences.set(TasksPreferences.syncOngoingAndroid, false)
         }
+        org.tasks.themes.installDynamicColorHooks(preferences)
         ThemeBase.getThemeBase(preferences, inventory, null).setDefaultNightMode()
         localBroadcastManager.registerRefreshReceiver(RefreshBroadcastReceiver())
         backgroundWork()

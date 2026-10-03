@@ -182,7 +182,7 @@ class MainSettingsComposeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val defaultColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.content_background)
+        val defaultColor = org.tasks.themes.surfaceBackground(requireContext())
         (activity as? BasePreferences)?.toolbar?.let { toolbar ->
             toolbar.setBackgroundColor(defaultColor)
             (toolbar.parent as? View)?.setBackgroundColor(defaultColor)

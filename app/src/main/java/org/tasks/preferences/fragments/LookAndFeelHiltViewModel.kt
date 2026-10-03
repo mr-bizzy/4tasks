@@ -71,6 +71,8 @@ class LookAndFeelHiltViewModel @Inject constructor(
     }
 
     fun updateDynamicColor(enabled: Boolean) {
+        // written at once, so the screen that is recreated next already reads the new value
+        preferences.setBoolean(R.string.p_dynamic_color, enabled)
         setDynamicColor(enabled)
     }
 

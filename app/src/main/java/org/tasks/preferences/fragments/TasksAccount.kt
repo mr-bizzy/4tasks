@@ -213,7 +213,7 @@ class TasksAccount : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val defaultColor = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.content_background)
+        val defaultColor = org.tasks.themes.surfaceBackground(requireContext())
         (activity as? org.tasks.preferences.BasePreferences)?.toolbar?.let { toolbar ->
             toolbar.setBackgroundColor(defaultColor)
             (toolbar.parent as? android.view.View)?.setBackgroundColor(defaultColor)

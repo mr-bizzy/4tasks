@@ -359,7 +359,6 @@ private fun AccountTypeRow(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
             )
             Text(
                 text = description,

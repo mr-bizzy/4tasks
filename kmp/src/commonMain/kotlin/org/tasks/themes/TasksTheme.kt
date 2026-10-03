@@ -62,6 +62,21 @@ fun isDarkTheme(theme: Int): Boolean = when (theme) {
     else -> isSystemInDarkTheme()
 }
 
+/**
+ * Where the platform supplies its own colours. On Android the app sets [dynamicScheme] to the Material 3
+ * dynamic scheme (the wallpaper's own colours, exactly as 4Dictate and 4Zones use it) while the user has
+ * "Wallpaper colour" on and the phone supports it; it answers null otherwise, and the family palette applies.
+ */
+object ThemeHooks {
+    var dynamicScheme: @Composable (isDark: Boolean) -> ColorScheme? = { null }
+
+    /** The same decision for code that is not Compose (the View screens). */
+    var dynamicEnabled: () -> Boolean = { false }
+}
+
+/** True while the colours on screen come from the platform's dynamic scheme. */
+val LocalDynamicColors = compositionLocalOf { false }
+
 @Composable
 fun TasksTheme(
     theme: Int = BaseTheme.DEFAULT,
@@ -70,11 +85,12 @@ fun TasksTheme(
 ) {
     val isDark = isDarkTheme(theme)
     val seedColor = if (primary == WHITE) BLACK else primary
-    val generated = dynamicColorScheme(
+    val dynamic = ThemeHooks.dynamicScheme(isDark)
+    val generated = dynamic ?: dynamicColorScheme(
         seedColor = Color(seedColor),
         isDark = isDark,
     )
-    val colorScheme = if (ColorProvider.isFamilyColor(seedColor)) familyScheme(generated, theme, isDark) else when (theme) {
+    val colorScheme = if (dynamic != null) dynamicVariant(dynamic, theme) else if (ColorProvider.isFamilyColor(seedColor)) familyScheme(generated, theme, isDark) else when (theme) {
         0 -> generated.copy(
             surface = Color(0xFFF0F0F0),
             background = Color.White,
@@ -108,10 +124,25 @@ fun TasksTheme(
         CompositionLocalProvider(
             LocalIsDarkTheme provides isDark,
             LocalThemeColor provides seedColor,
+            LocalDynamicColors provides (dynamic != null),
         ) {
             content()
         }
     }
+}
+
+/** The platform's scheme as it is; only the two themes the user picked on purpose change the surfaces. */
+private fun dynamicVariant(dynamic: ColorScheme, theme: Int): ColorScheme = when (theme) {
+    1 -> dynamic.copy(
+        background = Color.Black,
+        surface = Color.Black,
+        surfaceContainerLowest = Color(0xFF121212),
+    )
+    3 -> dynamic.copy(
+        background = Color.Transparent,
+        surface = Color(0x99000000),
+    )
+    else -> dynamic
 }
 
 /**
@@ -174,11 +205,17 @@ fun TasksSettingsTheme(
         primary = primary,
     ) {
         val isDark = MaterialTheme.colorScheme.surface.luminance() < 0.5f
+        val scheme = MaterialTheme.colorScheme
         MaterialTheme(
-            colorScheme = MaterialTheme.colorScheme.copy(
-                surface = Color(if (isDark) SETTINGS_SURFACE_DARK else SETTINGS_SURFACE_LIGHT),
-                surfaceContainerLowest = Color(if (isDark) SETTINGS_CARD_DARK else SETTINGS_CARD_LIGHT),
-            ),
+            colorScheme = if (LocalDynamicColors.current) {
+                // 4Dictate's way: the page is the scheme's surface and a card is its container colour.
+                scheme.copy(surfaceContainerLowest = scheme.surfaceContainer)
+            } else {
+                scheme.copy(
+                    surface = Color(if (isDark) SETTINGS_SURFACE_DARK else SETTINGS_SURFACE_LIGHT),
+                    surfaceContainerLowest = Color(if (isDark) SETTINGS_CARD_DARK else SETTINGS_CARD_LIGHT),
+                )
+            },
         ) {
             content()
         }

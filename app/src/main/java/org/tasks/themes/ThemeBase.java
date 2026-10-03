@@ -12,6 +12,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.color.MaterialColors;
 
 import org.tasks.R;
 import org.tasks.billing.Inventory;
@@ -85,11 +87,27 @@ public class ThemeBase implements Parcelable {
   }
 
   public int getSettingsSurfaceColor(Activity activity) {
+    if (dynamicColor()) {
+      // the page is the scheme's own surface, as in the Compose settings screens
+      return MaterialColors.getColor(
+          activity,
+          com.google.android.material.R.attr.colorSurface,
+          isDarkTheme(activity) ? SETTINGS_SURFACE_DARK : SETTINGS_SURFACE_LIGHT);
+    }
     return isDarkTheme(activity) ? SETTINGS_SURFACE_DARK : SETTINGS_SURFACE_LIGHT;
+  }
+
+  private static boolean dynamicColor() {
+    return Boolean.TRUE.equals(ThemeHooks.INSTANCE.getDynamicEnabled().invoke());
   }
 
   public void set(Activity activity) {
     activity.setTheme(THEMES[index]);
+    if (dynamicColor()) {
+      // Material 3 dynamic colour for the View screens: the surfaces, cards and accent come from the
+      // wallpaper, laid over the theme (the same scheme the Compose screens use).
+      DynamicColors.applyToActivityIfAvailable(activity);
+    }
   }
 
   public void setDefaultNightMode() {

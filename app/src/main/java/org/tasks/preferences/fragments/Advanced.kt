@@ -213,7 +213,7 @@ class Advanced : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        val defaultColor = ContextCompat.getColor(requireContext(), R.color.content_background)
+        val defaultColor = org.tasks.themes.surfaceBackground(requireContext())
         (activity as? BasePreferences)?.toolbar?.let { toolbar ->
             toolbar.setBackgroundColor(defaultColor)
             (toolbar.parent as? View)?.setBackgroundColor(defaultColor)

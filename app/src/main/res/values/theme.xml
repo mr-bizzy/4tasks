@@ -8,9 +8,9 @@
   <style name="DayNightAlert" parent="ThemeOverlay.Material3.Dialog.Alert" />
 
   <style name="TasksBase" parent="DayNight">
-    <item name="android:windowBackground">@color/window_background</item>
-    <item name="android:colorBackground">@color/content_background</item>
-    <item name="background">@color/window_background</item>
+    <item name="android:windowBackground">?attr/colorSurface</item>
+    <item name="android:colorBackground">?attr/colorSurface</item>
+    <item name="background">?attr/colorSurface</item>
     <item name="colorSurface">@color/content_background</item>
     <item name="colorSurfaceContainerLow">@color/surface_container_low</item>
     <item name="colorSurfaceContainer">@color/surface_container</item>
@@ -33,11 +33,11 @@
   <style name="Tasks" parent="TasksBase">
     <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
-    <item name="android:statusBarColor">@color/content_background</item>
+    <item name="android:statusBarColor">?attr/colorSurface</item>
   </style>
 
   <style name="TasksDialogAlert" parent="DayNightAlert">
-    <item name="android:background">@color/dialog_background</item>
+    <item name="android:background">?attr/colorSurfaceContainerHigh</item>
     <item name="buttonBarPositiveButtonStyle">@style/AlertButtonStyle</item>
     <item name="buttonBarNegativeButtonStyle">@style/AlertButtonStyle</item>
     <item name="buttonBarNeutralButtonStyle">@style/AlertButtonStyle</item>

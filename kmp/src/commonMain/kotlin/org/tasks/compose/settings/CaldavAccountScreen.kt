@@ -416,10 +416,8 @@ internal fun ServerTypeSelector(
         ) {
             Text(
                 text = stringResource(Res.string.caldav_server_type).uppercase(),
-                style = MaterialTheme.typography.labelMedium.copy(
+                style = MaterialTheme.typography.labelSmall.copy(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 0.8.sp,
                 ),
             )
             Spacer(modifier = Modifier.height(6.dp))

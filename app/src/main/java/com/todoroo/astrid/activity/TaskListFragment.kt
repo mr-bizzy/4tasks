@@ -707,7 +707,6 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private fun setupToolbarMenu() {
         val toolbar = binding.toolbar
         toolbar.setOnMenuItemClickListener(this)
-        toolbar.overflowIcon = getDrawable(requireContext(), R.drawable.ic_outline_settings_24px)
         val menu = toolbar.menu
         menu.clear()
         toolbar.inflateMenu(R.menu.menu_task_list_fragment_top)
@@ -918,7 +917,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private fun makeSnackbar(text: String): Snackbar? = activity?.let {
         Snackbar.make(binding.taskListCoordinator, text, 4000)
                 .setAnchorView(R.id.fab)
-                .setBackgroundTint(it.getColor(R.color.dialog_background))
+                .setBackgroundTint(com.google.android.material.color.MaterialColors.getColor(it, com.google.android.material.R.attr.colorSurfaceContainerHigh, it.getColor(R.color.dialog_background)))
                 .setTextColor(MaterialColors.getColor(it, com.google.android.material.R.attr.colorOnSurface, 0))
                 .setActionTextColor(themeColor.primaryColor)
             .apply {

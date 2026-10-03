@@ -73,13 +73,11 @@ fun TextInputCard(
         ) {
             Text(
                 text = label.uppercase(),
-                style = MaterialTheme.typography.labelMedium.copy(
+                style = MaterialTheme.typography.labelSmall.copy(
                     color = if (error != null)
                         MaterialTheme.colorScheme.error
                     else
                         MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.Medium,
-                    letterSpacing = 0.8.sp,
                 ),
             )
             Spacer(modifier = Modifier.height(6.dp))

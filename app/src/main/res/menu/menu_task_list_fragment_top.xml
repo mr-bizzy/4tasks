@@ -10,8 +10,10 @@
     app:actionViewClass="androidx.appcompat.widget.SearchView"
     app:showAsAction="never|collapseActionView"/>
 
+  <!-- One tap to Settings, a gear at the top right of the bar, as in 4Dictate and 4Zones. -->
   <item
     android:id="@+id/menu_settings"
-    android:title="@string/app_settings"
-    app:showAsAction="never" />
+    android:icon="@drawable/ic_outline_settings_24px"
+    android:title="@string/TLA_menu_settings"
+    app:showAsAction="always" />
 </menu>

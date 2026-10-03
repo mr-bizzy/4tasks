@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -84,7 +85,7 @@ object SwipeOut {
                             y = 0
                         )
                     }
-                    .background(colorResource(id = R.color.content_background)) // MUST BE AFTER .offset modifier (?!?!)
+                    .background(MaterialTheme.colorScheme.background) // MUST BE AFTER .offset modifier (?!?!)
                     .anchoredDraggable(state = dragState, orientation = Orientation.Horizontal)
             ) {
                 content()

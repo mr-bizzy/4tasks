@@ -40,7 +40,7 @@ fun Toolbar(
 
     Surface(
         shadowElevation = 4.dp,
-        color = colorResource(id = R.color.content_background),
+        color = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
         modifier = Modifier.requiredHeight(56.dp)
     )
@@ -54,8 +54,7 @@ fun Toolbar(
             }
             Text(
                 text = title,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier
                     .weight(0.9f)
                     .padding(start = Constants.KEYLINE_FIRST),

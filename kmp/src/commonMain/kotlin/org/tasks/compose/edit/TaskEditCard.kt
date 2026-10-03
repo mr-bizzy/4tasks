@@ -69,13 +69,7 @@ fun TaskEditSectionLabel(
     modifier: Modifier = Modifier,
 ) {
     val color = MaterialTheme.colorScheme.onSurfaceVariant
-    val base = MaterialTheme.typography.labelMedium
-    val style = remember(base, color) {
-        base.copy(
-            color = color,
-            fontWeight = FontWeight.Medium,
-            letterSpacing = LabelLetterSpacing,
-        )
-    }
+    val base = MaterialTheme.typography.labelSmall
+    val style = remember(base, color) { base.copy(color = color) }
     Text(text = text.toUpperCase(Locale.current), style = style, modifier = modifier)
 }

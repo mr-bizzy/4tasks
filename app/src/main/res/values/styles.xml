@@ -44,7 +44,7 @@
   </style>
 
   <style name="ActionModeStyle" parent="Widget.AppCompat.ActionMode">
-    <item name="background">@color/content_background</item>
+    <item name="background">?attr/colorSurface</item>
     <item name="titleTextStyle">@style/ActionModeTitleTextStyle</item>
   </style>
 

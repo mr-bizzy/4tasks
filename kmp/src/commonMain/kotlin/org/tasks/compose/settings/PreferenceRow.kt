@@ -103,7 +103,6 @@ fun PreferenceRow(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = titleMaxLines,
                 overflow = TextOverflow.Ellipsis
@@ -111,7 +110,7 @@ fun PreferenceRow(
             if (!summary.isNullOrBlank()) {
                 Text(
                     text = summary,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = summaryMaxLines,
                     overflow = TextOverflow.Ellipsis
@@ -215,7 +214,6 @@ fun DangerCard(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
                 color = tint,
                 modifier = Modifier.weight(1f),
                 maxLines = 1,
