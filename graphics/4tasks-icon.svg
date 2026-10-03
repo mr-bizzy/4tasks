@@ -1,4 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108" width="512" height="512">
-  <rect width="108" height="108" fill="#2196F3"/>
-  <path d="M56,26 L69,26 L69,57 L78,57 L78,69 L69,69 L69,84 L56,84 L56,69 L30,69 L30,58 Z M56,43 L45,57 L56,57 Z" fill="#ffffff" fill-rule="evenodd"/>
+  <!-- 4Tasks launcher icon, option A (owner's choice 2026-10-03): navy background, slate box, sky tick. No digit. -->
+  <rect width="108" height="108" fill="#0F172A"/>
+  <rect x="29.5" y="29.5" width="49" height="49" rx="12.5" fill="none" stroke="#475569" stroke-width="6.5"/>
+  <path d="M41,56 L50,65 L66.5,44.5" fill="none" stroke="#38BDF8" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

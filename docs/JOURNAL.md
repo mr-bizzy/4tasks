@@ -121,3 +121,23 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   copy on the emulator and on the A9 (in-place update, 4Dictate's accessibility service still bound).
 - Not yet done for Phase A: the owner's own test against his Mailcow (he types the credentials himself).
   Phases B (Microsoft) and C (Google) are not started.
+
+## 2026-10-03 — Family look (owner's order: 4Tasks should look and read like 4Dictate and 4Zones)
+
+- **Colour:** wallpaper (dynamic) colour is on by default and never Pro-gated. The default theme colour is the family
+  sky blue: seed #0284C7, which resolves to #38BDF8 in dark mode. With wallpaper colour off the family palette applies
+  (navy #0F172A, surfaces #1E293B, muted #94A3B8), also in the View-based screens (night colours, bottom bar). The picker
+  keeps every colour, the family one first.
+- **Icon:** option A (box and tick), chosen by the owner on the A9 from three. He asked for a bolder tick and heavier
+  outline; checked at 24 dp and as the white notification icon. No digit in the launcher icon. Adaptive, with a monochrome
+  layer. The 20 alternate launcher colours, their setting and the picker are removed; shortcuts use the one icon. The
+  welcome logo is the mark on navy. The "4" (the old blocky digit) is kept as a family mark in sky blue on navy, on the
+  Play feature graphic and the site page, next to icon A.
+- **Words:** British spelling in the English UI; the app is "4Tasks" in strings that said "Tasks". Strings about
+  Tasks.org, Pro, subscriptions, sponsorship, cloud, desktop and QR linking are removed from every translation (the screens
+  are unreachable here; the English text stays for the dead code). A crawl of settings, drawer, menus, add-account and
+  new-task screens found Tasks.org only in About, which stays (GPL attribution). Release Settings has no Debug row.
+- **Site:** play/site/index.html is a draft home page in the site's own style. Nothing is written to the site folder
+  until the owner says "publish".
+- **Play:** icon-512, feature graphic and three screenshots redone (generators were throwaway scripts; the SVG source of
+  the icon is graphics/4tasks-icon.svg).
