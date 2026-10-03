@@ -58,7 +58,7 @@ Some screens open a web page in your browser (this policy, the source code, help
 
 ## 7. Open source, and where it comes from
 
-4Tasks is free software under the GNU General Public License v3, based on **Tasks.org** (https://github.com/tasks/tasks). The source is at https://github.com/mr-bizzy/4tasks. It has **removed** Tasks.org's own account service, Google and Firebase services, analytics, crash reporting, payments, maps, location and calendar features. Sync with Microsoft To Do and Google Tasks is added in a later release; this policy will say so before it ships.
+4Tasks is free software under the GNU General Public License v3, based on **Tasks.org** (https://github.com/tasks/tasks). The source is at <https://github.com/mr-bizzy/4tasks>. It has **removed** Tasks.org's own account service, Google and Firebase services, analytics, crash reporting, payments, maps, location and calendar features. Sync with Microsoft To Do and Google Tasks is added in a later release; this policy will say so before it ships.
 
 ## 8. Children
 
