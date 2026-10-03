@@ -1,6 +1,6 @@
 # 4Tasks — sync plan (CalDAV, then Microsoft To Do, then Google Tasks)
 
-**DRAFT 2026-10-03 (revised the same day for work accounts) for the owner. Nothing in it is built.** It replaces the phase 0 plan's "no sync in
+**DRAFT 2026-10-03 (revised the same day for work accounts and the owner's four rulings) for the owner. Nothing in it is built, and sync is not started until the owner gives the go after reviewing this plan.** It replaces the phase 0 plan's "no sync in
 phase 1" for the first Play release. Sources are linked where a fact comes from a vendor's page; where I
 could not confirm something, it says so.
 
@@ -12,6 +12,11 @@ could not confirm something, it says so.
   has been through Play **internal testing**, before **open testing**. During internal testing Google Tasks
   runs in the consent screen's **Testing** mode with the testers listed by hand.
 - Keep the Google and Microsoft code (the earlier "keep or delete" question is settled).
+- **Rulings of 2026-10-03:** (1) the release is signed with **our own release key uploaded to Play App Signing
+  through PEPK**, so the SHA-1 `E6:2C:…` below is the production fingerprint for the Google Android client;
+  (2) the **file backup does not include sync credentials**, and a restore leaves accounts needing sign-in again;
+  (3) cert4android's "trust this self-signed certificate" stays, **behind "Advanced: allow self-signed certificates",
+  off by default**; (4) the **Tasks.org help links stay for now and move to mr-biz.uk before open testing**.
 - **Work accounts are in:** Microsoft work or school accounts as well as personal ones (a multitenant
   registration with publisher verification), and Google Workspace accounts as well as consumer ones.
 
@@ -38,6 +43,12 @@ Two risks I found by reading, to be tested before anyone spends effort on verifi
   manifest entries I removed for the add-account and sign-in screens, and cert4android's trust screen
   (`TrustCertificateActivity`); remove the "Add account" hiding in the settings and welcome screens
   (`showAddAccount`, `showSignIn`).
+- **Backup without credentials:** the file backup (Settings, Backups) writes accounts without their password or token
+  column. A restore brings the accounts back and marks them "needs sign-in". Add a test that a backup file contains no
+  credential column and that a restore of an old backup that still has one ignores it. (Today it writes the ciphertext.)
+- **Self-signed certificates:** the trust prompt appears only when the new Advanced switch is on; with it off, a server
+  whose certificate the phone does not trust fails with a plain "certificate not trusted" message that names the
+  switch. Turning it off again also forgets the certificates the user trusted. A test per case.
 - Check that tasks made over 4Link sync, that a 4Link `tasks.complete` syncs, and that the reminder survives
   a sync.
 - Test against Mailcow/SOGo and a second server type (Nextcloud or Radicale) so "any server" is true.
@@ -172,6 +183,9 @@ Limited and Blocked. The owner's own mail is on Mailcow, not Workspace, so he ha
   the user chose) reviewed again with the owner.
 - **Work accounts add to the policy:** that an organisation's admin controls whether 4Tasks may connect and can
   see the consent; that tasks synced to a work account belong to that organisation's service and policies.
+- **Help links:** About and the settings screens still open Tasks.org's help pages (backups, filters, notification
+  troubleshooting). They stay for now and move to pages on `mr-biz.uk` before **open testing**, so a Play reviewer or user
+  is not sent to another project's site.
 - **Listing and About:** remove the "no internet" claims; the short description changes.
 
 ## 5. What the owner must do himself
@@ -187,11 +201,10 @@ Google (in this order; steps 1 to 6 can start now, 7 needs the app on Play, 8 an
    "sensitive" (screenshot to me).
 6. **Audience:** External, **Testing**, and list the test users (up to 100).
 7. **Android OAuth clients** (type Android): package `uk.mr_biz.fourtasks` with the SHA-1 of the certificate that
-   signs what Play installs. **Order matters.** If the Play app uses *our own* release key through PEPK upload
-   (the 4Link spec requires it), that SHA-1 is known now and is
-   `E6:2C:D7:5A:DD:84:03:B4:EB:0B:31:0A:AA:07:08:24:67:FB:EA:EE` (from the release APK). If Play signs with a key
-   Google generates, the SHA-1 is only in Play Console, App signing, after the app is created and enrolled; use
-   that one instead. The *upload* key does not matter to Google. A second client with the workstation debug SHA-1
+   signs what Play installs. **Decided:** the Play app uses *our own* release key, uploaded to Play App Signing through PEPK (the 4Link spec
+   requires it), so the production SHA-1 is known now and is
+   `E6:2C:D7:5A:DD:84:03:B4:EB:0B:31:0A:AA:07:08:24:67:FB:EA:EE` (from the release APK). The *upload* key does not matter to Google. (Had Play generated
+   its own signing key, the SHA-1 would only be in Play Console after enrolment; that route is not taken.) A second client with the workstation debug SHA-1
    `16:3C:86:72:29:4C:69:FB:AB:52:1A:6A:03:DA:AD:BB:D3:9E:8C:4E` lets debug builds sign in.
 8. **After internal testing:** put the final privacy text (section 4) live; write the scope justification (I draft
    it); record the **demo video** on a real phone with the Play build: the app, adding the Google account,
@@ -249,9 +262,10 @@ Points to know:
   enforce unique IVs; the code generates them itself with `SecureRandom`, which is correct but is a convention, not an enforcement.
 - The rest of the database is **not** encrypted: tasks, notes and list names are readable to anyone with the
   app's private storage (root, or a forensic image). Android's cloud backup is off.
-- **The file backup** (Settings, Backups) writes the account rows too (`caldavAccounts`), so it carries the password
-  ciphertext. It is useless on another phone, because the key never leaves this one; I expect a restore to need the
-  password again but have not tried it. Decide whether the backup should leave credentials out altogether.
+- **The file backup** (Settings, Backups) writes the account rows too (`caldavAccounts`), so today it carries the password
+  ciphertext, useless on another phone because the key never leaves this one. **Ruling: it must not include sync
+  credentials.** Phase A changes it so the backup leaves the credential column out and a restore leaves the accounts
+  needing sign-in again.
 - A decryption failure returns an empty value without telling the user; sync then fails as "wrong password".
 - I did not audit logging for tokens. That is a line item before release.
 
@@ -260,19 +274,21 @@ blocked by Android's default (target 36). The HTTP client is OkHttp 5.5.0 with i
 modern TLS (1.2 and 1.3) and, in principle, cleartext, which the platform then refuses. minSdk is 33. The only custom
 trust code is cert4android's, below.
 
-## 8. Open questions for the owner
+## 8. Questions the owner has answered (2026-10-03)
 
-**(a) Keep cert4android's "trust this self-signed certificate" for CalDAV, or allow only valid certificates?**
-What it does today: when a server's certificate is not trusted by the phone, the app asks the user to trust it, showing
-it. Trust is for that **one exact certificate**, kept in a private file in the app's storage; it also accepts that
-certificate under a wrong hostname; a changed certificate asks again; a background sync that meets an unknown
-certificate posts a notification instead of trusting silently. Options:
-1. Keep as it is: friendly for home servers with a self-made certificate; a user can still be talked into trusting
-   a bad one.
-2. Valid certificates only: the simplest security and Play story; self-signed servers stop working (a Mailcow with a
-   Let's Encrypt certificate is fine).
-3. Keep it behind an **"Advanced: allow self-signed certificates"** switch that is off by default (my recommendation):
-   ordinary users never see the prompt, while self-hosters who need it can turn it on.
+**(a) cert4android's self-signed certificate trust: kept, behind "Advanced: allow self-signed certificates", off by
+default.** What it does when on is unchanged: the user trusts one exact certificate, kept in a private file in the
+app's storage; it is also accepted under a wrong hostname; a changed certificate asks again; a background sync that
+meets an unknown certificate posts a notification instead of trusting silently. With the switch off, ordinary users
+never see the prompt, and a server with a certificate the phone does not trust simply fails with a clear message.
 
-**(b) How credentials are stored:** answered in section 7. The open point inside it is whether the file backup should
-carry account passwords at all.
+**(b) How credentials are stored:** section 7. **Ruling:** the file backup must not carry them.
+
+**(c) Signing:** our own release key through PEPK (so the Google Android client uses the SHA-1 above).
+
+**(d) Tasks.org help links:** stay for now, move to `mr-biz.uk` before open testing.
+
+## 9. Not yet decided
+
+- Whether the app's help page for organisation admins (sections 3a and 3b) is part of the first Play release or follows it.
+  I recommend it is part of it, because work-account users are the ones who will hit an admin's refusal.
