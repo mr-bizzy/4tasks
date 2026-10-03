@@ -1,6 +1,6 @@
 # 4Tasks — sync plan (CalDAV, then Microsoft To Do, then Google Tasks)
 
-**DRAFT 2026-10-03 for the owner. Nothing in it is built.** It replaces the phase 0 plan's "no sync in
+**DRAFT 2026-10-03 (revised the same day for work accounts) for the owner. Nothing in it is built.** It replaces the phase 0 plan's "no sync in
 phase 1" for the first Play release. Sources are linked where a fact comes from a vendor's page; where I
 could not confirm something, it says so.
 
@@ -12,13 +12,15 @@ could not confirm something, it says so.
   has been through Play **internal testing**, before **open testing**. During internal testing Google Tasks
   runs in the consent screen's **Testing** mode with the testers listed by hand.
 - Keep the Google and Microsoft code (the earlier "keep or delete" question is settled).
+- **Work accounts are in:** Microsoft work or school accounts as well as personal ones (a multitenant
+  registration with publisher verification), and Google Workspace accounts as well as consumer ones.
 
 ## 1. What the code does today (read from the source, 2026-10-03)
 
 | Service | How it signs in | What identifies 4Tasks to the provider |
 |---|---|---|
 | CalDAV | Username and password, or an app password, to the server's URL, over HTTPS (library dav4jvm); self-signed certificates are trusted by asking the user (cert4android) | Nothing: no registration with anyone |
-| Microsoft To Do | OAuth in the browser with PKCE, via AppAuth, against `login.microsoftonline.com/consumers` (**personal Microsoft accounts only**), scope `user.read Tasks.ReadWrite openid offline_access email`, then Microsoft Graph `me/todo/lists` | An Entra **client ID**. The code still carries **Tasks.org's own client ID** (`9d4babd5-…`). It must be replaced by ours; using theirs would be impersonation and stops working with our redirect |
+| Microsoft To Do | OAuth in the browser with PKCE, via AppAuth, against `login.microsoftonline.com/consumers` (**personal Microsoft accounts only today; this changes to `common` for work accounts**), scope `user.read Tasks.ReadWrite openid offline_access email`, then Microsoft Graph `me/todo/lists` | An Entra **client ID**. The code still carries **Tasks.org's own client ID** (`9d4babd5-…`). It must be replaced by ours; using theirs would be impersonation and stops working with our redirect |
 | Google Tasks | Android's account manager: `getAuthToken("oauth2:https://www.googleapis.com/auth/tasks")` for a Google account on the phone, then REST calls to `tasks.googleapis.com`. No browser, no redirect, no client secret, no Play Services SDK | An **Android OAuth client**: our package name plus the SHA-1 of the signing certificate. Tasks.org's clients are for `org.tasks` and do not apply to us |
 
 Two risks I found by reading, to be tested before anyone spends effort on verification:
@@ -42,18 +44,27 @@ Two risks I found by reading, to be tested before anyone spends effort on verifi
 - Rewrite what says "no network": the About screen, README, store listing, privacy page, Data safety
   (section 4 below).
 
-### Phase B — Microsoft To Do
-- Replace Tasks.org's client ID with ours (Entra registration, section 3); redirect `msauth://uk.mr_biz.fourtasks/<signature hash>`
-  as Entra's Android platform setup gives it; restore the AppAuth redirect activity in the manifest with
-  our scheme.
-- Personal accounts only, as the code already does (the `consumers` endpoint). Work or school accounts are an
-  option, not part of this plan (see "Publisher verification").
+### Phase B — Microsoft To Do (personal and work or school accounts)
+- Replace Tasks.org's client ID with ours (the Entra registration in section 5); redirect
+  `msauth://uk.mr_biz.fourtasks/<signature hash>` as Entra's Android platform setup gives it; restore the AppAuth
+  redirect activity in the manifest with our scheme.
+- Change the sign-in authority from `consumers` to **`common`**, so personal accounts and any organisation's
+  accounts can sign in. The scopes stay `user.read Tasks.ReadWrite openid offline_access email`. Microsoft's Graph
+  permissions reference says `Tasks.ReadWrite` (delegated) has **AdminConsentRequired: No** and "is available for
+  consent in personal Microsoft accounts" ([reference](https://learn.microsoft.com/en-us/graph/permissions-reference)).
+- Show a clear screen when an organisation refuses the sign-in (section 3a), not a bare error.
+- Test with: a personal account; a work tenant that allows user consent; a tenant limited to verified publishers
+  and low-impact permissions; a tenant with the admin-consent workflow on; a tenant where the admin has granted
+  consent for everyone. To Do for work or school accounts may also need an Exchange Online mailbox; the pages I read
+  do not say, so test it.
 - Test: sign in, two-way sync, completion, due dates, the sign-out and "account removed" paths.
 
 ### Phase C — Google Tasks
 - Prove the account-manager token flow with our own Android client (risk 1) in Testing mode.
 - Then sync as above. Restore `GtasksLoginActivity` and the list settings entries in the manifest.
 - Drive backup stays off (no Drive scope is requested; only Tasks).
+- Work accounts: test with a Google Workspace account as well as a consumer one, including an admin who has blocked
+  third-party apps (section 3b).
 
 ### Everywhere
 - Reminders and the 4Link door are unchanged. No analytics, ads or crash reporting are added.
@@ -98,6 +109,49 @@ From [Google's audience page](https://support.google.com/cloud/answer/15549945):
   the unverified screen is shown. Do not publish before verification.
 - Play internal testing also allows 100 testers; each tester must be added in both places.
 
+## 3a. Microsoft work and school accounts: consent, admins and what the user sees
+
+What decides it is the organisation's **user consent setting** and whether 4Tasks has a **verified publisher**
+([consent overview](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/user-admin-consent-overview),
+[configure user consent](https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-user-consent)):
+
+| Organisation's setting | What a user of 4Tasks sees |
+|---|---|
+| Users may consent to any app for permissions that need no admin (Microsoft says this is the default) | The consent screen, with the blue "verified" badge if we are publisher verified; the user accepts and syncs. `Tasks.ReadWrite` needs no admin |
+| **Verified publishers, low-impact permissions only** (the setting Microsoft recommends) | Even a verified app only gets permissions the admin has **classified as low impact**. `Tasks.ReadWrite` is unlikely to be on that list, so the user gets an "approval required" or "need admin approval" screen |
+| User consent switched off | The same: the user cannot consent. If the admin has enabled the **admin consent workflow**, the screen offers "Request approval" with a justification box; the admin is emailed, and the user is emailed when it is approved or refused. If not, the user must ask the admin outside the app |
+| Admin has already granted consent for the whole organisation | No prompt at all; sign-in just works |
+| We are **not** publisher verified, in a tenant with risk-based step-up consent on | Users cannot consent to most newly registered multitenant apps, and a warning says the publisher is unverified and risky. This is why verification is not optional for work accounts |
+| Conditional access, "user assignment required", or tenant restrictions | Sign-in can be refused outright; only the admin can change it |
+
+What 4Tasks must do about it: show the provider's refusal text, then a short "what to tell your IT admin" screen
+with the app name, the publisher, the one permission it needs (`Tasks.ReadWrite`, "create, read, update, and
+delete the signed-in user's tasks and task lists") and why, and the admin's route (grant consent for the
+organisation in the Entra admin center under Enterprise applications). The exact admin-consent link goes into the
+help page once the registration exists. I will not word this from memory of error codes; I will read the real
+responses in the tests above.
+
+## 3b. Google Workspace accounts: what an admin can block, and what verification covers
+
+From Google's page on [controlling which apps access Workspace data](https://knowledge.workspace.google.com/admin/apps/control-which-apps-access-google-workspace-data):
+- An admin can set an app to **Trusted** (all services, including restricted ones), **Limited** (only unrestricted
+  services), **Specific Google data** (only scopes the admin lists) or **Blocked** (no Google data). Apps the admin
+  has not configured fall under a setting that can allow all, allow only basic sign-in, or **block all**.
+- A blocked user sees the admin's custom message or a default one.
+- Tasks is not named as a restrictable service on that page, and the scopes Google calls restricted are Gmail, Drive and
+  the others in section 3. So a **Limited** setting should still let 4Tasks reach Tasks; **Blocked**, or "block all
+  unconfigured", will stop it. I could not confirm from the page what an admin can do about Tasks specifically.
+
+Does verification cover Workspace users? Verification is about the consent screen and the scope, and it removes the
+unverified-app warning and the 100-user cap for **everyone**, Workspace users included. It does **not** override an
+admin's controls: Workspace admins decide on top of it. So the answer for Workspace is the same as for Microsoft: a
+verified app works wherever the admin allows third-party apps, and elsewhere the admin has to trust 4Tasks first
+(by its Android package name or client ID in the Admin console). Plan: a help page for admins, and a clear message in
+the app when Google says access is blocked.
+
+Test: a Google Workspace test domain (a Workspace trial will do) with one user and an admin, in three settings: allowed,
+Limited and Blocked. The owner's own mail is on Mailcow, not Workspace, so he has none today.
+
 ## 4. Play, privacy and Data safety changes once there is a network
 
 - **Permissions:** add INTERNET and ACCESS_NETWORK_STATE; the declared list in `play/PERMISSIONS.md` grows from
@@ -116,6 +170,8 @@ From [Google's audience page](https://support.google.com/cloud/answer/15549945):
   user picks: tasks (user-generated content) and the account identifier, encrypted in transit, not sold, not
   used for ads. Declared as collected, with the 4Dictate precedent for "shared" (user-initiated, to a service
   the user chose) reviewed again with the owner.
+- **Work accounts add to the policy:** that an organisation's admin controls whether 4Tasks may connect and can
+  see the consent; that tasks synced to a work account belong to that organisation's service and policies.
 - **Listing and About:** remove the "no internet" claims; the short description changes.
 
 ## 5. What the owner must do himself
@@ -143,29 +199,80 @@ Google (in this order; steps 1 to 6 can start now, 7 needs the app on Play, 8 an
    to YouTube.
 9. **Publish to production and submit for verification.** Then wait; answer the reviewer within days.
 
-Microsoft:
-1. A **Microsoft Entra tenant** (registering an app needs one: a free Azure account will do) and a sign-in
-   with at least the Application Developer role.
-2. **App registration** "4Tasks": supported account types **Personal accounts only** (matches the code), public
-   client, no secret. Add the Android redirect (package `uk.mr_biz.fourtasks`, signature hash from the same
-   certificate as above). Add delegated Microsoft Graph permissions `User.Read`, `Tasks.ReadWrite`, `openid`,
-   `offline_access`, `email`. Give me the **Application (client) ID**.
-3. **Publisher verification: not needed for personal accounts only.** Microsoft describes it as primarily for
-   multitenant apps, and the consent warning it removes is for users in other organisations' tenants
-   ([overview](https://learn.microsoft.com/en-us/entra/identity-platform/publisher-verification-overview)).
-   If work or school accounts are wanted later: a verified **Microsoft AI Cloud Partner Program** account (its
-   partner global account), the app registered in a work or school tenant (an app registered with a personal
-   Microsoft account cannot be verified), publisher domain `mr-biz.uk` matching the partner account's email
-   domain, MFA, and the Application Administrator and Partner Center admin roles. Microsoft says there is no charge.
-   I could not confirm from the pages I could read that `Tasks.ReadWrite` is open to personal accounts, but
-   Tasks.org ships exactly that against the personal-accounts endpoint, so it evidently is.
+Microsoft (work and school accounts included; the requirements are from
+[publisher verification](https://learn.microsoft.com/en-us/entra/identity-platform/publisher-verification-overview),
+all free; the owner does 1 to 6 in this order, because each needs the one before):
+1. **Microsoft AI Cloud Partner Program account** at Partner Center, verified, and it must be the *partner global account*
+   (not a location account). Use a mailbox on `mr-biz.uk` for it. This is the step most likely to be slow: Microsoft
+   verifies the organisation behind it, and I have not read what it asks of a sole trader trading as Mr-Bizzy.
+   Start it first.
+2. **A Microsoft Entra tenant** for the developer organisation (free), with `mr-biz.uk` added and verified there as a
+   custom domain (a DNS record). Microsoft requires the CPP account's email domain to match the app's publisher
+   domain or a DNS-verified custom domain in that tenant. The publisher domain cannot be `*.onmicrosoft.com`.
+3. **An admin sign-in in that tenant** with multi-factor authentication, holding Application Administrator (or Cloud
+   Application Administrator) in Entra **and** CPP Partner Admin or Account Admin in Partner Center. If the tenant
+   is not the one tied to the partner account, associate the two in Partner Center.
+4. **Register the app** "4Tasks" in that tenant (it must be registered with this work account, not with a personal
+   Microsoft account, or it cannot be verified): supported account types **"Accounts in any organizational
+   directory and personal Microsoft accounts"**; public client, no secret; platform Android with package
+   `uk.mr_biz.fourtasks` and the signature hash of the certificate in section 5 (Google step 7); delegated Graph
+   permissions `User.Read`, `Tasks.ReadWrite`, `openid`, `offline_access`, `email`; and set the **publisher domain** to
+   `mr-biz.uk`. Microsoft's own page on setting a publisher domain may ask for a small file on mr-biz.uk; I have not
+   read it.
+5. **Mark the app as publisher verified** by entering the Partner ID (Microsoft says this takes minutes once the
+   requirements are met).
+6. Give me the **Application (client) ID**.
+Without step 5, work-account users in tenants with step-up consent cannot sign in (section 3a); personal accounts
+are unaffected.
 
 CalDAV: nothing to register. The owner supplies the Mailcow/SOGo URL, a test account and an app password.
 
 ## 6. Order and what blocks what
 
-1. **Now, in parallel with Phase A:** Google steps 1 to 6 (they cost the owner nothing and start the clock on
-   branding and domain verification). Publishing the home and privacy pages is the only step that needs the "publish".
+1. **Now, in parallel with Phase A:** Google steps 1 to 6 and Microsoft steps 1 to 3 (the Partner Center
+   verification is the slow one and blocks Microsoft step 5). They cost the owner nothing. Publishing the home and
+   privacy pages is the only step that needs the "publish".
 2. Phase A (CalDAV), then Phase B (Microsoft, needs the client ID), then Phase C (Google, needs the Android
    client). Play internal testing starts when the app builds as an AAB with all three.
 3. Google verification submission after internal testing and before open testing, as the owner set it.
+
+## 7. Security: what the code does today (read from the source, 2026-10-03)
+
+**How sync credentials and tokens are stored.** Every credential is encrypted before it is written, with
+`KeyStoreEncryption` (AES-256 in GCM mode with a fresh random 12-byte IV for each value), using a key held in the **Android
+Keystore** (alias `passwords`). The ciphertext goes into the account's password column in the app's own database.
+That covers the CalDAV password or app password, the Microsoft sign-in state (it includes the refresh token) and
+the Etebase session. Google Tasks keeps **no token of its own**: the phone's account manager hands one out per use.
+Points to know:
+- The key does not require the user to authenticate and is not asked to be StrongBox-backed (it is hardware-backed
+  where the phone's secure hardware supports it). `setRandomizedEncryptionRequired(false)` is set, so the Keystore does not
+  enforce unique IVs; the code generates them itself with `SecureRandom`, which is correct but is a convention, not an enforcement.
+- The rest of the database is **not** encrypted: tasks, notes and list names are readable to anyone with the
+  app's private storage (root, or a forensic image). Android's cloud backup is off.
+- **The file backup** (Settings, Backups) writes the account rows too (`caldavAccounts`), so it carries the password
+  ciphertext. It is useless on another phone, because the key never leaves this one; I expect a restore to need the
+  password again but have not tried it. Decide whether the backup should leave credentials out altogether.
+- A decryption failure returns an empty value without telling the user; sync then fails as "wrong password".
+- I did not audit logging for tokens. That is a line item before release.
+
+**Network.** The debug build has a network security config that permits plain HTTP; **release has none**, so cleartext is
+blocked by Android's default (target 36). The HTTP client is OkHttp 5.5.0 with its default connection specs, which offer
+modern TLS (1.2 and 1.3) and, in principle, cleartext, which the platform then refuses. minSdk is 33. The only custom
+trust code is cert4android's, below.
+
+## 8. Open questions for the owner
+
+**(a) Keep cert4android's "trust this self-signed certificate" for CalDAV, or allow only valid certificates?**
+What it does today: when a server's certificate is not trusted by the phone, the app asks the user to trust it, showing
+it. Trust is for that **one exact certificate**, kept in a private file in the app's storage; it also accepts that
+certificate under a wrong hostname; a changed certificate asks again; a background sync that meets an unknown
+certificate posts a notification instead of trusting silently. Options:
+1. Keep as it is: friendly for home servers with a self-made certificate; a user can still be talked into trusting
+   a bad one.
+2. Valid certificates only: the simplest security and Play story; self-signed servers stop working (a Mailcow with a
+   Let's Encrypt certificate is fine).
+3. Keep it behind an **"Advanced: allow self-signed certificates"** switch that is off by default (my recommendation):
+   ordinary users never see the prompt, while self-hosters who need it can turn it on.
+
+**(b) How credentials are stored:** answered in section 7. The open point inside it is whether the file backup should
+carry account passwords at all.
