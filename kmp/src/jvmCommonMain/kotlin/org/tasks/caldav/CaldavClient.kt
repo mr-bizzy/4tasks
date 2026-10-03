@@ -122,7 +122,13 @@ open class CaldavClient(
                     null
                 }
 
-        val principal = principalOrNull("") ?: principalOrNull("/.well-known/caldav")
+        // A bare host (no path) is asked at /.well-known/caldav first, as RFC 6764 says; the host's root
+        // often answers a PROPFIND with 405. An address with a path is the user's own and is asked first.
+        val bareHost = httpUrl?.encodedPath == "/"
+        val principal = if (bareHost)
+            principalOrNull("/.well-known/caldav") ?: principalOrNull("")
+        else
+            principalOrNull("") ?: principalOrNull("/.well-known/caldav")
 
         val resolved = if (principal.isNullOrBlank()) httpUrl else httpUrl!!.resolve(principal!!)
         try {
