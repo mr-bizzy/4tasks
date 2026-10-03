@@ -59,9 +59,9 @@ object SyncClients {
 
     /**
      * The release Android client's ID (looks like 123-abc.apps.googleusercontent.com), for the admin message: an admin
-     * can search the Admin console by it. Empty until the owner has created the client; nothing else depends on it.
+     * can search the Admin console by it. Set 2026-10-03 (project diesel-horizon-510514-n3, type Android, package + release SHA-1); nothing else depends on it.
      */
-    const val GOOGLE_ANDROID_CLIENT_ID = ""
+    const val GOOGLE_ANDROID_CLIENT_ID = "420662222572-vdo3j36hieml7fricrf28hqsmeda1bgv.apps.googleusercontent.com"
 
     /**
      * True while the Google consent screen is in Testing mode: a grant (and any refresh token) lasts 7 days, so a
