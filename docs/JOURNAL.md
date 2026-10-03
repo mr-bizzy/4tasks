@@ -238,3 +238,10 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   this), allow, the list refreshing, Remove with its dialog, the licence text. Found and fixed in the process: the ← and the
   headings were black on the dark page until the screen sat on a Surface.
 - **A9 network watch (12:20–12:23):** the passive watcher saw no 4Tasks socket at all in 200 s.
+
+## 2026-10-03 — Manual: long spoken requests; release 1e58621cfb on the A9
+
+- The voice section of the manual gains "Short and long requests": the command button stops when you pause; in dictation mode a
+  capture that begins "4Dictate," is handled as a command (4Dictate 0.3.155), so a long or rambling request can be made and ended
+  with stop. Wording taken from 4Dictate's PM.
+- Release 1e58621cfb installed on the A9 at 12:32; the provider answers hello (caller shown as unknown for the shell, as expected).
