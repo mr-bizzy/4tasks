@@ -70,3 +70,21 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   emulator beside the unfixed 4Tasks gave the same exception. After the fix, three cold-start
   calls (add with reminder, list, complete) and 20 s of background work gave no crash.
 - **Lesson:** test beside the real Tasks.org, not only on a clean emulator.
+
+## 2026-10-03 — tasks.complete finds a misheard title by sound (spec 11a)
+
+- **Why:** the recogniser heard "Mark the sounder task done" and the model sent `{"title":"sounder"}`.
+  "sounder" and "Sandra" both encode as SNTR in Double Metaphone (commons-codec, already in the tree).
+- **Behaviour (owner chose option B):** a text match works as before. If no title contains the words,
+  open tasks are compared by sound, word by word (query words of 3+ letters; numbers must match as
+  text). One sound match completes NOTHING; it answers `bad_arguments` with a plain message and a
+  `suggestion` (question, function, arguments `{"id": N}`) for the caller to put to the user. Several
+  sound matches are named, no suggestion. Nothing at all: up to five open titles are named so the
+  mishearing is visible. "Center" is also SNTR, which is why a sound match is never acted on alone.
+- **No title leak:** titles appear in errors and suggestions only for family, or a paired app granted
+  `tasks.list`. A paired app granted only `tasks.complete` gets "No open task matches “x”." and no
+  suggestion (proved on the emulator). It can still complete a task it guesses by text, which is what
+  that grant means.
+- **Library:** `Suggestion`, `Outcome.BadArguments(message, suggestion)`, `InvokeResult.Error.suggestion`,
+  Bundle key `suggestion`, spec §11a (draft 4), 4link 0c12b19. 4Dictate 0.3.151 follows it.
+- **Tests:** 86 door tests (18 new), 81 library tests.

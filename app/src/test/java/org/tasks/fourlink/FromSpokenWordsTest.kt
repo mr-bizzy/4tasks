@@ -65,6 +65,17 @@ class FromSpokenWordsTest {
         assertEquals("Done: Get back to Sandra Elaine about her reservation.", JSONObject((o as Outcome.Ok).json).getString("summary"))
     }
 
+    @Test fun `mark the sounder task done is offered as Sandra, and yes completes it through the same guard`() {
+        port.open(7, "Get back to Sandra Elaine about her reservation")
+        val first = run("""{"function":"tasks.complete","arguments":{"title":"sounder"}}""") as Outcome.BadArguments
+        val suggestion = first.suggestion!!
+        assertTrue(port.completedIds.isEmpty())
+        val reply = JSONObject().put("function", suggestion.function).put("arguments", suggestion.arguments).toString()
+        val second = run(reply)
+        assertEquals("Done: Get back to Sandra Elaine about her reservation.", JSONObject((second as Outcome.Ok).json).getString("summary"))
+        assertEquals(listOf(7L), port.completedIds)
+    }
+
     @Test fun `which lists do I have`() {
         val o = run("""{"function":"lists.list","arguments":{}}""")
         assertEquals("My tasks, Work, Shared", JSONObject((o as Outcome.Ok).json).getString("lists"))

@@ -30,8 +30,11 @@ sealed interface Moment {
     }
 }
 
-/** An argument that is wrong; the message is a sentence for the caller. */
-class BadArgument(message: String) : Exception(message)
+/**
+ * An argument that is wrong; the message is a sentence for the caller. A [suggestion] is an optional
+ * "did you mean" the caller may put to the user (4Link spec 11a): nothing has been done.
+ */
+class BadArgument(message: String, val suggestion: uk.mr_biz.fourlink.Suggestion? = null) : Exception(message)
 
 /** Reading dates the way 4Tasks promises to (ISO-8601 local, no zone) and saying them back to people. */
 object DoorDates {

@@ -18,6 +18,7 @@ class TasksDoorLogicTest {
     private val clock = Clock.fixed(Instant.parse("2026-10-02T13:05:00Z"), zone)
     private val port = FakePort()
     private val door = TasksDoorLogic(port, clock, Locale.ENGLISH)
+    private val strangerDoor = TasksDoorLogic(port, clock, Locale.ENGLISH, mayNameTasks = false)
 
     private fun call(id: String, args: String = "{}"): Outcome = runBlocking { door.perform(id, JSONObject(args)) }
     private fun ok(o: Outcome): JSONObject = (o as? Outcome.Ok ?: error("expected Ok, got $o")).json.let(::JSONObject)
@@ -213,7 +214,7 @@ class TasksDoorLogicTest {
 
     @Test fun `no match completes nothing`() {
         port.open(7, "Pay rent")
-        assertEquals("No open task matches “Sandra”.", bad(call("tasks.complete", """{"title":"Sandra"}""")))
+        assertEquals("No open task matches “Sandra”. Open tasks: “Pay rent”.", bad(call("tasks.complete", """{"title":"Sandra"}""")))
         assertTrue(port.completedIds.isEmpty())
     }
 
@@ -271,6 +272,98 @@ class TasksDoorLogicTest {
         port.advanceOnComplete = 7
         val r = ok(call("tasks.complete", """{"id":7}"""))
         assertEquals("Done: Water plants. It repeats, so the next one is Fri 9 Oct 15:00.", r.getString("summary"))
+    }
+
+    // ---- tasks.complete: a misheard title, found by sound, never completed ------------------
+
+    private fun suggestionOf(o: Outcome) = (o as Outcome.BadArguments).suggestion
+
+    @Test fun `sounder is offered as Sandra for the user to confirm, and nothing is completed`() {
+        port.open(4, "Get back to Sandra Elaine about her reservation")
+        port.open(5, "Pay rent")
+        val o = call("tasks.complete", """{"title":"sounder"}""")
+        assertTrue(bad(o), bad(o).contains("One sounds like it: “Get back to Sandra Elaine about her reservation”") && bad(o).contains("Nothing was completed"))
+        val s = suggestionOf(o)!!
+        assertEquals("Did you mean “Get back to Sandra Elaine about her reservation”?", s.question)
+        assertEquals("tasks.complete", s.function)
+        assertEquals(4, s.arguments.getInt("id"))
+        assertTrue(port.completedIds.isEmpty())
+    }
+
+    @Test fun `saying yes to the suggestion completes exactly that task`() {
+        port.open(4, "Get back to Sandra Elaine about her reservation")
+        val s = suggestionOf(call("tasks.complete", """{"title":"sounder"}"""))!!
+        val o = call(s.function, s.arguments.toString())
+        assertEquals("Done: Get back to Sandra Elaine about her reservation.", JSONObject((o as Outcome.Ok).json).getString("summary"))
+        assertEquals(listOf(4L), port.completedIds)
+    }
+
+    @Test fun `the suggestion is valid against the catalogue, so a caller will accept it`() {
+        port.open(4, "Get back to Sandra Elaine about her reservation")
+        val s = suggestionOf(call("tasks.complete", """{"title":"sounder"}"""))!!
+        val function = TasksCatalogue.CATALOGUE.find(s.function)!!
+        assertEquals(null, uk.mr_biz.fourlink.Validation.problem(function.input, s.arguments))
+        assertTrue(uk.mr_biz.fourlink.Suggestion.parse(s.toJson()) != null)
+        assertTrue(s.question.length <= uk.mr_biz.fourlink.Suggestion.QUESTION_MAX)
+    }
+
+    @Test fun `a very long title still gives a question within 200 characters`() {
+        port.open(4, "Sandra " + "very long ".repeat(40))
+        val s = suggestionOf(call("tasks.complete", """{"title":"sounder"}"""))!!
+        assertTrue(s.question.length <= 200)
+    }
+
+    @Test fun `several tasks that sound alike complete nothing, name them, and offer no suggestion`() {
+        port.open(4, "Call Sandra")
+        port.open(5, "Email Sondra the menu")
+        val o = call("tasks.complete", """{"title":"sounder"}""")
+        assertTrue(bad(o), bad(o).contains("several sound like it") && bad(o).contains("“Call Sandra” (id 4)") && bad(o).contains("“Email Sondra the menu” (id 5)"))
+        assertEquals(null, suggestionOf(o))
+        assertTrue(port.completedIds.isEmpty())
+    }
+
+    @Test fun `a text match is never replaced by a sound match`() {
+        port.open(4, "Call Sandra")
+        port.open(5, "Meet the center manager")
+        val o = call("tasks.complete", """{"title":"Sandra"}""")
+        assertTrue(o is Outcome.Ok)
+        assertEquals(listOf(4L), port.completedIds)
+    }
+
+    @Test fun `nothing by text or sound lists the open titles so the mishearing is visible`() {
+        port.open(1, "Pay rent"); port.open(2, "Book the dentist")
+        val o = call("tasks.complete", """{"title":"gardening"}""")
+        assertEquals("No open task matches “gardening”. Open tasks: “Pay rent”; “Book the dentist”.", bad(o))
+        assertEquals(null, suggestionOf(o))
+    }
+
+    @Test fun `no more than five open titles are named`() {
+        repeat(8) { port.open(it + 1L, "Task number $it") }
+        val m = bad(call("tasks.complete", """{"title":"gardening"}"""))
+        assertEquals(5, Regex("“Task number").findAll(m).count())
+        assertTrue(m, m.contains("and 3 more"))
+    }
+
+    @Test fun `no open tasks at all says so`() {
+        assertEquals("No open task matches “Sandra”: there are no open tasks.", bad(call("tasks.complete", """{"title":"Sandra"}""")))
+    }
+
+    @Test fun `a caller who may not read titles is told no title, no suggestion`() {
+        port.open(4, "Get back to Sandra Elaine about her reservation")
+        port.open(5, "Call Sandra")
+        val none = runBlocking { strangerDoor.perform("tasks.complete", JSONObject("""{"title":"gardening"}""")) }
+        assertEquals("No open task matches “gardening”.", bad(none))
+        val sound = runBlocking { strangerDoor.perform("tasks.complete", JSONObject("""{"title":"sounder"}""")) }
+        assertEquals("No open task matches “sounder”.", bad(sound))
+        assertEquals(null, suggestionOf(sound))
+        val several = runBlocking { strangerDoor.perform("tasks.complete", JSONObject("""{"title":"Sandra"}""")) }
+        assertTrue(bad(several), !bad(several).contains("Get back") && !bad(several).contains("Call Sandra") && bad(several).contains("several"))
+        assertTrue(port.completedIds.isEmpty())
+    }
+
+    @Test fun `short words in the query do not count as sounds`() {
+        assertTrue(!SoundsLike.matches("to a", "Pick up the parcel"))
+        assertTrue(!SoundsLike.matches("", "Pick up the parcel"))
     }
 
     // ---- lists.list and the rest -----------------------------------------

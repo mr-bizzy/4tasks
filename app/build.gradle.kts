@@ -164,6 +164,8 @@ val genericImplementation by configurations
 dependencies {
     implementation(projects.data)
     implementation(project(":fourlink"))
+    // Double Metaphone, to match a misheard task title by sound (4Link suggestions).
+    implementation("commons-codec:commons-codec:1.17.1")
     implementation(projects.kmp)
     implementation(libs.kermit)
     implementation(projects.icons)

@@ -47,6 +47,8 @@ class FakePort(
     override suspend fun openTasksMatching(text: String) =
         tasks.filter { !it.completed && it.title.contains(text, ignoreCase = true) }
 
+    override suspend fun openTasks() = tasks.filter { !it.completed }
+
     override suspend fun complete(id: Long): CompletionInfo {
         completedIds += id
         val t = tasks.first { it.id == id }

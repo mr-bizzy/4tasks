@@ -2,6 +2,7 @@ package org.tasks.fourlink
 
 import org.json.JSONObject
 import uk.mr_biz.fourlink.Outcome
+import uk.mr_biz.fourlink.Suggestion
 import java.time.Clock
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -51,6 +52,8 @@ interface TasksPort {
     suspend fun listTasks(filter: TaskFilter): TaskPage
     suspend fun task(id: Long): TaskInfo?
     suspend fun openTasksMatching(text: String): List<TaskInfo>
+    /** Every open task, for matching a title by sound and for naming the nearest ones. */
+    suspend fun openTasks(): List<TaskInfo>
     suspend fun complete(id: Long): CompletionInfo
     fun exactAlarmsAllowed(): Boolean
 }
@@ -64,6 +67,12 @@ class TasksDoorLogic(
     private val port: TasksPort,
     private val clock: Clock = Clock.systemDefaultZone(),
     private val locale: Locale = Locale.getDefault(),
+    /**
+     * Whether this caller may be told task titles in an error or a suggestion: our own apps, or a
+     * paired app that was granted tasks.list. Anyone else could otherwise read titles by guessing
+     * words at tasks.complete, which they were never allowed to read.
+     */
+    private val mayNameTasks: Boolean = true,
 ) {
     private val zone get() = clock.zone
 
@@ -76,7 +85,7 @@ class TasksDoorLogic(
             else -> Outcome.Failed("4Tasks has no code for “$functionId”.")
         }
     } catch (e: BadArgument) {
-        Outcome.BadArguments(e.message.orEmpty())
+        Outcome.BadArguments(e.message.orEmpty(), e.suggestion)
     } catch (e: IllegalArgumentException) {
         Outcome.BadArguments(e.message ?: "An argument was not accepted.")
     } catch (e: UnsupportedOperationException) {
@@ -177,7 +186,7 @@ class TasksDoorLogic(
         val target: TaskInfo = if (id != null) {
             port.task(id) ?: throw BadArgument("There is no task with id $id.")
         } else {
-            pickByTitle(title!!, port.openTasksMatching(title))
+            pickByTitle(title!!)
         }
         if (target.completed) return Outcome.Ok(JSONObject().put("summary", "“${target.title}” was already done.").toString())
 
@@ -191,15 +200,56 @@ class TasksDoorLogic(
         return Outcome.Ok(JSONObject().put("summary", summary).toString())
     }
 
-    /** Exactly one open task, or a sentence naming the candidates. A whole-title match wins over a part-title match. */
-    private fun pickByTitle(wanted: String, candidates: List<TaskInfo>): TaskInfo {
-        if (candidates.isEmpty()) throw BadArgument("No open task matches “$wanted”.")
-        val exact = candidates.filter { it.title.trim().equals(wanted, ignoreCase = true) }
-        if (exact.size == 1) return exact.single()
-        if (candidates.size == 1) return candidates.single()
-        val shown = candidates.take(MAX_CANDIDATES).joinToString("; ") { "“${it.title}” (id ${it.id})" }
-        val more = if (candidates.size > MAX_CANDIDATES) " and ${candidates.size - MAX_CANDIDATES} more" else ""
-        throw BadArgument("“$wanted” matches several open tasks: $shown$more. Nothing was completed. Say more of the title, or send the id.")
+    /**
+     * Exactly one open task, found by its words. A whole-title match wins over a part-title match.
+     * If no title contains the words, tasks that SOUND like them are looked for, but never completed:
+     * a single one is offered as a suggestion for the user to confirm (spec 11a), several are named.
+     */
+    private suspend fun pickByTitle(wanted: String): TaskInfo {
+        val candidates = port.openTasksMatching(wanted)
+        if (candidates.isNotEmpty()) {
+            val exact = candidates.filter { it.title.trim().equals(wanted, ignoreCase = true) }
+            if (exact.size == 1) return exact.single()
+            if (candidates.size == 1) return candidates.single()
+            if (!mayNameTasks) {
+                throw BadArgument("“$wanted” matches several open tasks. Nothing was completed. Say more of the title.")
+            }
+            throw BadArgument("“$wanted” matches several open tasks: ${named(candidates)}. Nothing was completed. Say more of the title, or send the id.")
+        }
+
+        val open = port.openTasks()
+        val alike = open.filter { SoundsLike.matches(wanted, it.title) }
+        if (!mayNameTasks) throw BadArgument("No open task matches “$wanted”.")
+        when {
+            alike.size == 1 -> {
+                val t = alike.single()
+                val title = t.title.trim().take(QUOTED_TITLE_MAX)
+                throw BadArgument(
+                    "No open task contains “$wanted”. One sounds like it: “$title”. Nothing was completed.",
+                    Suggestion(
+                        question = "Did you mean “$title”?",
+                        function = TasksCatalogue.COMPLETE,
+                        arguments = JSONObject().put("id", t.id),
+                    ),
+                )
+            }
+            alike.size > 1 -> throw BadArgument(
+                "No open task contains “$wanted”, and several sound like it: ${named(alike)}. Nothing was completed. Say more of the title, or send the id.",
+            )
+            open.isEmpty() -> throw BadArgument("No open task matches “$wanted”: there are no open tasks.")
+            else -> throw BadArgument(
+                "No open task matches “$wanted”. Open tasks: ${named(open, withIds = false)}.",
+            )
+        }
+    }
+
+    private fun named(tasks: List<TaskInfo>, withIds: Boolean = true): String {
+        val shown = tasks.take(MAX_CANDIDATES).joinToString("; ") {
+            val t = it.title.trim().take(QUOTED_TITLE_MAX)
+            if (withIds) "“$t” (id ${it.id})" else "“$t”"
+        }
+        val more = if (tasks.size > MAX_CANDIDATES) " and ${tasks.size - MAX_CANDIDATES} more" else ""
+        return shown + more
     }
 
     // ---- lists.list ------------------------------------------------------
@@ -225,5 +275,7 @@ class TasksDoorLogic(
     companion object {
         const val MAX_LISTED = 50
         const val MAX_CANDIDATES = 5
+        /** A task title quoted in a sentence is cut here, so a question stays within 200 characters. */
+        const val QUOTED_TITLE_MAX = 120
     }
 }

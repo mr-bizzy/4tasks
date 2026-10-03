@@ -17,7 +17,9 @@ import uk.mr_biz.fourlink.Caller
 import uk.mr_biz.fourlink.Catalogue
 import uk.mr_biz.fourlink.FunctionSpec
 import uk.mr_biz.fourlink.Outcome
+import uk.mr_biz.fourlink.Standing
 import uk.mr_biz.fourlink.android.FourLinkProvider
+import uk.mr_biz.fourlink.android.FourLinkStores
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -46,12 +48,22 @@ class TasksFourLinkProvider : FourLinkProvider() {
         val context = requireNotNull(context)
         awaitApplicationStart()
         val entry = EntryPointAccessors.fromApplication(context.applicationContext, DoorEntryPoint::class.java)
-        val logic = TasksDoorLogic(EnginePort(entry.queryEngine, entry.writer, context))
+        val logic = TasksDoorLogic(EnginePort(entry.queryEngine, entry.writer, context), mayNameTasks = mayNameTasks(context, caller))
         return try {
             // A binder thread: Tasks.org's data layer suspends, and needs no main thread.
             runBlocking(Dispatchers.IO) { withTimeout(TIMEOUT_MS) { logic.perform(function.id, arguments) } }
         } catch (e: TimeoutCancellationException) {
             Outcome.Failed("4Tasks took too long to answer.")
+        }
+    }
+
+    /** Family (our own apps), or a paired app that was granted tasks.list, may be told task titles. */
+    private fun mayNameTasks(context: android.content.Context, caller: Caller): Boolean {
+        val stores = FourLinkStores.of(context)
+        return when (stores.gate.standing(caller)) {
+            Standing.FAMILY -> true
+            Standing.PAIRED -> stores.pairings.get(caller.packageName)?.allows(TasksCatalogue.LIST) == true
+            Standing.UNKNOWN -> false
         }
     }
 

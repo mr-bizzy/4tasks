@@ -81,13 +81,21 @@ class EnginePort(
      * matched (see the note in ApiModels.kt); a plain substring is also what a person means.
      */
     override suspend fun openTasksMatching(text: String): List<TaskInfo> {
-        val lists = lists()
         val needle = text.trim().lowercase(Locale.ROOT)
+        return openTasks().filter { it.title.lowercase(Locale.ROOT).contains(needle) }
+    }
+
+    /**
+     * Every open task, a page at a time. The engine's own `matches` filter is a regular expression
+     * and, on a phone, never matched (see the note in ApiModels.kt), so titles are compared here.
+     */
+    override suspend fun openTasks(): List<TaskInfo> {
+        val lists = lists()
         val found = mutableListOf<TaskInfo>()
         var offset = 0
         while (true) {
             val page = engine.findTasks(TaskQuery(status = "open", limit = PAGE, offset = offset))
-            page.rows.filter { it.title.lowercase(Locale.ROOT).contains(needle) }.forEach { found += info(it, lists) }
+            page.rows.forEach { found += info(it, lists) }
             offset += page.rows.size
             if (page.rows.isEmpty() || offset >= page.total) break
         }
