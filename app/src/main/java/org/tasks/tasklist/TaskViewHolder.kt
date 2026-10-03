@@ -69,7 +69,13 @@ class TaskViewHolder internal constructor(
     private val theme: Theme,
     private val dateFormatter: DateFormatter,
 ) : RecyclerView.ViewHolder(binding.root) {
-    private val row: ViewGroup = binding.row
+    private val row: ViewGroup = binding.row.also {
+        if (FamilyLayout.groupStyle == GroupStyle.PLAIN) {
+            it.setBackgroundColor(
+                MaterialColors.getColor(it, com.google.android.material.R.attr.colorSurface)
+            )
+        }
+    }
     private val dueDate: TextView = binding.dueDate.apply {
         setOnClickListener { changeDueDate() }
     }

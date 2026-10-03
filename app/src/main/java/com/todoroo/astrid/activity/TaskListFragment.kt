@@ -161,7 +161,10 @@ import org.tasks.service.TaskCompleter
 import org.tasks.sync.SyncAdapters
 import org.tasks.sync.SyncSource
 import org.tasks.tags.TagPickerActivity
+import org.tasks.tasklist.FamilyLayout
 import org.tasks.tasklist.GroupCardDecoration
+import org.tasks.tasklist.GroupStyle
+import org.tasks.tasklist.ItemKind
 import org.tasks.tasklist.BannerAdapter
 import org.tasks.tasklist.DragAndDropRecyclerAdapter
 import org.tasks.tasklist.SectionedDataSource
@@ -713,10 +716,15 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         adapter.dirtyColor = themeColor.primaryColor
         binding.bodyStandard.recyclerView.adapter = ConcatAdapter(bannerAdapter, adapter)
         groupCards?.let { binding.bodyStandard.recyclerView.removeItemDecoration(it) }
-        groupCards = GroupCardDecoration(requireContext()) { concatPosition ->
-            val position = concatPosition - bannerAdapter.itemCount
-            position >= 0 && position < adapter.itemCount && adapter.getItemViewType(position) == 0
-        }.also { binding.bodyStandard.recyclerView.addItemDecoration(it) }
+        groupCards = if (FamilyLayout.groupStyle == GroupStyle.PLAIN) null else
+            GroupCardDecoration(requireContext(), FamilyLayout.groupStyle) { concatPosition ->
+                val position = concatPosition - bannerAdapter.itemCount
+                when {
+                    position < 0 || position >= adapter.itemCount -> ItemKind.OTHER
+                    adapter.getItemViewType(position) == 0 -> ItemKind.TASK
+                    else -> ItemKind.HEADER
+                }
+            }.also { binding.bodyStandard.recyclerView.addItemDecoration(it) }
         taskAdapter.setDataSource(adapter)
     }
 

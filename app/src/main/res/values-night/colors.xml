@@ -11,4 +11,5 @@
   <color name="surface_container">#FF1E293B</color>
   <color name="surface_container_high">#FF243247</color>
   <color name="surface_container_highest">#FF2B3A52</color>
+  <color name="splash_background">@android:color/system_neutral1_900</color>
 </resources>

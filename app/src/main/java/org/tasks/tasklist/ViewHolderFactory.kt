@@ -43,7 +43,15 @@ class ViewHolderFactory @Inject constructor(
     fun newHeaderViewHolder(parent: ViewGroup?, callback: (Long) -> Unit) =
             HeaderViewHolder(
                     context,
-                    LayoutInflater.from(context).inflate(R.layout.task_adapter_header, parent, false),
+                    LayoutInflater.from(context).inflate(
+                            when (FamilyLayout.groupStyle) {
+                                GroupStyle.PLAIN -> R.layout.task_adapter_header
+                                GroupStyle.LABEL_ABOVE_CARD -> R.layout.task_adapter_header_card
+                                GroupStyle.TITLE_IN_CARD -> R.layout.task_adapter_header_in_card
+                            },
+                            parent,
+                            false,
+                    ),
                     callback,
             )
 

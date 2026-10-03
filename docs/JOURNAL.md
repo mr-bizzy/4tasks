@@ -152,3 +152,10 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Colour, a bug found on the way:** the Toolbar/popup overlay themes were Material3.Light/Dark, which reset the colours
   inside the bar to the baseline palette, so the bar and the bottom bar did not follow dynamic colour. They are now the
   colour-neutral ThemeOverlay.Material3; status bar, bar, page and bottom bar are the same surface family in both modes.
+- **Splash and window ground under dynamic colour:** the Android 12+ splash is drawn before the dynamic overlay is applied,
+  so it used the theme's fallback navy. It now takes the system's own neutral surface (system_neutral1_10 light,
+  system_neutral1_900 dark), which is what the dynamic scheme uses as its surface. The window background itself is the
+  theme's colorSurface attribute, so it is dynamic once the overlay is applied. With wallpaper colour OFF the splash is
+  still the neutral surface (a resource cannot know the setting), so a flash is possible only in that case.
+- **Group style** is one switch (tasklist/FamilyLayout.kt): PLAIN, LABEL_ABOVE_CARD (shipped for now), TITLE_IN_CARD
+  (4Zones' way, built, screenshots made). The owner chooses the family standard.
