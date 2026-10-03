@@ -112,12 +112,11 @@ Two risks I found by reading, to be tested before anyone spends effort on verifi
   ([support.google.com/cloud/answer/13464325](https://support.google.com/cloud/answer/13464325)). So **no paid
   security assessment** (that is the requirement for restricted scopes
   ([restricted-scope verification](https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification))).
-- **Sensitive or not-sensitive: not stated** on any Google page I could read (the Tasks scope page, the scopes
-  list and the verification pages do not label it). Google says sensitive scopes carry a "sensitive" marker
-  in the Cloud Console. The scope is "Create, edit, organize, and delete all your tasks"
-  ([Tasks scopes](https://developers.google.com/workspace/tasks/auth)), which is personal user data, so
-  **plan for the sensitive route** (review, no assessment). The owner confirms it when adding the scope: the
-  Console shows the marker. Send me a screenshot and I update this line.
+- **Sensitive, confirmed 2026-10-03** from the owner's Cloud Console screenshot: `https://www.googleapis.com/auth/tasks` is
+  listed under "Your sensitive scopes" (not under restricted), and it is the only scope on the project (project
+  `diesel-horizon-510514-n3`, apps account; consent screen External, Testing; three test users). So the route is the
+  **sensitive-scope review: no security assessment**. (Earlier, no Google page labelled it; the Console does. The scope is
+  "Create, edit, organize, and delete all your tasks", [Tasks scopes](https://developers.google.com/workspace/tasks/auth).)
 - The only narrower scope is `tasks.readonly`, which cannot do two-way sync, so the justification for the
   full scope is: the app creates, edits and completes tasks the user changes on their phone.
 
