@@ -48,6 +48,7 @@ import org.tasks.caldav.TasksAccountDataRepository
 import org.tasks.caldav.VtodoCache
 import org.tasks.compose.drawer.DrawerConfiguration
 import org.tasks.R
+import org.tasks.PlatformConfiguration
 import org.tasks.data.OpenTaskDao
 import org.tasks.opentasks.OpenTaskContentObserver
 import org.tasks.opentasks.OpenTasksSynchronizer
@@ -402,9 +403,11 @@ class ApplicationModule {
     fun providesOpenTaskDao(
         @ApplicationContext context: Context,
         caldavDao: CaldavDao,
+        platformConfiguration: PlatformConfiguration,
     ): OpenTaskDao = OpenTaskDao(
         context = context,
         caldavDao = caldavDao,
+        enabled = platformConfiguration.supportsOpenTasks,
     )
 
     @Provides

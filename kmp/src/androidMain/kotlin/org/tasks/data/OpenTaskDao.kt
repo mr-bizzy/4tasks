@@ -27,6 +27,8 @@ import java.util.UUID
 open class OpenTaskDao(
         context: Context,
         private val caldavDao: CaldavDao,
+        /** False when OpenTasks sync is switched off: its provider is not there, so nothing asks it. */
+        private val enabled: Boolean = true,
 ) {
     protected val cr: ContentResolver = context.contentResolver
     val authority: String = context.getString(org.tasks.kmp.R.string.opentasks_authority)
@@ -34,15 +36,16 @@ open class OpenTaskDao(
     val taskLists: Uri = TaskLists.getContentUri(authority)
     val properties: Uri = Properties.getContentUri(authority)
 
-    suspend fun shouldSync() =
-        caldavDao.getAccounts(TYPE_OPENTASKS).isNotEmpty() || hasActiveLists()
+    suspend fun shouldSync() = enabled &&
+        (caldavDao.getAccounts(TYPE_OPENTASKS).isNotEmpty() || hasActiveLists())
 
-    suspend fun hasActiveLists() = getListsByAccount().filterActive(caldavDao).isNotEmpty()
+    suspend fun hasActiveLists() = enabled && getListsByAccount().filterActive(caldavDao).isNotEmpty()
 
     suspend fun getListsByAccount(): Map<String, List<CaldavCalendar>> =
             getLists().groupBy { it.account!! }
 
     suspend fun getLists(): List<CaldavCalendar> = withContext(Dispatchers.IO) {
+        if (!enabled) return@withContext emptyList()
         val calendars = ArrayList<CaldavCalendar>()
         cr.query(
                 taskLists,
