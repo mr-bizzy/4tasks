@@ -115,8 +115,8 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   (release build on the emulator; the server saw no request). Debug builds still allow cleartext for testing.
 - Advanced no longer shows the calendar-event rows (the feature is off). The self-signed switch stays.
 - Privacy policy (Markdown and web page, both generated from one source), Data safety, permissions (seven),
-  store listing, README and the About line now describe optional CalDAV sync. Data safety offers two readings
-  and recommends declaring the data as collected, not shared, optional, encrypted in transit; the owner decides.
+  store listing, README and the About line now describe optional CalDAV sync. Data safety: the owner decided (2026-10-03) to
+  declare tasks and the sync sign-in as collected, for app functionality, not shared, optional, encrypted in transit, deletable.
 - Release APK 0.1.0-beta (code 151204), family key 7ffc5b0d, seven permissions, installed over the existing
   copy on the emulator and on the A9 (in-place update, 4Dictate's accessibility service still bound).
 - Not yet done for Phase A: the owner's own test against his Mailcow (he types the credentials himself).
