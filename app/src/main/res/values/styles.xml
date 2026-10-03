@@ -36,6 +36,13 @@
   </style>
 
   <style name="WhiteNavigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <!-- 48 dp square with the 24 dp arrow centred: the family bar (4Dictate MainPager.kt:60 IconButton) -->
+    <item name="android:minWidth">48dp</item>
+    <item name="android:minHeight">48dp</item>
+    <item name="android:paddingStart">12dp</item>
+    <item name="android:paddingEnd">12dp</item>
+    <item name="android:paddingTop">12dp</item>
+    <item name="android:paddingBottom">12dp</item>
     <item name="android:tint">@color/white_100</item>
   </style>
 
@@ -66,6 +73,13 @@
   </style>
 
   <style name="BlackNavigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <!-- 48 dp square with the 24 dp arrow centred: the family bar (4Dictate MainPager.kt:60 IconButton) -->
+    <item name="android:minWidth">48dp</item>
+    <item name="android:minHeight">48dp</item>
+    <item name="android:paddingStart">12dp</item>
+    <item name="android:paddingEnd">12dp</item>
+    <item name="android:paddingTop">12dp</item>
+    <item name="android:paddingBottom">12dp</item>
     <item name="android:tint">@color/black_100</item>
   </style>
 

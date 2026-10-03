@@ -183,3 +183,11 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   the title, the bottom bar and the + button, collapse chevrons, list chips, the edit-screen field icons and switches, and
   "Astrid manual sorting", which is a working legacy sort mode for My Tasks, Today and tags (its own summary says it will be
   replaced by "My order"), so removing it would remove a function.
+
+## 2026-10-03 — Settings bar, card corners and tabs matched to 4Dictate's source
+
+- Bar: 48 dp high with a 48 dp back button and the title at its edge, no shadow, the tab row directly under it (4Dictate
+  MainPager.kt:45-51 padding, :53-70 the row with a default 48 dp IconButton, :84-87 the tab row). Measured on the emulator:
+  bar top = status bar bottom, 48.0 dp high, title starts at 48.4 dp, tab row starts at the bar's bottom.
+- Group cards on the list: 12 dp corners, the stock Card shape (4Dictate HomeScreen.kt:420-424 passes no shape).
+- Tabs: four (Accounts, Tasks, Look, More), edge padding 16 dp as MainPager.kt:84-87. Backups, Advanced and About are on More.

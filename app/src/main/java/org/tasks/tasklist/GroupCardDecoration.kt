@@ -17,7 +17,7 @@ enum class ItemKind { OTHER, TASK, HEADER }
 
 /**
  * Each group of tasks sits in one rounded card, the way 4Dictate and 4Zones group their rows
- * (surfaceVariant like 4Dictate's Cards, 16 dp corners). With [GroupStyle.LABEL_ABOVE_CARD] the group's label sits above
+ * (surfaceVariant like 4Dictate's Cards, the stock 12 dp corners). With [GroupStyle.LABEL_ABOVE_CARD] the group's label sits above
  * the card; with [GroupStyle.TITLE_IN_CARD] the header is the top row of the card. The rows draw no
  * background of their own; the card is painted here, behind them.
  */
@@ -29,7 +29,7 @@ class GroupCardDecoration(
     private val density = context.resources.displayMetrics.density
     private val sideInset = (16 * density).toInt()
     private val groupGap = (12 * density).toInt()
-    private val radius = 16 * density
+    private val radius = 12 * density // the stock Card shape (MaterialTheme.shapes.medium), as 4Dictate's cards
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val path = Path()
     private val rect = RectF()

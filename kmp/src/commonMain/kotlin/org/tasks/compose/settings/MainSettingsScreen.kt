@@ -39,7 +39,7 @@ import tasks.kmp.generated.resources.look_and_feel_summary
 import tasks.kmp.generated.resources.navigation_drawer_summary
 import tasks.kmp.generated.resources.notifications_summary
 import tasks.kmp.generated.resources.settings_tab_accounts
-import tasks.kmp.generated.resources.settings_tab_backup
+import tasks.kmp.generated.resources.settings_tab_more
 import tasks.kmp.generated.resources.settings_tab_look
 import tasks.kmp.generated.resources.settings_tab_tasks
 import tasks.kmp.generated.resources.task_defaults_summary
@@ -171,8 +171,7 @@ fun MainSettingsScreen(
         stringResource(Res.string.settings_tab_accounts),
         stringResource(Res.string.settings_tab_tasks),
         stringResource(Res.string.settings_tab_look),
-        stringResource(Res.string.settings_tab_backup),
-        stringResource(Res.string.about),
+        stringResource(Res.string.settings_tab_more),
     )
     // The tab the user was on is kept, so coming back from a detail screen returns to it
     var savedTab by rememberSaveable { mutableIntStateOf(0) }
@@ -222,12 +221,12 @@ fun MainSettingsScreen(
                         showWidgets = showWidgets,
                         onSettingsClick = onSettingsClick,
                     )
-                    3 -> BackupPage(
+                    else -> MorePage(
                         showBackupWarning = showBackupWarning,
                         showMcpServer = showMcpServer,
+                        isDebug = isDebug,
                         onSettingsClick = onSettingsClick,
                     )
-                    else -> AboutPage(isDebug = isDebug, onSettingsClick = onSettingsClick)
                 }
             }
         }
@@ -356,10 +355,12 @@ private fun LookPage(
     }
 }
 
+/** Backups, Advanced and About on one page, so the tab row fits four tabs as 4Dictate's does. */
 @Composable
-private fun BackupPage(
+private fun MorePage(
     showBackupWarning: Boolean,
     showMcpServer: Boolean,
+    isDebug: Boolean,
     onSettingsClick: (SettingsDestination) -> Unit,
 ) {
     SettingsLinkCard(
@@ -380,13 +381,6 @@ private fun BackupPage(
         summary = stringResource(Res.string.advanced_summary),
         onClick = { onSettingsClick(SettingsDestination.Advanced) },
     )
-}
-
-@Composable
-private fun AboutPage(
-    isDebug: Boolean,
-    onSettingsClick: (SettingsDestination) -> Unit,
-) {
     SettingsLinkCard(
         title = stringResource(Res.string.about),
         summary = stringResource(Res.string.about_summary),

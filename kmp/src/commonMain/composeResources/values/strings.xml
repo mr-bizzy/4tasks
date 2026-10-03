@@ -708,7 +708,7 @@
     <string name="settings_tab_accounts">Accounts</string>
     <string name="settings_tab_tasks">Tasks</string>
     <string name="settings_tab_look">Look</string>
-    <string name="settings_tab_backup">Backup</string>
+    <string name="settings_tab_more">More</string>
     <string name="local_lists_summary">Lists kept on this phone only</string>
     <string name="add_account_summary">Sync your tasks with a CalDAV server</string>
     <string name="task_defaults_summary">What a new task starts with: list, priority, dates and reminders</string>
