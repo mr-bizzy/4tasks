@@ -67,9 +67,10 @@ class AddAccountActivity : ComponentActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode != Activity.RESULT_OK) {
+            // a cancel sets no error; a failed Google sign-in sets plain words for the user (SYNC-PLAN 3, 3b)
             result.data
                 ?.getStringExtra(GtasksLoginActivity.EXTRA_ERROR)
-                ?.let { /* ignore error, user can try again */ }
+                ?.let { android.widget.Toast.makeText(this, it, android.widget.Toast.LENGTH_LONG).show() }
         }
     }
 

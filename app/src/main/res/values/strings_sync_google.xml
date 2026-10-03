@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Words for Google Tasks sync: why a sign-in or a sync failed, and the "What to tell your Workspace admin" screen and
+     message (docs/SYNC-PLAN.md sections 3 and 3b). British English, plain. Kept apart from strings.xml so the Microsoft
+     work does not collide with it. The message text is sent by the user to their admin and is mirrored on the help page
+     https://mr-biz.uk/4tasks/admin/#google: change them together. -->
+<resources>
+
+  <!-- Why it failed (a toast after signing in, and the banner on the account's own screen) -->
+  <string name="google_failure_no_account">There is no Google account on this phone that 4Tasks can use. Add one in Android Settings, then choose Sign in with Google again.</string>
+  <string name="google_failure_needs_sign_in">Google needs you to sign in to 4Tasks again.</string>
+  <string name="google_failure_needs_sign_in_testing">Google needs you to sign in to 4Tasks again. While 4Tasks is in testing with Google, testers have to sign in again every 7 days.</string>
+  <string name="google_failure_admin_blocked">Your organisation has not allowed 4Tasks to use this Google account yet. Your Google Workspace admin can allow it.</string>
+  <string name="google_failure_not_a_tester">Google did not let this account use 4Tasks. While 4Tasks is in testing, only accounts the developer has added as testers can sign in.</string>
+  <string name="google_failure_app_not_set_up">Google Tasks is not set up for 4Tasks yet on Google’s side. Nothing is wrong with your account. Please try again later.</string>
+  <string name="google_failure_unavailable">Could not reach Google. Check your connection; 4Tasks will try again.</string>
+  <string name="google_failure_other">Signing in to Google failed: %1$s</string>
+  <string name="google_failure_other_plain">Signing in to Google failed.</string>
+
+  <!-- A row on the account's own screen when the organisation has blocked 4Tasks -->
+  <string name="google_account_admin_help_title">What to tell your Workspace admin</string>
+  <string name="google_account_admin_help_summary">Your organisation’s settings stop 4Tasks using this account</string>
+
+  <!-- The admin screen -->
+  <string name="google_admin_title">What to tell your Workspace admin</string>
+  <string name="google_admin_intro_title">Your organisation has not allowed 4Tasks</string>
+  <string name="google_admin_intro_body">Google Workspace admins choose which apps may use their organisation’s Google accounts. Yours has not allowed 4Tasks yet. Nothing is wrong with your account. If Google showed you a message from your admin, follow it. Otherwise, send your admin the message below.</string>
+  <string name="google_admin_about_title">About 4Tasks</string>
+  <string name="google_admin_about_body">App name: 4Tasks\nPublisher: Mr-Bizzy, mr-biz.uk\nAndroid package name: %1$s%2$s</string>
+  <string name="google_admin_client_id_line">\nOAuth client ID: %1$s</string>
+  <string name="google_admin_scope_title">What it asks Google for</string>
+  <string name="google_admin_scope_body">One permission only: %1$s\n“%2$s”\n\n4Tasks keeps your tasks on your phone. Because you connected this account, it copies them to and from Google Tasks, so it has to create, edit and delete tasks. It asks for nothing else: no email, Drive, Calendar or contacts.</string>
+  <string name="google_admin_route_title">What your admin does</string>
+  <string name="google_admin_route_body">1. In the Google Admin console, go to Menu, Security, Access and data control, API controls.\n2. Click Manage app access, then Configure new app.\n3. Search for 4Tasks, or for its client ID if one is shown above, and choose it. (Uploading a CSV with Type Android and Id %1$s also works.)\n4. Choose who it is for, the whole organisation or an organisational unit, then set access to Limited or Specific Google data. Limited should be enough, because Google Tasks is not one of the restricted services. If you choose Specific Google data, add the permission above.\n5. Save. Changes can take a while to apply.</string>
+  <string name="google_admin_message_title">The message to send</string>
+  <string name="google_admin_share">Share the message</string>
+  <string name="google_admin_copy">Copy the message</string>
+  <string name="google_admin_copied">Message copied</string>
+  <string name="google_admin_help_page">Open the help page for admins</string>
+  <string name="google_admin_share_chooser">Send to your admin</string>
+
+  <!-- The ready-made message. %1$s the user's account, %2$s the package name, %3$s the client ID line (may be empty),
+       %4$s the scope, %5$s Google’s name for the scope, %6$s the help page, %7$s Google’s admin guide. -->
+  <string name="google_admin_message_subject">Please allow the 4Tasks app to use Google Tasks</string>
+  <string name="google_admin_message">Hello,\n\nI would like to use the 4Tasks app on my phone to keep my tasks in step with Google Tasks, using my work Google account (%1$s). Google says our Workspace settings do not allow 4Tasks to use it yet.\n\nWhat the app is\n- App name: 4Tasks (a to-do list app)\n- Publisher: Mr-Bizzy, mr-biz.uk\n- Android package name: %2$s%3$s\n- Help page for admins: %6$s\n\nWhat it asks Google for\nOne permission only: %4$s\n“%5$s”\nIt copies my tasks to and from Google Tasks. It does not ask for email, Drive, Calendar or contacts.\n\nWhat I need you to do\nIn the Google Admin console: Menu, Security, Access and data control, API controls, Manage app access, Configure new app. Search for 4Tasks (or the client ID above, if there is one), then set access for me, or for my organisational unit, to Limited or Specific Google data. Limited should be enough.\nGoogle’s guide: %7$s\n\nThank you.</string>
+
+</resources>

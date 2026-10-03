@@ -397,6 +397,12 @@
       android:name="com.todoroo.astrid.gtasks.auth.GtasksLoginActivity"
       android:theme="@style/TranslucentDialog"/>
 
+    <!-- "What to tell your Workspace admin": shown when an organisation has not allowed 4Tasks to use a Google account. -->
+    <activity
+      android:name=".sync.google.GoogleAdminHelpActivity"
+      android:exported="false"
+      android:theme="@style/Tasks"/>
+
     <receiver
         android:name=".receivers.SystemEventReceiver"
         android:exported="true">

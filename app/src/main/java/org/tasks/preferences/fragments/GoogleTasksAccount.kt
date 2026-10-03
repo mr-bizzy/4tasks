@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.tasks.R
 import org.tasks.compose.settings.GoogleTasksAccountScreen
 import org.tasks.data.entity.CaldavAccount
+import org.tasks.googleapis.GoogleAccountState
+import org.tasks.googleapis.GoogleFailure
+import org.tasks.sync.google.GoogleAdminHelpActivity
+import org.tasks.sync.google.GoogleFailureText
 import org.tasks.preferences.BasePreferences
 import org.tasks.themes.TasksSettingsTheme
 import org.tasks.themes.Theme
@@ -39,9 +44,24 @@ class GoogleTasksAccount : Fragment() {
             val state by viewModel.state.collectAsStateWithLifecycle()
             val accountName = state.account?.name ?: ""
 
+            val context = LocalContext.current
+            val blocked = state.googleState == GoogleAccountState.AdminBlocked
             GoogleTasksAccountScreen(
-                error = state.error,
+                // a stored failure is shown in plain words (strings_sync_google.xml); any other error as it is
+                error = GoogleFailureText.forStoredError(context, state.error),
                 isUnauthorized = state.isUnauthorized,
+                unauthorizedSummary = if (state.isUnauthorized) {
+                    GoogleFailureText.forStoredError(context, GoogleFailure.NeedsSignIn.stored())
+                } else {
+                    null
+                },
+                adminHelpTitle = if (blocked) context.getString(R.string.google_account_admin_help_title) else null,
+                adminHelpSummary = if (blocked) context.getString(R.string.google_account_admin_help_summary) else null,
+                onAdminHelp = if (blocked) {
+                    { context.startActivity(GoogleAdminHelpActivity.intent(context, accountName)) }
+                } else {
+                    null
+                },
                 accountName = accountName,
                 onSignIn = { requestLogin() },
                 onDelete = {
