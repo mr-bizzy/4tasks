@@ -184,6 +184,11 @@ class TasksApplication : Application(), Configuration.Provider {
     }
 
     private fun backgroundWork() = scope.launch {
+        // The debouncer that turns a changed task into a sync is only watching once it exists. It used to be built the first time
+        // the list screen opened, so a task made while the process had been started by something else (the 4Link door, 4Dictate
+        // adding a task by voice) was not synced until the user next opened the app. Build it now, at every process start; it also
+        // pushes whatever is already waiting.
+        syncAdapters.get()
         tasksPreferences.set(TasksPreferences.syncSource, SyncSource.NONE.name)
         Iconics.registerFont(OutlinedGoogleMaterial)
         Iconics.registerFont(OutlinedGoogleMaterial2)

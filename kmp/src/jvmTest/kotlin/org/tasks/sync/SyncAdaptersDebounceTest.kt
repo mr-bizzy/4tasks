@@ -72,6 +72,21 @@ class SyncAdaptersDebounceTest {
         assertEquals(listOf(SyncSource.TASK_CHANGE), synced)
     }
 
+    /**
+     * A task made while nothing is watching (the 4Link door runs in a process that nobody has opened) is dirty before the
+     * debouncer exists. Starting it, which the app now does at process start, must push that task.
+     */
+    @Test
+    fun taskMadeBeforeTheDebouncerExistsIsPushedWhenItStarts() = runBlocking {
+        setupAccount()
+        dirtyTask()
+
+        syncAdapters()
+        awaitSync()
+
+        assertEquals(listOf(SyncSource.TASK_CHANGE), synced)
+    }
+
     @Test
     fun quietPeriodBetweenChangesSyncsTwice() = runBlocking {
         setupAccount()

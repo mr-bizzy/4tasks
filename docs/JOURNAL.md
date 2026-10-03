@@ -381,3 +381,19 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Help links:** the "Learn more" links for Google and Microsoft (url_google_tasks, url_microsoft, TasksUrls) now point to our own
   manual (https://mr-biz.uk/4tasks/manual/#google, #microsoft) instead of tasks.org; the anchors exist once the drafted manual is
   published. The other Tasks.org help links remain until open testing.
+
+## 2026-10-03 — Sync bug: tasks made by voice waited for the next time the app was opened
+
+- **Measured (Sar, read-only, on the owner's Mailcow, plus the A9's log):** "Call Brandon" and "Check the oven" (CalDAV, A9, 0.1.2,
+  Android 16) were created 19:35 and 19:36 but reached the server only at 19:59:12, when the owner opened the app. No SyncWork was
+  scheduled after the creates.
+- **Cause (read from the code):** a changed task becomes a sync through SyncAdapters, whose init watches `hasDirtyTasks()`. It
+  is a singleton that was only BUILT when something first injected it: the list screen, or onResume when the last sync was over
+  five minutes old. A task made by the 4Link door (4Dictate adding by voice) runs in a process nobody had opened, so nothing was
+  watching, and the dirty task sat until the next app open. Earlier emulator tests had the app open, hence "30 s later".
+- **Fix:** TasksApplication.backgroundWork() now builds SyncAdapters at every process start (it also pushes whatever is already
+  dirty). Tests: SyncAdaptersDebounceTest.taskMadeBeforeTheDebouncerExistsIsPushedWhenItStarts (a task made before the debouncer
+  exists is pushed when it starts) and SyncStartsWithTheProcessTest (the application must build it). Checked on the emulator:
+  force-stopped the app, one `tasks.add` through the door, and the dirty-task query that the debouncer runs appeared in the log
+  right after the save (the emulator's list is local, so no network sync followed). A `tasks.complete` through the door takes the
+  same path. NOT checked on a real CalDAV account; ships in 0.1.3 (151210).
