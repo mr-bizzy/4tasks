@@ -14,7 +14,10 @@ could not confirm something, it says so.
 - Keep the Google and Microsoft code (the earlier "keep or delete" question is settled).
 - **Also decided:** the **help page for organisation admins** (sections 3a and 3b) is part of the **first Play release**.
 - **Rulings of 2026-10-03:** (1) the release is signed with **our own release key uploaded to Play App Signing
-  through PEPK**, so the SHA-1 `E6:2C:…` below is the production fingerprint for the Google Android client;
+  through PEPK**, so the SHA-1 of that key (see section 5, step 7) is the production fingerprint for the Google Android client;
+  **amended 2026-10-03 (owner): 4Tasks has its OWN release key (`~/keys/4tasks-release.p12`, alias `fourtasks-release`), one set of
+  credentials per app as for 4Dictate and 4Zones, not 4Dictate's; the earlier SHA-1 `E6:2C:…` (4Dictate's key) is void and was never
+  registered anywhere;
   (2) the **file backup does not include sync credentials**, and a restore leaves accounts needing sign-in again;
   (3) cert4android's "trust this self-signed certificate" stays, **behind "Advanced: allow self-signed certificates",
   off by default, and even when on a trusted certificate under the WRONG hostname is refused**; (4) the **Tasks.org help links stay for now and move to mr-biz.uk before open testing**.
@@ -76,7 +79,7 @@ Two risks I found by reading, to be tested before anyone spends effort on verifi
 
 ### Phase B — Microsoft To Do (personal and work or school accounts)
 - Replace Tasks.org's client ID with ours (the Entra registration in section 5); redirect
-  `msauth://uk.mr_biz.fourtasks/<signature hash>` as Entra's Android platform setup gives it; restore the AppAuth
+  `msauth://uk.mr_biz.fourtasks/<signature hash>` (of the NEW 4Tasks release key, not 4Dictate's) as Entra's Android platform setup gives it; restore the AppAuth
   redirect activity in the manifest with our scheme.
 - Change the sign-in authority from `consumers` to **`common`**, so personal accounts and any organisation's
   accounts can sign in. The scopes stay `user.read Tasks.ReadWrite openid offline_access email`. Microsoft's Graph
@@ -221,8 +224,8 @@ Google (in this order; steps 1 to 6 can start now, 7 needs the app on Play, 8 an
 6. **Audience:** External, **Testing**, and list the test users (up to 100).
 7. **Android OAuth clients** (type Android): package `uk.mr_biz.fourtasks` with the SHA-1 of the certificate that
    signs what Play installs. **Decided:** the Play app uses *our own* release key, uploaded to Play App Signing through PEPK (the 4Link spec
-   requires it), so the production SHA-1 is known now and is
-   `E6:2C:D7:5A:DD:84:03:B4:EB:0B:31:0A:AA:07:08:24:67:FB:EA:EE` (from the release APK). The *upload* key does not matter to Google. (Had Play generated
+   requires it), so the production SHA-1 is known once the key exists and is **the SHA-1 of the NEW 4Tasks release key**
+   (`5D:70:F9:67:FC:56:E7:00:F2:61:44:D7:2A:65:5B:72:29:8C:0E:6A`, SHA-256 `92:C5:1B:99:…:AD:06`, created 2026-10-03; the earlier `E6:2C:…` was 4Dictate's key and is void, never registered). The *upload* key does not matter to Google. (Had Play generated
    its own signing key, the SHA-1 would only be in Play Console after enrolment; that route is not taken.) A second client with the workstation debug SHA-1
    `16:3C:86:72:29:4C:69:FB:AB:52:1A:6A:03:DA:AD:BB:D3:9E:8C:4E` lets debug builds sign in.
 8. **After internal testing:** put the final privacy text (section 4) live; write the scope justification (I draft
@@ -247,7 +250,7 @@ all free; the owner does 1 to 6 in this order, because each needs the one before
 4. **Register the app** "4Tasks" in that tenant (it must be registered with this work account, not with a personal
    Microsoft account, or it cannot be verified): supported account types **"Accounts in any organizational
    directory and personal Microsoft accounts"**; public client, no secret; platform Android with package
-   `uk.mr_biz.fourtasks` and the signature hash of the certificate in section 5 (Google step 7); delegated Graph
+   `uk.mr_biz.fourtasks` and the signature hash of 4Tasks' own release certificate (section 5, Google step 7); delegated Graph
    permissions `User.Read`, `Tasks.ReadWrite`, `openid`, `offline_access`, `email`; and set the **publisher domain** to
    `mr-biz.uk`. Microsoft's own page on setting a publisher domain may ask for a small file on mr-biz.uk; I have not
    read it.
@@ -306,7 +309,7 @@ never see the prompt, and a server with a certificate the phone does not trust s
 **(b2) Hostname (ruling):** even with the switch on, a trusted certificate under the WRONG hostname is refused. See
 Phase A for the change and its four tests.
 
-**(c) Signing:** our own release key through PEPK (so the Google Android client uses the SHA-1 above).
+**(c) Signing:** 4Tasks' own release key (`~/keys/4tasks-release.p12`) through PEPK (so the Google Android client uses that key's SHA-1, step 7).
 
 **(d) Tasks.org help links:** stay for now, move to `mr-biz.uk` before open testing.
 

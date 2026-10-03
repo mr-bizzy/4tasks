@@ -304,3 +304,20 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Release AAB:** app/build/outputs/bundle/genericRelease/app-generic-release.aab (`:app:bundleGenericRelease`), 32,496,680 bytes,
   sha256 4a8a33e7…45c4, uk.mr_biz.fourtasks versionCode 151204 / 0.1.0-beta, jarsigner "jar verified", signing certificate
   CN=4Dictate, O=mr-biz apps, SHA-256 7F:FC:5B:0D:…:CF:D8:D9 = FourLink.FAMILY_RELEASE_DIGEST (the family key, same as 4Dictate).
+
+## 2026-10-03 — 4Tasks gets its own release key
+
+- **Owner's decision:** one set of credentials per app (as 4Dictate and 4Zones), so the release is no longer signed with 4Dictate's
+  key; the 14:28 AAB (signed with 4Dictate's) is void and was never uploaded. The key: ~/keys/4tasks-release.p12, alias
+  fourtasks-release, CN=4Tasks, O=mr-biz apps, C=GB, RSA 4096, valid to 14 Nov 2056. SHA-256
+  92:C5:1B:99:E3:8E:B2:F4:98:37:5C:D9:12:CE:A9:00:20:3C:E6:A1:90:69:D3:3C:E8:38:42:03:A1:C2:AD:06, SHA-1
+  5D:70:F9:67:FC:56:E7:00:F2:61:44:D7:2A:65:5B:72:29:8C:0E:6A. Build with FOURTASKS_SIGNING_PROPERTIES=~/keys/4tasks-release-signing.properties.
+- **4Link:** the family is now a LIST of per-app release keys (4link commit 270f940: 4Dictate's and 4Tasks'; FamilyPinTest
+  holds main and debug to exactly that; spec §5a). The submodule here points at it. 4Dictate must be rebuilt with the same list
+  before it treats 4Tasks as family.
+- **Release artefacts** (built 14:53, versionCode 151204 / 0.1.0-beta): app/build/outputs/apk/generic/release/app-generic-release.apk
+  and app/build/outputs/bundle/genericRelease/app-generic-release.aab, both signed with the new key (apksigner v3 and jarsigner
+  checked; digest equal to the key's). AAB sha256 0227a5cd…3b50.
+- **SYNC-PLAN.md:** the Google Android client's SHA-1 and Microsoft's signature hash come from this key.
+- **A9:** the installed 4Tasks is signed with 4Dictate's key, so Android will refuse to update it: it has to be uninstalled and
+  reinstalled (local data on the phone is lost; the Mailcow data is on the server). To be announced first.
