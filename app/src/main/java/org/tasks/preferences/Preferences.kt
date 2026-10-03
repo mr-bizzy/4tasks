@@ -25,7 +25,7 @@ import org.tasks.compose.pickers.QuickPickTimes
 import org.tasks.data.entity.Task
 import org.tasks.data.entity.TaskAttachment
 import org.tasks.extensions.Context.getResourceUri
-import org.tasks.kmp.org.tasks.themes.ColorProvider.BLUE_500
+import org.tasks.kmp.org.tasks.themes.ColorProvider.FAMILY_SEED
 import org.tasks.themes.ThemeBase
 import org.tasks.time.DateTime
 import timber.log.Timber
@@ -197,7 +197,7 @@ class Preferences @JvmOverloads constructor(
     override suspend fun lookAndFeelSettings() = LookAndFeelSettings(
         theme = getInt(R.string.p_theme, lookAndFeelDefaults.theme),
         themeColor = getInt(R.string.p_theme_color, lookAndFeelDefaults.themeColor),
-        dynamicColor = getBoolean(R.string.p_dynamic_color, lookAndFeelDefaults.dynamicColor),
+        dynamicColor = getBoolean(R.string.p_dynamic_color, true),
         markdown = getBoolean(R.string.p_markdown, lookAndFeelDefaults.markdown),
         openLastViewedList = getBoolean(
             R.string.p_open_last_viewed_list,
@@ -758,10 +758,10 @@ class Preferences @JvmOverloads constructor(
     }
 
     val defaultThemeColor: Int
-        get() = getInt(R.string.p_theme_color, BLUE_500)
+        get() = getInt(R.string.p_theme_color, FAMILY_SEED)
 
     val dynamicColor: Boolean
-        get() = getBoolean(R.string.p_dynamic_color, false)
+        get() = getBoolean(R.string.p_dynamic_color, true)
 
     val markdown: Boolean
         get() = getBoolean(R.string.p_markdown, false)

@@ -17,7 +17,6 @@ class ColorPickerAdapter(
 
     enum class Palette {
         COLORS,
-        LAUNCHERS,
         WIDGET
     }
 

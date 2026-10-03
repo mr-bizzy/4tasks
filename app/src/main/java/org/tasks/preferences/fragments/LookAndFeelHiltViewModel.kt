@@ -1,9 +1,7 @@
 package org.tasks.preferences.fragments
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
@@ -20,8 +18,6 @@ import org.tasks.filters.FilterPreferenceCodec
 import org.tasks.injection.ApplicationScope
 import org.tasks.preferences.Preferences
 import org.tasks.themes.BaseTheme
-import org.tasks.themes.ThemeColor
-import org.tasks.themes.ThemeColor.getLauncherColor
 import org.tasks.viewmodel.LookAndFeelViewModel
 import java.util.Locale
 import javax.inject.Inject
@@ -47,27 +43,20 @@ class LookAndFeelHiltViewModel @Inject constructor(
 
     private var currentThemeColor by mutableIntStateOf(preferences.defaultThemeColor)
 
-    private var currentLauncherColor by mutableIntStateOf(launcherPickerColor())
-
     override val themeIndex: Int get() = currentThemeBaseIndex
 
     override val themeColor: Int get() = currentThemeColor
 
-    override val launcherColor: Int get() = currentLauncherColor
-
     override val dynamicColorAvailable: Boolean get() = DynamicColors.isDynamicColorAvailable()
 
     override val dynamicColorEnabled: Boolean
-        get() = dynamicColorAvailable && inventory.hasPro && settings.dynamicColor
-
-    override val dynamicColorProOnly: Boolean get() = dynamicColorAvailable && !inventory.hasPro
+        get() = dynamicColorAvailable && settings.dynamicColor
 
     override val localeName: String get() = locale.getDisplayName(locale)
 
     fun refreshState(themeBaseIndex: Int, themeColorPickerColor: Int) {
         currentThemeBaseIndex = themeBaseIndex
         currentThemeColor = themeColorPickerColor
-        currentLauncherColor = launcherPickerColor()
         refreshState()
     }
 
@@ -82,9 +71,6 @@ class LookAndFeelHiltViewModel @Inject constructor(
     }
 
     fun updateDynamicColor(enabled: Boolean) {
-        if (!inventory.hasPro) {
-            return
-        }
         setDynamicColor(enabled)
     }
 
@@ -116,37 +102,8 @@ class LookAndFeelHiltViewModel @Inject constructor(
         return true
     }
 
-    fun handleLauncherPickerResult(context: Context, selectedIndex: Int) {
-        setLauncherIcon(context, selectedIndex)
-        preferences.setInt(R.string.p_theme_launcher, selectedIndex)
-        currentLauncherColor = getLauncherColor(context, selectedIndex).pickerColor
-    }
-
-    private fun launcherPickerColor() =
-        getLauncherColor(context, preferences.getInt(R.string.p_theme_launcher, DEFAULT_LAUNCHER))
-            .pickerColor
-
-    private fun setLauncherIcon(context: Context, index: Int) {
-        val packageManager = context.packageManager
-        for (i in ThemeColor.LAUNCHERS.indices) {
-            val componentName = ComponentName(
-                context,
-                "com.todoroo.astrid.activity.TaskListActivity" + ThemeColor.LAUNCHERS[i]
-            )
-            packageManager.setComponentEnabledSetting(
-                componentName,
-                if (index == i) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-        }
-    }
-
     sealed interface ThemePickerResult {
         data class ApplyTheme(val index: Int) : ThemePickerResult
         data object PurchaseRequired : ThemePickerResult
-    }
-
-    companion object {
-        private const val DEFAULT_LAUNCHER = 7
     }
 }

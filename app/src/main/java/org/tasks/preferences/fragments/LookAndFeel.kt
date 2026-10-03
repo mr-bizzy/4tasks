@@ -23,7 +23,6 @@ import org.tasks.compose.FilterSelectionActivity.Companion.registerForFilterPick
 import org.jetbrains.compose.resources.stringResource
 import org.tasks.compose.settings.LookAndFeelScreen
 import org.tasks.compose.settings.baseThemeName
-import org.tasks.dialogs.ColorPalettePicker
 import org.tasks.dialogs.ColorPalettePicker.Companion.newColorPalette
 import org.tasks.dialogs.ColorPickerAdapter
 import org.tasks.dialogs.ColorWheelPicker
@@ -90,12 +89,6 @@ class LookAndFeel : Fragment() {
             }
         }
         parentFragmentManager.setFragmentResultListener(
-            REQUEST_KEY_LAUNCHER, this
-        ) { _, bundle ->
-            val index = bundle.getInt(ColorPalettePicker.EXTRA_SELECTED, 0)
-            viewModel.handleLauncherPickerResult(requireContext(), index)
-        }
-        parentFragmentManager.setFragmentResultListener(
             LocalePickerDialog.REQUEST_KEY, this
         ) { _, bundle ->
             val languageTag = bundle.getString(LocalePickerDialog.EXTRA_LOCALE)
@@ -119,9 +112,7 @@ class LookAndFeel : Fragment() {
                 themeName = baseThemeName(viewModel.themeIndex),
                 dynamicColorAvailable = viewModel.dynamicColorAvailable,
                 dynamicColorEnabled = viewModel.dynamicColorEnabled,
-                dynamicColorProOnly = viewModel.dynamicColorProOnly,
                 themeColor = viewModel.themeColor,
-                launcherColor = viewModel.launcherColor,
                 markdownEnabled = viewModel.settings.markdown,
                 openLastViewedList = viewModel.settings.openLastViewedList,
                 defaultFilterName = viewModel.defaultFilterName,
@@ -138,13 +129,6 @@ class LookAndFeel : Fragment() {
                         REQUEST_KEY_COLOR,
                         theme.themeColor.pickerColor,
                         ColorPickerAdapter.Palette.COLORS,
-                    ).show(parentFragmentManager, FRAG_TAG_COLOR_PICKER)
-                },
-                onLauncher = {
-                    newColorPalette(
-                        REQUEST_KEY_LAUNCHER,
-                        viewModel.launcherColor,
-                        ColorPickerAdapter.Palette.LAUNCHERS,
                     ).show(parentFragmentManager, FRAG_TAG_COLOR_PICKER)
                 },
                 onMarkdown = { enabled ->
@@ -221,7 +205,6 @@ class LookAndFeel : Fragment() {
 
     companion object {
         private const val REQUEST_KEY_COLOR = "color_picker_result"
-        private const val REQUEST_KEY_LAUNCHER = "launcher_picker_result"
         private const val FRAG_TAG_LOCALE_PICKER = "frag_tag_locale_picker"
         private const val FRAG_TAG_THEME_PICKER = "frag_tag_theme_picker"
         private const val FRAG_TAG_COLOR_PICKER = "frag_tag_color_picker"

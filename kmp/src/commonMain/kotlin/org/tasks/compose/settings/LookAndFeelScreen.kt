@@ -29,12 +29,10 @@ import org.tasks.themes.BaseTheme
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.color
 import tasks.kmp.generated.resources.language
-import tasks.kmp.generated.resources.launcher_icon
 import tasks.kmp.generated.resources.markdown
 import tasks.kmp.generated.resources.markdown_description
 import tasks.kmp.generated.resources.on_launch
 import tasks.kmp.generated.resources.open_last_viewed_list
-import tasks.kmp.generated.resources.requires_pro_subscription
 import tasks.kmp.generated.resources.settings_localization
 import tasks.kmp.generated.resources.theme
 import tasks.kmp.generated.resources.theme_black
@@ -52,10 +50,7 @@ fun LookAndFeelScreen(
     themeName: String,
     dynamicColorAvailable: Boolean,
     dynamicColorEnabled: Boolean,
-    dynamicColorProOnly: Boolean,
     themeColor: Int,
-    launcherColor: Int,
-    showLauncherIcon: Boolean = true,
     showLanguage: Boolean = true,
     showMarkdown: Boolean = true,
     markdownEnabled: Boolean,
@@ -65,7 +60,6 @@ fun LookAndFeelScreen(
     onTheme: () -> Unit,
     onDynamicColor: (Boolean) -> Unit,
     onColor: () -> Unit,
-    onLauncher: () -> Unit,
     onMarkdown: (Boolean) -> Unit,
     onOpenLastViewedList: (Boolean) -> Unit,
     onDefaultFilter: () -> Unit,
@@ -85,8 +79,7 @@ fun LookAndFeelScreen(
             verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
             val showColor = !dynamicColorEnabled
-            val total = 1 + (if (dynamicColorAvailable) 1 else 0) +
-                    (if (showColor) 1 else 0) + (if (showLauncherIcon) 1 else 0)
+            val total = 1 + (if (dynamicColorAvailable) 1 else 0) + (if (showColor) 1 else 0)
             var i = 0
 
             SettingsItemCard(position = CardPosition.forIndex(i++, total)) {
@@ -101,12 +94,7 @@ fun LookAndFeelScreen(
                     SwitchPreferenceRow(
                         title = stringResource(Res.string.theme_dynamic),
                         checked = dynamicColorEnabled,
-                        enabled = !dynamicColorProOnly,
                         onCheckedChange = onDynamicColor,
-                        summary = if (dynamicColorProOnly)
-                            stringResource(Res.string.requires_pro_subscription)
-                        else
-                            null,
                     )
                 }
             }
@@ -116,15 +104,6 @@ fun LookAndFeelScreen(
                         title = stringResource(Res.string.color),
                         leading = { ColorIcon(Color(themeColor)) },
                         onClick = onColor,
-                    )
-                }
-            }
-            if (showLauncherIcon) {
-                SettingsItemCard(position = CardPosition.forIndex(i, total)) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.launcher_icon),
-                        leading = { ColorIcon(Color(launcherColor)) },
-                        onClick = onLauncher,
                     )
                 }
             }

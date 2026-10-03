@@ -16,78 +16,6 @@ import org.tasks.dialogs.ColorPalettePicker.Pickable;
 
 public class ThemeColor implements Pickable {
 
-  public static final int[] ICONS =
-      new int[] {
-        org.tasks.kmp.R.mipmap.ic_launcher_blue_grey,
-        org.tasks.kmp.R.mipmap.ic_launcher_dark_grey,
-        org.tasks.kmp.R.mipmap.ic_launcher_red,
-        org.tasks.kmp.R.mipmap.ic_launcher_pink,
-        org.tasks.kmp.R.mipmap.ic_launcher_purple,
-        org.tasks.kmp.R.mipmap.ic_launcher_deep_purple,
-        org.tasks.kmp.R.mipmap.ic_launcher_indigo,
-        org.tasks.kmp.R.mipmap.ic_launcher_blue,
-        org.tasks.kmp.R.mipmap.ic_launcher_light_blue,
-        org.tasks.kmp.R.mipmap.ic_launcher_cyan,
-        org.tasks.kmp.R.mipmap.ic_launcher_teal,
-        org.tasks.kmp.R.mipmap.ic_launcher_green,
-        org.tasks.kmp.R.mipmap.ic_launcher_light_green,
-        org.tasks.kmp.R.mipmap.ic_launcher_lime,
-        org.tasks.kmp.R.mipmap.ic_launcher_yellow,
-        org.tasks.kmp.R.mipmap.ic_launcher_amber,
-        org.tasks.kmp.R.mipmap.ic_launcher_orange,
-        org.tasks.kmp.R.mipmap.ic_launcher_deep_orange,
-        org.tasks.kmp.R.mipmap.ic_launcher_brown,
-        org.tasks.kmp.R.mipmap.ic_launcher_grey
-      };
-
-  public static final String[] LAUNCHERS =
-      new String[] {
-        ".BlueGrey",
-        ".DarkGrey",
-        ".Red",
-        ".Pink",
-        ".Purple",
-        ".DeepPurple",
-        ".Indigo",
-        "",
-        ".LightBlue",
-        ".Cyan",
-        ".Teal",
-        ".Green",
-        ".LightGreen",
-        ".Lime",
-        ".Yellow",
-        ".Amber",
-        ".Orange",
-        ".DeepOrange",
-        ".Brown",
-        ".Grey"
-      };
-
-  public static final int[] LAUNCHER_COLORS =
-      new int[] {
-        org.tasks.kmp.R.color.blue_grey_500,
-        org.tasks.kmp.R.color.grey_900,
-        org.tasks.kmp.R.color.red_500,
-        org.tasks.kmp.R.color.pink_500,
-        org.tasks.kmp.R.color.purple_500,
-        org.tasks.kmp.R.color.deep_purple_500,
-        org.tasks.kmp.R.color.indigo_500,
-        org.tasks.kmp.R.color.blue_500,
-        org.tasks.kmp.R.color.light_blue_500,
-        org.tasks.kmp.R.color.cyan_500,
-        org.tasks.kmp.R.color.teal_500,
-        org.tasks.kmp.R.color.green_500,
-        org.tasks.kmp.R.color.light_green_500,
-        org.tasks.kmp.R.color.lime_500,
-        org.tasks.kmp.R.color.yellow_500,
-        org.tasks.kmp.R.color.amber_500,
-        org.tasks.kmp.R.color.orange_500,
-        org.tasks.kmp.R.color.deep_orange_500,
-        org.tasks.kmp.R.color.brown_500,
-        org.tasks.kmp.R.color.grey_500
-      };
-
   public static final Parcelable.Creator<ThemeColor> CREATOR =
       new Parcelable.Creator<>() {
         @Override
@@ -130,10 +58,6 @@ public class ThemeColor implements Pickable {
     original = source.readInt();
   }
 
-  public static ThemeColor getLauncherColor(Context context, int index) {
-    return new ThemeColor(context, context.getColor(LAUNCHER_COLORS[index]));
-  }
-
   public void applyToNavigationBar(Activity activity) {
     activity.getWindow().setNavigationBarColor(getPrimaryColor());
 
@@ -156,6 +80,7 @@ public class ThemeColor implements Pickable {
   @Override
   public boolean isFree() {
     switch (original) {
+      case -16612153: // family sky blue (0xFF0284C7)
       case -14575885: // blue_500
       case -10453621: // blue_grey_500
       case -14606047: // grey_900

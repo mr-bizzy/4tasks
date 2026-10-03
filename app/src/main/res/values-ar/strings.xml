@@ -146,8 +146,6 @@
     <string name="TEA_timer_est">تقريبًا %s</string>
     <string name="FLA_search_filter">موافقًا ل\'%s\'</string>
     <string name="logout">تسجيل الخروج</string>
-    <string name="button_subscribe">اشترك</string>
-    <string name="subscription">اشتراك</string>
     <string name="list_separator_with_space">"، "</string>
     <string name="password">كلمة السّر</string>
     <string name="user">المستعمل</string>
@@ -189,7 +187,6 @@
     <string name="app_password">كلمة سرّ التطبيق</string>
     <string name="sign_in_with_google">تسجيل الدخول بجوجل</string>
     <string name="privacy">الخصوصيّة</string>
-    <string name="current_subscription">الاشتراك الحالي: %s</string>
     <string name="account">حساب</string>
     <string name="enjoying_tasks">مستمتع بTasks؟</string>
     <string name="filter_eisenhower_box_4">غير مهم وغير مستعجل</string>
@@ -215,7 +212,6 @@
     <string name="calendar_event_not_found">لم يوجد حدث التقويم</string>
     <string name="CFC_tag_contains_text">اسم العلامة يحتوي: \?</string>
     <string name="EPr_manage_delete_completed_gcal_message">هل حقًّا تريد حذف كل أحداثك للمهام المتمّمة؟</string>
-    <string name="tasks_org_account_required">حساب Tasks.org مطلوب</string>
     <string name="support">دعم</string>
     <string name="backups_ignore_warnings">تجاهل التحذيرات</string>
     <string name="device_settings">إعدادات الجهاز</string>
@@ -231,7 +227,6 @@
     <string name="pick_this_location">اختر هذا الموقع</string>
     <string name="choose_a_location">اختر موقعًا</string>
     <string name="action_create_new_task">أنشأ مهمّة جديدة</string>
-    <string name="this_feature_requires_a_subscription">هذه الميزة تحتاج إلى اشتراك</string>
     <string name="tasker_create_task">أنشأ مهمّة</string>
     <string name="dont_add_to_calendar">لا تضف إلى التقويم</string>
     <string name="repeats_from">تكرار من</string>
@@ -245,11 +240,8 @@
     <string name="CFC_tag_text">علامة: \?</string>
     <string name="CFC_importance_text">الأولويّة على الأقل \?</string>
     <string name="TEA_control_timer">ضوابط المؤقت</string>
-    <string name="upgrade_open_source_description">اشتراكك يدعم التطور المستمر</string>
     <string name="copied_to_clipboard">تم نسخ %s إلى الحافظة</string>
-    <string name="migrate_count">انقل %s إلى Tasks.org</string>
     <string name="open_source">مفتوح المصدر</string>
-    <string name="your_subscription_expired">لقد انتهى اشتراكك. اشترك الآن لإكمال الخدمة.</string>
     <string name="multi_select_reschedule">غيّر التاريخ</string>
     <string name="sort_modified_group">عُدّل %s</string>
     <string name="sort_created_group">أنشأ %s</string>
@@ -259,7 +251,6 @@
     <string name="invalid_backup_file">ملف نسخة احتياطيّة غير صالح</string>
     <string name="location_remind_departure">تذكير عند الرحيل</string>
     <string name="location_remind_arrival">تذكير عند الوصول</string>
-    <string name="refresh_purchases">تحديث عمليات الشراء</string>
     <string name="delete_multiple_tasks_confirmation">%s حذفت</string>
     <string name="copy_multiple_tasks_confirmation">%s نسخت</string>
     <string name="gtasks_error_accountNotFound">لم يتم العثور على الحساب %s، الرجاء تسجيل الخروج ثم تسجيل الدخول من إعدادات Google Tasks.</string>
@@ -283,23 +274,16 @@
     <string name="widget_settings">إعدادات الودجيت</string>
     <string name="CFC_dueBefore_name">تستحق في…</string>
     <string name="EPr_cal_end_or_start_at_due_time">وقت حدث التقويم</string>
-    <string name="upgrade_tasks_org_account_description">قم بالمزامنة مع Tasks.org وتعاون مع مستخدمين آخرين</string>
     <string name="upgrade_more_customization_description">افتح جميع الثيمات والألوان والرموز</string>
     <string name="upgrade_more_customization">المزيد من التخصيص</string>
-    <string name="pro_free_trial">يحصل المشتركون الجدد على نسخة تجريبية مجانية مدتها 7 أيام. تلغى في أي وقت</string>
-    <string name="account_not_included">غير مشمول في اشتراكات \"ضع سعرك\"</string>
     <string name="app_passwords_more_info">قم بمزامنة المهام والتقويمات الخاصة بك مع تطبيقات سطح المكتب والأجهزة المحمولة التابعة لجهات خارجية. اضغط هنا لمزيد من المعلومات</string>
     <string name="save_percent">حفظ%d%%</string>
     <string name="migrating_tasks">ترحيل المهام</string>
-    <string name="github_sponsor">راعي</string>
     <string name="authentication_required">يستلزم التوثيق</string>
-    <string name="github_sponsors">رعاة GitHub</string>
     <string name="authorization_cancelled">تم إلغاء التخويل</string>
-    <string name="no_google_play_subscription">لم يتم العثور على اشتراك Google Play مقبول</string>
     <string name="chip_appearance_text_and_icon">النص والايقونة</string>
     <string name="chips">رقائق</string>
     <string name="back">عودة</string>
-    <string name="upgrade_blurb_2">لقد أمضيت آلاف الساعات في العمل على \"مهام\" ، وأنا أنشر جميع التعليمات البرمجية المصدر عبر الإنترنت مجانًا. من أجل دعم عملي ، ولذلك تتطلب بعض الميزات اشتراكًا</string>
     <string name="davx5_selection_description">مزامنة مهامك مع تطبيق DAVx⁵</string>
     <string name="decsync_selection_description">مزامنة على اساس الملف</string>
     <string name="etesync_selection_description">مزامنة مشفرة من طرف إلى طرف</string>
@@ -312,8 +296,6 @@
     <string name="location_arrived">وصل عند %s</string>
     <string name="location_departed">غادر عند %s</string>
     <string name="reinitialize_account">إعادة التهيئة</string>
-    <string name="requires_pro_subscription">يتطلب اشتراك احترافي</string>
-    <string name="upgrade_to_pro">طور لاصدار متقدم</string>
     <string name="help_and_feedback">مساعدة وتبليغات</string>
     <string name="tasker_list_notification">قائمة الاشعارات</string>
     <string name="repeats_plural_number_of_times">كرره كل %1$s، يحدث %2$d %3$s</string>
@@ -417,9 +399,7 @@
     <string name="show_edit_screen_without_unlock_summary">تمكين استخدام لوحة الإعدادات السريعة دون إلغاء قفل الجهاز</string>
     <string name="banner_app_updated_description">تم تحديث Tasks للتو إلى %s. هل ترغب في الاطلاع على ملاحظات الإصدار؟</string>
     <string name="banner_app_updated_title">التطبيق محدث</string>
-    <string name="donate_today">تبرع اليوم</string>
     <string name="donate_maybe_later">ربما لاحقا</string>
-    <string name="donate_nag">فكِّر في إظهار دعمك بالتبرع!</string>
     <string name="multiline_title">السماح بعناوين متعددة الأسطر</string>
     <string name="multiline_title_on">اضغط على مفتاح Enter لإضافة فواصل الأسطر</string>
     <string name="multiline_title_off">اضغط على تم لحفظ المهمة</string>

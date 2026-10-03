@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Пошук</string>
-    <string name="subscribe">Підписатися</string>
     <string name="filter_my_tasks">Мої завдання</string>
     <string name="filter_notifications">Сповіщення</string>
     <string name="filter_snoozed">Відкладені</string>
@@ -11,7 +10,6 @@
     <string name="default_list">Типовий список</string>
     <string name="search_no_results">Не знайдено</string>
     <string name="subscription_required_description">Розблокуйте всі функції всього за 1 долар США на рік</string>
-    <string name="requires_pro_subscription">Функція Pro</string>
     <string name="help_and_feedback">Довідка і зворотний зв'язок</string>
     <string name="settings">Налаштування</string>
     <string name="drawer_filters">Фільтри</string>
@@ -50,16 +48,11 @@
     <string name="microsoft_selection_description">Синхронізація з особистим обліковим записом Microsoft</string>
     <string name="cost_free">Безплатно</string>
     <string name="name_your_price">Назвіть свою ціну</string>
-    <string name="upgrade_to_pro">Покращити до Преміум</string>
     <string name="caldav_selection_description">Синхронізація на основі стандартів відкритого інтернету</string>
     <string name="davx5_selection_description">Синхронізувати ваші завдання з застосунком DAVx⁵</string>
     <string name="etesync_selection_description">Захищена наскрізним шифруванням синхронізація</string>
     <string name="decsync_selection_description">Синхронізація на основі файлів</string>
-    <string name="sign_in_to_tasks">Увійти на Tasks.org</string>
     <string name="sign_in_with_google">Увійти через Google</string>
-    <string name="sign_in_with_github">Увійти через GitHub</string>
-    <string name="google_play_subscribers">Підписники Google Play</string>
-    <string name="github_sponsors">Спонсори GitHub</string>
     <string name="completed">Виконано</string>
     <string name="filter_overdue">Прострочені</string>
     <string name="no_due_date">Немає дати завершення</string>
@@ -97,9 +90,6 @@
     <string name="display_name">Показувана назва</string>
     <string name="price_per_month_with_currency">%1$s/місяць</string>
     <string name="price_per_year_with_currency">%1$s/рік</string>
-    <string name="donate_nag">Розгляньте можливість підтримати нас внеском!</string>
-    <string name="manage_subscription">Змінити підписку</string>
-    <string name="button_unsubscribe">Скасувати підписку</string>
     <string name="local_lists">Локальні списки</string>
     <string name="app_passwords">Паролі застосунку</string>
     <string name="app_password">Пароль застосунку</string>
@@ -113,17 +103,11 @@
     <string name="delete_tag_confirmation">Видалити %1$s?</string>
     <string name="app_password_delete_confirmation">Будь-який застосунок, що використовує цей пароль, вийде з облікового запису</string>
     <string name="app_password_enter_description">Дайте назву своєму паролю (необов’язково)</string>
-    <string name="insufficient_sponsorship">Відповідного вимогам спонсорства GitHub не знайдено</string>
-    <string name="button_subscribe">Підписатися</string>
-    <string name="your_subscription_expired">Термін дії вашої підписки закінчився. Підпишіться зараз, щоб відновити обслуговування.</string>
-    <string name="insufficient_subscription">Недостатній рівень підписки. Будь ласка, оновіть свою підписку, щоб відновити обслуговування.</string>
     <string name="authentication_required">Необхідна аутентифікація</string>
-    <string name="app_password_save">Використовуйте ці дані для налаштування стороннього застосунку. Вони надають повний доступ до вашого облікового запису Tasks.org, не записуйте їх та нікому не повідомляйте!</string>
     <string name="url">URL</string>
     <string name="user">Користувач</string>
     <string name="password">Пароль</string>
     <string name="migrating_tasks">Перенесення завдань</string>
-    <string name="migrate_count">Перемістити %1$s на Tasks.org</string>
     <string name="preferences_look_and_feel">Зовнішній вигляд</string>
     <string name="notifications">Сповіщення</string>
     <string name="task_defaults">Типові налаштування завдань</string>
@@ -192,9 +176,6 @@
     <string name="list_members">Перелік учасників</string>
     <string name="remove_user">Вилучити користувача?</string>
     <string name="remove_user_confirmation">%1$s надалі не матиме доступу до %2$s</string>
-    <string name="invite_declined">Запрошення відхилено</string>
-    <string name="invite_awaiting_response">Запрошення в очікуванні відповіді</string>
-    <string name="invite_invalid">Запрошення недійсне</string>
     <string name="email">Е-пошта</string>
     <string name="color">Колір</string>
     <string name="icon">Піктограма</string>

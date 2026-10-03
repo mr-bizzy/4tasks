@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Поиск</string>
-    <string name="subscribe">Подписаться</string>
     <string name="filter_my_tasks">Мои задачи</string>
     <string name="filter_notifications">Уведомления</string>
     <string name="filter_snoozed">Отложенные</string>
@@ -28,7 +27,6 @@
     <string name="show_unstarted">Показать неначатые</string>
     <string name="show_completed">Показать завершённые</string>
     <string name="search_no_results">Нет результатов</string>
-    <string name="requires_pro_subscription">Требуется Pro‑подписка</string>
     <string name="wear_install_app">Установить на телефон</string>
     <string name="wear_unknown_error">Неизвестная ошибка</string>
     <string name="add_task">Добавить задачу</string>
@@ -50,16 +48,11 @@
     <string name="microsoft_selection_description">Синхронизация с личной учетной записью Microsoft</string>
     <string name="cost_free">Бесплатно</string>
     <string name="name_your_price">Назовите свою цену</string>
-    <string name="upgrade_to_pro">Обновить до версии Pro</string>
     <string name="caldav_selection_description">Синхронизация, основанная на открытых стандартах</string>
     <string name="davx5_selection_description">Синхронизируйте свои задачи с приложением DAVx⁵</string>
     <string name="etesync_selection_description">Синхронизация с использованием сквозного шифрования</string>
     <string name="decsync_selection_description">Синхронизация с использованием локального файла</string>
-    <string name="sign_in_to_tasks">Войти в Tasks.org</string>
     <string name="sign_in_with_google">Войти через Google</string>
-    <string name="sign_in_with_github">Войти через GitHub</string>
-    <string name="google_play_subscribers">Подписчики Google Play</string>
-    <string name="github_sponsors">Спонсоры GitHub</string>
     <string name="completed">Завершено</string>
     <string name="filter_overdue">Просроченное</string>
     <string name="no_due_date">Нет даты завершения</string>
@@ -101,10 +94,6 @@
     <string name="display_name">Отображаемое название</string>
     <string name="price_per_month_with_currency">%1$s/месяц</string>
     <string name="price_per_year_with_currency">%1$s/год</string>
-    <string name="donate">Пожертвовать</string>
-    <string name="donate_nag">Выразите свою поддержку с помощью пожертвования!</string>
-    <string name="manage_subscription">Изменить подписку</string>
-    <string name="button_unsubscribe">Отменить подписку</string>
     <string name="local_lists">Локальные списки</string>
     <string name="app_passwords">Пароли приложений</string>
     <string name="app_password">Пароль приложения</string>
@@ -118,17 +107,11 @@
     <string name="delete_tag_confirmation">Удалить %1$s?</string>
     <string name="app_password_delete_confirmation">Любое приложение, использующее этот пароль, выйдет из системы</string>
     <string name="app_password_enter_description">Присвойте вашему паролю имя (необязательно)</string>
-    <string name="insufficient_sponsorship">Подходящее спонсорство GitHub не найдено</string>
-    <string name="button_subscribe">Подписаться</string>
-    <string name="your_subscription_expired">Срок действия вашей подписки истек. Подпишитесь сейчас, чтобы возобновить обслуживание.</string>
-    <string name="insufficient_subscription">Недостаточный уровень подписки. Обновите подписку, чтобы возобновить обслуживание.</string>
     <string name="authentication_required">Необходима аутентификация</string>
-    <string name="app_password_save">Используйте эти учетные данные для настройки стороннего приложения. Они предоставляют полный доступ к Вашей учетной записи Tasks.org, не записывайте их и не делитесь ими с кем-либо!</string>
     <string name="url">URL</string>
     <string name="user">Пользователь</string>
     <string name="password">Пароль</string>
     <string name="migrating_tasks">Перенос задач</string>
-    <string name="migrate_count">Переместить %1$s на Tasks.org</string>
     <string name="preferences_look_and_feel">Внешний вид</string>
     <string name="notifications">Уведомления</string>
     <string name="task_defaults">Параметры по умолчанию</string>
@@ -160,7 +143,6 @@
     <string name="sort_created">По созданию</string>
     <string name="sort_modified">По изменению</string>
     <string name="all_done">Всё готово!</string>
-    <string name="returning_user_import_backup">Импорт резервной копии Tasks.org</string>
     <string name="legal_disclosure">%1$s, вы соглашаетесь с %2$s и %3$s. Tasks — это программное обеспечение с открытым исходным кодом, предоставляемое на условиях %4$s.</string>
     <string name="caldav_server_other">Другой</string>
     <string name="caldav_server_type">Тип сервера</string>
@@ -203,9 +185,6 @@
     <string name="list_members">Список участников</string>
     <string name="remove_user">Удалить пользователя?</string>
     <string name="remove_user_confirmation">%1$s больше не будет иметь доступа к %2$s</string>
-    <string name="invite_declined">Приглашение отклонено</string>
-    <string name="invite_awaiting_response">Приглашение в ожидании ответа</string>
-    <string name="invite_invalid">Приглашение недействительно</string>
     <string name="email">Эл. почта</string>
     <string name="color">Цвет</string>
     <string name="icon">Иконка</string>

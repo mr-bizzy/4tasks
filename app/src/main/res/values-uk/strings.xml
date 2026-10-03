@@ -209,11 +209,7 @@
     <string name="tasker_create_task">Створити завдання</string>
     <string name="tasker_list_notification">Список повідомлень</string>
     <string name="help">Довідка</string>
-    <string name="upgrade_to_pro">Покращити до Преміум</string>
-    <string name="refresh_purchases">Оновити покупки</string>
-    <string name="button_subscribe">Підписатися</string>
     <string name="pro_dashclock_extension">Розширення Dashclock</string>
-    <string name="requires_pro_subscription">Потребує передплати pro</string>
     <string name="logout">Вийти</string>
     <string name="reinitialize_account">Ініціалізувати ще раз</string>
     <string name="action_create_new_task">Створити нове завдання</string>
@@ -252,7 +248,6 @@
     <string name="collapse_subtasks">Згорнути підзавдання</string>
     <string name="expand_subtasks">Розгорнути підзавдання</string>
     <string name="name_your_price">Назвіть свою ціну</string>
-    <string name="this_feature_requires_a_subscription">Ця функція потребує підписки</string>
     <string name="share">Поділитися</string>
     <string name="select_all">Обрати всі</string>
     <string name="calendar_event_created">В календарі створено подію для %s</string>
@@ -267,7 +262,6 @@
     <string name="chip_appearance">Вигляд індикаторів списків</string>
     <string name="chips">Індикатори списків</string>
     <string name="back">Назад</string>
-    <string name="upgrade_blurb_2">Я витратив тисячі годин, працюючи над Tasks, і я публікую весь код онлайн безоплатно. Щоб підтримати мою роботу, деякі функції потребують підписки</string>
     <string name="upgrade_blurb_1">Привіт! Моє ім\'я Алекс. Я - незалежний розробник Tasks</string>
     <string name="color_wheel">Палітра</string>
     <string name="sort_created">За часом створення</string>
@@ -276,16 +270,10 @@
     <string name="app_password">Пароль застосунку</string>
     <string name="save_percent">Зберегти %d%%</string>
     <string name="above_average">Вище середнього</string>
-    <string name="migrate_count">Перемістити %s на Tasks.org</string>
     <string name="migrating_tasks">Перенесення завдань</string>
-    <string name="github_sponsor">Спонсор</string>
     <string name="authentication_required">Необхідна аутентифікація</string>
     <string name="sign_in_with_google">Увійти через Google</string>
-    <string name="github_sponsors">Спонсори GitHub</string>
     <string name="authorization_cancelled">Авторизацію скасовано</string>
-    <string name="current_subscription">Поточна підписка: %s</string>
-    <string name="no_google_play_subscription">Відповідної вимогам підписки Google Play не знайдено</string>
-    <string name="your_subscription_expired">Термін дії вашої підписки закінчився. Підпишіться зараз, щоб відновити обслуговування.</string>
     <string name="custom_filter_is_subtask">Підзавдання</string>
     <string name="custom_filter_has_subtask">Є підзавдання</string>
     <string name="multi_select_reschedule">Перенести</string>
@@ -362,20 +350,14 @@
     <string name="filter_any_start_date">Будь-яка дата початку</string>
     <string name="CFC_startBefore_name">Дата початку…</string>
     <string name="CFC_startBefore_text">Дата початку: \?</string>
-    <string name="account_not_included">Не входить до передплати \"Назвіть свою ціну\"</string>
-    <string name="subscription">Підписка</string>
     <string name="widget_show_title">Показати заголовок</string>
-    <string name="tasks_org_account_required">Потрібен обліковий запис Tasks.org</string>
     <string name="cancel">Скасувати</string>
     <string name="ok">Гаразд</string>
     <string name="privacy">Приватність</string>
     <string name="open_source">Відкритий джерельний код</string>
     <string name="support">Підтримка</string>
-    <string name="upgrade_open_source_description">Ваша передплата підтримує постійний розвиток</string>
-    <string name="upgrade_tasks_org_account_description">Синхронізація з Tasks.org та співпраця з іншими користувачами</string>
     <string name="upgrade_more_customization_description">Розблокування всіх тем, кольорів і піктограм</string>
     <string name="upgrade_more_customization">Більше налаштувань</string>
-    <string name="pro_free_trial">Нові передплатники отримують 7-денну безплатну пробну версію. Скасувати її можна в будь-який час</string>
     <string name="now">Зараз</string>
     <string name="completed">Виконано</string>
     <string name="snackbar_task_completed">Завдання виконано</string>
@@ -390,9 +372,7 @@
     <string name="sort_list">За списком</string>
     <string name="change_priority">Змінити пріоритет</string>
     <string name="theme_dynamic">Динамічна</string>
-    <string name="donate_today">Підтримати сьогодні</string>
     <string name="show_edit_screen_without_unlock">Показувати екран редагування без розблокування</string>
-    <string name="donate_nag">Розгляньте можливість підтримати нас внеском!</string>
     <string name="donate_maybe_later">Можливо пізніше</string>
     <string name="customize_drawer">Змінити панель</string>
     <string name="show_edit_screen_without_unlock_summary">Дозволяє використовувати плитку швидких налаштувань без розблокування пристрою</string>
@@ -418,5 +398,4 @@
     <string name="multiline_title_off">Натисніть готово, щоб зберегти завдання</string>
     <string name="delete_tasks_warning">%s буде видалено. Дію неможливо скасувати!</string>
     <string name="widget_view_more_tasks">Переглянути інші завдання</string>
-    <string name="banner_subscription_required_title">Потрібна передплата</string>
 </resources>

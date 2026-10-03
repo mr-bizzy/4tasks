@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Søk</string>
-    <string name="subscribe">Abonner</string>
     <string name="filter_my_tasks">Mine gjøremål</string>
     <string name="filter_notifications">Varsler</string>
     <string name="filter_snoozed">Slumret</string>
@@ -39,20 +38,14 @@
     <string name="password_required">Passord kreves</string>
     <string name="caldav_home_set_not_found">Hjemmesettet ble ikke funnet</string>
     <string name="add_account">Legg til konto</string>
-    <string name="requires_pro_subscription">Krever pro-abonnement</string>
     <string name="google_tasks_selection_description">Enkel tjeneste som synkroniserer med Google-kontoen din</string>
     <string name="microsoft_selection_description">Synkroniser med din personlige Microsoft-konto</string>
     <string name="name_your_price">Betal det du vil</string>
-    <string name="upgrade_to_pro">Oppgrader til pro</string>
     <string name="caldav_selection_description">Synkronisering basert på åpne internettstandarder</string>
     <string name="davx5_selection_description">Synkroniser dine gjøremål med DAVx⁵-programmet</string>
     <string name="etesync_selection_description">Ende-til-ende-kryptert synkronisering</string>
     <string name="decsync_selection_description">Filbasert synkronisering</string>
-    <string name="sign_in_to_tasks">Logg inn på Tasks.org</string>
     <string name="sign_in_with_google">Logg inn med Google</string>
-    <string name="sign_in_with_github">Logg inn med GitHub</string>
-    <string name="google_play_subscribers">Google Play-abonnenter</string>
-    <string name="github_sponsors">GitHub-sponsorer</string>
     <string name="completed">Fullført</string>
     <string name="filter_overdue">Forsinket</string>
     <string name="no_due_date">Ingen tidsfristdato</string>
@@ -88,9 +81,6 @@
     <string name="back">Tilbake</string>
     <string name="help">Hjelp</string>
     <string name="display_name">Visningsnavn</string>
-    <string name="donate_nag">Vurder å vis din støtte med en donasjon!</string>
-    <string name="manage_subscription">Endre abonnement</string>
-    <string name="button_unsubscribe">Avbryt abonnement</string>
     <string name="local_lists">Lokale lister</string>
     <string name="app_passwords">Programpassord</string>
     <string name="app_password">Programpassord</string>
@@ -104,17 +94,11 @@
     <string name="delete_tag_confirmation">Slett %1$s?</string>
     <string name="app_password_delete_confirmation">Ethvert program som bruker dette passordet vil bli utlogget</string>
     <string name="app_password_enter_description">Gi ditt nye passord et navn (valgfritt)</string>
-    <string name="insufficient_sponsorship">Fant ikke noe GitHub-sponsorabonnement</string>
-    <string name="button_subscribe">Abonner</string>
-    <string name="your_subscription_expired">Ditt abonnement har utløpt. Abonner nå for å fortsette tjenesten.</string>
-    <string name="insufficient_subscription">Utilstrekkelig abonnementsnivå. Oppgrader ditt abonnement for å fortsette tjenesten.</string>
     <string name="authentication_required">Identitetsbekreftelse kreves</string>
-    <string name="app_password_save">Bruk disse identitetsdetaljene for å sette opp tredjepartsprogrammer. De tilbyr full tilgang til din Tasks.org-konto. Ikke skriv dem ned eller del dem med noen!</string>
     <string name="url">Nettadresse</string>
     <string name="user">Bruker</string>
     <string name="password">Passord</string>
     <string name="migrating_tasks">Flytting av gjøremål</string>
-    <string name="migrate_count">Flytt %1$s til Tasks.org</string>
     <string name="preferences_look_and_feel">Utseende og oppførsel</string>
     <string name="notifications">Varsler</string>
     <string name="task_defaults">Gjøremålsforvalg</string>
@@ -177,9 +161,6 @@
     <string name="list_members">Liste over medlemmer</string>
     <string name="remove_user">Fjern bruker?</string>
     <string name="remove_user_confirmation">%1$s vil ikke lenger ha tilgang til %2$s</string>
-    <string name="invite_declined">Invitasjon avslått</string>
-    <string name="invite_awaiting_response">Inviter venter på svar</string>
-    <string name="invite_invalid">Invitasjon ugyldig</string>
     <string name="email">E-post</string>
     <string name="color">Farge</string>
     <string name="icon">Ikon</string>

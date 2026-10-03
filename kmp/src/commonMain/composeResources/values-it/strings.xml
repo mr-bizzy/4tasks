@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Cerca</string>
-    <string name="subscribe">Abbonati</string>
     <string name="filter_my_tasks">Le mie attività</string>
     <string name="filter_notifications">Notifiche</string>
     <string name="filter_snoozed">Posticipate</string>
@@ -26,7 +25,6 @@
     <string name="today">Oggi</string>
     <string name="today_lowercase">oggi</string>
     <string name="search_no_results">Nessun risultato</string>
-    <string name="requires_pro_subscription">Richiede versione premium</string>
     <string name="subscription_required_description">Sblocca tutte le funzionalità con $1 USD/anno</string>
     <string name="add_task">Aggiungi attività</string>
     <string name="show_unstarted">Mostra non iniziate</string>
@@ -59,25 +57,17 @@
     <string name="terms_of_service_proper">Termini del Servizio</string>
     <string name="privacy_policy_proper">Informativa sulla privacy</string>
     <string name="gplv3_license">Licenza GPLv3</string>
-    <string name="returning_user_import_backup">Importa il backup di Tasks.org</string>
     <string name="google_tasks_selection_description">Servizio di base sincronizzato con il tuo account Google</string>
     <string name="microsoft_selection_description">Sincronizzazione con l'account personale Microsoft</string>
     <string name="cost_free">Gratuito</string>
     <string name="name_your_price_blurb">Paga quanto vuoi per sbloccare temi, icone e le opzioni avanzate di sincronizzazione</string>
     <string name="microsoft_selection_description_googleplay">Sincronizza con il tuo account Microsoft personale, di lavoro o di scuola</string>
-    <string name="tasks_org_description">Include la condivisione con amici e familiari e Email-to-Task</string>
     <string name="name_your_price">Scegli tu il prezzo</string>
-    <string name="upgrade_to_pro">Aggiorna alla versione Pro</string>
-    <string name="legal_disclosure_prefix_using">Utilizzando Tasks.org</string>
     <string name="caldav_selection_description">Sincronizzazione basata su standard aperti di internet</string>
     <string name="davx5_selection_description">Sincronizza le tue attività con l'app DAVx⁵</string>
     <string name="etesync_selection_description">Sincronizzazione con crittografia end-to-end</string>
     <string name="decsync_selection_description">Sincronizzazione basata sui file</string>
-    <string name="sign_in_to_tasks">Accedi a Tasks.org</string>
     <string name="sign_in_with_google">Accedi con Google</string>
-    <string name="sign_in_with_github">Accedi con GitHub</string>
-    <string name="google_play_subscribers">Abbonati a Google Play</string>
-    <string name="github_sponsors">Sponsor di GitHub</string>
     <string name="completed">Completate</string>
     <string name="filter_overdue">In ritardo</string>
     <string name="no_due_date">Nessuna scadenza</string>
@@ -114,17 +104,10 @@
     <string name="back">Indietro</string>
     <string name="help">Aiuto</string>
     <string name="display_name">Nome visualizzato</string>
-    <string name="upgrade_to_pro_card_description">Sblocca Tasks.org Cloud, la condivisione con amici e familiari e Email-to-Task</string>
     <string name="supporter">Sostenitore</string>
     <string name="price_per_month_with_currency">%1$s/mese</string>
     <string name="price_per_year_with_currency">%1$s/anno</string>
     <string name="supporter_summary">%1$s • Grazie!</string>
-    <string name="sign_in_to_connect">Accedi per connettere il tuo account Tasks.org</string>
-    <string name="guest">Ospite</string>
-    <string name="donate">Dona</string>
-    <string name="donate_nag">Dimostra il tuo sostegno con una donazione!</string>
-    <string name="manage_subscription">Modifica abbonamento</string>
-    <string name="button_unsubscribe">Annulla abbonamento</string>
     <string name="local_lists">Liste locali</string>
     <string name="email_to_task">Attività da email</string>
     <string name="email_to_task_address">Il tuo indirizzo email</string>
@@ -132,7 +115,6 @@
     <string name="regenerate_email_address">Generazione nuovo indirizzo email</string>
     <string name="shared_with_me">Condivisi con me</string>
     <string name="shared_by">Condivisi da %1$s</string>
-    <string name="guests">Ospiti (%1$d/%2$d)</string>
     <string name="app_passwords">Password delle app</string>
     <string name="app_password">Password dell'app</string>
     <string name="last_backup_never">mai</string>
@@ -147,18 +129,12 @@
     <string name="app_password_enter_description">Assegna un nome alla password (opzionale)</string>
     <string name="tos_updated_title">Abbiamo aggiornato i Termini di Servizio</string>
     <string name="view_tos">Mostra i Termini di Servizio</string>
-    <string name="insufficient_sponsorship">Nessuna sponsorizzazione GitHub idonea trovata</string>
-    <string name="button_subscribe">Abbonati</string>
-    <string name="your_subscription_expired">Il tuo abbonamento è scaduto. Abbonati ora per riattivare il servizio.</string>
-    <string name="insufficient_subscription">Livello di abbonamento insufficiente. Per favore aggiornalo per riattivare il servizio.</string>
     <string name="authentication_required">Autenticazione richiesta</string>
-    <string name="app_password_save">Usa queste credenziali per configurare un'app di terze parti. Esse daranno l'accesso completo al tuo account di Tasks.org, non scriverle e non condividerle con nessuno!</string>
     <string name="url">URL</string>
     <string name="user">Utente</string>
     <string name="password">Password</string>
     <string name="regenerate_email_address_confirmation">L'indirizzo email attuale smetterà di funzionare</string>
     <string name="migrating_tasks">Migrazione delle attività in corso</string>
-    <string name="migrate_count">Sposta %1$s su Tasks.org</string>
     <string name="preferences_look_and_feel">Aspetto</string>
     <string name="notifications">Notifiche</string>
     <string name="task_defaults">Opzioni predefinite attività</string>
@@ -200,8 +176,6 @@
     <string name="url_required">URL obbligatoria</string>
     <string name="username_required">Nome utente obbligatorio</string>
     <string name="etesync_account_description">Richiede un account EteSync.com o un server self-hosted</string>
-    <string name="already_subscribed">Sei già abbonato?</string>
-    <string name="sign_in_subtitle">Sei già abbonato o sei stato invitato?</string>
     <string name="show_advanced_settings">Mostra impostazioni avanzate</string>
     <string name="app_settings">Impostazioni app</string>
     <string name="whats_new">Novità</string>
@@ -232,16 +206,12 @@
     <string name="restart_now">Riavvia ora</string>
     <string name="restart_later">Dopo</string>
     <string name="cannot_access_account">Impossibile accedere all'account</string>
-    <string name="upgrade_subscription_banner">Grazie per il tuo sostegno! Aggiorna il tuo abbonamento per abilitare Tasks.org Cloud Sync</string>
     <string name="new_list">Crea nuova lista</string>
     <string name="list_members">Elenco dei membri</string>
     <string name="remove_user">Vuoi rimuovere l'utente?</string>
     <string name="remove_user_confirmation">%1$s non avrà più accesso a %2$s</string>
     <string name="share_list">Condividi "%1$s"</string>
     <string name="invalid_email_address">Indirizzo e-mail non valido</string>
-    <string name="invite_declined">Invito rifiutato</string>
-    <string name="invite_awaiting_response">Invito in attesa di risposta</string>
-    <string name="invite_invalid">Invito non valido</string>
     <string name="send">Invia</string>
     <string name="email">E-mail</string>
     <string name="color">Colore</string>
@@ -545,5 +515,4 @@
     <string name="theme_wallpaper">Sfondo</string>
     <string name="theme_day_night">Giorno/Notte</string>
     <string name="theme_system_default">Predefinito del sistema</string>
-    <string name="works_with_desktop">Tasks.org per desktop</string>
 </resources>

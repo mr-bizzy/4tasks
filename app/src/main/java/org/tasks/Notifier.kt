@@ -57,7 +57,7 @@ class Notifier @Inject constructor(
             maxPriority = min(maxPriority, task.priority)
         }
         val builder = NotificationCompat.Builder(context, NotificationManager.NOTIFICATION_CHANNEL_TASKER)
-                .setSmallIcon(R.drawable.ic_done_all_white_24dp)
+                .setSmallIcon(org.tasks.kmp.R.drawable.ic_notification_mark)
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setTicker(summaryTitle)
                 .setContentTitle(summaryTitle)

@@ -396,7 +396,7 @@ class NotificationManager @Inject constructor(
                 .setContentText(
                         titles.joinToString(localized.getString(R.string.list_separator_with_space)))
                 .setShowWhen(true)
-                .setSmallIcon(R.drawable.ic_done_all_white_24dp)
+                .setSmallIcon(org.tasks.kmp.R.drawable.ic_notification_mark)
                 .setStyle(style)
                 .setColor(colorProvider.getPriorityColor(maxPriority))
                 .setOnlyAlertOnce(false)
@@ -492,7 +492,7 @@ class NotificationManager @Inject constructor(
                 .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setContentTitle(taskTitle)
                 .setColor(colorProvider.getPriorityColor(task.priority))
-                .setSmallIcon(R.drawable.ic_check_white_24dp)
+                .setSmallIcon(org.tasks.kmp.R.drawable.ic_notification_mark)
                 .setWhen(`when`)
                 .setOnlyAlertOnce(false)
                 .setShowWhen(true)

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Buscar</string>
-    <string name="subscribe">Suscribirse</string>
     <string name="filter_my_tasks">As miñas tarefas</string>
     <string name="filter_notifications">Notificacións</string>
     <string name="filter_snoozed">Posposta</string>
@@ -28,7 +27,6 @@
     <string name="show_unstarted">Amosar sen comezar</string>
     <string name="show_completed">Amosar finalizadas</string>
     <string name="search_no_results">Sen resultados</string>
-    <string name="requires_pro_subscription">Característica Pro</string>
     <string name="subscription_required_description">Desbloquea todas as características por tan pouco como 1$/ano</string>
     <string name="add_task">Engade a tarefa</string>
     <string name="wear_install_app">Instala en teléfono</string>
@@ -50,16 +48,11 @@
     <string name="microsoft_selection_description">Sincronizar coa túa conta persoal de Microsoft</string>
     <string name="cost_free">Gratis</string>
     <string name="name_your_price">Prezo flexible</string>
-    <string name="upgrade_to_pro">Anovar a pro</string>
     <string name="caldav_selection_description">Sincronización basada en estándares abertos de internet</string>
     <string name="davx5_selection_description">Sincronizar tarefas co aplicativo DAVx⁵</string>
     <string name="etesync_selection_description">Sincronización con cifrado par a par</string>
     <string name="decsync_selection_description">Sincronización baseada en ficheiros</string>
-    <string name="sign_in_to_tasks">Acceder a Tasks.org</string>
     <string name="sign_in_with_google">Acceso con Google</string>
-    <string name="sign_in_with_github">Acceso con GitHub</string>
-    <string name="google_play_subscribers">Subscritores de Google Play</string>
-    <string name="github_sponsors">Patrocinadores de GitHub</string>
     <string name="completed">Finalizada</string>
     <string name="filter_overdue">Atrasada</string>
     <string name="no_due_date">Sen data de vencemiento</string>
@@ -97,9 +90,6 @@
     <string name="display_name">Mostrar o nome</string>
     <string name="price_per_month_with_currency">%1$s/mes</string>
     <string name="price_per_year_with_currency">%1$s/ano</string>
-    <string name="donate_nag">Considera mostrar o teu apoio cunha doazón!</string>
-    <string name="manage_subscription">Cambiar a suscrición</string>
-    <string name="button_unsubscribe">Cancelar a suscrición</string>
     <string name="local_lists">Listas locais</string>
     <string name="app_passwords">Contrainais da app</string>
     <string name="app_password">Contrasinal da app</string>
@@ -113,17 +103,11 @@
     <string name="delete_tag_confirmation">Borrar %1$s?</string>
     <string name="app_password_delete_confirmation">Calquera aplicación que use este contrasinal pechará sesión</string>
     <string name="app_password_enter_description">Dálle un nome ao contrasinal (opcional)</string>
-    <string name="insufficient_sponsorship">Non se atopou ningún patrocinio de GitHub elixible</string>
-    <string name="button_subscribe">Suscribirse</string>
-    <string name="your_subscription_expired">A túa subscrición caducou. Subscríbete agora para retomar o servizo.</string>
-    <string name="insufficient_subscription">Nivel de subscrición insuficiente. Por favor actualiza a túa subscrición para reanudar o servizo.</string>
     <string name="authentication_required">Precísase autenticación</string>
-    <string name="app_password_save">Usa estas credenciais para configurar unha aplicación de terceiros. Conceden acceso completo á túa conta de Tasks.org, non as escribas nin as compartas con ninguén!</string>
     <string name="url">URL</string>
     <string name="user">Usuario/a</string>
     <string name="password">Contrasinal</string>
     <string name="migrating_tasks">Migrando as tarefas</string>
-    <string name="migrate_count">Mover %1$s a Tasks.org</string>
     <string name="preferences_look_and_feel">Estilo e apariencia</string>
     <string name="notifications">Notificacións</string>
     <string name="task_defaults">Predefinicións das tarefas</string>
@@ -189,9 +173,6 @@
     <string name="list_members">Lista de participantes</string>
     <string name="remove_user">Borrar usuario?</string>
     <string name="remove_user_confirmation">%1$s xa non terá acceso a %2$s</string>
-    <string name="invite_declined">Convite rexeitado</string>
-    <string name="invite_awaiting_response">Convite en agarda</string>
-    <string name="invite_invalid">Convite non válido</string>
     <string name="email">Correo electrónico</string>
     <string name="color">Cor</string>
     <string name="icon">Icona</string>

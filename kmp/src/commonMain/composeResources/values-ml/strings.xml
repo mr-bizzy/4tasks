@@ -3,7 +3,6 @@
     <string name="search">തിരയുക</string>
     <string name="settings">ക്രമീകരണങ്ങൾ</string>
     <string name="search_no_results">തിരഞ്ഞ ഫലങ്ങളൊന്നുമില്ല</string>
-    <string name="requires_pro_subscription">പ്രോ സവിശേഷത</string>
     <string name="filter_snoozed">തല്ക്കാലം മാറ്റി നിർത്തി</string>
     <string name="drawer_places">സ്ഥലങ്ങൾ</string>
     <string name="filter_my_tasks">എന്റെ ജോലികൾ</string>
@@ -28,7 +27,6 @@
     <string name="yest">ഇന്നലെ</string>
     <string name="wear_install_app">ഫോണിൽ ഇൻസ്റ്റാൾ ചെയ്യുക</string>
     <string name="wear_unknown_error">അജ്ഞാത പിശക്</string>
-    <string name="subscribe">അംഗമാകുക</string>
     <string name="add_task">ജോലി ചേർക്കുക</string>
     <string name="default_list">സ്വമേധയാ ഉള്ള പട്ടിക</string>
     <string name="show_unstarted">സ്റ്റാർ ചെയ്യാത്തവ കാണിക്കുക</string>

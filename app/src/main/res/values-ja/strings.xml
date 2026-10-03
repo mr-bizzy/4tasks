@@ -202,11 +202,7 @@
     <string name="tasker_create_task">タスクを作成</string>
     <string name="tasker_list_notification">通知のリスト</string>
     <string name="help">ヘルプ</string>
-    <string name="upgrade_to_pro">プロ版にアップグレード</string>
-    <string name="refresh_purchases">購入を更新</string>
-    <string name="button_subscribe">購入</string>
     <string name="pro_dashclock_extension">Dashclock 拡張</string>
-    <string name="requires_pro_subscription">プロサブスクリプションが必要</string>
     <string name="logout">ログアウト</string>
     <string name="reinitialize_account">再初期化</string>
     <string name="action_create_new_task">新しいタスクを作成</string>
@@ -237,8 +233,6 @@
     <string name="add_tags">タグを追加</string>
     <string name="filter_no_tags">タグなし</string>
     <string name="action_new_task">新しいタスク</string>
-    <string name="this_feature_requires_a_subscription">この機能はサブスクリプションが必要です</string>
-    <string name="subscription">サブスクリプション</string>
     <string name="help_and_feedback">ヘルプとフィードバック</string>
     <string name="theme_system_default">システムデフォルト</string>
     <string name="opacity_row">行の透明度</string>
@@ -282,8 +276,6 @@
     <string name="auto_dismiss_datetime_widget">ウィジェット</string>
     <string name="lists">リスト</string>
     <string name="migrating_tasks">タスクを移行する</string>
-    <string name="migrate_count">%s を Tasks.org に移動</string>
-    <string name="upgrade_blurb_2">私は何千時間もかけて Tasks を開発し、すべてのソースコードをオンラインで無料公開しています。私の仕事をサポートしていただくために、いくつかの機能は有料です</string>
     <string name="enjoying_tasks">Tasks を気に入っていだだけましたか？</string>
     <string name="widget_show_dividers">区切り線を表示</string>
     <string name="whats_new">更新情報</string>
@@ -303,8 +295,6 @@
     <string name="reset_sort_order">並び順をリセット</string>
     <string name="backups_ignore_warnings">警告を無視する</string>
     <string name="save_percent">%d%% オフ</string>
-    <string name="github_sponsors">GitHub スポンサー</string>
-    <string name="github_sponsor">スポンサー</string>
     <string name="snackbar_task_completed">タスク完了</string>
     <string name="hint_customize_edit_title">情報量が多すぎる？</string>
     <string name="hint_customize_edit_body">この画面は、フィールドを並べ替えたり削除してカスタマイズすることができます</string>
@@ -313,8 +303,6 @@
     <string name="now">現在</string>
     <string name="choose_synchronization_service">プラットフォームを選択</string>
     <string name="upgrade_blurb_1">こんにちは！私は Alex です。Tasks のインディーディベロッパーです</string>
-    <string name="no_google_play_subscription">Google Play で有効なサブスクリプションがありません</string>
-    <string name="pro_free_trial">初回購入の方は、７日間の無料トライアルがあります。いつでも解約可能です</string>
     <string name="app_password">アプリパスワード</string>
     <string name="upgrade_more_customization">さらなるカスタマイズ</string>
     <string name="customize_edit_screen_summary">フィールドの並び替えや削除</string>
@@ -327,8 +315,6 @@
     <string name="multi_select_reschedule">スケジュール変更</string>
     <string name="privacy">プライバシー</string>
     <string name="authorization_cancelled">認証が取り消されました</string>
-    <string name="tasks_org_account_required">Tasks.org のアカウントが必要です</string>
-    <string name="account_not_included">「価格はあなた次第」でのサブスクリプションには含まれていません</string>
     <string name="decsync_selection_description">ファイルベースによる同期</string>
     <string name="filter_no_priority">優先度 なし</string>
     <string name="filter_eisenhower_box_3">重要ではないが緊急</string>
@@ -337,7 +323,6 @@
     <string name="backups_ignore_warnings_summary">バックアップが不要な場合、または独自のバックアップ方法を使用している場合に、バックアップの警告を無視します</string>
     <string name="completed">完了</string>
     <string name="filter_eisenhower_box_2">重要だが緊急ではない</string>
-    <string name="current_subscription">現在のサブスクリプション: %s</string>
     <string name="upgrade_more_customization_description">すべてのテーマ、カラー、アイコンが使用可能</string>
     <string name="back">戻る</string>
     <string name="auto_dismiss_datetime_edit_summary">タスク編集から選択時に自動で閉じる</string>
@@ -345,8 +330,6 @@
     <string name="account">アカウント</string>
     <string name="device_settings">デバイス設定</string>
     <string name="custom_filter_has_reminder">リマインダーあり</string>
-    <string name="upgrade_tasks_org_account_description">Tasks.org と同期し、他のユーザーと共同作業が可能</string>
-    <string name="upgrade_open_source_description">あなたの支援が継続的な開発を支えます</string>
     <string name="snackbar_tasks_completed">完了したタスク: %d</string>
     <string name="header_spacing">高さ</string>
     <string name="app_passwords_more_info">タスクやカレンダーをサードパーティ製のデスクトップアプリやモバイルアプリと同期します。詳しくはここをタップ</string>
@@ -361,7 +344,6 @@
     <string name="sort_modified_group">変更: %s</string>
     <string name="sort_completion_group">完了: %s</string>
     <string name="automatic_backups">自動バックアップ</string>
-    <string name="your_subscription_expired">サブスクリプションの有効期限が切れています。サービスを引き続き利用するには、サブスクリプションを更新してください。</string>
     <string name="show_advanced_settings">詳細な設定を表示</string>
     <string name="filter_high_priority">優先度 高</string>
     <string name="compact">コンパクト</string>
@@ -387,11 +369,9 @@
     <string name="show_edit_screen_without_unlock_summary">デバイスのロックを解除せずにクイック設定タイルを利用可能に</string>
     <string name="theme_dynamic">ダイナミック</string>
     <string name="customize_drawer">ドロワーのカスタマイズ</string>
-    <string name="donate_today">今日寄付をする</string>
     <string name="donate_maybe_later">また後で</string>
     <string name="price_per_month_with_currency">%s/月</string>
     <string name="price_per_year_with_currency">%s/年</string>
-    <string name="donate_nag">寄付による支援をご検討ください！</string>
     <string name="sync_warning_microsoft">すべてのタスクの詳細が Microsoft To Do と同期されるわけではありません。</string>
     <string name="button_learn_more">詳細を見る</string>
     <string name="enable_alarms">適切なタイミングで通知を受け取る</string>
@@ -410,16 +390,12 @@
     <string name="widget_view_more_tasks">ほかのタスクを表示</string>
     <string name="import_failed_message">バックアップファイルを読めません</string>
     <string name="import_failed">インポートできませんでした</string>
-    <string name="banner_subscription_required_title">サブスクリプションが必要です</string>
     <string name="banner_subscription_required_body">%sとの同期をするため、お好みの金額をお支払いください</string>
-    <string name="sponsorship_required_fdroid">Tasks.orgと同期するには GitHubへの寄付が必要です。寄付をするには下をクリックしてください。</string>
-    <string name="subscription_required_fdroid">Tasks.orgと同期するには定期購入が必要です。定期購入はGoogle Play版のTasksアプリからお申し込みください。</string>
     <string name="email_to_task_address">あなたのメールアドレス</string>
     <string name="tos_updated_title">サービス規約を改定しました</string>
     <string name="accept">了承</string>
     <string name="exit">終了する</string>
     <string name="returning_user">以前利用していましたか？</string>
-    <string name="legal_disclosure_prefix_using">Tasks.orgを使用</string>
     <string name="email_to_task">メールでタスクを追加する</string>
     <string name="upgrade_email_to_task_description">あなたの私書箱に送ったメールをタスクに変換する</string>
     <string name="advanced_tools_description">Google Places、CalDAV、EteSyncなど！</string>
@@ -428,10 +404,5 @@
     <string name="per_list_sort_summary">並べ替えやグループの設定を個別に保存する</string>
     <string name="per_list_sort_title">リストごとの並べ替え設定</string>
     <string name="p_per_list_sort">リストごとの並べ替え設定</string>
-    <string name="guest_create_list_message">あなたは共有リストへのゲストアクセスがあります。自分の個人的なリストを作成してクラウドに同期するにはTasks.orgの購読が必要です。または、端末内に保存する無料のローカルリストを作成することができます。</string>
-    <string name="upgrade_friends_and_family">家族・友人</string>
-    <string name="upgrade_friends_and_family_description">共有リストに無料のゲスト5名。Apple Remindersで利用可能</string>
-    <string name="upgrade_desktop_app">デスクトップ版Tasks.org</string>
-    <string name="upgrade_desktop_app_description">新しいデスクトップアプリの早期利用</string>
     <string name="read_more">より詳しく</string>
 </resources>

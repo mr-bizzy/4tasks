@@ -46,7 +46,7 @@ class NotificationWork @AssistedInject constructor(
         NotificationCompat.Builder(context, NotificationManager.NOTIFICATION_CHANNEL_MISCELLANEOUS)
             .setSound(null)
             .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setSmallIcon(R.drawable.ic_check_white_24dp)
+            .setSmallIcon(org.tasks.kmp.R.drawable.ic_notification_mark)
             .setContentTitle(context.getString(R.string.app_name))
             .setContentText(context.getString(R.string.building_notifications))
             .build()

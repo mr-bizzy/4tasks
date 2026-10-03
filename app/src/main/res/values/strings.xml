@@ -30,7 +30,7 @@ File %1$s contained %2$s.\n\n
   <string name="TLA_menu_settings">Settings</string>
   <string name="app_settings">App settings</string>
   <string name="TAd_actionEditTask">Edit</string>
-  <string name="customize_drawer">Customize drawer</string>
+  <string name="customize_drawer">Customise drawer</string>
   <string name="action_call">Call</string>
   <string name="SSD_sort_my_order">My order</string>
   <string name="astrid_sort_order">Astrid manual sorting</string>
@@ -184,7 +184,7 @@ File %1$s contained %2$s.\n\n
   <string name="font_size">Font size</string>
   <string name="header_spacing">Spacing</string>
   <string name="row_spacing">Row spacing</string>
-  <string name="customize_edit_screen">Customize edit screen</string>
+  <string name="customize_edit_screen">Customise edit screen</string>
   <string name="customize_edit_screen_summary">Rearrange or remove fields</string>
   <string name="add_location">Add location</string>
   <string name="remove">Remove</string>
@@ -221,7 +221,7 @@ File %1$s contained %2$s.\n\n
   <string name="opacity_row">Row opacity</string>
   <string name="opacity_footer">Footer opacity</string>
   <string name="theme">Theme</string>
-  <string name="color">Color</string>
+  <string name="color">Colour</string>
   <string name="icon">Icon</string>
   <string name="theme_black">Black</string>
   <string name="theme_light">Light</string>
@@ -230,7 +230,7 @@ File %1$s contained %2$s.\n\n
   <string name="theme_day_night">Day/Night</string>
   <string name="theme_system_default">System default</string>
   <string name="theme_dynamic">Dynamic</string>
-  <string name="restart_required">Restart Tasks for this change to take effect</string>
+  <string name="restart_required">Restart 4Tasks for this change to take effect</string>
   <string name="restart_now">Restart now</string>
   <string name="restart_later">Later</string>
   <string name="widget_settings">Widget settings</string>
@@ -253,21 +253,21 @@ File %1$s contained %2$s.\n\n
   <string name="repeats_plural_number_of_times">Repeats every %1$s, occurs %2$d %3$s</string>
   <string name="list_separator_with_space">,\u0020</string>
   <string name="dont_add_to_calendar">Don\'t add to calendar</string>
-  <string name="badges_description">Display a task count on Tasks\' launcher icon. Not all launchers support badges.</string>
+  <string name="badges_description">Display a task count on the 4Tasks launcher icon. Not all launchers support badges.</string>
   <string name="tasker_create_task">Create task</string>
   <string name="tasker_list_notification">List notification</string>
   <string name="help">Help</string>
   <string name="help_and_feedback">Help &amp; feedback</string>
-  <string name="upgrade_to_pro">Upgrade to pro</string>
-  <string name="subscription">Subscription</string>
-  <string name="refresh_purchases">Refresh purchases</string>
-  <string name="button_subscribe">Subscribe</string>
+  <string name="upgrade_to_pro" translatable="false">Upgrade to pro</string>
+  <string name="subscription" translatable="false">Subscription</string>
+  <string name="refresh_purchases" translatable="false">Refresh purchases</string>
+  <string name="button_subscribe" translatable="false">Subscribe</string>
   <string name="pro_dashclock_extension">Dashclock extension</string>
-  <string name="requires_pro_subscription">Requires pro subscription</string>
-  <string name="this_feature_requires_a_subscription">This feature requires a subscription</string>
+  <string name="requires_pro_subscription" translatable="false">Requires pro subscription</string>
+  <string name="this_feature_requires_a_subscription" translatable="false">This feature requires a subscription</string>
   <string name="logout">Log out</string>
   <string name="delete_tasks_warning">%s will be deleted. This cannot be undone!</string>
-  <string name="reinitialize_account">Reinitialize</string>
+  <string name="reinitialize_account">Reinitialise</string>
   <string name="action_create_new_task">Create new task</string>
   <string name="action_new_task">New task</string>
   <string name="show_description">Show description</string>
@@ -289,23 +289,23 @@ File %1$s contained %2$s.\n\n
   <string name="open_map">Open map</string>
   <string name="choose_new_location">Choose new location</string>
   <string name="banner_app_updated_title">App updated</string>
-  <string name="banner_app_updated_description">Tasks was just updated to %s. Would you like to see the release notes?</string>
+  <string name="banner_app_updated_description">4Tasks was just updated to %s. Would you like to see the release notes?</string>
   <string name="whats_new">What\'s New</string>
   <string name="invalid_backup_file">Invalid backup file</string>
   <string name="name_your_price">Name your price</string>
   <string name="expand_subtasks">Expand subtasks</string>
   <string name="collapse_subtasks">Collapse subtasks</string>
   <string name="choose_synchronization_service">Select a platform</string>
-  <string name="caldav_selection_description">Synchronization based on open internet standards</string>
-  <string name="etesync_selection_description">End-to-end encrypted synchronization</string>
-  <string name="decsync_selection_description">File-based synchronization</string>
-  <string name="davx5_selection_description">Synchronize your tasks with the DAVx⁵ app</string>
+  <string name="caldav_selection_description">Synchronisation based on open internet standards</string>
+  <string name="etesync_selection_description">End-to-end encrypted synchronisation</string>
+  <string name="decsync_selection_description">File-based synchronisation</string>
+  <string name="davx5_selection_description">Synchronise your tasks with the DAVx⁵ app</string>
   <string name="show_advanced_settings">Show advanced settings</string>
   <string name="preferences_advanced">Advanced</string>
   <string name="documentation">Documentation</string>
-  <string name="color_wheel">Color wheel</string>
+  <string name="color_wheel">Colour wheel</string>
   <string name="upgrade_blurb_1">Hi! My name is Alex. I am the independent developer behind Tasks</string>
-  <string name="upgrade_blurb_2">I have spent thousands of hours working on Tasks, and I publish all of the source code online for free. In order to support my work some features require a subscription</string>
+  <string name="upgrade_blurb_2" translatable="false">I have spent thousands of hours working on Tasks, and I publish all of the source code online for free. In order to support my work some features require a subscription</string>
   <string name="back">Back</string>
   <string name="chips">Chips</string>
   <string name="chip_appearance">Chip appearance</string>
@@ -347,11 +347,11 @@ File %1$s contained %2$s.\n\n
   <string name="filter_eisenhower_box_2">Important and not urgent</string>
   <string name="filter_eisenhower_box_3">Not important and urgent</string>
   <string name="filter_eisenhower_box_4">Not important and not urgent</string>
-  <string name="banner_subscription_required_title">Subscription required</string>
-  <string name="banner_subscription_required_body">Pay whatever you want to unlock %s synchronization</string>
+  <string name="banner_subscription_required_title" translatable="false">Subscription required</string>
+  <string name="banner_subscription_required_body">Pay whatever you want to unlock %s synchronisation</string>
   <string name="enjoying_tasks">Enjoying Tasks?</string>
-  <string name="donate_nag">Consider showing your support with a donation!</string>
-  <string name="donate_today">Donate today</string>
+  <string name="donate_nag" translatable="false">Consider showing your support with a donation!</string>
+  <string name="donate_today" translatable="false">Donate today</string>
   <string name="donate_maybe_later">Maybe later</string>
   <string name="support_development_subscribe">Unlock additional features and support open source software</string>
   <string name="p_per_list_sort">per_list_sort</string>
@@ -376,47 +376,47 @@ File %1$s contained %2$s.\n\n
   <string name="background_location">Background location</string>
   <string name="backups_ignore_warnings">Ignore warnings</string>
   <string name="backups_ignore_warnings_summary">Ignore backup warnings if you do not need backups or have your own backup solution</string>
-  <string name="backup_location_warning">WARNING: Files located in %s will be deleted if Tasks is uninstalled! Please choose a custom location to prevent Android from deleting your files.</string>
+  <string name="backup_location_warning">WARNING: Files located in %s will be deleted if 4Tasks is uninstalled! Please choose a custom location to prevent Android from deleting your files.</string>
   <string name="multi_select_reschedule">Reschedule</string>
   <string name="custom_filter_has_subtask">Has subtasks</string>
   <string name="custom_filter_is_subtask">Is subtask</string>
   <string name="custom_filter_has_reminder">Has reminder</string>
-  <string name="your_subscription_expired">Your subscription has expired. Subscribe now to resume service.</string>
-  <string name="no_google_play_subscription">No eligible Google Play subscription found</string>
-  <string name="subscription_required_fdroid">A subscription is required to use Tasks.org sync. Subscriptions must be initiated from the Google Play version of Tasks.</string>
-  <string name="sponsorship_required_fdroid">A GitHub sponsorship is required to use Tasks.org sync. Click below to become a sponsor.</string>
+  <string name="your_subscription_expired" translatable="false">Your subscription has expired. Subscribe now to resume service.</string>
+  <string name="no_google_play_subscription" translatable="false">No eligible Google Play subscription found</string>
+  <string name="subscription_required_fdroid" translatable="false">A subscription is required to use Tasks.org sync. Subscriptions must be initiated from the Google Play version of Tasks.</string>
+  <string name="sponsorship_required_fdroid" translatable="false">A GitHub sponsorship is required to use Tasks.org sync. Click below to become a sponsor.</string>
   <string name="price_per_month_with_currency">%s/month</string>
   <string name="price_per_year_with_currency">%s/year</string>
-  <string name="current_subscription">Current subscription: %s</string>
+  <string name="current_subscription" translatable="false">Current subscription: %s</string>
   <string name="support">Support</string>
   <string name="open_source">Open source</string>
   <string name="privacy">Privacy</string>
-  <string name="authorization_cancelled">Authorization cancelled</string>
-  <string name="github_sponsors">GitHub Sponsors</string>
+  <string name="authorization_cancelled">Authorisation cancelled</string>
+  <string name="github_sponsors" translatable="false">GitHub Sponsors</string>
   <string name="sign_in_with_google">Sign in with Google</string>
   <string name="authentication_required">Authentication required</string>
-  <string name="github_sponsor">Sponsor</string>
+  <string name="github_sponsor" translatable="false">Sponsor</string>
   <string name="migrating_tasks">Migrating tasks</string>
-  <string name="migrate_count">Move %s to Tasks.org</string>
+  <string name="migrate_count" translatable="false">Move %s to Tasks.org</string>
   <string name="above_average">Above average</string>
   <string name="save_percent">Save %d%%</string>
   <string name="app_password">App password</string>
-  <string name="app_passwords_more_info">Synchronize your tasks and calendars with third-party desktop and mobile apps. Tap here for more info</string>
+  <string name="app_passwords_more_info">Synchronise your tasks and calendars with third-party desktop and mobile apps. Tap here for more info</string>
   <string name="copied_to_clipboard">%s copied to clipboard</string>
   <string name="email_to_task">Email to task</string>
   <string name="email_to_task_address">Your email address</string>
-  <string name="tasks_org_account_required">Tasks.org account required</string>
-  <string name="account_not_included">Not included with \'Name your price\' subscriptions</string>
-  <string name="guest_create_list_message">You currently have guest access to shared lists. To create and sync your own private lists to the cloud, you\'ll need a Tasks.org subscription. Or, you can create a free local list that stays on this device.</string>
-  <string name="pro_free_trial">New subscribers receive a 7-day free trial. Cancel at any time</string>
-  <string name="upgrade_desktop_app">Tasks.org for desktop</string>
-  <string name="upgrade_desktop_app_description">Early access to the new desktop app</string>
-  <string name="upgrade_friends_and_family">Friends &amp; Family</string>
-  <string name="upgrade_friends_and_family_description">5 free guests on shared lists. Works with Apple Reminders</string>
-  <string name="upgrade_more_customization">More customization</string>
-  <string name="upgrade_more_customization_description">Unlock all themes, colors, and icons</string>
-  <string name="upgrade_tasks_org_account_description">Sync with Tasks.org and collaborate with other users</string>
-  <string name="upgrade_open_source_description">Your subscription supports continued development</string>
+  <string name="tasks_org_account_required" translatable="false">Tasks.org account required</string>
+  <string name="account_not_included" translatable="false">Not included with \'Name your price\' subscriptions</string>
+  <string name="guest_create_list_message" translatable="false">You currently have guest access to shared lists. To create and sync your own private lists to the cloud, you\'ll need a Tasks.org subscription. Or, you can create a free local list that stays on this device.</string>
+  <string name="pro_free_trial" translatable="false">New subscribers receive a 7-day free trial. Cancel at any time</string>
+  <string name="upgrade_desktop_app" translatable="false">Tasks.org for desktop</string>
+  <string name="upgrade_desktop_app_description" translatable="false">Early access to the new desktop app</string>
+  <string name="upgrade_friends_and_family" translatable="false">Friends &amp; Family</string>
+  <string name="upgrade_friends_and_family_description" translatable="false">5 free guests on shared lists. Works with Apple Reminders</string>
+  <string name="upgrade_more_customization">More customisation</string>
+  <string name="upgrade_more_customization_description">Unlock all themes, colours, and icons</string>
+  <string name="upgrade_tasks_org_account_description" translatable="false">Sync with Tasks.org and collaborate with other users</string>
+  <string name="upgrade_open_source_description" translatable="false">Your subscription supports continued development</string>
   <string name="upgrade_email_to_task_description">Turn emails into tasks by forwarding them to your private inbox</string>
   <string name="advanced_tools">Advanced tools</string>
   <string name="advanced_tools_description">Google Places, CalDAV, EteSync, and more!</string>
@@ -425,10 +425,10 @@ File %1$s contained %2$s.\n\n
   <string name="snackbar_tasks_completed">%d tasks completed</string>
   <string name="dismiss">Dismiss</string>
   <string name="hint_customize_edit_title">Too much information?</string>
-  <string name="hint_customize_edit_body">You can customize this screen by rearranging or removing fields</string>
+  <string name="hint_customize_edit_body">You can customise this screen by rearranging or removing fields</string>
   <string name="enable_alarms">Allow alarms &amp; reminders</string>
   <string name="enable_alarms_description">4Tasks needs the “Alarms &amp; reminders” permission to remind you at the right minute. Without it, reminders can come late.</string>
-  <string name="legal_disclosure_prefix_using">By using Tasks.org</string>
+  <string name="legal_disclosure_prefix_using" translatable="false">By using Tasks.org</string>
   <string name="tos_updated_title">We\'ve updated our Terms of Service</string>
   <string name="accept">Accept</string>
   <string name="exit">Exit</string>
@@ -451,8 +451,8 @@ File %1$s contained %2$s.\n\n
   <string name="about_based_on_summary">4Tasks is a modified version of Tasks.org, free software from Todoroo (Astrid) and the Tasks.org contributors. Open the original source code.</string>
   <string name="about_open_source">Open source</string>
   <string name="about_source_code">4Tasks source code</string>
-  <string name="about_source_code_summary">Free software under the GNU General Public License v3</string>
-  <string name="about_gpl">GNU General Public License v3</string>
+  <string name="about_source_code_summary">Free software under the GNU General Public Licence v3</string>
+  <string name="about_gpl">GNU General Public Licence v3</string>
   <string name="about_third_party">Notices and third-party licences</string>
   <string name="about_privacy">Privacy</string>
   <string name="about_privacy_policy">Privacy policy</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">ค้น</string>
-    <string name="subscribe">ติดตาม</string>
     <string name="filter_today">วันนี้</string>
     <string name="filter_my_tasks">แผนงานตอนนี้</string>
     <string name="filter_notifications">แจ้ง เตือน</string>
@@ -38,19 +37,13 @@
     <string name="password_required">ต้องใช้รหัสผ่าน</string>
     <string name="caldav_home_set_not_found">ไม่พบชุดบ้าน</string>
     <string name="add_account">เพิ่มบัญชี</string>
-    <string name="requires_pro_subscription">ต้องสมัครสมาชิกแบบโปร</string>
     <string name="google_tasks_selection_description">บริการพื้นฐานที่ซิงโครไนซ์กับบัญชี Google ของคุณ</string>
     <string name="name_your_price">ตั้งชื่อราคาของคุณ</string>
-    <string name="upgrade_to_pro">อัปเกรดเป็น Pro</string>
     <string name="caldav_selection_description">การซิงโครไนซ์ตามมาตรฐานอินเทอร์เน็ตแบบเปิด</string>
     <string name="davx5_selection_description">ซิงโครไนซ์งานของคุณกับแอป davx⁵ของคุณ</string>
     <string name="etesync_selection_description">การทําข้อมูลให้ตรงกันที่เข้ารหัสตั้งแต่ต้นจนจบ</string>
     <string name="decsync_selection_description">การซิงโครไนส์ตามไฟล์</string>
-    <string name="sign_in_to_tasks">ลงชื่อเข้าใช้ Tasks.org</string>
     <string name="sign_in_with_google">ลงชื่อเข้าใช้ด้วย Google</string>
-    <string name="sign_in_with_github">เข้าสู่ระบบด้วย GitHub</string>
-    <string name="google_play_subscribers">สมาชิก Google Play</string>
-    <string name="github_sponsors">ผู้สนับสนุน GitHub</string>
     <string name="filter_overdue">เกิน</string>
     <string name="no_due_date">ไม่มีวันที่ครบกําหนด</string>
     <string name="no_start_date">ไม่มีวันที่เริ่มต้น</string>
@@ -76,8 +69,6 @@
     <string name="back">กลับ</string>
     <string name="help">วิธีใช้</string>
     <string name="display_name">ชื่อที่ใช้แสดง</string>
-    <string name="manage_subscription">ปรับเปลี่ยนการบอกรับเป็นสมาชิก</string>
-    <string name="button_unsubscribe">ยกเลิกการบอกรับเป็นสมาชิก</string>
     <string name="local_lists">รายการท้องถิ่น</string>
     <string name="app_passwords">รหัสผ่านของแอป</string>
     <string name="app_password">รหัสผ่านของแอป</string>
@@ -91,17 +82,11 @@
     <string name="delete_tag_confirmation">ลบ %1$s หรือไม่?</string>
     <string name="app_password_delete_confirmation">แอปใดๆ ที่ใช้รหัสผ่านนี้จะออกจากระบบ</string>
     <string name="app_password_enter_description">ตั้งชื่อรหัสผ่านของคุณ (ไม่บังคับ)</string>
-    <string name="insufficient_sponsorship">ไม่พบผู้สนับสนุน GitHub ที่มีสิทธิ์</string>
-    <string name="button_subscribe">ติดตาม</string>
-    <string name="your_subscription_expired">การสมัครใช้งานของคุณหมดอายุแล้ว สมัครสมาชิกตอนนี้เพื่อกลับมาใช้บริการต่อ</string>
-    <string name="insufficient_subscription">ระดับการบอกรับเป็นสมาชิกไม่เพียงพอ โปรดปรับรุ่นการสมัครใช้งานของคุณให้กลับมาใช้บริการต่อ</string>
     <string name="authentication_required">ต้องการการรับรองความถูกต้อง</string>
-    <string name="app_password_save">ใช้ข้อมูลรับรองเหล่านี้เพื่อกําหนดค่าแอปของบริษัทอื่น พวกเขาให้สิทธิ์การเข้าถึงบัญชี Tasks.org ของคุณอย่างสมบูรณ์อย่าจดหรือแบ่งปันกับใคร!</string>
     <string name="url">URL</string>
     <string name="user">ผู้ใช้</string>
     <string name="password">รหัสผ่าน</string>
     <string name="migrating_tasks">กําลังโยกย้ายงาน</string>
-    <string name="migrate_count">ย้าย %1$s ไปยัง Tasks.org</string>
     <string name="preferences_look_and_feel">ลักษณะและความรู้สึก</string>
     <string name="notifications">แจ้ง เตือน</string>
     <string name="task_defaults">ค่าเริ่มต้นของงาน</string>
@@ -158,9 +143,6 @@
     <string name="list_members">รายชื่อสมาชิก</string>
     <string name="remove_user">ลบผู้ใช้หรือไม่?</string>
     <string name="remove_user_confirmation">%1$s จะไม่สามารถเข้าถึง %2$s ได้อีกต่อไป</string>
-    <string name="invite_declined">ปฏิเสธคำเชิญ</string>
-    <string name="invite_awaiting_response">คําเชิญที่กําลังรอการตอบกลับ</string>
-    <string name="invite_invalid">การเชิญไม่ถูกต้อง</string>
     <string name="email">อีเมล</string>
     <string name="color">สี</string>
     <string name="icon">ไอคอน</string>

@@ -13,6 +13,18 @@ data class ThemeColor(
 
 object ColorProvider {
     const val BLUE_500 = -14575885
+
+    /**
+     * The family colour (4Dictate, 4Zones, mr-biz.uk): sky blue. One stored seed, two real colours: the
+     * light-mode accent #0284C7 and the dark-mode accent #38BDF8, so it is exact in both.
+     */
+    const val FAMILY_SEED = -16612153 // 0xFF0284C7
+    private const val FAMILY_ACCENT_DARK = -13058568 // 0xFF38BDF8
+
+    fun familyAccent(isDark: Boolean) = if (isDark) FAMILY_ACCENT_DARK else FAMILY_SEED
+
+    /** The stored seed, or the dark accent it resolves to (screens are handed the resolved colour). */
+    fun isFamilyColor(color: Int) = color == FAMILY_SEED || color == FAMILY_ACCENT_DARK
     private const val BLUE_GREY_500 = -10453621
     private const val GREY_900 = -14606047
     private const val RED_500 = -769226
@@ -21,12 +33,13 @@ object ColorProvider {
     const val WHITE = -1
     const val BLACK = -16777216
 
-    private val FREE_COLORS = setOf(BLUE_500, BLUE_GREY_500, GREY_900)
+    private val FREE_COLORS = setOf(FAMILY_SEED, BLUE_500, BLUE_GREY_500, GREY_900)
 
     fun isFreeColor(color: Int) = color in FREE_COLORS
 
     // Preset colors from the color picker (hex values from kmp/src/androidMain/res/values/colors.xml)
     val PRESET_COLORS: Set<Int> = setOf(
+        FAMILY_SEED, // the family colour, first
         0xFFD50000.toInt(), // tomato
         0xFFF44336.toInt(), // red_500
         0xFFFF5722.toInt(), // deep_orange_500
@@ -95,6 +108,7 @@ object ColorProvider {
         lightTone: Int = ColorTone.LIGHT_TITLE,
         darkTone: Int = ColorTone.DARK_TITLE,
     ): Int = when {
+        color == FAMILY_SEED -> familyAccent(isDark)
         adjust && color in PRESET_COLORS && isDark -> tonalColor(color, darkTone)
         adjust && color in PRESET_COLORS && !isDark -> tonalColor(color, lightTone)
         !isDark && color == WHITE -> BLACK

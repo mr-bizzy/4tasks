@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">සොයන්න</string>
-    <string name="subscribe">දායක වන්න</string>
     <string name="filter_my_tasks">මගේ කාර්යයන්</string>
     <string name="filter_notifications">දැනුම්දීම්</string>
     <string name="filter_timer">ක්‍රියාත්මකව පවතින කාර්යයන්</string>
@@ -38,21 +37,15 @@
     <string name="password_required">මුරපදය අවශ්‍යයි</string>
     <string name="caldav_home_set_not_found">CalDAV Home Set හමු නොවීය</string>
     <string name="add_account">ගිණුම එක් කරන්න</string>
-    <string name="requires_pro_subscription">Pro දායකත්වයක් අවශ්‍යයි</string>
     <string name="google_tasks_selection_description">ඔබගේ Google ගිණුම සමඟ සමමුහුර්ත කරන මූලික සේවාව</string>
     <string name="name_your_price">මිලක් නියම කරන්න</string>
-    <string name="upgrade_to_pro">Pro වෙත උත්ශ්‍රේණි කරන්න</string>
     <string name="ok">හරි</string>
     <string name="cancel">අවලංගු කරන්න</string>
     <string name="caldav_selection_description">විවෘත අන්තර්ජාල ප්‍රමිතීන් මත පදනම් වූ සමමුහුර්තකරණය</string>
     <string name="davx5_selection_description">DAVx⁵ යෙදුම සමඟ ඔබගේ කාර්යයන් සමමුහුර්ත කරන්න</string>
     <string name="etesync_selection_description">End-to-end encrypted සමමුහුර්තකරණය</string>
     <string name="decsync_selection_description">ගොනු මත පදනම් වූ සමමුහුර්තකරණය</string>
-    <string name="sign_in_to_tasks">Tasks.org වෙත පුරනය වන්න</string>
     <string name="sign_in_with_google">Google සමඟ පුරනය වන්න</string>
-    <string name="sign_in_with_github">GitHub සමඟ පුරනය වන්න</string>
-    <string name="google_play_subscribers">Google Play ග්‍රාහකයින්</string>
-    <string name="github_sponsors">GitHub අනුග්‍රාහකයන්</string>
     <string name="filter_overdue">නියමිත දිනය පසුවූ</string>
     <string name="no_due_date">අවසාන දිනයක් නොමැත</string>
     <string name="no_start_date">ආරම්භක දිනයක් නොමැත</string>
@@ -79,8 +72,6 @@
     <string name="back">ආපසු</string>
     <string name="help">උදව්</string>
     <string name="display_name">ප්‍රදර්ශන නාමය</string>
-    <string name="manage_subscription">දායකත්වය වෙනස් කරන්න</string>
-    <string name="button_unsubscribe">දායකත්වය අවලංගු කරන්න</string>
     <string name="local_lists">පවත්නා ලැයිස්තු</string>
     <string name="app_passwords">යෙදුම් මුරපද</string>
     <string name="app_password">යෙදුම් මුරපදය</string>
@@ -94,17 +85,11 @@
     <string name="delete_tag_confirmation">%1$s මකාදමනවාද?</string>
     <string name="app_password_delete_confirmation">මෙම මුරපදය භාවිතා කරන ඕනෑම යෙදුමක් ඉවත්වනු (signed out) ඇත</string>
     <string name="app_password_enter_description">ඔබගේ මුරපදයට නමක් දෙන්න (අත්‍යවශ්‍ය නොවේ)</string>
-    <string name="insufficient_sponsorship">සුදුසුකම් ලත් GitHub අනුග්‍රාහකත්වයක් හමු නොවීය</string>
-    <string name="button_subscribe">දායක වන්න</string>
-    <string name="your_subscription_expired">ඔබගේ දායකත්වය කල් ඉකුත් වී ඇත. සේවාව නැවත ආරම්භ කිරීම සඳහා දැන්ම දායක වන්න.</string>
-    <string name="insufficient_subscription">දායකත්ව මට්ටම ප්‍රමාණවත් නොවේ. සේවාව නැවත ආරම්භ කිරීම සඳහා කරුණාකර ඔබගේ දායකත්වය යාවත්කාලීන කරන්න.</string>
     <string name="authentication_required">සත්‍යාපනය අවශ්‍යයි</string>
-    <string name="app_password_save">තෙවන පාර්ශවීය යෙදුමක් වින්‍යාස කිරීමට මෙම අක්තපත්‍ර භාවිතා කරන්න. ඒවා ඔබේ Tasks.org ගිණුමට සම්පූර්ණ ප්‍රවේශය ලබා දෙයි. එමනිසා ඒවා ලියා තැබීම හෝ කිසිවෙකු සමඟ බෙදා ගැනීමෙන් වළකින්න!</string>
     <string name="url">URL</string>
     <string name="user">පරිශීලක</string>
     <string name="password">මුරපදය</string>
     <string name="migrating_tasks">සංක්‍රමණික කාර්යයන්</string>
-    <string name="migrate_count">%1$s Tasks.org වෙත ගෙන යන්න</string>
     <string name="preferences_look_and_feel">පෙනුම හා පහසුව</string>
     <string name="notifications">දැනුම්දීම්</string>
     <string name="task_defaults">කාර්යය පෙරනිමි</string>
@@ -163,9 +148,6 @@
     <string name="list_members">සාමාජික ලැයිස්තුව</string>
     <string name="remove_user">පරිශීලකයා ඉවත් කරන්නද?</string>
     <string name="remove_user_confirmation">%1$s හට තවදුරටත් %2$s වෙත ප්‍රවේශය නොලැබේ</string>
-    <string name="invite_declined">ආරාධනය ප්‍රතික්ෂේප විය</string>
-    <string name="invite_awaiting_response">ප්‍රතිචාරයක් බලාපොරොත්තුවෙන් ඇති ආරාධන</string>
-    <string name="invite_invalid">ආරාධනය අවලංගුයි</string>
     <string name="email">විද්යුත් තැපෑල</string>
     <string name="color">වර්ණය</string>
     <string name="icon">අයිකනය</string>

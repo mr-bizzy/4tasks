@@ -198,11 +198,7 @@
     <string name="tasker_create_task">할일 만들기</string>
     <string name="tasker_list_notification">목록 알림</string>
     <string name="help">도움말</string>
-    <string name="upgrade_to_pro">프로 서비스로 업그레이드</string>
-    <string name="refresh_purchases">구매 새로고침</string>
-    <string name="button_subscribe">신청</string>
     <string name="pro_dashclock_extension">Dashclock 확장프로그램</string>
-    <string name="requires_pro_subscription">프로 서비스 구독이 필요합니다</string>
     <string name="logout">로그아웃</string>
     <string name="reinitialize_account">다시 초기화하기</string>
     <string name="action_create_new_task">새 할일 만들기</string>
@@ -233,7 +229,6 @@
     <string name="expand_subtasks">하위할일 펼치기</string>
     <string name="collapse_subtasks">하위할일 접기</string>
     <string name="subtasks">하위할일</string>
-    <string name="this_feature_requires_a_subscription">이 기능을 사용하려면 구독해야 합니다</string>
     <string name="choose_synchronization_service">플랫폼 선택</string>
     <string name="caldav_selection_description">개방형 인터넷 표준을 바탕으로 한 동기화</string>
     <string name="etesync_selection_description">종단간 암호화된 동기화</string>
@@ -249,7 +244,6 @@
     <string name="upgrade_blurb_1">안녕하세요! Tasks의 1인 개발자 알렉스입니다</string>
     <string name="chip_appearance">칩 모양</string>
     <string name="chips">칩</string>
-    <string name="upgrade_blurb_2">저는 Tasks 개발에 엄청나게 많은 시간을 쏟고 있으며, 모든 소스코드를 웹에 무상으로 공개하고 있습니다. 저의 작업을 후원하기 위해 일부 기능은 구독이 필요합니다</string>
     <string name="color_wheel">색상환</string>
     <string name="documentation">문서</string>
     <string name="preferences_advanced">고급</string>
@@ -322,18 +316,12 @@
     <string name="astrid_sort_order_summary">\'나의 할일\', \'오늘\', 태그 화면에서 Astrid 수동 정렬을 사용할 수 있습니다. 추후 업데이트 시 \'순서 직접 정렬\' 을 이 방식으로 대체할 예정입니다</string>
     <string name="astrid_sort_order">Astrid 수동 정렬</string>
     <string name="authorization_cancelled">인증 취소됨</string>
-    <string name="current_subscription">현재 구독: %s</string>
-    <string name="your_subscription_expired">구독이 만료되었습니다. 서비스를 재개하려면 지금 구독하세요.</string>
     <string name="background_location">백그라운드 위치정보</string>
     <string name="permission_read_tasks">Tasks 데이터베이스에 대한 전체 액세스</string>
     <string name="background_location_permission_required">앱이 닫히거나 사용하지 않을 때에도 위치 기반 미리 알람이 동작하도록 위치 데이터를 수집합니다.</string>
-    <string name="migrate_count">Tasks.org 로 %s 개 이동</string>
     <string name="migrating_tasks">할일 이전 중</string>
-    <string name="github_sponsor">후원자</string>
     <string name="authentication_required">인증 필요</string>
     <string name="sign_in_with_google">구글을 이용해서 로그인</string>
-    <string name="github_sponsors">깃허브 후원자</string>
-    <string name="no_google_play_subscription">적합한 구글 플레이 구독을 찾을 수 없습니다</string>
     <string name="custom_filter_is_subtask">하위할일</string>
     <string name="custom_filter_has_subtask">하위할일 있음</string>
     <string name="always_display_full_date">일시 간략화하지 않고 그대로 표시</string>
@@ -346,14 +334,9 @@
     <string name="CFC_startBefore_name">시작일…</string>
     <string name="CFC_startBefore_text">시작일: \?</string>
     <string name="save_percent">%d%% 절약</string>
-    <string name="account_not_included">\'구독 금액 정하기\' 구독은 제외</string>
-    <string name="upgrade_open_source_description">구독하시면 지속적인 개발을 지원합니다</string>
-    <string name="upgrade_tasks_org_account_description">Tasks.org와 동기화 및 다른 사용자와 협업</string>
     <string name="upgrade_more_customization_description">모든 테마, 색상, 아이콘 사용</string>
     <string name="upgrade_more_customization">더 다양한 맞춤설정</string>
-    <string name="pro_free_trial">새 구독자는 7일간 무료 체험이 가능합니다. 언제라도 취소할 수 있습니다</string>
     <string name="app_passwords_more_info">타사 데스크탑 및 모바일 앱으로 할일과 달력을 동기화합니다. 자세한 정보는 여기를 탭하세요</string>
-    <string name="tasks_org_account_required">Tasks.org 계정 필요</string>
     <string name="copied_to_clipboard">클립보드로 %s 건 복사</string>
     <string name="above_average">평균 이상</string>
     <string name="app_password">앱 비밀번호</string>
@@ -363,7 +346,6 @@
     <string name="local_lists">로컬 목록</string>
     <string name="back">이전</string>
     <string name="decsync_selection_description">파일 기반 동기화</string>
-    <string name="subscription">구독</string>
     <string name="filter_criteria_unstarted">시작하지 않음</string>
     <string name="widget_show_title">제목 표시</string>
     <string name="foreground_location">전경 위치</string>
@@ -379,9 +361,7 @@
     <string name="completed">완료</string>
     <string name="snackbar_task_completed">할일 완료</string>
     <string name="sort_list">목록 기준</string>
-    <string name="donate_today">오늘 기부하기</string>
     <string name="donate_maybe_later">나중에</string>
-    <string name="donate_nag">기부를 통해 여러분의 지지를 보여주세요!</string>
     <string name="change_priority">우선순위 변경</string>
     <string name="show_edit_screen_without_unlock">잠금해제 없이 편집 화면 보이기</string>
     <string name="customize_drawer">서랍 정렬</string>
@@ -404,7 +384,6 @@
     <string name="comment">코멘트</string>
     <string name="delete_tasks_warning">%s 를 삭제합니다. 삭제 후 되돌릴 수 없습니다!</string>
     <string name="banner_app_updated_title">앱이 업데이트됨</string>
-    <string name="banner_app_updated_description">Tasks.org가 방금 %s 버전으로 업데이트되었습니다. 릴리즈 노트를 열까요?</string>
     <string name="multiline_title_off">할 일을 저장하려면 완료를 누르세요</string>
     <string name="sync_warning_microsoft">모든 할 일이 Microsoft To Do와 동기화되지는 않습니다.</string>
     <string name="sync_warning_google_tasks">모든 할 일이 Google Tasks와 동기화되진 않습니다.</string>

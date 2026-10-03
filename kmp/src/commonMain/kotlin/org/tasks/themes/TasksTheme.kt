@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -19,7 +20,7 @@ import org.tasks.kmp.org.tasks.themes.ColorProvider
 import org.tasks.kmp.org.tasks.themes.ColorProvider.BLACK
 import org.tasks.kmp.org.tasks.themes.ColorProvider.WHITE
 
-const val BLUE = -14575885
+const val BLUE = ColorProvider.FAMILY_SEED // the default seed is the family colour
 
 @Composable
 fun colorOn(color: Color) = colorOn(color.toArgb())
@@ -73,7 +74,7 @@ fun TasksTheme(
         seedColor = Color(seedColor),
         isDark = isDark,
     )
-    val colorScheme = when (theme) {
+    val colorScheme = if (ColorProvider.isFamilyColor(seedColor)) familyScheme(generated, theme, isDark) else when (theme) {
         0 -> generated.copy(
             surface = Color(0xFFF0F0F0),
             background = Color.White,
@@ -113,13 +114,54 @@ fun TasksTheme(
     }
 }
 
+/**
+ * The fallback palette of the family (mr-biz.uk): navy #0F172A background, #1E293B surfaces, muted
+ * #94A3B8, accent #38BDF8 in dark and #0284C7 in light. Used when the user has not picked a colour
+ * and wallpaper colour is off or unavailable.
+ */
+private fun familyScheme(generated: ColorScheme, theme: Int, isDark: Boolean): ColorScheme {
+    if (!isDark) {
+        return generated.copy(
+            primary = Color(0xFF0284C7),
+            onPrimary = Color.White,
+            primaryContainer = Color(0xFFBAE6FD),
+            onPrimaryContainer = Color(0xFF0C4A6E),
+            surface = Color(0xFFF0F0F0),
+            background = Color.White,
+            surfaceContainerLowest = Color.White,
+        )
+    }
+    val base = generated.copy(
+        primary = Color(0xFF38BDF8),
+        onPrimary = Color(0xFF0F172A),
+        primaryContainer = Color(0xFF0C4A6E),
+        onPrimaryContainer = Color(0xFFBAE6FD),
+        onSurfaceVariant = Color(0xFF94A3B8),
+        outline = Color(0xFF475569),
+        outlineVariant = Color(0xFF334155),
+        surfaceContainerLow = Color(0xFF172033),
+        surfaceContainer = Color(0xFF1E293B),
+        surfaceContainerHigh = Color(0xFF243247),
+        surfaceContainerHighest = Color(0xFF2B3A52),
+    )
+    return when (theme) {
+        1 -> base.copy(background = Color.Black, surface = Color.Black, surfaceContainerLowest = Color(0xFF0B1220))
+        3 -> base.copy(background = Color.Transparent, surface = Color(0x990F172A))
+        else -> base.copy(
+            surface = Color(0xFF0F172A),
+            background = Color(0xFF0F172A),
+            surfaceContainerLowest = Color(0xFF1E293B),
+        )
+    }
+}
+
 val WarningColor = Color(0xFFFF9800)
 
 // Settings screen colors — referenced from ThemeBase.java for window background
 const val SETTINGS_SURFACE_LIGHT = 0xFFEFECF6.toInt()
-const val SETTINGS_SURFACE_DARK = 0xFF191920.toInt()
+const val SETTINGS_SURFACE_DARK = 0xFF0F172A.toInt()
 private const val SETTINGS_CARD_LIGHT = 0xFFF8F8FE.toInt()
-private const val SETTINGS_CARD_DARK = 0xFF2B2B34.toInt()
+private const val SETTINGS_CARD_DARK = 0xFF1E293B.toInt()
 
 @Composable
 fun TasksSettingsTheme(

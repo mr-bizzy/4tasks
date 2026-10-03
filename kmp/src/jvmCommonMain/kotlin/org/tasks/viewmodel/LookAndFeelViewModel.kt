@@ -55,17 +55,13 @@ open class LookAndFeelViewModel(
         add(BaseTheme.SYSTEM_DEFAULT)
     }
 
-    val showLauncherIcon: Boolean get() = platformConfiguration.supportsLauncherIcon
-
     val showMarkdown: Boolean get() = platformConfiguration.supportsMarkdownToggle
     val showLanguage: Boolean get() = platformConfiguration.supportsLanguageSelection
 
     open val themeIndex: Int get() = settings.theme
     open val themeColor: Int get() = settings.themeColor
-    open val launcherColor: Int get() = settings.themeColor
     open val dynamicColorAvailable: Boolean get() = platformConfiguration.supportsDynamicColor
     open val dynamicColorEnabled: Boolean get() = settings.dynamicColor
-    open val dynamicColorProOnly: Boolean get() = false
 
     open val localeName: String
         get() = (settings.languageTag?.toLocaleOrNull() ?: Locale.getDefault()).displayName()

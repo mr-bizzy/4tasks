@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Tìm kiếm</string>
-    <string name="subscribe">Đăng ký</string>
     <string name="filter_my_tasks">Công việc của tôi</string>
     <string name="filter_notifications">Thông báo</string>
     <string name="filter_snoozed">Đã đặt báo lại</string>
@@ -41,20 +40,14 @@
     <string name="password_required">Yêu cầu mật khẩu</string>
     <string name="caldav_home_set_not_found">Không tìm thấy bộ trang chủ</string>
     <string name="add_account">Thêm tài khoản</string>
-    <string name="requires_pro_subscription">Yêu cầu đăng ký pro</string>
     <string name="google_tasks_selection_description">Dịch vụ cơ bản đồng bộ hoá với tài khoản Google của bạn</string>
     <string name="microsoft_selection_description">Đồng bộ với tài khoản Microsoft cá nhân</string>
     <string name="name_your_price">Đặt giá của bạn</string>
-    <string name="upgrade_to_pro">Nâng cấp lên pro</string>
     <string name="caldav_selection_description">Đồng bộ hoá dựa trên các tiêu chuẩn internet mở</string>
     <string name="davx5_selection_description">Đồng bộ hoá các công việc của bạn bằng ứng dụng DAVx⁵</string>
     <string name="etesync_selection_description">Đồng bộ hoá được mã hoá đầu cuối</string>
     <string name="decsync_selection_description">Đồng bộ hoá dựa trên từng tệp</string>
-    <string name="sign_in_to_tasks">Đăng nhập vào Tasks.org</string>
     <string name="sign_in_with_google">Đăng nhập bằng Google</string>
-    <string name="sign_in_with_github">Đăng nhập bằng GitHub</string>
-    <string name="google_play_subscribers">Người đăng ký trên Google Play</string>
-    <string name="github_sponsors">Nhà tài trợ trên GitHub</string>
     <string name="completed">Hoàn tất</string>
     <string name="filter_overdue">Quá hạn</string>
     <string name="no_due_date">Không có ngày hạn</string>
@@ -90,8 +83,6 @@
     <string name="back">Quay lại</string>
     <string name="help">Trợ giúp</string>
     <string name="display_name">Tên hiển thị</string>
-    <string name="manage_subscription">Sửa đổi đăng ký</string>
-    <string name="button_unsubscribe">Huỷ đăng ký</string>
     <string name="local_lists">Danh sách cục bộ</string>
     <string name="app_passwords">Các mật khẩu ứng dụng</string>
     <string name="app_password">Mật khẩu ứng dụng</string>
@@ -105,17 +96,11 @@
     <string name="delete_tag_confirmation">Xoá %1$s?</string>
     <string name="app_password_delete_confirmation">Bất kỳ ứng dụng nào đang sử dụng mật khẩu này sẽ bị đăng xuất</string>
     <string name="app_password_enter_description">Đặt tên cho mật khẩu của bạn (không bắt buộc)</string>
-    <string name="insufficient_sponsorship">Không tìm thấy sự tài trợ GitHub đủ điều kiện</string>
-    <string name="button_subscribe">Đăng ký</string>
-    <string name="your_subscription_expired">Đăng ký của bạn đã hết hạn. Đăng ký ngay để tiếp tục dịch vụ.</string>
-    <string name="insufficient_subscription">Không đủ cấp độ đăng ký. Vui lòng nâng cấp đăng ký của bạn để tiếp tục dịch vụ.</string>
     <string name="authentication_required">Yêu cầu xác thực</string>
-    <string name="app_password_save">Sử dụng thông tin này để thiết lập một ứng dụng bên thứ ba. Chúng cấp quyền truy cập toàn bộ vào tài khoản Tasks.org của bạn, đừng viết chúng ra hoặc chia sẻ chúng với bất kỳ ai!</string>
     <string name="url">URL</string>
     <string name="user">Người dùng</string>
     <string name="password">Mật khẩu</string>
     <string name="migrating_tasks">Đang di cư các công việc</string>
-    <string name="migrate_count">Di chuyển %1$s đến Tasks.org</string>
     <string name="preferences_look_and_feel">Ngoại hình</string>
     <string name="notifications">Thông báo</string>
     <string name="task_defaults">Giá trị mặc định</string>
@@ -177,9 +162,6 @@
     <string name="list_members">Liệt kê các thành viên</string>
     <string name="remove_user">Xoá người dùng?</string>
     <string name="remove_user_confirmation">%1$s sẽ không còn quyền truy cập vào %2$s nữa</string>
-    <string name="invite_declined">Lời mời bị từ chối</string>
-    <string name="invite_awaiting_response">Lời mời đang chờ phản hồi</string>
-    <string name="invite_invalid">Lời mời không hợp lệ</string>
     <string name="email">Thư điện tử</string>
     <string name="color">Màu</string>
     <string name="icon">Biểu tượng</string>

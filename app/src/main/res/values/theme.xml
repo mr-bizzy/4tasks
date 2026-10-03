@@ -12,6 +12,10 @@
     <item name="android:colorBackground">@color/content_background</item>
     <item name="background">@color/window_background</item>
     <item name="colorSurface">@color/content_background</item>
+    <item name="colorSurfaceContainerLow">@color/surface_container_low</item>
+    <item name="colorSurfaceContainer">@color/surface_container</item>
+    <item name="colorSurfaceContainerHigh">@color/surface_container_high</item>
+    <item name="colorSurfaceContainerHighest">@color/surface_container_highest</item>
     <item name="windowActionModeOverlay">true</item>
     <item name="actionModeStyle">@style/ActionModeStyle</item>
     <item name="actionBarTheme">@style/ActionModeTheme</item>

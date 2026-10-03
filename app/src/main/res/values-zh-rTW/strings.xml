@@ -177,14 +177,10 @@
     <string name="always_display_full_date">顯示完整日期</string>
     <string name="copied_to_clipboard">%s 已複製至剪貼簿</string>
     <string name="app_password">應用程式密碼</string>
-    <string name="migrate_count">移動 %s 至 Task.org</string>
     <string name="migrating_tasks">移入任務</string>
-    <string name="github_sponsor">贊助</string>
     <string name="authentication_required">需要授權</string>
     <string name="sign_in_with_google">使用 Google 登入</string>
-    <string name="github_sponsors">GitHub 贊助者</string>
     <string name="authorization_cancelled">取消授權</string>
-    <string name="current_subscription">目前訂閱: %s</string>
     <string name="custom_filter_is_subtask">為副工作</string>
     <string name="custom_filter_has_subtask">有副工作</string>
     <string name="backups_ignore_warnings">忽略警告</string>
@@ -250,13 +246,7 @@
     <string name="show_description">顯示訂閱</string>
     <string name="action_new_task">新工作</string>
     <string name="action_create_new_task">建立新工作</string>
-    <string name="this_feature_requires_a_subscription">此功能需要訂閱</string>
     <string name="logout">登出</string>
-    <string name="requires_pro_subscription">需要訂閱專業版</string>
-    <string name="button_subscribe">訂閱</string>
-    <string name="refresh_purchases">刷新付款</string>
-    <string name="subscription">訂閱</string>
-    <string name="upgrade_to_pro">升級至專業版</string>
     <string name="help_and_feedback">幫助與回饋</string>
     <string name="help">幫助</string>
     <string name="tasker_create_task">建立工作</string>
@@ -338,14 +328,10 @@
     <string name="above_average">高於平均</string>
     <string name="dismiss">關閉</string>
     <string name="custom_filter_has_reminder">有提醒</string>
-    <string name="no_google_play_subscription">沒有符合資格的 Google Play 訂閱</string>
     <string name="save_percent">儲存 %d%%</string>
-    <string name="tasks_org_account_required">需要 Tasks.org 帳戶</string>
     <string name="snackbar_tasks_completed">已完成 %d 項任務</string>
-    <string name="upgrade_blurb_2">我花了數千小時的心血在開發 Tasks 上，並且將所有程式碼免費開源。為了支持我的工作，某些功能需要訂閱</string>
     <string name="chips">顯示元件</string>
     <string name="chip_appearance">元件外觀</string>
-    <string name="upgrade_open_source_description">你的訂閱支援持續開發</string>
     <string name="reinitialize_account">重新初始化</string>
     <string name="caldav_selection_description">基於開放網際網路標準的同步</string>
     <string name="davx5_selection_description">使用 DAVx⁵ 應用程式同步您的任務</string>
@@ -361,14 +347,10 @@
     <string name="privacy">隱私</string>
     <string name="open_source">開源</string>
     <string name="app_passwords_more_info">使用第三方桌面和移動應用程式同步您的任務和行事曆。點擊此處了解更多資訊</string>
-    <string name="account_not_included">並不包含「隨意價格」訂閱</string>
-    <string name="pro_free_trial">新訂閱者享有 7 天免費試用。隨時取消</string>
-    <string name="upgrade_tasks_org_account_description">與 Tasks.org 同步，並與其他用戶協作</string>
     <string name="upgrade_more_customization">更多自訂</string>
     <string name="local_lists">本機清單</string>
     <string name="sort_modified_group">修改於 %s</string>
     <string name="sort_list">依清單</string>
-    <string name="your_subscription_expired">您的訂閱已過期。立即訂閱以恢復服務。</string>
     <string name="background_location">背景定位</string>
     <string name="backups_ignore_warnings_summary">如果你不需要備份或有自己的備份解決方案，請忽略備份警告</string>
     <string name="completed">已完成</string>
@@ -377,10 +359,8 @@
     <string name="change_priority">更改優先順序</string>
     <string name="theme_dynamic">動態</string>
     <string name="show_edit_screen_without_unlock">無需解除鎖定即可顯示編輯螢幕</string>
-    <string name="donate_today">今天捐贈</string>
     <string name="donate_maybe_later">也許稍後</string>
     <string name="customize_drawer">自訂抽屜</string>
-    <string name="donate_nag">考慮透過捐款來表達您的支持！</string>
     <string name="show_edit_screen_without_unlock_summary">啟用在未解鎖裝置的情況下使用快速設定磁貼</string>
     <string name="import_failed">匯入失敗</string>
     <string name="import_failed_message">無法讀取備份檔案</string>
@@ -391,10 +371,7 @@
     <string name="yesterday">昨天</string>
     <string name="delete_tasks_warning">%s 將被刪除。此操作無法撤銷！</string>
     <string name="banner_app_updated_description">Tasks 已更新至 %s。是否要查看更新說明？</string>
-    <string name="banner_subscription_required_title">需要訂閱</string>
     <string name="banner_subscription_required_body">支付您想要的金額以解鎖 %s 同步</string>
-    <string name="subscription_required_fdroid">使用 Tasks.org 同步需要訂閱。訂閱必須從 Google Play 版本的 Tasks 應用程式發起。</string>
-    <string name="sponsorship_required_fdroid">使用 Tasks.org 同步需要 GitHub 贊助。點擊下方成為贊助者。</string>
     <string name="price_per_month_with_currency">每月 %s</string>
     <string name="price_per_year_with_currency">每年 %s</string>
     <string name="email_to_task">郵件轉任務</string>
@@ -404,7 +381,6 @@
     <string name="advanced_tools_description">Google Places、CalDAV、EteSync 等！</string>
     <string name="enable_alarms">在正確的時間收到通知</string>
     <string name="enable_alarms_description">為確保您在正確的時間收到通知，請在設定中授予設定鬧鐘和提醒的權限</string>
-    <string name="legal_disclosure_prefix_using">使用 Tasks.org</string>
     <string name="tos_updated_title">我們已更新服務條款</string>
     <string name="accept">接受</string>
     <string name="exit">退出</string>
@@ -421,7 +397,4 @@
     <string name="button_learn_more">深入了解</string>
     <string name="widget_view_more_tasks">檢視更多任務</string>
     <string name="banner_app_updated_title">應用程式已更新</string>
-    <string name="guest_create_list_message">您目前擁有共享清單的訪客存取權限。若要建立並同步自己的私人清單至雲端，您需要 Tasks.org 訂閱。或者，您可以建立免費的本地清單，留在此裝置上。</string>
-    <string name="upgrade_friends_and_family">家人和朋友</string>
-    <string name="upgrade_friends_and_family_description">共享清單 5 個免費訪客。支援 Apple Reminders</string>
 </resources>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">Keresés</string>
-    <string name="subscribe">Előfizetés</string>
     <string name="filter_my_tasks">Saját Feladatok</string>
     <string name="filter_notifications">Értesítések</string>
     <string name="filter_snoozed">Elhalasztva</string>
@@ -26,7 +25,6 @@
     <string name="yesterday_lowercase">tegnap</string>
     <string name="today_lowercase">ma</string>
     <string name="search_no_results">Nincs találat</string>
-    <string name="requires_pro_subscription">Előfizetés szükséges</string>
     <string name="subscription_required_description">Csupán 1$/év az összes funkcióért</string>
     <string name="add_task">Feladat létrehozása</string>
     <string name="show_unstarted">El nem kezdettek mutatása</string>
@@ -51,25 +49,17 @@
     <string name="terms_of_service_proper">Szolgáltatási feltételek</string>
     <string name="privacy_policy_proper">Adatvédelmi irányelv</string>
     <string name="gplv3_license">GPLv3 licensz</string>
-    <string name="returning_user_import_backup">Tasks.org mentés importálása</string>
     <string name="google_tasks_selection_description">Alapvető szolgáltatás, ami a Google accounttal szinkronizál</string>
     <string name="microsoft_selection_description">Szinkronizálás személyes Microsoft fiókkal</string>
     <string name="cost_free">Ingyenes</string>
     <string name="name_your_price_blurb">Tetszőleges összeget fizethetsz a témákért, ikonokért és fejlett szinkronizációs lehetőségekért</string>
     <string name="microsoft_selection_description_googleplay">Szinkronizálás munkahelyi, iskolai vagy személyes Microsoft fiókkal</string>
-    <string name="tasks_org_description">Beleértve a megosztás családdal és barátokkal, illetve Task e-mailből funkciókat</string>
     <string name="name_your_price">Nevezd meg az árat</string>
-    <string name="upgrade_to_pro">Upgrade pro verzióra</string>
-    <string name="legal_disclosure_prefix_using">A Tasks.org használata által</string>
     <string name="caldav_selection_description">Nyílt Internetes szabványon alapuló szinkronizáció</string>
     <string name="davx5_selection_description">Feladatok szinkronizálása DAVx⁵ alkalmazással</string>
     <string name="etesync_selection_description">Végponttól végpontig titkosított szinkronizáció</string>
     <string name="decsync_selection_description">Fájl alapú szinkronizálás</string>
-    <string name="sign_in_to_tasks">Tasks.org bejelentkezés</string>
     <string name="sign_in_with_google">Bejelentkezés Google fiókkal</string>
-    <string name="sign_in_with_github">Bejelentkezés GitHub fiókkal</string>
-    <string name="google_play_subscribers">Google Play előfizetők</string>
-    <string name="github_sponsors">GitHub szponzorok</string>
     <string name="completed">Elvégzett</string>
     <string name="filter_overdue">Határidőn túli</string>
     <string name="no_due_date">Határidő nélkül</string>
@@ -116,17 +106,10 @@
     <string name="show_more">Több mutatása</string>
     <string name="show_less">Kevesebb mutatása</string>
     <string name="display_name">Megjelenített név</string>
-    <string name="upgrade_to_pro_card_description">Tasks.org felhős szinkronizálás, megosztás családdal és barátokkal, illetve Task e-mailből funkciók feloldása</string>
     <string name="supporter">Támogató</string>
     <string name="price_per_month_with_currency">%1$s/hónap</string>
     <string name="price_per_year_with_currency">%1$s/év</string>
     <string name="supporter_summary">%1$s • Köszönöm!</string>
-    <string name="sign_in_to_connect">Jelentkezz be a Tasks.org fiókod csatolásához</string>
-    <string name="guest">Vendég</string>
-    <string name="donate">Adományozás</string>
-    <string name="donate_nag">Gondolkodjon el rajta, hogy adományozással támogassa az alkalmazást!</string>
-    <string name="manage_subscription">Előfizetés módosítása</string>
-    <string name="button_unsubscribe">Előfizetés lemondása</string>
     <string name="local_lists">Helyi listák</string>
     <string name="email_to_task">Feladat e-mailből</string>
     <string name="email_to_task_address">E-mail cím</string>
@@ -134,7 +117,6 @@
     <string name="regenerate_email_address">Cím újragenerálása</string>
     <string name="shared_with_me">Velem megosztva</string>
     <string name="shared_by">%1$s által megosztva</string>
-    <string name="guests">Vendégek (%1$d/%2$d)</string>
     <string name="app_passwords">Alkalmazás jelszavak</string>
     <string name="app_password">Alkalmazás jelszó</string>
     <string name="last_backup_never">soha</string>
@@ -149,18 +131,12 @@
     <string name="app_password_enter_description">Jelszó elnevezése (opcionális)</string>
     <string name="tos_updated_title">Frissítettük a Szolgáltatási feltételeket</string>
     <string name="view_tos">Szolgáltatási feltételek megtekintése</string>
-    <string name="insufficient_sponsorship">Nem található GitHub szponzorálás</string>
-    <string name="button_subscribe">Előfizetés</string>
-    <string name="your_subscription_expired">Az előfizetés lejárt. Fizessen elő most a szolgáltatás folytatásához.</string>
-    <string name="insufficient_subscription">Elégtelen előfizetési szint. Kérem, upgrade-elje az előfizetést a szolgáltatás folytatásához.</string>
     <string name="authentication_required">Azonosítás szükséges</string>
-    <string name="app_password_save">Ezek a belépési adatok harmadik féltől származó alkalmazás beállítására használhatóak. Teljes hozzáférést biztosítanak a Tasks.org fiókhoz, leírása vagy másokkal való megosztása nem javasolt!</string>
     <string name="url">Link</string>
     <string name="user">Felhasználónév</string>
     <string name="password">Jelszó</string>
     <string name="regenerate_email_address_confirmation">A jelenlegi e-mail címed megszűnik működni</string>
     <string name="migrating_tasks">Feladatok migrálása</string>
-    <string name="migrate_count">%1$s mozgatása a Tasks.org-ra</string>
     <string name="preferences_look_and_feel">Kinézet</string>
     <string name="notifications">Értesítések</string>
     <string name="task_defaults">Feladat alapértelmezései</string>
@@ -197,8 +173,6 @@
     <string name="url_required">Link szükséges</string>
     <string name="username_required">Felhasználónév szükséges</string>
     <string name="etesync_account_description">EteSync.com accountot, vagy saját szervert igényel</string>
-    <string name="already_subscribed">Már előfizettél?</string>
-    <string name="sign_in_subtitle">Már előfizettél vagy meghívtak, mint vendéget?</string>
     <string name="show_advanced_settings">Haladó beállítások mutatása</string>
     <string name="app_settings">Alkalmazás beállításai</string>
     <string name="whats_new">Újdonságok</string>
@@ -229,16 +203,12 @@
     <string name="restart_now">Újraindítás most</string>
     <string name="restart_later">Később</string>
     <string name="cannot_access_account">Fiók nem elérhető</string>
-    <string name="upgrade_subscription_banner">Köszönjük a támogatást. Frissítse az előfizetését a Tasks.org felhős szinkronizáció engedélyezéséhez</string>
     <string name="new_list">Új lista létrehozása</string>
     <string name="list_members">Listatagok</string>
     <string name="remove_user">Felhasználó eltávolítása?</string>
     <string name="remove_user_confirmation">%1$s nem fog hozzáférni ehhez: %2$s</string>
     <string name="share_list">"%1$s" megosztása</string>
     <string name="invalid_email_address">Érvénytelen e-mail cím</string>
-    <string name="invite_declined">Meghívás visszautasítva</string>
-    <string name="invite_awaiting_response">Válaszra váró meghívás</string>
-    <string name="invite_invalid">Érvénytelen meghívás</string>
     <string name="send">Küldés</string>
     <string name="email">E-mail</string>
     <string name="color">Szín</string>
@@ -519,5 +489,4 @@
     <string name="theme_wallpaper">Háttérkép</string>
     <string name="theme_day_night">Nappal/Éjszaka</string>
     <string name="theme_system_default">Alapértelmezett</string>
-    <string name="works_with_desktop">Tasks.org PC-re</string>
 </resources>
