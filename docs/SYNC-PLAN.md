@@ -12,11 +12,12 @@ could not confirm something, it says so.
   has been through Play **internal testing**, before **open testing**. During internal testing Google Tasks
   runs in the consent screen's **Testing** mode with the testers listed by hand.
 - Keep the Google and Microsoft code (the earlier "keep or delete" question is settled).
+- **Also decided:** the **help page for organisation admins** (sections 3a and 3b) is part of the **first Play release**.
 - **Rulings of 2026-10-03:** (1) the release is signed with **our own release key uploaded to Play App Signing
   through PEPK**, so the SHA-1 `E6:2C:…` below is the production fingerprint for the Google Android client;
   (2) the **file backup does not include sync credentials**, and a restore leaves accounts needing sign-in again;
   (3) cert4android's "trust this self-signed certificate" stays, **behind "Advanced: allow self-signed certificates",
-  off by default**; (4) the **Tasks.org help links stay for now and move to mr-biz.uk before open testing**.
+  off by default, and even when on a trusted certificate under the WRONG hostname is refused**; (4) the **Tasks.org help links stay for now and move to mr-biz.uk before open testing**.
 - **Work accounts are in:** Microsoft work or school accounts as well as personal ones (a multitenant
   registration with publisher verification), and Google Workspace accounts as well as consumer ones.
 
@@ -49,6 +50,24 @@ Two risks I found by reading, to be tested before anyone spends effort on verifi
 - **Self-signed certificates:** the trust prompt appears only when the new Advanced switch is on; with it off, a server
   whose certificate the phone does not trust fails with a plain "certificate not trusted" message that names the
   switch. Turning it off again also forgets the certificates the user trusted. A test per case.
+- **Hostname must match, always.** cert4android's `CustomCertManager.HostnameVerifier` today falls back to "is this
+  exact certificate trusted by the user?" when the normal hostname check fails, so a certificate the user trusted is
+  accepted under a **wrong hostname**. Change it (in our copy of the module, `cert4android/src/jvmCommonMain/.../CustomCertManager.kt`):
+  `verify` returns false whenever the platform's hostname check fails, whatever the user has trusted. Trust then
+  means "this certificate may stand in for the system's CA check", never "any name". The same verifier is used by the debug
+  sign-in connection builder, so both follow. Tests: (i) a certificate the user trusted and whose name matches the
+  host is accepted; (ii) the **same trusted certificate** on a different hostname is refused; (iii) an untrusted
+  certificate with a matching name is refused with the switch off and prompts only with it on; (iv) a changed
+  certificate for the same host asks again. A user who runs a server whose certificate lacks the name they connect by must
+  fix the certificate (add the name) or connect by a name it carries; the "certificate not trusted" message says so.
+  This is a deliberate departure from the upstream library's behaviour; note it in the journal when made.
+- **Organisation admin help page** (part of the first release): a page on `mr-biz.uk` (and linked from the sign-in
+  failure screen) for IT admins, saying what 4Tasks is, who publishes it, the one permission or scope it asks for and
+  why, that it has no delete-everything access beyond the user's own tasks, and how to allow it: Microsoft (grant
+  consent for the organisation in Enterprise applications, or enable the admin consent workflow) and Google Workspace
+  (trust the app by Android package name or client ID in the Admin console; Limited or Specific Google data is enough).
+  It is written with sections 3a and 3b and gets the real links and client IDs once the registrations exist. Publishing
+  it is the owner's "publish", like the privacy page.
 - Check that tasks made over 4Link sync, that a 4Link `tasks.complete` syncs, and that the reminder survives
   a sync.
 - Test against Mailcow/SOGo and a second server type (Nextcloud or Radicale) so "any server" is true.
@@ -277,12 +296,15 @@ trust code is cert4android's, below.
 ## 8. Questions the owner has answered (2026-10-03)
 
 **(a) cert4android's self-signed certificate trust: kept, behind "Advanced: allow self-signed certificates", off by
-default.** What it does when on is unchanged: the user trusts one exact certificate, kept in a private file in the
-app's storage; it is also accepted under a wrong hostname; a changed certificate asks again; a background sync that
+default.** What it does when on: the user trusts one exact certificate, kept in a private file in the
+app's storage; **it is no longer accepted under a wrong hostname (ruling below)**; a changed certificate asks again; a background sync that
 meets an unknown certificate posts a notification instead of trusting silently. With the switch off, ordinary users
 never see the prompt, and a server with a certificate the phone does not trust simply fails with a clear message.
 
 **(b) How credentials are stored:** section 7. **Ruling:** the file backup must not carry them.
+
+**(b2) Hostname (ruling):** even with the switch on, a trusted certificate under the WRONG hostname is refused. See
+Phase A for the change and its four tests.
 
 **(c) Signing:** our own release key through PEPK (so the Google Android client uses the SHA-1 above).
 
@@ -290,5 +312,4 @@ never see the prompt, and a server with a certificate the phone does not trust s
 
 ## 9. Not yet decided
 
-- Whether the app's help page for organisation admins (sections 3a and 3b) is part of the first Play release or follows it.
-  I recommend it is part of it, because work-account users are the ones who will hit an admin's refusal.
+- Nothing in this plan is open now. The go-ahead to start building Phase A has **not** been given.
