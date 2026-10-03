@@ -226,3 +226,15 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Guard:** app/src/test/java/org/tasks/NoCallHomeTest.kt fails when a file that can make network calls is not on its list, when
   one names a fixed host that is not on its list, or when the Tasks.org blog check is scheduled again. Proven to fail: a probe file
   using OkHttp and a fixed host failed two of its three tests.
+
+## 2026-10-03 — The three 4Link screens in the family look
+
+- **Apps allowed to use 4Tasks, the pairing screen and the licences screen** were plain Android Views in the system's grey. They
+  are now Compose in the Settings theme: a ← and a titleLarge title, cards in the same colour and corner as Settings (titleSmall
+  title, bodySmall line, 14 dp inside, 8 dp apart), one shared FamilyScreen/FamilyCard (fourlink/FamilyScreen.kt). Their words
+  are unchanged, except that the GNU licence title now spells "Licence" as the About page does. Each pairing function is a card
+  that ticks as a whole; Remove still asks first; the licence text is selectable monospace.
+- **Checked on the emulator** in light and dark: the pairing screen reached from the dev caller (which has a new "pair" action for
+  this), allow, the list refreshing, Remove with its dialog, the licence text. Found and fixed in the process: the ← and the
+  headings were black on the dark page until the screen sat on a Surface.
+- **A9 network watch (12:20–12:23):** the passive watcher saw no 4Tasks socket at all in 200 s.

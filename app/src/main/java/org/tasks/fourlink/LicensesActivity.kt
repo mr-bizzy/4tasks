@@ -1,26 +1,41 @@
 package org.tasks.fourlink
 
-import android.app.Activity
 import android.os.Bundle
-import android.widget.ScrollView
-import android.widget.TextView
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.text.font.FontFamily
+import dagger.hilt.android.AndroidEntryPoint
+import org.tasks.injection.ThemedInjectingAppCompatActivity
+import org.tasks.themes.TasksSettingsTheme
 
 /** Shows a licence text bundled in assets/licenses (the GPL, or the notice with third-party components). */
-class LicensesActivity : Activity() {
+@AndroidEntryPoint
+class LicensesActivity : ThemedInjectingAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         val file = intent.getStringExtra(EXTRA_FILE) ?: THIRD_PARTY
-        title = intent.getStringExtra(EXTRA_TITLE) ?: "Licences"
+        val heading = intent.getStringExtra(EXTRA_TITLE) ?: "Licences"
         val text = runCatching { assets.open("licenses/$file").bufferedReader().use { it.readText() } }
             .getOrDefault("The licence text could not be read.")
-        val view = TextView(this).apply {
-            this.text = text
-            textSize = 12f
-            typeface = android.graphics.Typeface.MONOSPACE
-            setTextIsSelectable(true)
-            setPadding(40, 32, 40, 32)
+        setContent {
+            TasksSettingsTheme(theme = tasksTheme.themeBase.index, primary = themeColor.primaryColor) {
+                FamilyScreen(title = heading, onBack = { finish() }) {
+                    FamilyCard(title = null) {
+                        SelectionContainer {
+                            Text(
+                                text,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = FontFamily.Monospace,
+                            )
+                        }
+                    }
+                }
+            }
         }
-        setContentView(ScrollView(this).apply { addView(view) }.padForSystemBars())
     }
 
     companion object {

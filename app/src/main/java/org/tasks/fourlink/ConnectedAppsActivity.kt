@@ -1,12 +1,24 @@
 package org.tasks.fourlink
 
-import android.app.Activity
-import android.app.AlertDialog
 import android.os.Bundle
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import dagger.hilt.android.AndroidEntryPoint
+import org.tasks.injection.ThemedInjectingAppCompatActivity
+import org.tasks.themes.TasksSettingsTheme
 import uk.mr_biz.fourlink.Caller
 import uk.mr_biz.fourlink.android.FourLinkStores
 import java.text.DateFormat
@@ -16,48 +28,68 @@ import java.util.Date
  * "Apps allowed to use 4Tasks" (spec §6): what each app may do and when it last did it, a
  * Remove that asks first; and the audit log (§9) underneath.
  */
-class ConnectedAppsActivity : Activity() {
+@AndroidEntryPoint
+class ConnectedAppsActivity : ThemedInjectingAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        render()
-    }
-
-    private fun render() {
+        enableEdgeToEdge()
         val stores = FourLinkStores.of(this)
         val fmt = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-        val column = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(40, 32, 40, 32) }
-        column.addView(TextView(this).apply { text = "Apps allowed to use 4Tasks"; textSize = 20f })
-        val pairings = stores.pairings.all()
-        if (pairings.isEmpty()) column.addView(TextView(this).apply { text = "No other app is allowed. Only our own apps (4Dictate and 4Zones) can use 4Tasks." })
-        for (p in pairings) {
-            val label = runCatching { packageManager.getApplicationLabel(packageManager.getApplicationInfo(p.packageName, 0)).toString() }.getOrDefault(p.packageName)
-            val lines = p.granted.sorted().joinToString("\n") { id ->
-                "  • $id — " + (p.lastUsed[id]?.let { "last used ${fmt.format(Date(it))}" } ?: "never used")
-            }
-            column.addView(TextView(this).apply {
-                text = "$label (${p.packageName})\nCertificate ${Caller.fingerprintOf(p.certDigest)} · paired ${fmt.format(Date(p.grantedAtMs))}\n$lines"
-                setPadding(0, 16, 0, 4)
-            })
-            column.addView(Button(this).apply {
-                text = "Remove $label"
-                setOnClickListener {
-                    AlertDialog.Builder(this@ConnectedAppsActivity)
-                        .setTitle("Remove $label?")
-                        .setMessage("It will no longer be able to use 4Tasks until you allow it again.")
-                        .setNegativeButton("Cancel", null)
-                        .setPositiveButton("Remove") { _, _ -> stores.pairings.remove(p.packageName); render() }
-                        .show()
+        setContent {
+            TasksSettingsTheme(theme = tasksTheme.themeBase.index, primary = themeColor.primaryColor) {
+                // Bumped after a removal so the lists are read again.
+                var version by remember { mutableIntStateOf(0) }
+                var removing by remember { mutableStateOf<Pair<String, String>?>(null) }
+                @Suppress("UNUSED_EXPRESSION") version
+                val pairings = stores.pairings.all()
+                val log = stores.audit.all().asReversed()
+                FamilyScreen(title = "Apps allowed to use 4Tasks", onBack = { finish() }) {
+                    if (pairings.isEmpty()) {
+                        FamilyCard(
+                            title = null,
+                            body = "No other app is allowed. Only our own apps (4Dictate and 4Zones) can use 4Tasks.",
+                        )
+                    }
+                    for (p in pairings) {
+                        val label = runCatching {
+                            packageManager.getApplicationLabel(packageManager.getApplicationInfo(p.packageName, 0)).toString()
+                        }.getOrDefault(p.packageName)
+                        val lines = p.granted.sorted().joinToString("\n") { id ->
+                            "  • $id — " + (p.lastUsed[id]?.let { "last used ${fmt.format(Date(it))}" } ?: "never used")
+                        }
+                        FamilyCard(
+                            title = "$label (${p.packageName})",
+                            body = "Certificate ${Caller.fingerprintOf(p.certDigest)} · paired ${fmt.format(Date(p.grantedAtMs))}\n$lines",
+                        ) {
+                            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                                TextButton(onClick = { removing = p.packageName to label }) { Text("Remove $label") }
+                            }
+                        }
+                    }
+                    FamilyCard(
+                        title = "Call log (newest first; never the arguments)",
+                        body = if (log.isEmpty()) "No calls yet." else log.take(100).joinToString("\n") {
+                            "${fmt.format(Date(it.timeMs))}  ${it.callerPackage}  ${it.what}  → ${it.result}"
+                        },
+                    )
                 }
-            })
+                removing?.let { (packageName, label) ->
+                    AlertDialog(
+                        onDismissRequest = { removing = null },
+                        title = { Text("Remove $label?") },
+                        text = { Text("It will no longer be able to use 4Tasks until you allow it again.") },
+                        dismissButton = { TextButton(onClick = { removing = null }) { Text("Cancel") } },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                stores.pairings.remove(packageName)
+                                removing = null
+                                version++
+                            }) { Text("Remove") }
+                        },
+                    )
+                }
+            }
         }
-        column.addView(TextView(this).apply { text = "Call log (newest first; never the arguments)"; textSize = 20f; setPadding(0, 32, 0, 8) })
-        val log = stores.audit.all().asReversed()
-        if (log.isEmpty()) column.addView(TextView(this).apply { text = "No calls yet." })
-        column.addView(TextView(this).apply {
-            text = log.take(100).joinToString("\n") { "${fmt.format(Date(it.timeMs))}  ${it.callerPackage}  ${it.what}  → ${it.result}" }
-            textSize = 12f
-        })
-        setContentView(ScrollView(this).apply { addView(column) }.padForSystemBars())
     }
 }

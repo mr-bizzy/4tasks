@@ -272,7 +272,7 @@
         android:exported="true"
         android:excludeFromRecents="true"
         android:label="Pair with 4Tasks"
-        android:theme="@android:style/Theme.DeviceDefault.DayNight">
+        android:theme="@style/Tasks">
       <intent-filter>
         <action android:name="uk.mr_biz.4link.action.PAIR" />
         <category android:name="android.intent.category.DEFAULT" />
@@ -284,12 +284,12 @@
         android:name=".fourlink.ConnectedAppsActivity"
         android:exported="false"
         android:label="Apps allowed to use 4Tasks"
-        android:theme="@android:style/Theme.DeviceDefault.DayNight" />
+        android:theme="@style/Tasks" />
 
     <activity
         android:name=".fourlink.LicensesActivity"
         android:exported="false"
-        android:theme="@android:style/Theme.DeviceDefault.DayNight" />
+        android:theme="@style/Tasks" />
 
     <!-- Uninstalling an allowed app removes its permission. -->
     <receiver

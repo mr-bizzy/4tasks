@@ -61,7 +61,7 @@ class HelpAndFeedback : Fragment() {
                     startActivity(
                         Intent(requireContext(), LicensesActivity::class.java)
                             .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.GPL)
-                            .putExtra(LicensesActivity.EXTRA_TITLE, "GNU General Public License v3"),
+                            .putExtra(LicensesActivity.EXTRA_TITLE, "GNU General Public Licence v3"),
                     )
                 },
                 onThirdParty = {
