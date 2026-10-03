@@ -397,3 +397,13 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   force-stopped the app, one `tasks.add` through the door, and the dirty-task query that the debouncer runs appeared in the log
   right after the save (the emulator's list is local, so no network sync followed). A `tasks.complete` through the door takes the
   same path. NOT checked on a real CalDAV account; ships in 0.1.3 (151210).
+
+## 2026-10-03 — Release 0.1.3-beta (151210)
+
+- AAB app/build/outputs/bundle/genericRelease/app-generic-release.aab, sha256 5b07583f…3c4b, signed 92:C5:1B:99:…; tests app 708 (1
+  skipped, pre-existing), kmp 1031, data 73. Contents over 0.1.2: the sync-at-process-start fix, Google Tasks limits said
+  plainly (Add account row, account card, voice answer), Learn-more links to our manual.
+- **Measured against a local CalDAV server (Radicale on 10.0.2.2, debug build):** a door `tasks.add` into a cold process
+  (force-stopped, and killed): enqueued 1 s after the save, the PUT reached the server 57 and 60 s after the create. Share to
+  4Tasks then Save, from a cold start: enqueued after 1 s, SyncWork started 50 s later. So the fix works, but the push takes
+  30 s of WorkManager initial delay plus up to ~25 s of JobScheduler slack in a cold process, not "about 30 s".
