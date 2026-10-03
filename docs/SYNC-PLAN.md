@@ -133,10 +133,10 @@ Google (in this order; steps 1 to 6 can start now, 7 needs the app on Play, 8 an
 7. **Android OAuth clients** (type Android): package `uk.mr_biz.fourtasks` with the SHA-1 of the certificate that
    signs what Play installs. **Order matters.** If the Play app uses *our own* release key through PEPK upload
    (the 4Link spec requires it), that SHA-1 is known now and is
-   `E6:2C:D7:5A:DD:84:03:B4:EB:0B:31:AA:07:08:24:67:FB:BE:AE:EA` (from the release APK). If Play signs with a key
+   `E6:2C:D7:5A:DD:84:03:B4:EB:0B:31:0A:AA:07:08:24:67:FB:EA:EE` (from the release APK). If Play signs with a key
    Google generates, the SHA-1 is only in Play Console, App signing, after the app is created and enrolled; use
    that one instead. The *upload* key does not matter to Google. A second client with the workstation debug SHA-1
-   `16:3C:86:72:29:4C:69:FB:AB:52:1D:A1:AB:B6:AD:BB:BA:D3:9E:8C` lets debug builds sign in.
+   `16:3C:86:72:29:4C:69:FB:AB:52:1A:6A:03:DA:AD:BB:D3:9E:8C:4E` lets debug builds sign in.
 8. **After internal testing:** put the final privacy text (section 4) live; write the scope justification (I draft
    it); record the **demo video** on a real phone with the Play build: the app, adding the Google account,
    Google's consent screen naming 4Tasks and the scope, tasks syncing, removing the account. Upload it unlisted
