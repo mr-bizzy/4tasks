@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--
+  DRAFT (Phase B and C), NOT PUBLISHED. Proposed address: https://mr-biz.uk/4tasks/admin/ (linked from the app's "What to tell your IT admin"
+  screens as #microsoft and #google). Square-bracket values are filled in when the registrations exist. Steps are taken from Microsoft's and
+  Google's own admin pages, fetched 2026-10-03:
+    https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent
+    https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-admin-consent-workflow
+    https://knowledge.workspace.google.com/admin/apps/control-which-apps-access-google-workspace-data
+  Lives in play/drafts/sync-b-c/ so that a copy of play/site/4tasks/ cannot publish it early; it moves to play/site/4tasks/admin/ on the owner's "publish".
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4Tasks: information for IT administrators</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --border: #334155;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #f8fafc;
+                --card-bg: #ffffff;
+                --text-main: #0f172a;
+                --text-muted: #475569;
+                --accent: #0284c7;
+                --border: #e2e8f0;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px 16px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.85rem;
+            margin-top: 0;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.35rem;
+            margin-top: 28px;
+            color: var(--accent);
+        }
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+        p, li, td, th {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+        ul {
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 12px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .card {
+            background-color: rgba(56, 189, 248, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        a { color: var(--accent); }
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            table, thead, tbody, tr, th, td { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>4Tasks: information for IT administrators</h1>
+        <p class="meta">For the person who manages a Microsoft 365 or Google Workspace organisation whose user asked to connect 4Tasks.</p>
+
+        <h2>What 4Tasks is</h2>
+        <p>4Tasks is a private to-do and reminder app for Android. A person's lists and tasks are kept on their phone. If they choose, 4Tasks
+        syncs those tasks with Microsoft To Do or Google Tasks, so they can use the same tasks on other devices. 4Tasks has no server of its
+        own: it talks only to Microsoft or Google, never to the publisher, and the publisher receives nothing. There is no advertising, analytics or crash
+        reporting. See the <a href="/4tasks/privacy/">privacy policy</a> and the <a href="/4tasks/">home page</a>.</p>
+        <table>
+            <tr><th>App name</th><td>4Tasks</td></tr>
+            <tr><th>Publisher</th><td>John Paul Bizeray, trading as Mr-Bizzy, United Kingdom. Publisher domain: mr-biz.uk. Contact: <a href="mailto:support@mr-biz.uk">support@mr-biz.uk</a></td></tr>
+            <tr><th>Android package name</th><td><code>uk.mr_biz.fourtasks</code></td></tr>
+            <tr><th>Platform</th><td>Android 13 or later. The app is a public client: it holds no client secret.</td></tr>
+        </table>
+        <div class="card">
+            <p style="margin:0"><strong>What it can reach:</strong> only the signed-in person's own tasks and task lists, in To Do or Google Tasks.
+            It cannot read mail, files, calendars, contacts or other people's data, and it asks for no application (background, organisation-wide)
+            permission. It can create, change and delete that person's tasks, because syncing means making the same changes on both sides.</p>
+        </div>
+
+        <h2 id="microsoft">Microsoft 365 (Microsoft Entra ID)</h2>
+        <h3>What it asks for</h3>
+        <p>Delegated Microsoft Graph permissions, on behalf of the signed-in user only:</p>
+        <ul>
+            <li><code>Tasks.ReadWrite</code>: create, read, update and delete the signed-in user's tasks and task lists. This is the one that matters. Microsoft's permissions reference lists it as not requiring admin consent by default.</li>
+            <li><code>User.Read</code>, <code>openid</code>, <code>email</code>: the user's name and email address, shown as the account's name in the app.</li>
+            <li><code>offline_access</code>: so the app can keep syncing without asking the user to sign in each time.</li>
+        </ul>
+        <p>Application (client) ID: <code>[MICROSOFT_CLIENT_ID]</code>. Supported account types: any organisation's work or school accounts, and personal Microsoft accounts.
+        Publisher verification: [VERIFIED / IN PROGRESS: say which, with the verified publisher name shown on the consent screen].</p>
+
+        <h3>If your users see "Need admin approval" or cannot consent</h3>
+        <p>Whether a user can accept the consent screen is set by your organisation's user consent settings. Two ways to allow 4Tasks:</p>
+        <ol>
+            <li><strong>Grant admin consent for the organisation</strong> (users then see no prompt). Sign in to the <a href="https://entra.microsoft.com">Microsoft Entra admin center</a> as at least a Cloud Application Administrator, then
+            <em>Entra ID</em> &gt; <em>Enterprise apps</em> &gt; <em>All applications</em>, search for 4Tasks, select it, choose <em>Permissions</em> under <em>Security</em>,
+            review the permissions above and select <em>Grant admin consent</em>. If 4Tasks is not listed yet, an administrator can use this link, which asks for the same consent:<br>
+            <code>https://login.microsoftonline.com/organizations/adminconsent?client_id=[MICROSOFT_CLIENT_ID]</code></li>
+            <li><strong>Let users request approval.</strong> A Global Administrator turns on the admin consent workflow: <em>Entra ID</em> &gt; <em>Enterprise apps</em> &gt;
+            <em>Consent and permissions</em> &gt; <em>Admin consent settings</em>, then under <em>Admin consent requests</em> set <em>Users can request admin consent to apps they are unable to consent to</em> to <em>Yes</em> and choose reviewers.
+            The user then sees a request option in the app's sign-in; reviewers approve it and the user is told.</li>
+        </ol>
+        <p>Granting consent for everyone lets all users sign in to the app unless you require user assignment for it. Sign-in can also be refused by conditional
+        access or tenant restrictions, which only you can change. Source: Microsoft's pages on
+        <a href="https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/grant-admin-consent">granting tenant-wide admin consent</a> and the
+        <a href="https://learn.microsoft.com/en-us/entra/identity/enterprise-apps/configure-admin-consent-workflow">admin consent workflow</a>.</p>
+
+        <h2 id="google">Google Workspace</h2>
+        <h3>What it asks for</h3>
+        <p>One scope, on behalf of the signed-in user: <code>https://www.googleapis.com/auth/tasks</code> (&ldquo;Create, edit, organize, and delete all your tasks&rdquo;).
+        The user picks a Google account that is already on the phone; Android's account manager gives 4Tasks a short-lived access token for that scope only.
+        4Tasks does not ask for sign-in to other Google services, and requests no Drive, Gmail, Calendar or contacts access.</p>
+        <p>Android OAuth client for the app: package name <code>uk.mr_biz.fourtasks</code>, client ID <code>[GOOGLE_ANDROID_CLIENT_ID]</code>.
+        OAuth verification status: [IN TESTING / VERIFIED].</p>
+
+        <h3>If your users are told access is blocked</h3>
+        <p>In the <a href="https://admin.google.com">Admin console</a> go to <em>Menu</em> &gt; <em>Security</em> &gt; <em>Access and data control</em> &gt; <em>API controls</em> &gt; <em>Manage App Access</em>
+        and configure 4Tasks (search for its name or its client ID above). Google's four settings are: <em>Trusted</em> (all Google services), <em>Limited</em> (only
+        unrestricted services), <em>Specific Google data</em> (only the scopes you list, here the Tasks scope above) and <em>Blocked</em>. Tasks is not one of Google's
+        restricted scopes, so <em>Limited</em> or <em>Specific Google data</em> is enough; <em>Blocked</em>, or an organisation-wide rule that blocks apps you have not
+        configured, stops 4Tasks. Source: Google's page on
+        <a href="https://knowledge.workspace.google.com/admin/apps/control-which-apps-access-google-workspace-data">controlling which apps access Google Workspace data</a>.
+        [VERIFY BEFORE PUBLISHING: whether Tasks can be limited separately by an administrator, and the exact route for an Android app, with a test domain.]</p>
+
+        <h2>Removing 4Tasks again</h2>
+        <p>A user removes the account in 4Tasks (<em>Settings, Accounts</em>, the account, <em>Log out</em>), which deletes that account's copy on the phone. Access can also be revoked
+        from the provider's side: in Microsoft Entra, delete the enterprise application or remove its consent; in Google, remove the app from the user's account permissions or block it in the
+        Admin console. Tasks already synced stay in the user's Microsoft or Google account until deleted there.</p>
+
+        <footer>&copy; 2026 Mr-Bizzy, United Kingdom. 4Tasks is developed by Mr-Bizzy.</footer>
+    </div>
+</body>
+</html>
