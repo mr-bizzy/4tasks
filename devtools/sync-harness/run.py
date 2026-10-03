@@ -155,6 +155,11 @@ def main():
     rig.up()
     push = list(SMOKE_PUSH) if a.cells == "smoke" else list(all_push()) if a.cells in ("full", "push") else []
     recv = list(SMOKE_RECV) if a.cells == "smoke" else list(all_recv()) if a.cells in ("full", "recv") else []
+    if a.cells.startswith("list:"):
+        # list:push=door/add/doze;widget/tick/bg:recv=periodic/bg
+        parts = dict(x.split("=", 1) for x in a.cells[5:].split(":") if x)
+        push = [tuple(c.split("/")) for c in parts.get("push", "").split(";") if c]
+        recv = [tuple(c.split("/")) for c in parts.get("recv", "").split(";") if c]
     if a.cells == "periodic":
         recv = [c for c in all_recv() if c[0] == "periodic"]
     if a.cells.startswith("origin="):

@@ -228,19 +228,25 @@ def tile(dev, op, o):
 
 
 # ----------------------------------------------------------------------------------------------------------------- widget
+def widget_present(dev):
+    dev.home(); time.sleep(1.2)
+    return dev.find(desc="Sync now", exact=True) is not None
+
+
 def ensure_widget(dev):
     """A 4Tasks widget on the home screen: the app asks the launcher to pin one (debug receiver) and the launcher's prompt is accepted."""
-    if int(dev.sh("dumpsys appwidget | grep -c 'provider=ProviderInfo{.*TasksWidget'").strip() or 0) > 0 and \
-            "TasksWidget" in dev.sh("dumpsys appwidget | grep -m1 -i 'hostId\\|Widget\\['"):
-        pass
-    dev.start_app()
-    time.sleep(3)
-    dev.sh(f"am broadcast -n {lib.PKG}/org.tasks.harness.HarnessReceiver -a org.tasks.harness.ADDWIDGET >/dev/null")
-    time.sleep(2.5)
-    ok = dev.tap_text("Add to home screen", tries=6, exact=True)
-    time.sleep(2)
-    dev.home()
-    return bool(ok)
+    if widget_present(dev):
+        return True
+    for _ in range(3):
+        dev.start_app()
+        time.sleep(3)
+        dev.sh(f"am broadcast -n {lib.PKG}/org.tasks.harness.HarnessReceiver -a org.tasks.harness.ADDWIDGET >/dev/null")
+        time.sleep(3)
+        dev.tap_text("Add to home screen", tries=8, exact=True)
+        time.sleep(2)
+        if widget_present(dev):
+            return True
+    return False
 
 
 def widget(dev, op, o):
@@ -254,7 +260,14 @@ def widget(dev, op, o):
         time.sleep(0.4)
         return save_with_keyboard(dev)
     if op == "tick":
-        n = dev.find(text=o.title, exact=True)
+        n = None
+        for attempt in range(20):
+            n = dev.find(text=o.title, exact=True)
+            if n:
+                break
+            if attempt == 8:
+                dev.tap_text(desc="Sync now", exact=True)      # the widget has not redrawn yet: its refresh button
+            time.sleep(1)
         if not n:
             return None
         dev.tap(max(n.l - 62, 40), n.cy)

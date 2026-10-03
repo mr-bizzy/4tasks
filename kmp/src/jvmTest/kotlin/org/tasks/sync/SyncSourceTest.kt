@@ -28,4 +28,9 @@ class SyncSourceTest {
         assertEquals(true, SyncSource.APP_BACKGROUND.expedited)
         assertEquals(false, SyncSource.BACKGROUND.expedited)
     }
+
+    @Test fun `after boot a pull is requested and it is expedited`() {
+        assertEquals(true, SyncSource.BOOT_COMPLETED.expedited)
+        assertEquals(SyncSource.BOOT_COMPLETED, SyncSource.NONE.upgrade(SyncSource.BOOT_COMPLETED))
+    }
 }

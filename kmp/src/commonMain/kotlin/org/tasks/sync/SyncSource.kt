@@ -23,6 +23,8 @@ enum class SyncSource(
     METADATA_CHANGE(showIndicator = false, immediate = false),
     APP_BACKGROUND(false, expedited = true),
     APP_RESUME(false),
+    /** The phone has just started: pull what changed while it was off, as expedited work. */
+    BOOT_COMPLETED(false, expedited = true),
     ACCOUNT_ADDED(true),
     PURCHASE_COMPLETED(true),
     SHARING_CHANGE(true),

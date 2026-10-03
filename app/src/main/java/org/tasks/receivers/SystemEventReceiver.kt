@@ -13,6 +13,7 @@ import javax.inject.Inject
 class SystemEventReceiver : BroadcastReceiver() {
 
     @Inject lateinit var localBroadcastManager: LocalBroadcastManager
+    @Inject lateinit var syncAdapters: dagger.Lazy<org.tasks.sync.SyncAdapters>
 
     override fun onReceive(context: Context, intent: Intent) {
         Timber.d("onReceive(context, %s)", intent)
@@ -20,6 +21,8 @@ class SystemEventReceiver : BroadcastReceiver() {
             Intent.ACTION_BOOT_COMPLETED -> {
                 localBroadcastManager.broadcastRefresh()
                 RegisterGeofencesWork.enqueue(context)
+                // Building SyncAdapters pushes anything that was dirty; this also pulls what changed while the phone was off.
+                syncAdapters.get().sync(org.tasks.sync.SyncSource.BOOT_COMPLETED)
             }
             Intent.ACTION_USER_PRESENT -> {
                 localBroadcastManager.broadcastRefresh()

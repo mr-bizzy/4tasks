@@ -34,8 +34,9 @@ class Rig:
             d.install(CALLER_APK)
         for d in (self.origin, self.receiver):
             d.reset_app(self.server)
-        ops.ensure_widget(self.origin)
-        ops.ensure_widget(self.receiver)
+        for d in (self.origin, self.receiver):
+            if not ops.ensure_widget(d):
+                raise RuntimeError(f"{d.label}: could not place the widget")
 
     def down(self):
         for d in (self.origin, self.receiver):
