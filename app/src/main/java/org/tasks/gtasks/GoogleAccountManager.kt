@@ -123,7 +123,9 @@ class GoogleAccountManager @Inject constructor(
                 is IOException -> TokenFailureKind.IO
                 else -> TokenFailureKind.OTHER
             }
-            return GoogleAuthFailureException(GoogleFailureClassifier.fromToken(kind, e.message), e.message, e)
+            val failure = GoogleFailureClassifier.fromToken(kind, e.message)
+            org.tasks.sync.google.GoogleDiagnostics.failure("token", e, failure)
+            return GoogleAuthFailureException(failure, e.message, e)
         }
     }
 }

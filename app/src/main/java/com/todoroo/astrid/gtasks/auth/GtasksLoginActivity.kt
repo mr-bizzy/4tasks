@@ -75,6 +75,9 @@ class GtasksLoginActivity : AppCompatActivity() {
         try {
             val bundle = googleAccountManager.getTasksAuthToken(this, accountName)
             val intent = bundle?.get(AccountManager.KEY_INTENT)
+            org.tasks.sync.google.GoogleDiagnostics.stage(
+                "sign-in: answer from the account manager: token=${!bundle?.getString(AccountManager.KEY_AUTHTOKEN).isNullOrEmpty()}, google screen needed=${intent is Intent}"
+            )
             if (intent is Intent) {
                 // Google wants to show a screen of its own; it is shown, and the user starts again from here.
                 startActivity(intent)
@@ -86,6 +89,7 @@ class GtasksLoginActivity : AppCompatActivity() {
             }
             // One real call, so a block or a missing grant shows now and not at the first background sync.
             invokerFactory.getGtasksInvoker(accountName).allGtaskLists(null)
+            org.tasks.sync.google.GoogleDiagnostics.stage("sign-in: the Tasks API answered, the account is kept")
             withContext(NonCancellable) {
                 val account = caldavDao.getAccount(TYPE_GOOGLE_TASKS, accountName)
                 if (account == null) {
@@ -113,6 +117,7 @@ class GtasksLoginActivity : AppCompatActivity() {
             throw e
         } catch (e: Exception) {
             val failure = GoogleFailureClassifier.fromException(e)
+            org.tasks.sync.google.GoogleDiagnostics.failure("sign-in", e, failure)
             fail(accountName, failure, e.message, pd)
         }
     }

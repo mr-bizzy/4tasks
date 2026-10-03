@@ -349,3 +349,10 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Drafts (not in play/site/, so a copy of that folder cannot publish them):** play/drafts/sync-b-c/{admin/index.html,
   privacy.html, manual.html, index.html}; play/DATA_SAFETY.md and PERMISSIONS.md amended. They move to play/site/4tasks/ on
   the owner's "publish", with the client IDs filled in.
+
+## 2026-10-03 — Google sign-in leaves a trail in release logcat
+
+- Release builds send only warnings and errors to logcat, and R8 renames classes (so Timber's automatic tag is useless). New
+  GoogleDiagnostics (org/tasks/sync/google): tag `4TasksGoogle`, warning level: the account manager's answer (token yes/no, Google
+  screen needed), the Tasks API answering, and every failure with the exception class, its message and what 4Tasks made of it.
+  Never a token. Read with `adb logcat -s 4TasksGoogle`. Not in the 0.1.1 upload (151206); rides with the next build.
