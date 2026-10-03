@@ -79,7 +79,6 @@ import tasks.kmp.generated.resources.ic_round_icon
 import tasks.kmp.generated.resources.ic_webdav_logo
 import tasks.kmp.generated.resources.legal_disclosure_prefix_using
 import tasks.kmp.generated.resources.microsoft
-import tasks.kmp.generated.resources.microsoft_selection_description
 import tasks.kmp.generated.resources.microsoft_selection_description_googleplay
 import tasks.kmp.generated.resources.name_your_price
 import tasks.kmp.generated.resources.name_your_price_blurb
@@ -228,12 +227,8 @@ fun AddAccountScreen(
                                     Platform.MICROSOFT -> AccountTypeRow(
                                         title = stringResource(Res.string.microsoft),
                                         icon = Res.drawable.ic_microsoft_tasks,
-                                        description = stringResource(
-                                            if (!configuration.isLibre)
-                                                Res.string.microsoft_selection_description_googleplay
-                                            else
-                                                Res.string.microsoft_selection_description
-                                        ),
+                                        // Work, school and personal accounts all sign in (4Tasks uses the `common` authority).
+                                        description = stringResource(Res.string.microsoft_selection_description_googleplay),
                                         onClick = { signIn(Platform.MICROSOFT) },
                                     )
                                     Platform.GOOGLE_TASKS -> AccountTypeRow(
@@ -280,12 +275,8 @@ fun AddAccountScreen(
                                     Platform.MICROSOFT -> AccountTypeRow(
                                         title = stringResource(Res.string.microsoft),
                                         icon = Res.drawable.ic_microsoft_tasks,
-                                        description = stringResource(
-                                            if (!configuration.isLibre)
-                                                Res.string.microsoft_selection_description_googleplay
-                                            else
-                                                Res.string.microsoft_selection_description
-                                        ),
+                                        // Work, school and personal accounts all sign in (4Tasks uses the `common` authority).
+                                        description = stringResource(Res.string.microsoft_selection_description_googleplay),
                                         onClick = { signIn(Platform.MICROSOFT) },
                                     )
                                     Platform.GOOGLE_TASKS -> AccountTypeRow(

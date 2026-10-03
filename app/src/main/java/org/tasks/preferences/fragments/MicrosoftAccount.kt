@@ -54,7 +54,7 @@ class MicrosoftAccount : BaseAccountPreference() {
 
     private fun requestLogin(): Boolean {
         account.username?.let {
-            microsoftVM.signIn(requireActivity()) // should force a specific account
+            microsoftVM.signIn(requireActivity(), loginHint = it) // Microsoft offers this account first
         }
         return false
     }
@@ -63,7 +63,10 @@ class MicrosoftAccount : BaseAccountPreference() {
         private const val EXTRA_ACCOUNT = "extra_account"
 
         fun String?.isUnauthorized(): Boolean =
-                this?.startsWith("401 Unauthorized", ignoreCase = true) == true
+                // "401 Unauthorized" is what 4Tasks writes when Microsoft needs a new sign-in (microsoft_error_sign_in_again);
+                // "HTTP 401" is Graph's own answer to a token it no longer accepts.
+                this?.startsWith("401 Unauthorized", ignoreCase = true) == true ||
+                        this?.startsWith("HTTP 401", ignoreCase = true) == true
 
         fun newMicrosoftAccountPreference(account: CaldavAccount) =
                 MicrosoftAccount().apply {

@@ -28,7 +28,7 @@ class FlavorModule {
         supportsTasksOrg = false,
         supportsCaldav = true,
         supportsGoogleTasks = false,
-        supportsMicrosoft = false,
+        supportsMicrosoft = true, // work, school and personal accounts; sign-in stops with a message until SyncClients has the client ID
         supportsOpenTasks = false,
         supportsEteSync = false,
         supportsBackupImport = true,
