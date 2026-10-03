@@ -9,6 +9,13 @@
       tools:ignore="GoogleAppIndexingWarning"
       tools:replace="android:allowBackup">
 
+    <!-- Debug builds only: the Google token probe (SYNC-PLAN risk 1). Started by hand with adb; never in release. -->
+    <activity
+        android:name=".sync.google.GoogleTokenProbeActivity"
+        android:exported="true"
+        android:label="4Tasks token probe"
+        android:theme="@android:style/Theme.DeviceDefault.Light" />
+
   </application>
 
 </manifest>
