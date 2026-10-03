@@ -60,11 +60,11 @@ class NoCallHomeTest {
         "kmp/src/jvmCommonMain/kotlin/org/tasks/etebase/EtebaseClientProvider.kt" to "Etebase: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/etebase/OkHttpBridge.kt" to "Etebase: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/googleapis/ProxyAuthProvider.kt" to "Tasks.org's Google proxy, desktop target only: not in the Android app",
-        "kmp/src/jvmCommonMain/kotlin/org/tasks/http/MicrosoftGraphClient.kt" to "Microsoft: off until its phase",
-        "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftService.kt" to "Microsoft: off until its phase",
-        "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftSynchronizer.kt" to "Microsoft: off until its phase",
+        "kmp/src/jvmCommonMain/kotlin/org/tasks/http/MicrosoftGraphClient.kt" to "Microsoft To Do sync: Graph, after the user signs in",
+        "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftService.kt" to "Microsoft To Do sync: Graph, after the user signs in",
+        "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftSynchronizer.kt" to "Microsoft To Do sync, after the user signs in",
         "kmp/src/jvmMain/kotlin/org/tasks/sync/microsoft/DesktopMicrosoftClientProvider.kt" to "Microsoft, desktop target",
-        "app/src/generic/java/org/tasks/auth/MicrosoftAuthenticationActivity.kt" to "Microsoft: off until its phase",
+        "app/src/generic/java/org/tasks/auth/MicrosoftAuthenticationActivity.kt" to "Microsoft sign-in: the userinfo call, after the user signs in",
         "app/src/main/java/org/tasks/location/GeocoderMapbox.kt" to "location: off",
         "app/src/main/java/org/tasks/location/GeocoderNominatim.kt" to "location: off",
         "app/src/main/java/org/tasks/location/PlaceSearchGoogle.kt" to "location: off",
@@ -82,7 +82,10 @@ class NoCallHomeTest {
     private val knownHosts = mapOf(
         "tasks.org" to "BlogFeedChecker: disabled",
         "api.mapbox.com" to "location: off",
-        "graph.microsoft.com" to "Microsoft: off until its phase",
+        // Microsoft To Do sync is ON (docs/SYNC-PLAN.md phase B): these two hosts are what the privacy page names for it.
+        // login.microsoftonline.com is where the user signs in (browser, AppAuth token calls); graph.microsoft.com holds the tasks.
+        "login.microsoftonline.com" to "Microsoft sign-in, only after the user chooses to add a Microsoft account",
+        "graph.microsoft.com" to "Microsoft To Do sync (tasks) and the signed-in user's profile, after sign-in",
         // Google Tasks (phase C): the only Google hosts the flow uses. The library names them itself; they are listed so that
         // naming one in code is a decision. The token comes from the phone's account manager (no host of ours or Google's is named).
         "tasks.googleapis.com" to "Google Tasks API: the user's own account",

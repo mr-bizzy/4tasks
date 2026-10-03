@@ -14,6 +14,7 @@ import org.tasks.data.entity.CaldavAccount
 import org.tasks.extensions.Context.cookiePersistor
 import org.tasks.security.KeyStoreEncryption
 import org.tasks.sync.microsoft.MicrosoftClientProvider
+import org.tasks.sync.microsoft.MicrosoftGraphErrors
 import org.tasks.sync.microsoft.MicrosoftService
 import org.tasks.sync.microsoft.MicrosoftTokenProvider
 import timber.log.Timber
@@ -37,6 +38,8 @@ class HttpClientFactory @Inject constructor(
 
     override suspend fun hasCredentials(account: CaldavAccount): Boolean =
         microsoftTokenProvider.hasCredentials(account)
+
+    override fun describeError(e: Exception): String? = MicrosoftGraphErrors.describe(context, e)
 
     suspend fun newClient(foreground: Boolean) = newClient(
         foreground = foreground,

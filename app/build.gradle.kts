@@ -51,7 +51,9 @@ android {
         // The 4Link library needs Android 13 (API 33), the same floor as 4Dictate.
         minSdk = 33
         testInstrumentationRunner = "org.tasks.TestRunner"
-        manifestPlaceholders["appAuthRedirectScheme"] = "org.tasks"
+        // AppAuth's library manifest needs this placeholder, but its RedirectUriReceiverActivity is replaced in the generic manifest
+        // (the redirect is msauth://<package>/<hash>, see SyncClients), so no `org.tasks` scheme can reach the merged manifest.
+        manifestPlaceholders["appAuthRedirectScheme"] = "msauth"
     }
 
     // Release builds are signed with the family release key, so 4Tasks is "family" to 4Dictate.

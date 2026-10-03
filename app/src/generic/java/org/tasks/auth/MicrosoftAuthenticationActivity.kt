@@ -1,8 +1,7 @@
 package org.tasks.auth
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -40,9 +39,19 @@ import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
 import org.tasks.http.HttpClientFactory
 import org.tasks.security.KeyStoreEncryption
+import org.tasks.sync.microsoft.MicrosoftFailureKind
+import org.tasks.sync.microsoft.MicrosoftIdToken
+import org.tasks.sync.microsoft.MicrosoftSignInErrors
+import org.tasks.sync.microsoft.MicrosoftSignInFailure
 import org.tasks.sync.microsoft.requestTokenExchange
+import java.io.IOException
 import javax.inject.Inject
 
+/**
+ * Where AppAuth sends the user back after Microsoft's sign-in page: with a code (then exchanged for tokens and the account is
+ * saved), with an error, or because the user left the browser. A failure goes to [MicrosoftSignInProblemActivity], which says
+ * what Microsoft said and, when an organisation is the reason, what to tell its IT admin.
+ */
 @AndroidEntryPoint
 class MicrosoftAuthenticationActivity : ComponentActivity() {
 
@@ -53,49 +62,61 @@ class MicrosoftAuthenticationActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val authState = AuthState(
-            AuthorizationResponse.fromIntent(intent),
-            AuthorizationException.fromIntent(intent)
-        )
-        authState.authorizationException?.let {
-            error(it.message ?: "Authentication failed")
+        val response = AuthorizationResponse.fromIntent(intent)
+        val exception = AuthorizationException.fromIntent(intent)
+        if (response == null || exception != null) {
+            problem(
+                exception?.let { MicrosoftSignInErrors.classify(it) }
+                    ?: MicrosoftSignInFailure.other(getString(R.string.microsoft_failure_exchange))
+            )
             return
         }
+        val authState = AuthState(response, null)
         lifecycleScope.launch {
-            val (resp, ex) = requestTokenExchange(authState.lastAuthorizationResponse!!)
-            authState.update(resp, ex)
-            if (authState.isAuthorized) {
-                val email = getEmail(authState.accessToken) ?: run {
-                    error("Failed to fetch profile")
-                    return@launch
+            val (tokens, tokenException) = requestTokenExchange(response)
+            authState.update(tokens, tokenException)
+            if (!authState.isAuthorized) {
+                problem(
+                    tokenException?.let { MicrosoftSignInErrors.classify(it) }
+                        ?: MicrosoftSignInFailure.other(getString(R.string.microsoft_failure_exchange))
+                )
+                return@launch
+            }
+            // The `common` authority cannot use AppAuth's own issuer check (IdentityProvider.multiTenant), so check it here.
+            val claims = MicrosoftIdToken.claims(tokens?.idToken)
+            if (claims == null || !MicrosoftIdToken.issuerMatchesTenant(claims)) {
+                problem(MicrosoftSignInFailure.other(getString(R.string.microsoft_failure_token_check)))
+                return@launch
+            }
+            val name = MicrosoftIdToken.accountName(claims, getEmail(authState.accessToken))
+            if (name == null) {
+                problem(MicrosoftSignInFailure.other(getString(R.string.microsoft_failure_profile)))
+                return@launch
+            }
+            caldavDao
+                .getAccount(TYPE_MICROSOFT, name)
+                ?.let {
+                    caldavDao.update(
+                        it.copy(password = encryption.encrypt(authState.jsonSerializeString()))
+                    )
                 }
-                caldavDao
-                    .getAccount(TYPE_MICROSOFT, email)
-                    ?.let {
-                        caldavDao.update(
-                            it.copy(password = encryption.encrypt(authState.jsonSerializeString()))
+                ?: caldavDao
+                    .insert(
+                        CaldavAccount(
+                            uuid = UUIDHelper.newUUID(),
+                            name = name,
+                            username = name,
+                            password = encryption.encrypt(authState.jsonSerializeString()),
+                            accountType = TYPE_MICROSOFT,
+                        )
+                    )
+                    .also {
+                        firebase.logEvent(
+                            R.string.event_sync_add_account,
+                            R.string.param_type to Constants.SYNC_TYPE_MICROSOFT
                         )
                     }
-                    ?: caldavDao
-                        .insert(
-                            CaldavAccount(
-                                uuid = UUIDHelper.newUUID(),
-                                name = email,
-                                username = email,
-                                password = encryption.encrypt(authState.jsonSerializeString()),
-                                accountType = TYPE_MICROSOFT,
-                            )
-                        )
-                        .also {
-                            firebase.logEvent(
-                                R.string.event_sync_add_account,
-                                R.string.param_type to Constants.SYNC_TYPE_MICROSOFT
-                            )
-                        }
-                finish()
-            } else {
-                error(ex?.message ?: "Token exchange failed")
-            }
+            finish()
         }
         setContent {
             var showDialog by remember { mutableStateOf(true) }
@@ -117,30 +138,38 @@ class MicrosoftAuthenticationActivity : ComponentActivity() {
         }
     }
 
+    /** The address the userinfo endpoint gives for the account, or null (the token's own claims are the fall-back). */
     private suspend fun getEmail(accessToken: String?): String? = withContext(Dispatchers.IO) {
         if (accessToken == null) {
             return@withContext null
         }
-        val discovery = AuthorizationServiceDiscovery(
-            JSONObject(
-                intent.getStringExtra(EXTRA_SERVICE_DISCOVERY)!!
-            )
-        )
-        val userInfo = httpClientFactory
-            .newClient(foreground = false)
-            .newCall(
-                Request.Builder()
-                    .url(discovery.userinfoEndpoint!!.toString())
-                    .addHeader("Authorization", "Bearer $accessToken")
-                    .build()
-            )
-            .execute()
-        val response = userInfo.body?.string() ?: return@withContext null
-        JSONObject(response).optString("email", null)
+        try {
+            val userinfoEndpoint = intent.getStringExtra(EXTRA_SERVICE_DISCOVERY)
+                ?.let { AuthorizationServiceDiscovery(JSONObject(it)).userinfoEndpoint }
+                ?: return@withContext null
+            httpClientFactory
+                .newClient(foreground = false)
+                .newCall(
+                    Request.Builder()
+                        .url(userinfoEndpoint.toString())
+                        .addHeader("Authorization", "Bearer $accessToken")
+                        .build()
+                )
+                .execute()
+                .use { userInfo ->
+                    if (!userInfo.isSuccessful) return@use null
+                    val body = userInfo.body?.string() ?: return@use null
+                    JSONObject(body).optString("email", "").takeIf { it.isNotBlank() }
+                }
+        } catch (e: IOException) {
+            null
+        } catch (e: org.json.JSONException) {
+            null
+        }
     }
 
-    private fun error(message: String) {
-        Toast.makeText(this@MicrosoftAuthenticationActivity, message, LENGTH_LONG).show()
+    private fun problem(failure: MicrosoftSignInFailure) {
+        startActivity(failure.toIntent(Intent(this, MicrosoftSignInProblemActivity::class.java)))
         finish()
     }
 

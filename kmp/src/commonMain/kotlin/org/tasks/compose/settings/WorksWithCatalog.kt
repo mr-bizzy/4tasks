@@ -46,7 +46,6 @@ import tasks.kmp.generated.resources.kvaesitso
 import tasks.kmp.generated.resources.ksync
 import tasks.kmp.generated.resources.mcp_server
 import tasks.kmp.generated.resources.microsoft
-import tasks.kmp.generated.resources.microsoft_selection_description
 import tasks.kmp.generated.resources.microsoft_selection_description_googleplay
 import tasks.kmp.generated.resources.pebble
 import tasks.kmp.generated.resources.radicale
@@ -242,7 +241,6 @@ val worksWithCatalog = listOf(
             WorksWithEntry(
                 title = Res.string.microsoft,
                 description = Res.string.microsoft_selection_description_googleplay,
-                libreDescription = Res.string.microsoft_selection_description,
                 iconDrawable = Res.drawable.ic_microsoft_tasks,
                 tintIcon = false,
                 tags = setOf(WorksWithTag.SYNC),

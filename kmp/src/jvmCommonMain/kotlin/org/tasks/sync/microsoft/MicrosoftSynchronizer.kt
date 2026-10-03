@@ -101,7 +101,7 @@ class MicrosoftSynchronizer(
         } catch (e: UnknownHostException) {
             setError(account, e.message)
         } catch (e: UnauthorizedException) {
-            setError(account, e.message)
+            setError(account, explain(e))
         } catch (e: ServiceUnavailableException) {
             setError(account, e.message)
         } catch (e: KeyManagementException) {
@@ -115,15 +115,18 @@ class MicrosoftSynchronizer(
                 402 -> e.message
                 else -> {
                     reporting.reportException(e)
-                    e.message
+                    explain(e)
                 }
             }
             setError(account, message)
         } catch (e: Exception) {
-            setError(account, e.message)
+            setError(account, explain(e))
             reporting.reportException(e)
         }
     }
+
+    /** The provider's plainer words for an error it knows (a work account with no mailbox, say), else the exception's own message. */
+    private fun explain(e: Exception): String? = clientProvider.describeError(e) ?: e.message
 
     private suspend fun synchronize(account: CaldavAccount) {
         Logger.d(TAG) { "Synchronize $account" }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Microsoft To Do sign-in: failures, the "What to tell your IT admin" screen and the message it shares. English only, British. -->
+<resources>
+  <!-- Sign-in stops before Microsoft is called -->
+  <string name="microsoft_not_set_up">Microsoft sign-in is not set up in this build.</string>
+
+  <!-- Why a sign-in failed (the first line of the problem screen) -->
+  <string name="microsoft_sign_in_title">Microsoft sign-in</string>
+  <string name="microsoft_failure_network">4Tasks could not reach Microsoft. Check your connection and try again.</string>
+  <string name="microsoft_failure_cancelled">You did not finish signing in, so nothing was changed.</string>
+  <string name="microsoft_failure_declined">You chose not to give 4Tasks access, so it cannot sync with Microsoft To Do.</string>
+  <string name="microsoft_failure_other">Microsoft did not let you sign in.</string>
+  <string name="microsoft_failure_organisation">Your organisation has not allowed 4Tasks yet. Only an administrator can change that.</string>
+  <string name="microsoft_failure_admin_hint">If Microsoft said that an administrator has to approve 4Tasks, tell your IT admin.</string>
+  <string name="microsoft_failure_profile">Microsoft signed you in, but did not say which account it was.</string>
+  <string name="microsoft_failure_token_check">Microsoft\'s answer did not check out, so 4Tasks did not sign in.</string>
+  <string name="microsoft_failure_exchange">Microsoft\'s answer could not be read.</string>
+
+  <!-- The "What to tell your IT admin" screen -->
+  <string name="microsoft_admin_title">What to tell your IT admin</string>
+  <string name="microsoft_admin_open">What to tell your IT admin</string>
+  <string name="microsoft_admin_said_title">What Microsoft said</string>
+  <string name="microsoft_admin_why_title">Why an administrator is needed</string>
+  <string name="microsoft_admin_why_body">Your organisation decides which apps its people may use with their work or school account. Microsoft would not let you give 4Tasks access yourself, so an administrator has to allow it once.</string>
+  <string name="microsoft_admin_app_title">About 4Tasks</string>
+  <string name="microsoft_admin_app_name">App name: %1$s</string>
+  <string name="microsoft_admin_app_publisher">Publisher: %1$s (%2$s)</string>
+  <string name="microsoft_admin_app_client_id">Application (client) ID: %1$s</string>
+  <string name="microsoft_admin_app_redirect">Redirect URI: %1$s</string>
+  <string name="microsoft_admin_permission_title">The one permission it asks for: %1$s</string>
+  <string name="microsoft_admin_permission_what">Create, read, update, and delete the signed-in user\'s tasks and task lists.</string>
+  <string name="microsoft_admin_permission_why">4Tasks needs it to keep the user\'s Microsoft To Do lists in step with their phone: to read them, and to save the changes made in 4Tasks. It asks for no mail, calendar or file access. It also asks for Microsoft\'s standard sign-in permissions (openid, email, offline_access and User.Read), which Microsoft lists as needing no administrator consent.</string>
+  <string name="microsoft_admin_howto_title">How an administrator allows it</string>
+  <string name="microsoft_admin_howto_body">In the Microsoft Entra admin center, open Enterprise applications, find 4Tasks and grant admin consent for the organisation. If the organisation uses the admin consent workflow, the administrator can approve the request there instead.</string>
+  <string name="microsoft_admin_send_title">Tell your administrator</string>
+  <string name="microsoft_admin_send_body">This message has everything they need.</string>
+  <string name="microsoft_admin_share">Share the message</string>
+  <string name="microsoft_admin_copy">Copy the message</string>
+  <string name="microsoft_admin_help">Open the help page for IT admins</string>
+  <string name="microsoft_admin_share_chooser">Share the message for your IT admin</string>
+
+  <!-- The message to the admin (plain text). %1 app name, %2 publisher, %3 domain, %4 client ID, %5 redirect,
+       %6 permission, %7 what it does, %8 why, %9 how to allow it, %10 help page -->
+  <string name="microsoft_admin_message_subject">Please allow 4Tasks for Microsoft sign-in</string>
+  <string name="microsoft_admin_message">Hello,\n\nI would like to use the %1$s app to keep my Microsoft To Do tasks in step with my phone. Microsoft will not let me sign in with my work or school account until an administrator allows the app for our organisation. Could you please do that?\n\nAbout the app\nName: %1$s\nPublisher: %2$s (%3$s)\nApplication (client) ID: %4$s\nRedirect URI: %5$s\n\nThe one permission it asks for\n%6$s: %7$s\n%8$s\n\nHow to allow it\n%9$s\n\nMore detail for administrators: %10$s</string>
+  <string name="microsoft_admin_message_said">\n\nWhat Microsoft told me when I tried to sign in:\n%1$s</string>
+
+  <!-- Why the account cannot sync, shown on the account (from Microsoft Graph, after sign-in) -->
+  <string name="microsoft_error_sign_in_again">401 Unauthorized: Microsoft needs you to sign in again.</string>
+  <string name="microsoft_error_renew_network">4Tasks could not reach Microsoft to renew the sign-in.</string>
+  <string name="microsoft_error_mailbox">Microsoft says this account\'s mailbox is not available (inactive, deleted, or not in Exchange Online), and Microsoft To Do may need one. Ask your IT admin.</string>
+  <string name="microsoft_error_forbidden">Microsoft refused access to this account\'s tasks. The account may not have the licence Microsoft To Do needs, your organisation may have switched it off, or a shared list may be read-only for you. If it keeps happening, ask your IT admin.</string>
+</resources>

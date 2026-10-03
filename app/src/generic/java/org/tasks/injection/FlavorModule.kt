@@ -22,14 +22,14 @@ import org.tasks.wear.WearRefresher
 @InstallIn(SingletonComponent::class)
 class FlavorModule {
     @Provides
-    // Generic CalDAV (any server) and Google Tasks (through the phone's account manager, Tasks scope only, no Drive) are on.
-    // Microsoft To Do comes on in its own phase; Tasks.org's own account, Etebase, OpenTasks, geofences and calendar
-    // events stay off.
+    // Generic CalDAV (any server), Google Tasks (through the phone's account manager, Tasks scope only, no Drive) and
+    // Microsoft To Do (browser sign-in, work, school and personal accounts) are on; Tasks.org's own account, Etebase,
+    // OpenTasks, geofences and calendar events stay off.
     fun getPlatformConfiguration() = PlatformConfiguration(
         supportsTasksOrg = false,
         supportsCaldav = true,
         supportsGoogleTasks = true,
-        supportsMicrosoft = false,
+        supportsMicrosoft = true, // work, school and personal accounts; sign-in stops with a message until SyncClients has the client ID
         supportsOpenTasks = false,
         supportsEteSync = false,
         supportsBackupImport = true,
