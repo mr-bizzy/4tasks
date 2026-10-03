@@ -211,27 +211,12 @@ class WorkManagerImpl(
     override fun updatePurchases() =
         enqueueUnique(TAG_UPDATE_PURCHASES, UpdatePurchaseWork::class.java)
 
+    /**
+     * 4Tasks never fetches Tasks.org's blog: the app's only network traffic is the sync to the server the user connects.
+     * Upstream scheduled a periodic check of https://tasks.org/blog/rss.xml; here any such job is cancelled and none is set.
+     */
     override suspend fun scheduleBlogFeedCheck() {
-        val mode = BlogFeedMode.fromValue(
-            tasksPreferences.get(TasksPreferences.blogFeedMode, BlogFeedMode.ANNOUNCEMENTS.value)
-        )
-        if (mode == BlogFeedMode.NONE) {
-            workManager.cancelUniqueWork(TAG_BLOG_FEED)
-            return
-        }
-        val lastChecked = tasksPreferences.get(TasksPreferences.blogLastChecked, 0L)
-            .takeIf { it > 0 }
-            ?: currentTimeMillis()
-            .also { tasksPreferences.set(TasksPreferences.blogLastChecked, it) }
-        val time = lastChecked + TimeUnit.HOURS.toMillis(WorkManager.BLOG_FEED_INTERVAL_HOURS)
-        val overdue = currentTimeMillis() - lastChecked > TimeUnit.DAYS.toMillis(7)
-        enqueueUnique(
-            TAG_BLOG_FEED,
-            BlogFeedWork::class.java,
-            time,
-            constraints = if (overdue) networkConstraints else blogFeedConstraints,
-            backoffPolicy = BackoffPolicy.EXPONENTIAL,
-        )
+        workManager.cancelUniqueWork(TAG_BLOG_FEED)
     }
 
     @SuppressLint("EnqueueWork")

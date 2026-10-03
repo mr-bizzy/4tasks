@@ -21,21 +21,12 @@ class BlogFeedWork @AssistedInject constructor(
 ) : BaseWorker(context, workerParams, firebase) {
 
     override fun doWork(): Result {
-        val result = super.doWork()
-        if (result != Result.retry()) {
-            runBlocking { workManager.scheduleBlogFeedCheck() }
-        }
-        return result
+        return super.doWork()
     }
 
+    /** Does nothing: 4Tasks does not contact Tasks.org's blog (see [WorkManager.scheduleBlogFeedCheck]). */
     override suspend fun run(): Result {
-        val result = try {
-            blogFeedChecker.check()
-        } catch (e: Exception) {
-            firebase.reportException(e)
-            WorkResult.Fail
-        }
-        Timber.d("BlogFeedWork: $result")
-        return if (result == WorkResult.Fail) Result.retry() else Result.success()
+        Timber.d("BlogFeedWork: disabled")
+        return Result.success()
     }
 }

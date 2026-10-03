@@ -208,3 +208,12 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   the title at the bar's size (14 sp when the widget is narrow). A widget the user gave a colour keeps its filled header. The old
   default blue that was stored the first time a widget was drawn counts as "not chosen". The widget picker has a preview in the
   family look.
+
+## 2026-10-03 — Privacy: the Tasks.org blog check is switched off
+
+- **Found while checking the manual's privacy claim:** at start-up the app scheduled the upstream "blog feed" job (default mode
+  "announcements"), which fetches https://tasks.org/blog/rss.xml. With INTERNET added in Phase A it could run on any build since
+  then, so the statement "your tasks and settings go only to the server you chose" was not true of those builds (the request
+  carries no task data, but it is a connection to Tasks.org). Now scheduleBlogFeedCheck() only cancels the job, and the worker
+  itself does nothing. Firebase remote config and billing are empty stubs in this flavour. The only other HTTP clients are
+  CalDAV (the server the user types), and code for Tasks.org accounts, Microsoft sign-in and place search that cannot be reached.
