@@ -245,3 +245,12 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   capture that begins "4Dictate," is handled as a command (4Dictate 0.3.155), so a long or rambling request can be made and ended
   with stop. Wording taken from 4Dictate's PM.
 - Release 1e58621cfb installed on the A9 at 12:32; the provider answers hello (caller shown as unknown for the shell, as expected).
+
+## 2026-10-03 — Site pages published; the PM's five fixes brought back into the drafts
+
+- The home, manual and privacy pages went live on the owner's "publish" (copied by the 4Dictate PM, who fixed five things in the
+  copies): the manual no longer says the answer is read aloud or that you "answer yes or no" (it is Do it / Cancel); §7 says "such
+  as 4Dictate" (4Zones is not a 4Link caller); the home page says other apps need allowing "only if they are ours or you allow each
+  one by name"; the privacy page has its effective date, 3 October 2026. The repo drafts now match, plus "press Do it" in place
+  of "say yes" in the manual's confirmation line. Any further change to these pages is a publish: draft here, the PM copies on the
+  owner's word.
