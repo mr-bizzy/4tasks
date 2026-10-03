@@ -161,6 +161,7 @@ import org.tasks.service.TaskCompleter
 import org.tasks.sync.SyncAdapters
 import org.tasks.sync.SyncSource
 import org.tasks.tags.TagPickerActivity
+import org.tasks.tasklist.GroupCardDecoration
 import org.tasks.tasklist.BannerAdapter
 import org.tasks.tasklist.DragAndDropRecyclerAdapter
 import org.tasks.tasklist.SectionedDataSource
@@ -232,6 +233,7 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
     private lateinit var binding: FragmentTaskListBinding
     private var windowInsets: PaddingValues? = null
     private var recyclerViewState: Parcelable? = null
+    private var groupCards: GroupCardDecoration? = null
     private var hasWritableList = true
     private val listPickerLauncher = registerForListPickerResult {
         val selected = taskAdapter.getSelected()
@@ -468,9 +470,18 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         }
         setupRefresh(swipeRefreshLayout)
         setupRefresh(emptyRefreshLayout)
-        binding.toolbar.title = filter.title
-        binding.toolbar.setTitleTextAppearance(requireContext(), com.google.android.material.R.style.TextAppearance_Material3_HeadlineSmall)
-        binding.toolbar.setTitleTextColor(themeColor.primaryColor)
+        // The family's bar: the app's name as the title in the ordinary text colour (as 4Dictate and 4Zones),
+        // and the list that is open under it.
+        binding.toolbar.title = getString(R.string.app_name)
+        binding.toolbar.setTitleTextAppearance(requireContext(), com.google.android.material.R.style.TextAppearance_Material3_TitleLarge)
+        binding.toolbar.setTitleTextColor(
+            com.google.android.material.color.MaterialColors.getColor(requireContext(), com.google.android.material.R.attr.colorOnSurface, 0)
+        )
+        binding.toolbar.subtitle = filter.title
+        binding.toolbar.setSubtitleTextAppearance(requireContext(), com.google.android.material.R.style.TextAppearance_Material3_BodyMedium)
+        binding.toolbar.setSubtitleTextColor(
+            com.google.android.material.color.MaterialColors.getColor(requireContext(), com.google.android.material.R.attr.colorOnSurfaceVariant, 0)
+        )
         binding.appbarlayout.addOnOffsetChangedListener { _, verticalOffset ->
             if (verticalOffset == 0 && binding.bottomAppBar.isScrolledDown) {
                 binding.bottomAppBar.performShow()
@@ -701,6 +712,11 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         adapter.dirtyTaskIds = dirtyTaskIds
         adapter.dirtyColor = themeColor.primaryColor
         binding.bodyStandard.recyclerView.adapter = ConcatAdapter(bannerAdapter, adapter)
+        groupCards?.let { binding.bodyStandard.recyclerView.removeItemDecoration(it) }
+        groupCards = GroupCardDecoration(requireContext()) { concatPosition ->
+            val position = concatPosition - bannerAdapter.itemCount
+            position >= 0 && position < adapter.itemCount && adapter.getItemViewType(position) == 0
+        }.also { binding.bodyStandard.recyclerView.addItemDecoration(it) }
         taskAdapter.setDataSource(adapter)
     }
 
@@ -718,6 +734,9 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             else -> null
         }?.let {
             toolbar.inflateMenu(it)
+        }
+        menu.findItem(R.id.menu_settings).actionView?.setOnClickListener {
+            settingsLauncher.launch(Intent(context, MainPreferences::class.java))
         }
         search = binding.toolbar.menu.findItem(R.id.menu_search).apply {
             setOnActionExpandListener(this@TaskListFragment)

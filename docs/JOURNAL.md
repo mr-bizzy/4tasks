@@ -141,3 +141,14 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   until the owner says "publish".
 - **Play:** icon-512, feature graphic and three screenshots redone (generators were throwaway scripts; the SVG source of
   the icon is graphics/4tasks-icon.svg).
+
+## 2026-10-03 — Family look, second round (owner's side-by-side on the A9)
+
+- **Bar:** the title is the app name ("4Tasks") in the ordinary text colour at titleLarge, with the open list's name under
+  it; the settings button is the family's ⚙ glyph (the same text glyph 4Dictate and 4Zones draw), one tap to Settings.
+- **Groups:** each group's label is a small-capital label (labelSmall) above one rounded card (surfaceContainer, 16 dp
+  corners) holding the group's rows. The cards are painted by an item decoration (GroupCardDecoration); rows draw no
+  background of their own. Bottom bar and + button stay (owner's decision).
+- **Colour, a bug found on the way:** the Toolbar/popup overlay themes were Material3.Light/Dark, which reset the colours
+  inside the bar to the baseline palette, so the bar and the bottom bar did not follow dynamic colour. They are now the
+  colour-neutral ThemeOverlay.Material3; status bar, bar, page and bottom bar are the same surface family in both modes.

@@ -29,7 +29,7 @@
     <item name="android:windowIsFloating">false</item>
   </style>
 
-  <style name="ToolbarTheme" parent="ThemeOverlay.Material3.Light">
+  <style name="ToolbarTheme" parent="ThemeOverlay.Material3">
     <item name="toolbarNavigationButtonStyle">@style/BlackNavigation</item>
     <item name="iconTint">?attr/colorOnSurface</item>
     <item name="android:actionOverflowButtonStyle">@style/BlackOverflow</item>
@@ -150,7 +150,7 @@
     <item name="android:actionOverflowButtonStyle">@style/BlackOverflow</item>
   </style>
 
-  <style name="popup_overlay" parent="ThemeOverlay.Material3.Light"/>
+  <style name="popup_overlay" parent="ThemeOverlay.Material3"/>
 
   <!---->
 

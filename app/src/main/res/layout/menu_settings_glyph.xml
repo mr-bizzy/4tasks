@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The family's settings button: the ⚙ glyph at titleLarge in onSurfaceVariant, exactly as 4Dictate and 4Zones draw it. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="48dp"
+  android:layout_height="48dp"
+  android:background="?attr/selectableItemBackgroundBorderless"
+  android:clickable="true"
+  android:contentDescription="@string/TLA_menu_settings"
+  android:focusable="true"
+  android:gravity="center"
+  android:text="⚙"
+  android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+  android:textColor="?attr/colorOnSurfaceVariant" />

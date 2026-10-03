@@ -13,7 +13,7 @@
   <!-- One tap to Settings, a gear at the top right of the bar, as in 4Dictate and 4Zones. -->
   <item
     android:id="@+id/menu_settings"
-    android:icon="@drawable/ic_outline_settings_24px"
     android:title="@string/TLA_menu_settings"
+    app:actionLayout="@layout/menu_settings_glyph"
     app:showAsAction="always" />
 </menu>
