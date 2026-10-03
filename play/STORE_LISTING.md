@@ -21,9 +21,9 @@ PRIVATE BY DEFAULT
 • No ads, no analytics, no crash reporting, no payments, no account with us.
 
 OPTIONAL SYNC
-• Sync with any CalDAV server (Nextcloud, SOGo, Radicale, Baikal and others). Your tasks go straight from your phone to your server, over an encrypted connection.
+• Sync with a CalDAV server that follows the standard, such as Nextcloud or SOGo (mailcow). Your tasks go straight from your phone to your server, over an encrypted connection.
 • Your sync password is stored encrypted on the phone, and is never put in a backup file.
-• A server with its own self-signed certificate works if you turn that on in Settings, Advanced. It is off by default.
+• A server with its own self-signed certificate works if you turn that on in Settings, More, Advanced. It is off by default.
 
 LISTS AND REMINDERS THAT WORK
 • Lists, tasks, notes, subtasks, tags and priorities.

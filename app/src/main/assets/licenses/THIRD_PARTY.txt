@@ -8,10 +8,10 @@ Copyright (c) 2012 Todoroo Inc and the Tasks.org contributors (see the source
 history for names), which grew out of Astrid, an open-source app. The 4Link
 library (https://github.com/mr-bizzy/4link) is licensed under Apache-2.0.
 
-4Tasks changes: its own name, icon and application id; no network, location or
-calendar permission; no accounts or sync in this version; no analytics, crash
-reporting, advertising or payments; and a 4Link door so apps you allow can add,
-list and complete tasks.
+4Tasks changes: its own name, icon and application id; no location or calendar
+permission; no Tasks.org, Google or Microsoft accounts (CalDAV sync to a server
+you enter is kept); no analytics, crash reporting, advertising or payments; and a
+4Link door so apps you allow can add, list and complete tasks.
 
 Third-party components in this app, with the licence each states (Maven coordinates):
 

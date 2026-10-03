@@ -260,3 +260,30 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - "Only our own apps (4Dictate and 4Zones) can use 4Tasks." is now "Only our own apps, such as 4Dictate, can use 4Tasks." (4Zones
   is not a 4Link caller; matches the published manual). Wording corrected on the 4Dictate PM's word; ships with the next build.
   The manual draft now bolds Do it / Cancel as the live copy does.
+
+## 2026-10-03 — Claim-by-claim audit of the three live pages
+
+- **Why:** five errors that day came from composing new text instead of copying what the app already says. Three read-only audits
+  (manual 1-5, manual 6-14, privacy and home) checked every menu path, label, default and number against the code, the app's
+  strings and the merged release manifest. All eight permissions in the manifest are covered by the privacy page.
+- **Corrected in the drafts (the pages are live; the PM publishes on the owner's word):**
+  - *Wrong:* the Done key saves by default (it stops only with "Allow multiline titles"); Back discards by default, and "Back button
+    saves task" is a switch; sort and group lists were mixed up (the sheet has separate Grouping and Sorting); without "Alarms &
+    reminders" the edit screen's Reminder row says "Enable reminders" instead of letting you add one; the pairing screen starts with
+    everything ticked; the call-log screen shows 100 of the 500 kept; "Did you mean" comes only when no title contains the words;
+    voice adds go to the default list only if no list is named; theme choices are six, not four; the App-cannot-use row in
+    Troubleshooting said the screen allows apps (it only lists and removes them).
+  - *Missing:* the "Connected apps" step in 4Dictate; naming a list by voice; Default list on "Get started"; drawer search,
+    Customise drawer, Snoozed/Timer/Notifications filters; List/Tag/Filter settings sit in the ⋮ at the top right; New tasks on top;
+    defaults of snooze, quiet hours and all-day reminders; automatic backups (daily, seven kept, on by default); stored items
+    (attachments, comments, cookies, diagnostic log, trusted certificates); uninstall asks to keep data; the Share target;
+    tasks.org help links; text-to-speech for spoken reminders; widgets list and the New task tile.
+  - *Softened:* "SOGo, Radicale, Baikal" as tested servers (only mailcow/SOGo has been tried); "removed" Google/Firebase became
+    "switched off, cannot reach" (the code is still compiled in but unreachable, guarded by NoCallHomeTest).
+- **Also fixed:** the Settings paths on the privacy page (Settings, Accounts, Add account; Settings, More, Backups/Advanced); the
+  draft comments saying "NOT PUBLISHED"; play/PRIVACY_POLICY.md and STORE_LISTING.md follow the page.
+- **App text, ships with the next build:** the notices screen (THIRD_PARTY.txt) said "no network permission; no accounts or sync",
+  which is no longer true; now it says CalDAV sync is kept.
+- **Left alone, for the owner:** the pairing screen says "Each line says what the app will receive" but shows the fields the app
+  SENDS ("Receives: title, due"); the static "New task" launcher shortcut (res/xml/shortcuts.xml) names package org.tasks, not
+  uk.mr_biz.fourtasks, so it probably never appears.
