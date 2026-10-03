@@ -1,6 +1,6 @@
 # 4Tasks — Privacy policy
 
-**DRAFT 2026-10-03 for owner review. Not published.** The publishable page is `play/site/privacy/index.html` (proposed address https://mr-biz.uk/4tasks/privacy/). This file is the readable working copy. Written from the code of 0.1.0-beta with CalDAV sync; the Microsoft and Google sections are added as those phases are built. Square brackets are the owner's to fill.
+**DRAFT 2026-10-03 for owner review. Not published.** The publishable page is `play/site/4tasks/privacy/index.html` (proposed address https://mr-biz.uk/4tasks/privacy/). This file is the readable working copy. Written from the code of 0.1.0-beta with CalDAV sync; the Microsoft and Google sections are added as those phases are built. Square brackets are the owner's to fill.
 
 **Effective date:** [DATE]
 **Developer:** John Paul Bizeray, trading as Mr-Bizzy, United Kingdom
@@ -45,7 +45,7 @@ CalDAV is an open standard for tasks and calendars, offered by many services and
 
 4Tasks has one door for other apps on the same phone, called 4Link. It never shows anything on its own and works only on this phone.
 
-- **Our own apps** (for example 4Dictate) are recognised by their signing certificate. They can add a task, list tasks, mark a task done, and list your lists. Anything that changes something is confirmed by you in that app before it is sent.
+- **Our own apps** (for example 4Dictate) are recognised by their signing certificate. They can add a task, list tasks, mark a task done, and list your lists. 4Dictate asks you to confirm, on its own screen, before it adds or completes anything.
 - **Any other app** can use 4Tasks only after you allow it on a screen that names the app, shows its certificate fingerprint and lists, in plain words, each thing it asks to do and the details it would receive. You choose what to allow. You can remove an app at any time in *Settings, Apps allowed to use 4Tasks*, which also shows what each app did and when.
 - There is **no delete function**: no app can delete a task or a list through 4Link.
 - 4Tasks keeps a log of the last 500 calls (time, app, function, result). It never records the details of a task. The log stays on your phone.

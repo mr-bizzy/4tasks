@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!-- 4Tasks user manual, written for 0.1.0-beta (2026-10-03). Styling copied from the 4Dictate manual, the family's manual style.
+     DRAFT: not published. It describes only what this build does; each claim was checked against the app. -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4Tasks User Manual</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --border: #334155;
+        }
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-color: #f8fafc;
+                --card-bg: #ffffff;
+                --text-main: #0f172a;
+                --text-muted: #475569;
+                --accent: #0284c7;
+                --border: #e2e8f0;
+            }
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px 16px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.85rem;
+            margin-top: 0;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.35rem;
+            margin-top: 28px;
+            color: var(--accent);
+        }
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+        p, li, td, th {
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+        ul {
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 12px 0;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .card {
+            background-color: rgba(56, 189, 248, 0.05);
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        a { color: var(--accent); }
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            table, thead, tbody, tr, th, td { font-size: 0.9rem; }
+        }
+            table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; font-size: 0.95rem; }
+        th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; vertical-align: top; }
+        th { color: var(--text-muted); font-weight: 600; }
+        code, kbd { background: var(--bg-color); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; font-size: 0.9em; }
+        nav ol { columns: 2; padding-left: 20px; }
+        @media (max-width: 600px) { nav ol { columns: 1; } .container { padding: 20px; } }
+        .note { color: var(--text-muted); font-size: 0.92rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+<h1>4Tasks User Manual</h1>
+<p class="note">For 4Tasks 0.1.0 (beta), October 2026. Android 13 or later; works on phones, tablets and Samsung DeX.</p>
+
+<p>4Tasks is a <strong>private to-do and reminder app</strong>. Your lists, tasks and reminders live on your phone. If you want
+them on other devices, you can <strong>sync</strong> them with a CalDAV server of your choice. There is no account with us, no
+advertising, no analytics and no crash reporting. It also works with <strong>4Dictate</strong>, so you can add a task, ask what
+is due, or tick one off by voice.</p>
+
+<nav><ol>
+<li><a href="#start">Getting started</a></li>
+<li><a href="#lists">Lists and the drawer</a></li>
+<li><a href="#tasks">Tasks</a></li>
+<li><a href="#reminders">Due dates and reminders</a></li>
+<li><a href="#sync">Sync with a CalDAV server</a></li>
+<li><a href="#voice">Voice, with 4Dictate</a></li>
+<li><a href="#apps">Apps allowed to use 4Tasks</a></li>
+<li><a href="#backup">Backup and restore</a></li>
+<li><a href="#widgets">Widgets and shortcuts</a></li>
+<li><a href="#settings">Settings</a></li>
+<li><a href="#look">Colour and theme</a></li>
+<li><a href="#trouble">Troubleshooting</a></li>
+<li><a href="#privacy">Privacy</a></li>
+<li><a href="#about">About, licence and source</a></li>
+</ol></nav>
+
+<h2 id="start">1. Getting started</h2>
+<p>The first time you open 4Tasks it offers three buttons:</p>
+<ul>
+<li><strong>Add account</strong> connects a CalDAV server so your tasks sync (<a href="#sync">section 5</a>).</li>
+<li><strong>Get started</strong> goes straight to your lists, kept on this phone only. You can add an account later.</li>
+<li><strong>Import a backup</strong> reads a backup file you made earlier (<a href="#backup">section 8</a>).</li>
+</ul>
+<p>When Android asks, <strong>allow notifications</strong> so reminders can reach you. For reminders at the exact minute, also
+allow <strong>Alarms &amp; reminders</strong> (<a href="#reminders">section 4</a>).</p>
+<p>The main screen has the app name and the open list's name at the top, <strong>⚙</strong> at the top right for Settings, and a
+bar at the bottom with the menu, search, sort and more buttons, and <strong>+</strong> to add a task.</p>
+
+<h2 id="lists">2. Lists and the drawer</h2>
+<p>Tap the menu button at the bottom left (☰) to open the <strong>drawer</strong>. It shows:</p>
+<ul>
+<li><strong>My Tasks</strong>, every open task from every list.</li>
+<li><strong>Filters</strong>: <em>Today</em> and <em>Recently modified</em>. The <strong>+</strong> beside Filters makes your own filter.</li>
+<li><strong>Tags</strong>, with a <strong>+</strong> to add one. Tap a tag to see everything carrying it.</li>
+<li>Your <strong>lists</strong>. Lists kept only on this phone are under <strong>Local lists</strong>; each sync account has its own
+heading with its lists under it. The <strong>+</strong> beside a heading adds a list there.</li>
+</ul>
+<p>A list can have its own name, colour and icon. Open a list's <em>List settings</em> from the &#8942; menu while you are looking
+at it. You choose which of the drawer's filters and tags are shown in
+Settings, Look, Navigation drawer.</p>
+
+<h2 id="tasks">3. Tasks</h2>
+<h3>Adding a task</h3>
+<p>Tap <strong>+</strong>, type the title, and tap <strong>Save</strong> (or the Done key, if you have turned that on). The
+task goes into the list you are looking at, or into your <em>default list</em> (Settings, Tasks, Task defaults) when you are in a
+filter. Settings, Tasks, Task defaults also sets what a new task starts with: its priority, tags, start and due dates, reminders
+and repeat.</p>
+<h3>The edit screen</h3>
+<p>Tap a task to open it. You can set:</p>
+<table>
+<tr><th>Field</th><th>What it does</th></tr>
+<tr><td>Title</td><td>The tick box beside it completes the task.</td></tr>
+<tr><td>Start date</td><td>When you can begin. Tasks that have not started can be hidden from the list (Sort sheet, <em>Show unstarted</em>).</td></tr>
+<tr><td>Due date and time</td><td>When it is due. Pick a day, or a time of day (morning, afternoon, evening, night, or a time you choose).</td></tr>
+<tr><td>Repeat</td><td>Every day, week, month or year, or a pattern of your own, counted from the due date or from when you complete it.</td></tr>
+<tr><td>Priority</td><td>Four levels, shown by the circle's colour.</td></tr>
+<tr><td>List</td><td>Moves the task to another list. On a server, that moves it there too.</td></tr>
+<tr><td>Tags</td><td>Labels you can filter by.</td></tr>
+<tr><td>Subtasks</td><td>Tasks inside the task. Drag them in the list to reorder.</td></tr>
+<tr><td>Reminder</td><td>Notifies you (<a href="#reminders">section 4</a>).</td></tr>
+<tr><td>Description</td><td>Notes. Turn on Markdown in Settings, Look, Look and feel to format them.</td></tr>
+</table>
+<p>The save button is at the top left and delete at the top right. The back button saves, if you have turned that on in
+Settings, Tasks, Edit screen options. You can rearrange or hide fields there with <em>Customise edit screen</em>.</p>
+<h3>Completing, sorting and finding</h3>
+<ul>
+<li><strong>Tick</strong> the box to complete a task. A message offers <em>Undo</em>. Completed tasks wait under a
+<em>Completed</em> heading, which you can open or close.</li>
+<li>Tasks are <strong>grouped</strong> under headings such as <em>Due today</em> or <em>No due date</em>, each in a rounded card. Tap a
+heading's arrow to fold it.</li>
+<li>The <strong>sort button</strong> (the arrows at the bottom) sets how the list is grouped and sorted, ascending or descending: smart sort, by title,
+start date, due date, priority, last modified, creation time or list, or <em>My order</em> for a list you arrange by hand. It also chooses whether to
+show unstarted and completed tasks.</li>
+<li>The <strong>search button</strong> finds a task by words in its title or notes.</li>
+<li>The &#8942; menu has <em>Clear completed</em>, <em>Collapse subtasks</em>, <em>Expand subtasks</em> and <em>Share</em>.</li>
+</ul>
+
+<h2 id="reminders">4. Due dates and reminders</h2>
+<p>Add a reminder to a task with <strong>Add reminder</strong> on the edit screen. A reminder can fire when the task starts,
+when it is due, at a time you pick, or repeatedly after it is due. Settings, Tasks, Task defaults sets the reminders a new task
+gets, and Settings, Tasks, Notifications has the options for how they arrive:</p>
+<ul>
+<li><strong>Swipe to snooze</strong>: clear a reminder and it comes back after a time you choose (immediately, 15 or 30 minutes,
+1 or 24 hours).</li>
+<li><strong>Quiet hours</strong>: no reminders between the hours you set.</li>
+<li><strong>Bundle notifications</strong>, a <strong>completion sound</strong>, and <strong>voice reminders</strong> that read the
+task's name aloud.</li>
+<li><strong>All day tasks</strong>: a task with a date but no time can still remind you, at a time you set.</li>
+</ul>
+<p>The reminder's notification lets you <strong>complete</strong> or <strong>snooze</strong> the task.</p>
+<h3>Exact times</h3>
+<p>Android only lets an app remind you at the exact minute if you allow <strong>Alarms &amp; reminders</strong>. 4Tasks shows a
+banner at the top of your list asking for it, with a button that opens the right Android screen. Until you allow it,
+<strong>4Tasks still sets the reminder</strong>, but Android may deliver it a little late, sometimes by a minute or more. Allow
+it and reminders arrive within a second of their time.</p>
+<p>Reminders also need <strong>notifications</strong> to be allowed. If they are not, a banner says <em>Enable reminders</em>.</p>
+
+<h2 id="sync">5. Sync with a CalDAV server</h2>
+<p>CalDAV is an open standard for tasks and calendars. Nextcloud, SOGo (including mailcow), Radicale, Baikal and many hosts offer
+it. 4Tasks syncs with <strong>any CalDAV server</strong> you can sign in to. <strong>Microsoft To Do and Google Tasks are
+coming</strong>; they are not in this version.</p>
+<h3>Adding an account</h3>
+<ol>
+<li>Settings, <strong>Accounts</strong>, <strong>Add account</strong>, then CalDAV.</li>
+<li>Type the server's <strong>URL</strong>. Often the bare address is enough (for example <code>https://mail.example.org</code>);
+4Tasks finds the CalDAV address itself. If your provider gives a longer address, use that.</li>
+<li>Type your <strong>user</strong> and <strong>password</strong>. Tap the eye at the end of the password to check what you
+typed.</li>
+<li>Leave <em>Server type</em> on Unknown unless you know better, and tap <strong>Sign in</strong>.</li>
+</ol>
+<p>Your lists appear in the drawer under the account's name. <strong>Tip:</strong> if your provider offers <em>app
+passwords</em> (mailcow, Nextcloud and others do), make one just for 4Tasks, limited to CalDAV if you can. Your main password is
+then never stored on the phone, and you can revoke the app password on its own.</p>
+<h3>What syncs, and when</h3>
+<p>Titles, notes, dates and times, repeats, priority, tags, reminders, completion, and the list a task is in all sync, both ways.
+A change you make on the phone is sent within about half a minute. 4Tasks also syncs when you open it, when you pull the list
+down, and in the background about once an hour. A task added by voice goes into your default list, so set a list on the server
+as the default (Settings, Tasks, Task defaults) if you want those tasks to sync.</p>
+<h3>Secure connections only</h3>
+<ul>
+<li>The address must be <strong>https://</strong>. A plain <code>http://</code> address is refused, with a message saying so.</li>
+<li>By default the server's certificate must be one your phone already trusts (a normal Let&rsquo;s Encrypt certificate is).</li>
+<li>If you <strong>run your own server with a self-signed certificate</strong>, turn on Settings, <strong>More</strong>,
+Advanced, <em>Allow self-signed certificates</em>. It is off by default. When you connect, you are shown the certificate's
+fingerprints and asked to trust <strong>that one certificate</strong>. Even then, the certificate must carry the name you
+connected by; a certificate for a different name is always refused. Turning the switch off again forgets every certificate you
+trusted.</li>
+</ul>
+<h3>Removing an account</h3>
+<p>Open the account (Settings, Accounts) and choose <strong>Log out</strong>. That removes the account's lists and tasks <strong>from
+the phone</strong>; what is on the server stays there.</p>
+
+<h2 id="voice">6. Voice, with 4Dictate</h2>
+<p><a href="/4dictate/manual/">4Dictate</a> is our dictation app. With both installed you can speak to your tasks. In 4Dictate,
+start a <strong>command</strong> (its 🤖 button or key) and say, for example:</p>
+<ul>
+<li><em>&ldquo;Remind me tomorrow at 3 to get back to Sandra about her reservation.&rdquo;</em> Adds a task due tomorrow at 3 pm,
+with a reminder.</li>
+<li><em>&ldquo;What&rsquo;s due tomorrow?&rdquo;</em> Reads out what is due.</li>
+<li><em>&ldquo;Mark the Sandra task done.&rdquo;</em> Completes the task whose title matches.</li>
+<li><em>&ldquo;What lists do I have?&rdquo;</em></li>
+</ul>
+<h3>You stay in charge</h3>
+<ul>
+<li>Before 4Dictate <strong>adds or completes</strong> anything, it asks you to confirm on its own screen. Nothing changes until you
+say yes. Asking what is due does not need a confirmation.</li>
+<li>The answer to a question shows on 4Dictate's pad and is kept in a notification, so you can read it again.</li>
+<li>If you say a name that is not an exact match but <strong>sounds like</strong> one task (&ldquo;the sounder task&rdquo; for
+&ldquo;Sandra&rdquo;), 4Tasks does nothing yet and 4Dictate asks <strong>&ldquo;Did you mean &hellip;?&rdquo;</strong> with that
+task. You answer yes or no. If several tasks match, it tells you which; if none do, it lists some of your open tasks.</li>
+<li>A reminder needs a time. A reminder time that has already passed is refused unless you asked for it.</li>
+<li><strong>Nothing can delete.</strong> There is no way for another app to delete a task or a list.</li>
+</ul>
+
+<h2 id="apps">7. Apps allowed to use 4Tasks</h2>
+<p>Voice works through <strong>4Link</strong>, a small door that lets other apps on <em>this phone</em> add, read and complete your
+tasks. It never opens by itself and nothing goes over the internet.</p>
+<ul>
+<li>Our own apps (4Dictate and 4Zones) are recognised by their signing certificate.</li>
+<li>Any <strong>other</strong> app must ask first. A screen then shows the app's name, its certificate fingerprint, and each thing it
+wants to do, with what it would receive. You tick what to allow.</li>
+<li>Settings, <strong>Accounts</strong>, <strong>Apps allowed to use 4Tasks</strong> lists the apps you have allowed, what each may do, and
+when it last did something. You can stop allowing an app there at any time.</li>
+<li>The same screen shows a <strong>call log</strong> of the last 500 calls: when, which app, which function, and the result.
+It never records the details of a task.</li>
+</ul>
+
+<h2 id="backup">8. Backup and restore</h2>
+<p>Settings, <strong>More</strong>, <strong>Backups</strong>:</p>
+<ul>
+<li><strong>Backup folder</strong>: where backup files go. A warning appears if it is inside the app's own storage, because Android
+deletes that if you uninstall 4Tasks. Pick a folder of your own.</li>
+<li><strong>Backup now</strong> writes a file straight away.</li>
+<li><strong>Automatic backups</strong> write one about once a day and keep the last seven.</li>
+<li><strong>Import backup</strong> reads a file back in. You can do the same from <em>Import a backup</em> when you first open the app.</li>
+</ul>
+<p><strong>Backup files never contain your sync passwords.</strong> After you restore, a sync account comes back and asks you to
+sign in again. 4Tasks does not use Android&rsquo;s own cloud backup or phone-to-phone transfer, so a backup file is the way to move
+your tasks to a new phone. A synced server is another.</p>
+
+<h2 id="widgets">9. Widgets and shortcuts</h2>
+<p>Settings, <strong>Look</strong>, <strong>Widget settings</strong> has <em>Add widget to home screen</em> and <em>Add shortcut to home
+screen</em>. You can also add the widget from your launcher's widget list.</p>
+<ul>
+<li>A <strong>widget</strong> shows a list on your home screen. Its buttons choose the list, open the widget's settings and add a task.
+Tap a task to open it, tick the box to complete it. Each widget has its own settings: which list, theme, colour, transparency,
+spacing, font size, and what each row shows.</li>
+<li>By default a widget follows your wallpaper colours like the app. If you choose a colour for a widget, its header uses that colour.</li>
+<li>A <strong>shortcut</strong> opens a chosen list straight from the home screen.</li>
+</ul>
+
+<h2 id="settings">10. Settings</h2>
+<p>Tap <strong>⚙</strong> at the top right of the main screen. Settings has four tabs, each a column of cards, and each card opens the page it names:</p>
+<table>
+<tr><th>Tab</th><th>Cards</th></tr>
+<tr><td>Accounts</td><td>Local lists, each account you have added, Add account, Apps allowed to use 4Tasks.</td></tr>
+<tr><td>Tasks</td><td>Task defaults, Task list options (font size, spacing, chips, per-list sorting), Edit screen options, Date and time, Notifications.</td></tr>
+<tr><td>Look</td><td>Look and feel, Navigation drawer, Widget settings.</td></tr>
+<tr><td>More</td><td>Backups, Advanced, About.</td></tr>
+</table>
+<p>Advanced has the attachment folder, the self-signed certificates switch (<a href="#sync">section 5</a>), task-count badges on the app icon,
+<em>Astrid manual sorting</em> (an older manual sort mode, kept for anyone who uses it), and the buttons that reset your preferences or delete
+your task data (both ask first).</p>
+
+<h2 id="look">11. Colour and theme</h2>
+<p>Settings, Look, <strong>Look and feel</strong>:</p>
+<ul>
+<li><strong>Wallpaper colour</strong> (on by default): the app takes its colours from your wallpaper, like 4Dictate and 4Zones.
+Switch it off to choose a colour yourself, or to use the plain palette (navy and sky blue).</li>
+<li><strong>Theme</strong>: light, black, dark, or follow the system.</li>
+<li><strong>Markdown</strong> in titles and descriptions, <strong>Open last viewed list</strong> (or always open a list you choose), and the
+<strong>language</strong> (Android&rsquo;s per-app language setting).</li>
+</ul>
+
+<h2 id="trouble">12. Troubleshooting</h2>
+<table>
+<tr><th>What you see</th><th>What to do</th></tr>
+<tr><td>Reminders come late</td><td>Allow <strong>Alarms &amp; reminders</strong> for 4Tasks (the banner on your list takes you there). Also see Settings, Tasks, Notifications, Troubleshooting for battery optimisation.</td></tr>
+<tr><td>No reminders at all</td><td>Allow notifications for 4Tasks in Android settings. Check Quiet hours are not on.</td></tr>
+<tr><td><em>Invalid username or password</em></td><td>The server refused the sign-in. Check the password with the eye button. With an app password, make sure it is allowed for CalDAV, and use your full user name (often your email address).</td></tr>
+<tr><td><em>Could not connect</em></td><td>Check the address and that you are online.</td></tr>
+<tr><td><em>Plain http:// connections are not allowed</em></td><td>Use an <code>https://</code> address. 4Tasks never sends your password unencrypted.</td></tr>
+<tr><td><em>This phone does not trust the server&rsquo;s certificate</em></td><td>Fix the server&rsquo;s certificate, or, if it is your own server, turn on Allow self-signed certificates (<a href="#sync">section 5</a>).</td></tr>
+<tr><td><em>The server&rsquo;s certificate does not carry the name you connected by</em></td><td>Connect by a name the certificate has, or reissue the certificate with that name. This is never overridden.</td></tr>
+<tr><td>A task added by voice did not reach the server</td><td>It went into your default list. Make a server list your default (Settings, Tasks, Task defaults).</td></tr>
+<tr><td>An app cannot use 4Tasks</td><td>Check Settings, Accounts, Apps allowed to use 4Tasks. Anything other than our own apps has to be allowed there.</td></tr>
+</table>
+
+<h2 id="privacy">13. Privacy</h2>
+<ul>
+<li>Your tasks stay on your phone. If you connect a CalDAV account, they go <strong>straight to the server you typed in and nowhere
+else</strong>, over an encrypted connection.</li>
+<li>No account with us, no advertising, no analytics, no crash reporting, no tracking.</li>
+<li>Your sync password is stored encrypted on the phone and is left out of backup files.</li>
+<li>4Tasks does not ask for your location, contacts, camera, microphone or storage.</li>
+</ul>
+<p>The full policy is at <a href="/4tasks/privacy/">mr-biz.uk/4tasks/privacy</a>.</p>
+
+<h2 id="about">14. About, licence and source</h2>
+<p>4Tasks is free software under the <strong>GNU General Public License v3</strong>. It is based on
+<a href="https://github.com/tasks/tasks">Tasks.org</a> by Todoroo (Astrid) and the Tasks.org contributors, and is a separate app that is
+not made or supported by the Tasks.org project. Settings, More, About shows the version, the licence and the notices for the
+libraries it uses. The source code is at <a href="https://github.com/mr-bizzy/4tasks">github.com/mr-bizzy/4tasks</a>.</p>
+<p>Questions and bug reports: <a href="mailto:support@mr-biz.uk">support@mr-biz.uk</a>.</p>
+
+<footer>&copy; 2026 Mr-Bizzy, United Kingdom. 4Tasks is developed by Mr-Bizzy.</footer>
+</div>
+</body>
+</html>

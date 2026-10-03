@@ -194,7 +194,7 @@ Limited and Blocked. The owner's own mail is on Mailcow, not Workspace, so he ha
   service). Add the **Limited Use** statement Google requires: "4Tasks's use and transfer to any other app of
   information received from Google APIs will adhere to the
   [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy),
-  including the Limited Use requirements." The page source is `play/site/privacy/index.html`; it changes only
+  including the Limited Use requirements." The page source is `play/site/4tasks/privacy/index.html`; it changes only
   on the owner's "publish".
 - **Data safety:** the answer flips from "no data collected" to data that leaves the device to services the
   user picks: tasks (user-generated content) and the account identifier, encrypted in transit, not sold, not

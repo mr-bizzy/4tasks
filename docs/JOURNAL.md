@@ -137,7 +137,7 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   Tasks.org, Pro, subscriptions, sponsorship, cloud, desktop and QR linking are removed from every translation (the screens
   are unreachable here; the English text stays for the dead code). A crawl of settings, drawer, menus, add-account and
   new-task screens found Tasks.org only in About, which stays (GPL attribution). Release Settings has no Debug row.
-- **Site:** play/site/index.html is a draft home page in the site's own style. Nothing is written to the site folder
+- **Site:** play/site/4tasks/index.html is a draft home page in the site's own style. Nothing is written to the site folder
   until the owner says "publish".
 - **Play:** icon-512, feature graphic and three screenshots redone (generators were throwaway scripts; the SVG source of
   the icon is graphics/4tasks-icon.svg).
@@ -217,3 +217,12 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   carries no task data, but it is a connection to Tasks.org). Now scheduleBlogFeedCheck() only cancels the job, and the worker
   itself does nothing. Firebase remote config and billing are empty stubs in this flavour. The only other HTTP clients are
   CalDAV (the server the user types), and code for Tasks.org accounts, Microsoft sign-in and place search that cannot be reached.
+
+## 2026-10-03 — User manual and site pages; a guard against calling home
+
+- **Manual:** play/site/4tasks/manual/index.html, in the family's manual style (4Dictate's stylesheet), 14 numbered sections,
+  checked claim by claim against the app. The home page is play/site/4tasks/index.html and the privacy page
+  play/site/4tasks/privacy/index.html. Nothing is written to the site folder; the owner's "publish" copies them.
+- **Guard:** app/src/test/java/org/tasks/NoCallHomeTest.kt fails when a file that can make network calls is not on its list, when
+  one names a fixed host that is not on its list, or when the Tasks.org blog check is scheduled again. Proven to fail: a probe file
+  using OkHttp and a fixed host failed two of its three tests.
