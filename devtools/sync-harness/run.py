@@ -40,7 +40,11 @@ def before(dev, origin, state):
     elif state == "bg":
         dev.start_app(); time.sleep(1.5); dev.home(); time.sleep(1)
     elif state == "killed":
-        dev.force_stop(); time.sleep(1)
+        if origin == "notification":
+            dev.home(); time.sleep(1); dev.kill()       # as the system kills it: force-stop would also take the notification away
+        else:
+            dev.force_stop()
+        time.sleep(1)
     elif state == "cached":
         # the app was used, left, and has sat in the background long enough for Android to cut its UID off the network (the S25's state)
         dev.start_app(); time.sleep(1.5); dev.home(); time.sleep(75)

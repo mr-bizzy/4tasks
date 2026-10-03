@@ -40,7 +40,9 @@ interface WorkManager : BackgroundWork {
         const val TAG_BACKUP = "tag_backup"
         const val TAG_REFRESH = "tag_refresh"
         const val TAG_SYNC = "tag_sync"
+        /** The periodic job before 0.1.6 ran [SyncWork] under this name. WorkManager's UPDATE keeps the old worker class, so it is cancelled, not updated. */
         const val TAG_BACKGROUND_SYNC = "tag_background_sync"
+        const val TAG_PERIODIC_SYNC = "tag_periodic_sync"
         const val TAG_REMOTE_CONFIG = "tag_remote_config"
         const val TAG_MIGRATE_LOCAL = "tag_migrate_local"
         const val TAG_UPDATE_PURCHASES = "tag_update_purchases"

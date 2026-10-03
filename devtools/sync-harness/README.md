@@ -39,6 +39,11 @@ Add `--keep` to leave the emulators running between runs. Each API version has i
 
 The tile cannot be clicked from adb, so the `tile` origin starts what the tile starts (`TileService.onClick`'s intent). The widget is pinned through the launcher's own prompt.
 
+## Upgrade check
+
+`python3 upgrade_check.py emulator-5568 .work/after.apk` installs `.work/before.apk` (0.1.5), then the current build over it, and prints the WorkManager specs under the old
+(`tag_background_sync`) and new (`tag_periodic_sync`) names: the old one must end CANCELLED (state 5) and the new one be `PeriodicSyncWork`, ENQUEUED (state 0).
+
 ## Known limits
 
 Emulators do not have a vendor's battery manager (Samsung's "sleeping apps" etc.), and a cached app's network block is Android's, not the vendor's, so the harness reproduces

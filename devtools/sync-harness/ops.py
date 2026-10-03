@@ -79,6 +79,7 @@ def ensure_on_device(dev, title, timeout=120, only=True):
     """The task is in the origin's database and on its list, and (only=True) nothing else is: the state of a person's phone when
     a task has just arrived and the app is open. The server holds just that task, so pulling makes it so."""
     end = time.time() + timeout
+    dev.sh("cmd statusbar collapse")
     while time.time() < end:
         open_list(dev)
         pull_refresh(dev)
@@ -284,8 +285,12 @@ def notification(dev, op, o):
     time.sleep(1.5)
     for _ in range(10):
         if dev.tap_text("Complete", tries=1, exact=True):
-            return time.time()
+            t = time.time()
+            time.sleep(0.5)
+            dev.sh("cmd statusbar collapse")     # the open shade would swallow the next cell's taps and swipes
+            return t
         time.sleep(1.0)
+    dev.sh("cmd statusbar collapse")
     return None
 
 

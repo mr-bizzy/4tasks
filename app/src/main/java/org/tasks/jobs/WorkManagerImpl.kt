@@ -44,6 +44,7 @@ import org.tasks.jobs.MigrateLocalWork.Companion.EXTRA_LOCAL_ACCOUNT
 import org.tasks.sync.SyncSource
 import org.tasks.jobs.WorkManager.Companion.REMOTE_CONFIG_INTERVAL_HOURS
 import org.tasks.jobs.WorkManager.Companion.TAG_BACKGROUND_SYNC
+import org.tasks.jobs.WorkManager.Companion.TAG_PERIODIC_SYNC
 import org.tasks.jobs.WorkManager.Companion.TAG_BACKUP
 import org.tasks.jobs.WorkManager.Companion.TAG_MIGRATE_LOCAL
 import org.tasks.jobs.WorkManager.Companion.TAG_NOTIFICATIONS
@@ -128,18 +129,19 @@ class WorkManagerImpl(
                 TYPE_ETEBASE,
                 TYPE_MICROSOFT
             ).isNotEmpty()
+            workManager.cancelUniqueWork(TAG_BACKGROUND_SYNC)
             if (enabled) {
                 Timber.d("Enabling background sync")
                 // No network constraint, and no network work: it hands the sync to an expedited job (see PeriodicSyncWork).
                 val builder = PeriodicWorkRequest.Builder(PeriodicSyncWork::class.java, preferences.syncIntervalMinutes.toLong(), TimeUnit.MINUTES)
                 workManager.enqueueUniquePeriodicWork(
-                    TAG_BACKGROUND_SYNC,
+                    TAG_PERIODIC_SYNC,
                     ExistingPeriodicWorkPolicy.UPDATE,
                     builder.build()
                 )
             } else {
                 Timber.d("Disabling background sync")
-                workManager.cancelUniqueWork(TAG_BACKGROUND_SYNC)
+                workManager.cancelUniqueWork(TAG_PERIODIC_SYNC)
             }
         }
     }
