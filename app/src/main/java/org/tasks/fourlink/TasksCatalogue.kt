@@ -35,7 +35,7 @@ object TasksCatalogue {
                 description = "Creates a task. title is what to do, in the user's words. due is when it is due and " +
                     "reminder is when to be notified, both local time. For \"remind me at 3\" send both. " +
                     "Omit list for the default list.",
-                effect = Effect.CHANGE,
+                effect = Effect.CREATE,
                 input = Schema.Obj(
                     properties = linkedMapOf(
                         "title" to Schema.Str(TITLE_MAX, description = "What to do, as a short clean sentence."),

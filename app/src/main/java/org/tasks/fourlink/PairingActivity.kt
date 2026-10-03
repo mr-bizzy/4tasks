@@ -71,7 +71,7 @@ class PairingActivity : ThemedInjectingAppCompatActivity() {
                     for ((effect, functions) in request.byEffect) {
                         if (functions.isEmpty()) continue
                         Text(
-                            when (effect) { Effect.READ -> "Read"; Effect.CHANGE -> "Change"; Effect.DELETE -> "Delete" },
+                            when (effect) { Effect.READ -> "Read"; Effect.CREATE -> "Create"; Effect.CHANGE -> "Change"; Effect.DELETE -> "Delete" },
                             style = MaterialTheme.typography.titleSmall,
                         )
                         for (f in functions) {

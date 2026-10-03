@@ -16,6 +16,18 @@
         android:label="4Tasks token probe"
         android:theme="@android:style/Theme.DeviceDefault.Light" />
 
+    <!-- Debug builds only: the two-device sync harness's hands (devtools/sync-harness). Never in release. -->
+    <receiver
+        android:name=".harness.HarnessReceiver"
+        android:exported="true">
+      <intent-filter>
+        <action android:name="org.tasks.harness.SETUP" />
+        <action android:name="org.tasks.harness.DUMP" />
+        <action android:name="org.tasks.harness.SETDEFAULT" />
+        <action android:name="org.tasks.harness.ADDWIDGET" />
+      </intent-filter>
+    </receiver>
+
   </application>
 
 </manifest>

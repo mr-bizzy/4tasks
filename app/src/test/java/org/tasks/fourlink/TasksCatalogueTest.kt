@@ -18,7 +18,7 @@ class TasksCatalogueTest {
 
     @Test fun `reads read and changes change`() {
         assertEquals(
-            mapOf("tasks.add" to Effect.CHANGE, "tasks.list" to Effect.READ, "tasks.complete" to Effect.CHANGE, "lists.list" to Effect.READ),
+            mapOf("tasks.add" to Effect.CREATE, "tasks.list" to Effect.READ, "tasks.complete" to Effect.CHANGE, "lists.list" to Effect.READ),
             functions.associate { it.id to it.effect },
         )
     }
