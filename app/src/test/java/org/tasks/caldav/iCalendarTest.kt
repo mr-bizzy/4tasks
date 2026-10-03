@@ -46,4 +46,14 @@ class iCalendarTest {
     fun unversionedNextcloudAssumedToSupportReminderSync() {
         assertTrue("-//Nextcloud Tasks".supportsReminders())
     }
+
+    @Test
+    fun fourTasksSupportsReminderSync() {
+        assertTrue("+//IDN mr-biz.uk//4tasks-android-151204//EN".supportsReminders())
+    }
+
+    @Test
+    fun tasksOrgStillSupportsReminderSync() {
+        assertTrue("+//IDN tasks.org//android-151204//EN".supportsReminders())
+    }
 }

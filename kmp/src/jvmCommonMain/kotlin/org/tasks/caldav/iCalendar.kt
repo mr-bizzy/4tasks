@@ -411,6 +411,7 @@ class iCalendar(
 
         private val CLIENTS_WITH_REMINDER_SYNC = listOf(
             "tasks.org",
+            "mr-biz.uk//4tasks", // 4Tasks itself (its PRODID no longer says tasks.org)
             "Mozilla.org",
             "Apple Inc.",
         )

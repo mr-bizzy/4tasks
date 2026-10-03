@@ -13,7 +13,7 @@ fun createDataStore(context: Context): DataStore<Preferences> = createDataStore(
     producePath = { context.filesDir.resolve(dataStoreFileName).absolutePath }
 )
 
-actual val PROD_ID = "+//IDN tasks.org//android-${BuildConfig.VERSION_CODE}//EN"
+actual val PROD_ID = "+//IDN mr-biz.uk//4tasks-android-${BuildConfig.VERSION_CODE}//EN"
 
 actual val DEV_URL: String = BuildConfig.DEV_URL
 
