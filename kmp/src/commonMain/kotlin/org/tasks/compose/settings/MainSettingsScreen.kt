@@ -1,5 +1,19 @@
 package org.tasks.compose.settings
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.unit.dp
+import tasks.kmp.generated.resources.sync_interval_title
+import tasks.kmp.generated.resources.sync_interval_summary
+import tasks.kmp.generated.resources.sync_interval_every_minutes
+import tasks.kmp.generated.resources.sync_interval_current
+import tasks.kmp.generated.resources.cancel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -165,6 +179,10 @@ fun MainSettingsScreen(
     showAddAccount: Boolean = true,
     showWorksWith: Boolean = true,
     onConnectedAppsClick: (() -> Unit)? = null,
+    /** The periodic sync, in minutes; null hides the card (no account that syncs). */
+    syncIntervalMinutes: Int? = null,
+    syncIntervalChoices: List<Int> = emptyList(),
+    onSyncIntervalSelected: (Int) -> Unit = {},
     bottomContent: @Composable () -> Unit = {},
 ) {
     val tabNames = listOf(
@@ -212,6 +230,9 @@ fun MainSettingsScreen(
                         onAccountClick = onAccountClick,
                         onAddAccountClick = onAddAccountClick,
                         onConnectedAppsClick = onConnectedAppsClick,
+                        syncIntervalMinutes = syncIntervalMinutes,
+                        syncIntervalChoices = syncIntervalChoices,
+                        onSyncIntervalSelected = onSyncIntervalSelected,
                     )
                     1 -> TasksPage(
                         showNotifications = showNotifications,
@@ -277,6 +298,9 @@ private fun AccountsPage(
     onAccountClick: (CaldavAccount) -> Unit,
     onAddAccountClick: () -> Unit,
     onConnectedAppsClick: (() -> Unit)?,
+    syncIntervalMinutes: Int?,
+    syncIntervalChoices: List<Int>,
+    onSyncIntervalSelected: (Int) -> Unit,
 ) {
     accounts.forEach { account ->
         SettingsItemCard { AccountRow(account = account, onClick = { onAccountClick(account) }) }
@@ -287,6 +311,9 @@ private fun AccountsPage(
             summary = stringResource(Res.string.add_account_summary),
             onClick = onAddAccountClick,
         )
+    }
+    if (syncIntervalMinutes != null && syncIntervalChoices.isNotEmpty()) {
+        SyncIntervalCard(syncIntervalMinutes, syncIntervalChoices, onSyncIntervalSelected)
     }
     if (onConnectedAppsClick != null) {
         SettingsLinkCard(
@@ -411,4 +438,48 @@ private fun AccountRow(
         showError = account.hasError,
         onClick = onClick,
     )
+}
+
+/** "Sync interval": a card that opens a choice of how often the background sync runs. */
+@Composable
+private fun SyncIntervalCard(
+    minutes: Int,
+    choices: List<Int>,
+    onSelected: (Int) -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    SettingsLinkCard(
+        title = stringResource(Res.string.sync_interval_title),
+        summary = stringResource(Res.string.sync_interval_current, minutes),
+        onClick = { open = true },
+    )
+    if (open) {
+        AlertDialog(
+            onDismissRequest = { open = false },
+            title = { Text(stringResource(Res.string.sync_interval_title)) },
+            text = {
+                Column {
+                    Text(
+                        stringResource(Res.string.sync_interval_summary),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    choices.forEach { choice ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onSelected(choice); open = false }
+                                .padding(vertical = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            RadioButton(selected = choice == minutes, onClick = { onSelected(choice); open = false })
+                            Text(stringResource(Res.string.sync_interval_every_minutes, choice))
+                        }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = { TextButton(onClick = { open = false }) { Text(stringResource(Res.string.cancel)) } },
+        )
+    }
 }

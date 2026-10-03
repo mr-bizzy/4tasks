@@ -103,7 +103,8 @@ class TasksApplication : Application(), Configuration.Provider {
                 override fun onResume(owner: LifecycleOwner) {
                     Timber.d("Application.onResume")
                     localBroadcastManager.broadcastRefresh()
-                    if (currentTimeMillis() - preferences.lastSync > TimeUnit.MINUTES.toMillis(5)) {
+                    // Every time the app is opened, unless it has only just synced (a quick switch away and back must not hammer the server).
+                    if (currentTimeMillis() - preferences.lastSync > TimeUnit.SECONDS.toMillis(SYNC_ON_OPEN_MIN_GAP_SECONDS)) {
                         syncAdapters.get().sync(SyncSource.APP_RESUME)
                     }
                 }
@@ -243,6 +244,9 @@ class TasksApplication : Application(), Configuration.Provider {
         const val IS_GOOGLE_PLAY = BuildConfig.FLAVOR == "googleplay"
         @Suppress("KotlinConstantConditions", "SimplifyBooleanWithConstants")
         const val IS_GENERIC = BuildConfig.FLAVOR == "generic"
+
+        /** Opening the app syncs unless the last sync finished less than this long ago. */
+        const val SYNC_ON_OPEN_MIN_GAP_SECONDS = 30L
     }
 }
 

@@ -27,6 +27,14 @@
       tools:padding="@dimen/widget_padding"/>
 
     <ImageButton
+      android:id="@+id/widget_refresh"
+      style="@style/WidgetButton"
+      android:layout_toStartOf="@id/widget_reconfigure"
+      android:src="@drawable/ic_outline_refresh_24px"
+      android:contentDescription="@string/widget_sync_now"
+      tools:padding="@dimen/widget_padding"/>
+
+    <ImageButton
       android:id="@+id/widget_reconfigure"
       style="@style/WidgetButton"
       android:layout_toStartOf="@id/widget_button"
@@ -39,7 +47,7 @@
         android:layout_height="wrap_content"
         style="@style/WidgetTitle"
         android:layout_toEndOf="@id/widget_change_list"
-        android:layout_toStartOf="@id/widget_reconfigure"
+        android:layout_toStartOf="@id/widget_refresh"
         android:maxLines="1"
         tools:text="@string/BFE_Active"
         tools:textColor="@android:color/black" />

@@ -423,3 +423,21 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   and 16 s; share-to-4Tasks, then Save, cold: 16 s; in-app new task, Save: 16 s. The tile and the widget open the same new-task
   screen and Save path as the share test (the tile's click could not be driven on the emulator: it is not in the quick-settings
   panel). Before: 57-60 s door, 50 s share; and with the first fix and only a 10 s delay: no push at all.
+
+## 2026-10-03 — Owner's sync list (0.1.5-beta, 151214): interval, every open, widget refresh
+
+- **Found while measuring:** opening the app never synced. SyncSource.NONE.upgrade() kept NONE against any source that shows no
+  indicator and is not delayed (APP_RESUME, BACKGROUND, PUSH_NOTIFICATION, APP_BACKGROUND), and runSync(NONE) returns at once. So the
+  "sync when you open it" in the manual was never true through SyncAdapters; only the periodic hourly job, pull-to-refresh and
+  pushes synced. (This is why a phone installed with a new build sat unsynced until its hourly job.) Fixed in SyncSource.upgrade
+  (NONE yields to the first request); tests: SyncSourceTest, SyncAdaptersDebounceTest.openingTheAppSyncs.
+- **Sync interval** (Settings, Accounts card; dialog 15 / 30 / 60 minutes, default 15, WorkManager's minimum; the card shows only
+  with an account that syncs): replaces the fixed hourly background sync. Stored as sync_interval_minutes, normalised
+  (org.tasks.sync.SyncInterval, tested); changing it re-schedules the periodic work (checked in WorkManager's database: 1,800,000 ms
+  after choosing 30).
+- **Sync on every open:** guard cut from 5 minutes to 30 seconds (SYNC_ON_OPEN_MIN_GAP_SECONDS). One sync with nothing to change is
+  4 requests to the server. No every-minute foreground sync (owner: "If I am looking I can hit sync").
+- **Widget header refresh button** (same icon style, hidden on a very narrow widget): a non-exported WidgetSyncReceiver asks for a
+  USER_INITIATED sync and redraws.
+- **Measured (local Radicale, emulator):** another device creates a task: it appears in 4Tasks about 9-12 s after the app is opened,
+  and about 8-11 s after tapping the widget refresh button; without a tap it did not appear within 30 s (control).

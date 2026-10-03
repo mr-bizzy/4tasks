@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- The widget header's refresh button: syncs now and redraws. -->
+  <string name="widget_sync_now">Sync now</string>
+</resources>

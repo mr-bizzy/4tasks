@@ -16,6 +16,9 @@ enum class SyncSource(val showIndicator: Boolean, val immediate: Boolean = true)
     ;
 
     fun upgrade(other: SyncSource): SyncSource = when {
+        // Nothing requested yet: whatever comes first is what is requested. (Before, NONE kept itself against sources that show
+        // no indicator and are not delayed, APP_RESUME among them, so opening the app never started a sync.)
+        this == NONE -> other
         other.showIndicator && !this.showIndicator -> other
         other.immediate && !this.immediate -> other
         else -> this

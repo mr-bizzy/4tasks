@@ -205,6 +205,11 @@
     <!-- ======================================================= Receivers = -->
 
     <!-- widgets -->
+    <!-- The widget header's refresh button; only the widget's own PendingIntent reaches it. -->
+    <receiver
+      android:name=".widget.WidgetSyncReceiver"
+      android:exported="false" />
+
     <receiver
       android:label="@string/app_name"
       android:name=".widget.TasksWidget"

@@ -75,6 +75,10 @@
     <string name="decsync_selection_description">File-based synchronisation</string>
     <string name="etesync_selection_description">End-to-end encrypted synchronisation</string>
     <string name="google_tasks_selection_description">Syncs titles, notes, due dates, completion and subtasks with your Google account. Google Tasks cannot hold reminders, repeats, times of day, priority or tags, so those stay on this phone</string>
+    <string name="sync_interval_title">Sync interval</string>
+    <string name="sync_interval_summary">How often 4Tasks checks your accounts for changes made on other devices when it isn't open</string>
+    <string name="sync_interval_every_minutes">Every %1$d minutes</string>
+    <string name="sync_interval_current">Every %1$d minutes. How often 4Tasks checks your accounts for changes made on other devices when it isn't open</string>
     <string name="google_sync_limits_title">What stays on this phone</string>
     <string name="google_sync_limits_summary">Google Tasks can only hold titles, notes, due dates, completion and subtasks. Reminders, repeats, times of day, priority and tags stay on this phone and are not synced. A reminder still goes off here, but you will not see it in Google Tasks or on your other devices.</string>
     <string name="legal_disclosure_prefix_using">By using Tasks.org</string>

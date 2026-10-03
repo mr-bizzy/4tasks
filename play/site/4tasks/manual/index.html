@@ -255,11 +255,12 @@ passwords</em> (mailcow, Nextcloud and others do), make one just for 4Tasks, lim
 then never stored on the phone, and you can revoke the app password on its own.</p>
 <h3>What syncs, and when</h3>
 <p>Titles, notes, dates and times, repeats, priority, tags, reminders, completion, and the list a task is in all sync, both ways.
-A change you make on the phone is sent within about half a minute, or at once when you leave the app. 4Tasks also syncs when you
-open it (if the last sync was more than five minutes ago), when you pull the list down, and in the background about once an hour
-while the phone is online (Android's Data Saver stops the background sync). A task added by voice goes into your default list unless
-the request names another list, so set a list on the server as the default (Settings, Tasks, Task defaults) if you want those tasks
-to sync.</p>
+A change you make on the phone is sent about <strong>10 seconds</strong> after you make it, or at once when you leave the app.
+4Tasks also checks the server <strong>every time you open it</strong> (unless it synced less than 30 seconds ago), when you pull the list down,
+when you tap the <strong>refresh</strong> button on a widget, and in the background <strong>every 15, 30 or 60 minutes</strong> while the phone is
+online (15 to start with; choose in Settings, Accounts, <em>Sync interval</em>; Android's Data Saver stops the background sync). So a change made on
+another device reaches this phone within that interval, or as soon as you open the app. A task added by voice goes into your default list unless
+the request names another list, so set a list on the server as the default (Settings, Tasks, Task defaults) if you want those tasks to sync.</p>
 <h3>Secure connections only</h3>
 <ul>
 <li>The address must be <strong>https://</strong>. A plain <code>http://</code> address is refused, with a message saying so.</li>
@@ -339,7 +340,7 @@ your tasks to a new phone. A synced server is another.</p>
 your launcher allows it, <em>Add shortcut to home screen</em> and <em>Add widget to home screen</em>. You can also add the widget from
 your launcher's widget list. A <em>New task</em> tile can be added to Android's quick settings.</p>
 <ul>
-<li>A <strong>widget</strong> shows a list on your home screen. Its buttons choose the list, open the widget's settings and add a task.
+<li>A <strong>widget</strong> shows a list on your home screen. Its buttons choose the list, refresh (sync now, and redraw), open the widget's settings and add a task. On a very narrow widget the refresh button is left out.
 Tap a task to open it, tick the box to complete it. Each widget has its own settings: <em>Filter</em> (which list), <em>Theme</em>, header <em>Colour</em>, <em>Opacity</em>,
 spacing, font size, and what each row shows.</li>
 <li>By default a widget follows your wallpaper colours, whatever the app's own switch says. If you choose a colour for a widget, its header uses that colour.</li>
@@ -350,7 +351,7 @@ spacing, font size, and what each row shows.</li>
 <p>Tap <strong>⚙</strong> at the top right of the main screen. Settings has four tabs, each a column of cards, and each card opens the page it names:</p>
 <table>
 <tr><th>Tab</th><th>Cards</th></tr>
-<tr><td>Accounts</td><td>Local lists, each account you have added, Add account, Apps allowed to use 4Tasks.</td></tr>
+<tr><td>Accounts</td><td>Local lists, each account you have added, Add account, Sync interval, Apps allowed to use 4Tasks.</td></tr>
 <tr><td>Tasks</td><td>Task defaults, Task list options (font size, spacing, chips, per-list sorting), Edit screen options, Date and time, Notifications.</td></tr>
 <tr><td>Look</td><td>Look and feel, Navigation drawer, Widget settings.</td></tr>
 <tr><td>More</td><td>Backups, Advanced, About.</td></tr>

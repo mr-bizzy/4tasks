@@ -154,6 +154,14 @@ class TasksWidget : AppWidgetProvider() {
             onClick = getChooseListIntent(context, filter, id),
         )
         setupButton(
+            viewId = R.id.widget_refresh,
+            enabled = !widgetPreferences.compact,
+            color = buttonColor,
+            vPad = vPad,
+            hPad = hPad,
+            onClick = getSyncNowIntent(context, id),
+        )
+        setupButton(
             viewId = R.id.widget_reconfigure,
             enabled = widgetPreferences.showSettings,
             color = buttonColor,
@@ -234,6 +242,16 @@ class TasksWidget : AppWidgetProvider() {
             .putExtra(FINISH_AFFINITY, true)
         intent.action = "new_task"
         return PendingIntent.getActivity(
+            context,
+            widgetId,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+    }
+
+    private fun getSyncNowIntent(context: Context, widgetId: Int): PendingIntent {
+        val intent = Intent(context, WidgetSyncReceiver::class.java).setAction(WidgetSyncReceiver.ACTION)
+        return PendingIntent.getBroadcast(
             context,
             widgetId,
             intent,

@@ -688,6 +688,13 @@ class Preferences @JvmOverloads constructor(
             ).toLong()
         )
 
+    /** The periodic background sync, in minutes: 15, 30 or 60 (org.tasks.sync.SyncInterval). */
+    var syncIntervalMinutes: Int
+        get() = org.tasks.sync.SyncInterval.normalise(getInt(R.string.p_sync_interval_minutes, org.tasks.sync.SyncInterval.DEFAULT_MINUTES))
+        set(value) {
+            setInt(R.string.p_sync_interval_minutes, org.tasks.sync.SyncInterval.normalise(value))
+        }
+
     var lastSync: Long
         get() = getLong(R.string.p_last_sync, 0L)
         set(value) {

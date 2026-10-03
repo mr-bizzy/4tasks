@@ -148,6 +148,19 @@ class SyncAdaptersDebounceTest {
         assertEquals(listOf(SyncSource.USER_INITIATED), synced)
     }
 
+    /** Opening the app asks for APP_RESUME. It used to be dropped (SyncSource.NONE kept itself against it), so the app never synced on open. */
+    @Test
+    fun openingTheAppSyncs() = runBlocking {
+        setupAccount()
+        val adapters = syncAdapters()
+        quiet()
+
+        adapters.sync(SyncSource.APP_RESUME)
+        awaitSync()
+
+        assertEquals(listOf(SyncSource.APP_RESUME), synced)
+    }
+
     @Test
     fun directRequestDuringBurstKeepsItsPriority() = runBlocking {
         setupAccount()

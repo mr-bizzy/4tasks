@@ -128,7 +128,7 @@ class WorkManagerImpl(
             ).isNotEmpty()
             if (enabled) {
                 Timber.d("Enabling background sync")
-                val builder = PeriodicWorkRequest.Builder(SyncWork::class.java, 1, TimeUnit.HOURS)
+                val builder = PeriodicWorkRequest.Builder(SyncWork::class.java, preferences.syncIntervalMinutes.toLong(), TimeUnit.MINUTES)
                     .setInputData(SyncWork.EXTRA_SOURCE to SyncSource.BACKGROUND.name)
                     .setConstraints(networkConstraints)
                 workManager.enqueueUniquePeriodicWork(

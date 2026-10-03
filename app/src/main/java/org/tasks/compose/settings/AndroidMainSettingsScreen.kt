@@ -26,6 +26,9 @@ fun AndroidMainSettingsScreen(
     showAddAccount: Boolean = true,
     showWorksWith: Boolean = true,
     onConnectedAppsClick: (() -> Unit)? = null,
+    syncIntervalMinutes: Int? = null,
+    syncIntervalChoices: List<Int> = emptyList(),
+    onSyncIntervalSelected: (Int) -> Unit = {},
 ) {
     MainSettingsScreen(
         accounts = accounts,
@@ -43,6 +46,9 @@ fun AndroidMainSettingsScreen(
         showAddAccount = showAddAccount,
         showWorksWith = showWorksWith,
         onConnectedAppsClick = onConnectedAppsClick,
+        syncIntervalMinutes = syncIntervalMinutes,
+        syncIntervalChoices = syncIntervalChoices,
+        onSyncIntervalSelected = onSyncIntervalSelected,
         bottomContent = {
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         },

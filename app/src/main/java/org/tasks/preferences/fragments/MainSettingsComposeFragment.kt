@@ -68,6 +68,7 @@ class MainSettingsComposeFragment : Fragment() {
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var configuration: PlatformConfiguration
     @Inject lateinit var inventory: Inventory
+    @Inject lateinit var workManager: org.tasks.jobs.WorkManager
 
     private val viewModel: MainSettingsViewModel by viewModels()
     private val proCardViewModel: ProCardViewModel by viewModels()
@@ -93,7 +94,17 @@ class MainSettingsComposeFragment : Fragment() {
                             preferencesViewModel.staleLocalBackup ||
                             preferencesViewModel.staleRemoteBackup)
 
+            var syncInterval by remember { mutableStateOf(preferences.syncIntervalMinutes) }
+            val hasSyncAccount = filteredAccounts.any { it.accountType != org.tasks.data.entity.CaldavAccount.TYPE_LOCAL }
+
             AndroidMainSettingsScreen(
+                syncIntervalMinutes = if (hasSyncAccount) syncInterval else null,
+                syncIntervalChoices = org.tasks.sync.SyncInterval.CHOICES_MINUTES,
+                onSyncIntervalSelected = { minutes ->
+                    preferences.syncIntervalMinutes = minutes
+                    syncInterval = preferences.syncIntervalMinutes
+                    workManager.updateBackgroundSync()
+                },
                 accounts = filteredAccounts,
                 proCardState = null, // no Pro, no donation card in 4Tasks
                 environmentLabel = null,

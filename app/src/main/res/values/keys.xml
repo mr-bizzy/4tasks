@@ -378,6 +378,7 @@
   <string name="p_shown_beast_mode_hint">shown_beast_mode_hint</string>
   <string name="p_beast_mode_order">beast_mode_order_v6</string>
   <string name="p_last_sync">last_sync_time</string>
+  <string name="p_sync_interval_minutes">sync_interval_minutes</string>
   <string name="p_multiline_title">multiline_title</string>
   <string name="p_dynamic_color">dynamic_color</string>
   <string name="remote_config_tos_version">tos_version</string>
