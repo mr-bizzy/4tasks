@@ -10,8 +10,9 @@ class PreferenceDrawerConfiguration(
     override val filtersEnabled: Boolean
         get() = preferences.getBoolean(R.string.p_filters_enabled, super.filtersEnabled)
 
+    // Places need location, which 4Tasks does not have: the drawer never shows them.
     override val placesEnabled: Boolean
-        get() = preferences.getBoolean(R.string.p_places_enabled, super.placesEnabled)
+        get() = false
 
     override val hideUnusedPlaces: Boolean
         get() = preferences.getBoolean(R.string.p_places_hide_unused, super.hideUnusedPlaces)

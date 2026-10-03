@@ -36,6 +36,7 @@ fun NavigationDrawerScreen(
     tagsEnabled: Boolean,
     hideUnusedTags: Boolean,
     placesEnabled: Boolean,
+    showPlaces: Boolean = true,
     hideUnusedPlaces: Boolean,
     onCustomizeDrawer: (() -> Unit)? = null,
     onFiltersEnabled: (Boolean) -> Unit,
@@ -126,29 +127,31 @@ fun NavigationDrawerScreen(
             }
         }
 
-        // Places section
-        SectionHeader(
-            stringResource(Res.string.drawer_places),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    checked = placesEnabled,
-                    onCheckedChange = onPlacesEnabled,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.hide_unused_places),
-                    checked = hideUnusedPlaces,
-                    enabled = placesEnabled,
-                    onCheckedChange = onHideUnusedPlaces,
-                )
+        if (showPlaces) {
+            // Places section
+            SectionHeader(
+                stringResource(Res.string.drawer_places),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            )
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            ) {
+                SettingsItemCard(position = CardPosition.First) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.enabled),
+                        checked = placesEnabled,
+                        onCheckedChange = onPlacesEnabled,
+                    )
+                }
+                SettingsItemCard(position = CardPosition.Last) {
+                    SwitchPreferenceRow(
+                        title = stringResource(Res.string.hide_unused_places),
+                        checked = hideUnusedPlaces,
+                        enabled = placesEnabled,
+                        onCheckedChange = onHideUnusedPlaces,
+                    )
+                }
             }
         }
 

@@ -161,7 +161,12 @@ fun SwitchPreferenceRow(
     )
 }
 
+/**
+ * A card for something that cannot be undone (reset, delete): the stock Card shape, 14 dp inside, the title in the
+ * danger colour on a faint tint of it. No leading icon: [icon] is accepted and ignored, as in [PreferenceRow].
+ */
 @Composable
+@Suppress("UNUSED_PARAMETER")
 fun DangerCard(
     icon: ImageVector,
     title: String,
@@ -172,7 +177,6 @@ fun DangerCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(SettingsCardRadius),
         colors = CardDefaults.cardColors(
             containerColor = tint.copy(alpha = 0.08f),
         ),
@@ -181,21 +185,12 @@ fun DangerCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
-                .padding(vertical = SettingsRowPadding),
+                .padding(SettingsCardPadding),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(start = SettingsContentPadding)
-                    .size(SettingsIconSize),
-                tint = tint,
-            )
-            Spacer(modifier = Modifier.width(SettingsContentPadding))
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleSmall,
                 color = tint,
                 modifier = Modifier.weight(1f),
                 maxLines = 1,
@@ -205,13 +200,10 @@ fun DangerCard(
                 Icon(
                     imageVector = trailingIcon,
                     contentDescription = null,
-                    modifier = Modifier
-                        .padding(end = SettingsContentPadding)
-                        .size(SettingsIconSize),
+                    modifier = Modifier.size(SettingsIconSize),
                     tint = tint.copy(alpha = 0.6f),
                 )
             }
         }
     }
 }
-

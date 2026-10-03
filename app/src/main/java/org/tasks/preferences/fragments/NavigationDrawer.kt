@@ -35,6 +35,7 @@ class NavigationDrawer : Fragment() {
         ) {
             NavigationDrawerContent(
                 viewModel = viewModel,
+                showPlaces = false,
                 onCustomizeDrawer = {
                     startActivity(
                         Intent(requireContext(), NavigationDrawerCustomization::class.java)

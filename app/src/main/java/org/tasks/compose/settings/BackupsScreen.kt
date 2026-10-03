@@ -29,24 +29,11 @@ fun BackupsScreen(
     lastBackupSummary: String,
     showLocalBackupWarning: Boolean,
     backupsEnabled: Boolean,
-    driveBackupEnabled: Boolean,
-    driveAccountSummary: String,
-    driveAccountEnabled: Boolean,
-    lastDriveBackupSummary: String,
-    showDriveBackupWarning: Boolean,
-    androidBackupEnabled: Boolean,
-    lastAndroidBackupSummary: String,
-    showAndroidBackupWarning: Boolean,
     ignoreWarnings: Boolean,
-    onDocumentation: () -> Unit,
     onBackupDir: () -> Unit,
     onBackupNow: () -> Unit,
     onImportBackup: () -> Unit,
     onBackupsEnabled: (Boolean) -> Unit,
-    onDriveBackup: (Boolean) -> Unit,
-    onDriveAccount: () -> Unit,
-    onAndroidBackup: (Boolean) -> Unit,
-    onDeviceSettings: () -> Unit,
     onIgnoreWarnings: (Boolean) -> Unit,
 ) {
     Column(
@@ -55,17 +42,6 @@ fun BackupsScreen(
             .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(rememberScrollState())
     ) {
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
-
-        // Documentation
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            PreferenceRow(
-                title = stringResource(R.string.documentation),
-                icon = Icons.AutoMirrored.Outlined.OpenInNew,
-                onClick = onDocumentation,
-            )
-        }
-
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         // Backup directory, backup now, import
@@ -101,69 +77,6 @@ fun BackupsScreen(
                     title = stringResource(R.string.automatic_backups),
                     checked = backupsEnabled,
                     onCheckedChange = onBackupsEnabled,
-                )
-            }
-        }
-
-        // Google Drive backup section
-        SectionHeader(
-            R.string.google_drive_backup,
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                val errorColor = colorResource(R.color.overdue)
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.enabled),
-                    summary = lastDriveBackupSummary,
-                    checked = driveBackupEnabled,
-                    onCheckedChange = onDriveBackup,
-                    icon = if (showDriveBackupWarning)
-                        Icons.Outlined.ErrorOutline else null,
-                    iconTint = if (showDriveBackupWarning) errorColor else null,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.account),
-                    summary = driveAccountSummary,
-                    enabled = driveAccountEnabled,
-                    onClick = onDriveAccount,
-                )
-            }
-        }
-
-        // Android Backup Service section
-        SectionHeader(
-            R.string.android_auto_backup,
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            SettingsItemCard(position = CardPosition.First) {
-                val errorColor = colorResource(R.color.overdue)
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.enabled),
-                    summary = lastAndroidBackupSummary,
-                    checked = androidBackupEnabled,
-                    onCheckedChange = onAndroidBackup,
-                    icon = if (showAndroidBackupWarning)
-                        Icons.Outlined.ErrorOutline else null,
-                    iconTint = if (showAndroidBackupWarning) errorColor else null,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.device_settings),
-                    summary = stringResource(R.string.android_auto_backup_device_summary),
-                    summaryMaxLines = 4,
-                    icon = Icons.AutoMirrored.Outlined.OpenInNew,
-                    onClick = onDeviceSettings,
                 )
             }
         }

@@ -174,3 +174,12 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   Every detail screen uses the same shared card and row, so they follow it too. Slider titles are titleSmall.
 - **Not done and why:** 4Dictate's Settings could not be opened on the emulator without accepting its accessibility
   disclosure, which is not mine to accept; the comparison is by its code and the measured numbers.
+
+## 2026-10-03 — Leftovers removed (PMs' consistency decisions, owner's delegation)
+
+- Removed: the Google Drive backup and Android Backup Service sections and the "Documentation" row (a Tasks.org link) from
+  Backups; the Places row in the drawer and the Places section in the drawer's settings (the drawer config now says places
+  are never enabled: no location); the leading icon on the danger cards (reset, delete). Kept: the open list's name under
+  the title, the bottom bar and the + button, collapse chevrons, list chips, the edit-screen field icons and switches, and
+  "Astrid manual sorting", which is a working legacy sort mode for My Tasks, Today and tags (its own summary says it will be
+  replaced by "My order"), so removing it would remove a function.

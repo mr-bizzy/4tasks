@@ -105,18 +105,7 @@ class Backups : Fragment() {
                 lastBackupSummary = viewModel.lastBackupSummary,
                 showLocalBackupWarning = viewModel.showLocalBackupWarning,
                 backupsEnabled = viewModel.backupsEnabled,
-                driveBackupEnabled = viewModel.driveBackupEnabled,
-                driveAccountSummary = viewModel.driveAccountSummary,
-                driveAccountEnabled = viewModel.driveAccountEnabled,
-                lastDriveBackupSummary = viewModel.lastDriveBackupSummary,
-                showDriveBackupWarning = viewModel.showDriveBackupWarning,
-                androidBackupEnabled = viewModel.androidBackupEnabled,
-                lastAndroidBackupSummary = viewModel.lastAndroidBackupSummary,
-                showAndroidBackupWarning = viewModel.showAndroidBackupWarning,
                 ignoreWarnings = viewModel.ignoreWarnings,
-                onDocumentation = {
-                    requireContext().openUri(R.string.url_backups)
-                },
                 onBackupDir = {
                     backupDirLauncher.launch(
                         FileHelper.newDirectoryPickerIntent(
@@ -137,22 +126,6 @@ class Backups : Fragment() {
                     )
                 },
                 onBackupsEnabled = { viewModel.updateBackupsEnabled(it) },
-                onDriveBackup = { enabled ->
-                    if (enabled) {
-                        requestGoogleDriveLogin()
-                    } else {
-                        viewModel.disableDriveBackup(preferencesViewModel)
-                    }
-                },
-                onDriveAccount = {
-                    requestGoogleDriveLogin()
-                },
-                onAndroidBackup = { enabled ->
-                    viewModel.updateAndroidBackup(enabled, preferencesViewModel)
-                },
-                onDeviceSettings = {
-                    startActivity(Intent(Settings.ACTION_SETTINGS))
-                },
                 onIgnoreWarnings = { enabled ->
                     viewModel.updateIgnoreWarnings(enabled, preferencesViewModel)
                 },

@@ -14,6 +14,7 @@ import org.tasks.viewmodel.NavigationDrawerViewModel
 fun NavigationDrawerContent(
     viewModel: NavigationDrawerViewModel,
     onCustomizeDrawer: (() -> Unit)? = null,
+    showPlaces: Boolean = true,
 ) {
     if (!viewModel.loaded) {
         Box(
@@ -34,6 +35,7 @@ fun NavigationDrawerContent(
         tagsEnabled = settings.tagsEnabled,
         hideUnusedTags = settings.hideUnusedTags,
         placesEnabled = settings.placesEnabled,
+        showPlaces = showPlaces,
         hideUnusedPlaces = settings.hideUnusedPlaces,
         onCustomizeDrawer = onCustomizeDrawer,
         onFiltersEnabled = { viewModel.updateFiltersEnabled(it) },
