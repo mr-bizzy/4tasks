@@ -4,6 +4,9 @@
     <string name="search_no_results">No results</string>
     <string name="requires_pro_subscription">Requires pro subscription</string>
     <string name="password_required">Password required</string>
+    <string name="caldav_server_unauthorized">The server did not accept your username or password</string>
+    <string name="caldav_server_forbidden">The server does not allow this. Your account may not be permitted to change lists, or the server does not support it.</string>
+    <string name="caldav_server_error">The server refused the request (code %1$d). Try again later.</string>
     <string name="caldav_home_set_not_found">Home set not found</string>
     <string name="subscription_required_description">Unlock all features for as little as $1 USD/year</string>
     <string name="subscribe">Subscribe</string>

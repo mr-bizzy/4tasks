@@ -484,3 +484,16 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **NOT verified:** the S25's own stall (Android 17 Samsung; CONNECTIVITY unsatisfied for 9 minutes) is not reproducible on the emulators; the design avoids the
   path it took, but only the phone can confirm. The periodic job did not run in forced Doze within 20 minutes. Google Tasks / Microsoft sync were not part of the
   matrix (CalDAV only).
+
+## 2026-10-04 — Creating a list on SOGo failed with "HTTP 403" (0.1.7-beta, 151218)
+
+- **Report (PM, owner's SOGo/mailcow account, A9):** a new list with an icon failed with `ForbiddenException` at `CaldavClient.makeCollection`; server log: MKCOL 201, then PROPPATCH 403,
+  twice; two collections were left behind with numeric names (SOGo ignored the displayname and colour in the extended MKCOL). Inherited from upstream; Radicale accepts all of it, which
+  is why the harness never saw it. The two orphan collections are NOT touched (the owner's call).
+- **Fix (`CaldavClient.makeCollection`):** the icon PROPPATCH is best effort (a refusal or failure is logged, the list stays); after the MKCOL the name and colour are read back with a
+  PROPFIND and, where the server did not apply them, set with one PROPPATCH each (also best effort, so a failed read-back never fails a create that already made the collection). The icon
+  on `updateCollection` is best effort too. The snackbar for a server refusal is plain English (401: username or password not accepted; 403: the server does not allow this; other:
+  the code and "try again later") instead of dav4jvm's "HTTP 403".
+- **Tested:** `MakeCollectionTest` runs the real client against a fake server that behaves like the owner's SOGo (MKCOL ignores the body, the icon PROPPATCH answers 403, name PROPPATCH
+  accepted) and variants (compliant server, name refused, no icon): 5 of 5 fail on the old client, pass on the new. NOT tested against a real SOGo (none here), and MKCALENDAR as a
+  fallback was not added: the PROPPATCH read-back covers the symptom seen.

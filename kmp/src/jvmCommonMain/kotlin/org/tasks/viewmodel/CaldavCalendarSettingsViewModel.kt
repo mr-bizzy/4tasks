@@ -36,6 +36,9 @@ import org.tasks.sync.SyncAdapters
 import org.tasks.sync.SyncSource
 import org.tasks.ui.DisplayableException
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.caldav_server_error
+import tasks.kmp.generated.resources.caldav_server_forbidden
+import tasks.kmp.generated.resources.caldav_server_unauthorized
 import tasks.kmp.generated.resources.error_adding_account
 import tasks.kmp.generated.resources.name_cannot_be_empty
 import tasks.kmp.generated.resources.network_error
@@ -254,11 +257,17 @@ open class CaldavCalendarSettingsViewModel(
     private suspend fun handleError(e: Exception) {
         Logger.e(e) { "CalDAV calendar operation failed" }
         val message = when (e) {
-            is HttpException -> e.message
+            is HttpException -> serverRefusalMessage(e.statusCode)
             is DisplayableException -> getString(e.resource)
             is ConnectException -> getString(Res.string.network_error)
             else -> getString(Res.string.error_adding_account, e.message ?: "")
         }
         stateManager.update { it.copy(snackbar = message) }
+    }
+
+    private suspend fun serverRefusalMessage(code: Int) = when (code) {
+        401 -> getString(Res.string.caldav_server_unauthorized)
+        403 -> getString(Res.string.caldav_server_forbidden)
+        else -> getString(Res.string.caldav_server_error, code)
     }
 }

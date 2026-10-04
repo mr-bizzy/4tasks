@@ -24,6 +24,7 @@ import at.bitfire.dav4jvm.property.webdav.WebDAV
 import at.bitfire.dav4jvm.property.webdav.WebDAV.NS_WEBDAV
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.withContext
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -241,16 +242,48 @@ open class CaldavClient(
         DavResource(httpClient, httpUrl!!).delete(null) {}
     }
 
+    /**
+     * Creates the list. The MKCOL carries the name and colour (RFC 5689), but not every server applies them: SOGo makes the collection and
+     * keeps its numeric path as the name. So after the MKCOL the name and colour are read back and, where they are not what was asked, set
+     * with PROPPATCH. The icon is a property only 4Tasks and Tasks.org know; a server that refuses it (SOGo answers 403) still has a
+     * perfectly good list, so refusing it must not fail the create, and neither must a failed read-back: the collection already exists.
+     */
     @Throws(IOException::class, XmlPullParserException::class, HttpException::class)
     suspend fun makeCollection(displayName: String, color: Int, icon: String?): String = withContext(Dispatchers.IO) {
         val davResource = DavResource(httpClient, httpUrl!!.resolve(UUIDHelper.newUUID() + "/")!!)
-        val mkcolString = getMkcolString(displayName, color)
-        davResource.mkCol(mkcolString) {}
+        davResource.mkCol(getMkcolString(displayName, color)) {}
+        val location = davResource.location
         if (icon?.isNotBlank() == true) {
-            davResource.proppatch(CalendarIcon.NAME, icon)
+            bestEffort("icon") {
+                proppatch(location, proppatchBody(set = listOf(CalendarIcon.NAME to icon), remove = emptyList()))
+            }
         }
-        davResource.location.toString()
+        bestEffort("name and colour read-back") {
+            val applied = DavResource(httpClient, location)
+                .propfind(0, WebDAV.DisplayName, CalDAV.CalendarColor)
+                .firstOrNull()
+                ?.first
+            if (applied?.get(DisplayName::class.java)?.displayName?.trim() != displayName.trim()) {
+                proppatch(location, proppatchBody(set = listOf(WebDAV.DisplayName to displayName), remove = emptyList()))
+            }
+            if (color != 0 && applied?.get(CalendarColor::class.java)?.color?.let { it and 0xFFFFFF } != (color and 0xFFFFFF)) {
+                proppatch(location, proppatchBody(set = listOf(CalDAV.CalendarColor to colorString(color)), remove = emptyList()))
+            }
+        }
+        location.toString()
     }
+
+    private suspend fun bestEffort(what: String, block: suspend () -> Unit) {
+        try {
+            block()
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Logger.w(e, tag = "CaldavClient") { "new list: $what failed, carrying on" }
+        }
+    }
+
+    private fun colorString(color: Int) = String.format("#%06X", color and 0xFFFFFF)
 
     @Throws(IOException::class, XmlPullParserException::class, HttpException::class)
     suspend fun updateCollection(displayName: String, color: Int, icon: String?): String =
@@ -264,7 +297,7 @@ open class CaldavClient(
                     )
                 }
                 if (icon?.isNotBlank() == true) {
-                    proppatch(CalendarIcon.NAME, icon)
+                    bestEffort("icon") { proppatch(location, proppatchBody(set = listOf(CalendarIcon.NAME to icon), remove = emptyList())) }
                 }
                 location.toString()
             }
