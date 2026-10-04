@@ -1,0 +1,15 @@
+push door add fg 13.6 
+push door add bg 14.3 
+push door add killed 14.0 
+push door add doze 15.0 
+push door add cached 14.7 
+push door tick cached 14.0 
+push inapp tick bg 13.8 
+push inapp tick killed 13.9 
+push inapp tick doze None >120s
+push inapp add bg 15.1 
+push share add bg 14.8 
+push notification tick bg 14.3 
+push notification tick killed 16.6 
+push notification tick doze 14.1 
+push widget tick bg 14.3 

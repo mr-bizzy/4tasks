@@ -8,7 +8,8 @@ for f in sorted(glob.glob("results/*.csv")):
     for r in csv.DictReader(open(f)):
         key = (r["kind"], r["origin_or_discovery"], r["op"], r["state"])
         val = r["seconds"] if r["seconds"] else ("never (" + r["note"] + ")" if r["note"] else "")
-        rows[key][(r["api"], r["apk"])] = val
+        apk = "after" if r["apk"] == "final" else r["apk"]     # 'final' = the release candidate, re-run for the cells its last change touched
+        rows[key][(r["api"], apk)] = val
 cols = sorted({c for v in rows.values() for c in v}, key=lambda c: (int(c[0]), c[1] != "before"))
 out = []
 for kind, title in (("push", "Push: seconds from the change on the origin to the server"), ("recv", "Receive: seconds from the server change to the receiver showing it")):

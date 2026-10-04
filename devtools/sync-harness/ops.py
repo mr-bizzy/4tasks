@@ -152,7 +152,8 @@ def inapp(dev, op, o):
     new_task_screen_ready(dev)
     time.sleep(0.5)
     if op == "edit_title":
-        dev.tap(540, 364)                     # into the title field
+        t = dev.find(text=o.title, exact=True)     # the title field sits at a different height with and without edge-to-edge insets
+        dev.tap(540, t.cy) if t else dev.tap(540, 364)   # into the title field
         time.sleep(0.4)
         dev.key("KEYCODE_MOVE_END")
         dev.text("e")

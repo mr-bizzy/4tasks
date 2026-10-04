@@ -464,3 +464,23 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   on the S25 is unknown: if the UID is blocked, the CONNECTIVITY constraint may hold it until the app is opened. Mitigations that
   do not depend on it: sync on every open, pull-to-refresh, widget refresh. The manual's troubleshooting table now says so and
   suggests Battery: Unrestricted.
+
+## 2026-10-04 — The sync reliability pass, as one design (0.1.6-beta, 151216)
+
+- **Why:** four sync bugs in a day (a push that never left the phone, an app-open that never synced, a delayed job Android held, a worker that
+  "succeeded" without a network). The owner asked for one coherent job, not more spot fixes. Design and reasons: `docs/SYNC-DESIGN.md`.
+- **What changed (one policy):** every sync request that a person waits on is EXPEDITED work (`SyncSource.expedited`); the 10 s delayed-job mechanism is gone.
+  A changed task: dirty row (one signal, every origin) → 1 s in-process debounce → expedited SyncWork; leaving the app flushes the debounce. App open
+  syncs (30 s guard); pull-to-refresh and the new widget refresh button are USER_INITIATED; boot syncs; the periodic job is `PeriodicSyncWork`, a pure
+  hand-off with no network constraint that asks for an expedited sync, and its interval is a setting (15 / 30 / 60 min, default 15). SyncWork waits up to
+  5 s for the network and otherwise asks WorkManager to retry (it used to report success). The 4Link door's `tasks.add` is a CREATE effect.
+- **Measured (emulators, Android 13/14/16/17, local Radicale; `devtools/sync-harness`, `RESULTS.md`):** a change from any origin reaches the server in 1.9-5.3 s
+  in every app state (0.1.5: 12-17 s, and a tick made in Doze or by the door in Doze never arrived within 120 s); open 5-9 s; pull about 6 s; widget refresh 8 s.
+  Ordinary delayed jobs ran ~24 s later with NO network; expedited jobs ran at once with network; periodic jobs had network.
+- **Found on the way:** WorkManager's `UPDATE` policy kept the old worker class, so an install updated from 0.1.5 would have kept the old periodic
+  `SyncWork` spec. The periodic job now has its own name (`tag_periodic_sync`), and the old name is cancelled at every update; checked by
+  `upgrade_check.py` (0.1.5 → 0.1.6: old spec CANCELLED, new ENQUEUED). The first "before" run silently tested the new build (adb refused the downgrade): the
+  harness now uninstalls first.
+- **NOT verified:** the S25's own stall (Android 17 Samsung; CONNECTIVITY unsatisfied for 9 minutes) is not reproducible on the emulators; the design avoids the
+  path it took, but only the phone can confirm. The periodic job did not run in forced Doze within 20 minutes. Google Tasks / Microsoft sync were not part of the
+  matrix (CalDAV only).

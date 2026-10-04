@@ -15,3 +15,17 @@ push inapp tick doze 4.1
 push inapp edit_title fg 4.0 
 push inapp edit_due bg 3.8 
 push inapp untick bg 2.6 
+push inapp delete bg 3.1 
+push inapp move bg 4.6 
+push share add bg 3.6 
+push share add doze 3.9 
+push tile add bg 3.6 
+push widget tick bg None op failed
+push widget add bg None op failed
+push notification tick bg 4.0 
+push notification tick killed None precondition: task did not reach the origin
+push notification tick doze None precondition: task did not reach the origin
+recv open bg 6.1 
+recv open killed 7.9 
+recv pull fg 5.8 
+recv widget bg 8.5 

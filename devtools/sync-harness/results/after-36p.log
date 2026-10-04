@@ -1,0 +1,3 @@
+recv periodic bg 855.2 first background SyncWork
+recv periodic killed None >1200s
+recv periodic doze None >1200s

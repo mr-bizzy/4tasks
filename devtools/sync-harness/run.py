@@ -119,7 +119,8 @@ def recv_cell(rig, disc, state, timeout=120):
     elif state == "bg" or disc == "widget":
         r.start_app(); time.sleep(1.5); r.home(); time.sleep(1)
     elif state == "killed":
-        r.home(); time.sleep(1); r.force_stop()
+        # a periodic job survives the process being killed (swipe from recents, memory pressure) but not a force-stop, which cancels the app's jobs
+        r.home(); time.sleep(1); r.kill() if disc == "periodic" else r.force_stop()
     elif state == "doze":
         r.start_app(); time.sleep(1.5); r.home(); time.sleep(1); r.doze(True)
     r.adb("logcat", "-c")

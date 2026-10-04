@@ -1,0 +1,11 @@
+push notification tick killed 5.1 
+Traceback (most recent call last):
+  File "/home/biz/AndroidStudioProjects/4tasks/devtools/sync-harness/run.py", line 208, in <module>
+    main()
+  File "/home/biz/AndroidStudioProjects/4tasks/devtools/sync-harness/run.py", line 168, in main
+    rig.up()
+  File "/home/biz/AndroidStudioProjects/4tasks/devtools/sync-harness/rig.py", line 32, in up
+    d.wait_boot()
+  File "/home/biz/AndroidStudioProjects/4tasks/devtools/sync-harness/lib.py", line 54, in wait_boot
+    raise TimeoutError(f"{self.serial} did not boot")
+TimeoutError: emulator-5568 did not boot

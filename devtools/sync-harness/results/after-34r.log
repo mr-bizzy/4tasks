@@ -1,0 +1,4 @@
+push widget tick bg None >120s
+push widget add bg 3.5 
+push notification tick killed None op failed
+push notification tick doze 4.0 

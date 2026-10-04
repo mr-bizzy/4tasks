@@ -8,7 +8,7 @@ Written 2026-10-03 after four sync bugs in one day (a push that never left the p
 
 The database on the phone is the truth the user sees; a sync account (CalDAV, Microsoft To Do, Google Tasks) is a replica. Two things move data:
 
-* **Push:** every local change, from any origin, marks the task *dirty* at the data layer: `TaskDao.kt:84,197,231`, `DeletionDao.kt:68`, `CaldavDao.kt:274,298`
+* **Push:** every local change, from any origin, marks the task *dirty* at the data layer: `TaskDao.kt:84,197,231`, `CompletionDao.kt:29` (a tick), `DeletionDao.kt:68`, `CaldavDao.kt:274,298`
   all call `DirtyDao.setDirty` (`DirtyDao.kt:72-83`: a row in `task_dirty`, `dirty_version > synced_version`). There is exactly ONE signal that something needs pushing,
   whether the change came from the list, the edit screen, the widget, a notification action, the share sheet, the quick-settings tile or the 4Link door.
 * **Pull:** the synchroniser (`CaldavSynchronizer` and its siblings) fetches the server's changes. There is no server push (see 4).
@@ -18,20 +18,20 @@ only the question "when does `SyncWork` run".
 
 ## 2. The triggers: what starts `SyncWork`, where it runs, what we expect
 
-Everything goes through `SyncAdapters` (`kmp/.../sync/SyncAdapters.kt`), which decides *whether* and hands *how* to `WorkManagerImpl.sync` (`WorkManagerImpl.kt:101-122`).
-How is decided by the `SyncSource` (`kmp/.../sync/SyncSource.kt`): `waitsInWorkManager`, `expedited`, `showIndicator`.
+Everything goes through `SyncAdapters` (`kmp/.../sync/SyncAdapters.kt`), which decides *whether* and hands *how* to `WorkManagerImpl.sync` (`WorkManagerImpl.kt:102-121`).
+How is decided by the `SyncSource` (`kmp/.../sync/SyncSource.kt`): `showIndicator` (what the UI shows), `immediate` (how the request ranks against others) and `expedited` (how WorkManager runs it).
 
 | Trigger | Path | Runs as | Latency we aim for |
 |---|---|---|---|
-| Local change (any origin) | `hasDirtyTasks()` flow (`SyncAdapters.kt:81`) → 1 s debounce (`:176`) → `runSync(TASK_CHANGE)` (`:122`) | **expedited**, no delay (`SyncSource.TASK_CHANGE`) | push in seconds |
+| Local change (any origin) | `hasDirtyTasks()` flow (`SyncAdapters.kt:81`) → 1 s debounce (`:85`) → `runSync(TASK_CHANGE)` (`:122`) | **expedited**, no delay (`SyncSource.TASK_CHANGE`) | push in seconds |
 | Leaving the app | `onPause` → `flushPending()` (`TasksApplication.kt:114`, `SyncAdapters.kt:156`) | in-process, then expedited (`APP_BACKGROUND`) | at once |
 | App opened | `onResume`, unless it synced < 30 s ago (`TasksApplication.kt:107-108`) → `APP_RESUME` | immediate | pull in seconds |
-| Pull-to-refresh | `TaskListFragment.onRefresh` (`:294`) → `USER_INITIATED` | **expedited** | seconds |
-| Widget refresh button | `WidgetSyncReceiver` → `USER_INITIATED` | **expedited** | seconds |
-| Periodic | `WorkManagerImpl.updateBackgroundSync` (`:124-145`), 15 / 30 / 60 min (Settings, Accounts) | WorkManager periodic job | the interval (a safety net, not a latency promise) |
-| After boot | `SystemEventReceiver` starts the process; `TasksApplication.backgroundWork()` builds `SyncAdapters` (`:188-193`), whose flow pushes anything dirty; WorkManager restores the periodic job itself | in-process, expedited | push at once; pull at the next trigger |
+| Pull-to-refresh | `TaskListFragment.kt:294` → `USER_INITIATED` | **expedited** | seconds |
+| Widget refresh button | `WidgetSyncReceiver.kt:23` → `USER_INITIATED` | **expedited** | seconds |
+| Periodic | `WorkManagerImpl.updateBackgroundSync` (`:123-146`), 15 / 30 / 60 min (Settings, Accounts) | WorkManager periodic job, `PeriodicSyncWork` (`PeriodicSyncWork.kt:27-28`: it only asks for an expedited `BACKGROUND` sync) | the interval (a safety net, not a latency promise) |
+| After boot | `SystemEventReceiver` (`:21-25`) starts the process and asks for a `BOOT_COMPLETED` sync; `TasksApplication.backgroundWork()` builds `SyncAdapters` (`:188-193`), whose flow pushes anything dirty; WorkManager restores the periodic job itself | in-process, expedited | push at once; pull at the next trigger |
 | Network regained | the `CONNECTED` constraint on the job; and `SyncWork` returns `Result.retry()` when there is none (`SyncWork.kt:103`) | WorkManager | when Android grants it |
-| Account added | `SyncAdapters` watches the account count (`:95-105`) → `ACCOUNT_ADDED` | immediate | seconds |
+| Account added | `SyncAdapters` watches the account count (`:105-117`) → `ACCOUNT_ADDED` | immediate | seconds |
 
 The rule behind the table: **nothing a person is waiting on depends on a delayed background job.** Pushes are expedited and start from the process that is still on screen;
 the periodic job is only the net underneath.
@@ -67,8 +67,11 @@ the periodic job is only the net underneath.
 4. **"A worker that finds no network has done its job."** `SyncWork` returned success without syncing (`doSync` skipped everything when `hasNetworkConnectivity()` was false), and
    the dirty task counted as handed off. Now it looks for the network for 5 s and otherwise returns `retry`.
 5. **"The sync indicator and the scheduling are one thing."** `SyncSource.showIndicator` (what to show in the UI) and `immediate` (how urgent) are folded into one `upgrade`
-   rule, which is how 1 happened. The scheduling policy now has its own fields (`waitsInWorkManager`, `expedited`) and its own tests (`SyncSourceTest`).
+   rule, which is how 1 happened. The scheduling policy now has its own field (`expedited`, next to `immediate`) and its own tests (`SyncSourceTest`).
 6. **"The hourly job is the background sync."** It was hourly, fixed. It is now the user's choice (15 / 30 / 60 minutes) and explicitly a safety net.
+   One upgrade trap found by the harness (`devtools/sync-harness/upgrade_check.py`): WorkManager's `ExistingPeriodicWorkPolicy.UPDATE` kept the old worker class, so an install
+   updated from 0.1.5 went on running `SyncWork` with its network constraint. The periodic job now has its own unique name (`TAG_PERIODIC_SYNC`) and the old name is
+   cancelled on every update (`WorkManagerImpl.kt:132`).
 
 ## 5. What we cannot make Android do
 
@@ -91,4 +94,16 @@ runs the per-build smoke subset; `--cells full` the whole matrix. It runs on eve
 
 ## 7. Results
 
-See `devtools/sync-harness/RESULTS.md` (before = 0.1.5, after = the 0.1.6 build).
+Full tables: `devtools/sync-harness/RESULTS.md` (before = 0.1.5, after = the 0.1.6 build; Android 13, 14, 16 and 17 emulators). In short, seconds from the change to the server:
+
+| | 0.1.5 | 0.1.6 |
+|---|---|---|
+| a change from the door, the list, the share sheet, the tile, the widget or a notification, app open / in the background / killed / cached | 12.3-16.6 (one 21.7) | 1.9-5.3 |
+| the same, with the phone in Doze | never within 120 s for a tick (door and in-app, all four APIs); 14-15.5 s for a door add, a notification tick | 2.1-5.0 (9.6 and 9.9 on API 33, a share add and an in-app tick) |
+| another phone's change shows after the app is opened | 2.4-8.1 | 5.1-8.6 |
+| pull-to-refresh / widget refresh button | 5.5-7.1 / 5.9-7.9 | 5.8-6.5 / 7.6-8.6 |
+| periodic job, app in the background or killed | first background sync at 648 s (API 37, depends on the cycle) | 811-1037 s, and the sync it starts has network |
+
+A 0.1.5 push took about 14 s because it waited 10 s in WorkManager after the 1 s debounce; the "never" cells are the delayed job not running at all. What the harness does *not*
+reproduce is the S25's multi-minute CONNECTIVITY stall itself (an Android 17 Samsung state; the emulators run the delayed job late and without network instead), so the S25 is
+still to be checked by hand with 0.1.6. Not measured: the 0.1.5 widget tick on APIs 33 and 36 (the tap did not take effect), and the periodic job in Doze on 0.1.5.

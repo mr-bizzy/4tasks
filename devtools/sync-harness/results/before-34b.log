@@ -1,0 +1,8 @@
+push door tick bg 12.7 
+push door tick doze None >120s
+push inapp edit_title fg 12.3 
+push tile add bg 14.6 
+recv open bg 4.9 
+recv open killed 8.1 
+recv pull fg 7.1 
+recv widget bg 7.7 
