@@ -135,6 +135,30 @@ class TasksDoorLogicTest {
         assertTrue(port.created.isEmpty())
     }
 
+    // ---- long notes -------------------------------------------------------
+
+    private fun longNote(n: Int) = "dictated ".repeat(n / 9 + 1).take(n)
+
+    @Test fun `an 8000 character note is accepted whole by the catalogue and the door`() {
+        val note = longNote(8000)
+        val args = JSONObject().put("title", "Meeting notes").put("notes", note)
+        assertEquals(null, uk.mr_biz.fourlink.Validation.problem(TasksCatalogue.CATALOGUE.find("tasks.add")!!.input, args))
+        ok(call("tasks.add", args.toString()))
+        assertEquals(note.trim(), port.created.single().notes)
+    }
+
+    @Test fun `whatever length the catalogue advertises, the door takes`() {
+        val note = longNote(TasksCatalogue.NOTES_MAX)
+        val args = JSONObject().put("title", "Long").put("notes", note)
+        assertEquals(null, uk.mr_biz.fourlink.Validation.problem(TasksCatalogue.CATALOGUE.find("tasks.add")!!.input, args))
+        ok(call("tasks.add", args.toString()))
+        assertEquals(note.trim(), port.created.single().notes)
+    }
+
+    @Test fun `a five and a half minute dictation fits with room to spare`() {
+        assertTrue(TasksCatalogue.NOTES_MAX >= 8000 * 4)
+    }
+
     // ---- list names, forgivingly -------------------------------------------
 
     private fun listsOf(vararg names: String) { port.lists = names.mapIndexed { i, n -> ListInfo(i + 1L, n, false) } }

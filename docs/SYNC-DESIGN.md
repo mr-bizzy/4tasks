@@ -107,3 +107,16 @@ Full tables: `devtools/sync-harness/RESULTS.md` (before = 0.1.5, after = the 0.1
 A 0.1.5 push took about 14 s because it waited 10 s in WorkManager after the 1 s debounce; the "never" cells are the delayed job not running at all. What the harness does *not*
 reproduce is the S25's multi-minute CONNECTIVITY stall itself (an Android 17 Samsung state; the emulators run the delayed job late and without network instead), so the S25 is
 still to be checked by hand with 0.1.6. Not measured: the 0.1.5 widget tick on APIs 33 and 36 (the tap did not take effect), and the periodic job in Doze on 0.1.5.
+
+## 8. Long notes
+
+A note dictated through the 4Link door can run to thousands of characters (5 minutes of speech is about 4-5 thousand), and it must just work. `TasksCatalogue.NOTES_MAX` is 50,000
+and the door accepts exactly what it advertises (the library validates arguments against the catalogue; `EnginePort`, the database and CalDAV impose no length). Where each account type puts it:
+
+* **CalDAV, Microsoft To Do:** the whole note is sent.
+* **Google Tasks:** the API holds 8,192 characters of notes. Push sends the first 8,192 (`GoogleTaskSynchronizer.kt:272`, `MAX_DESCRIPTION_LENGTH` at `:529`); the local task keeps the whole
+  text. Pull would otherwise overwrite the local text with Google's cut copy, so `getTruncatedValue` (`:554`) keeps the local text when Google's value is exactly the first 8,192
+  characters of it, and takes Google's value in every other case (the note was edited elsewhere, or shortened). This is Tasks.org's own design, inherited unchanged; `GoogleTaskNotesTest`
+  (kmp, jvm) now pins it with a 12,000-character note through push-truncation and pull. A note edited on another device to something that merely starts the same way is
+  taken as that device's text: that is the one case where the local tail is lost, and it is the user's own edit elsewhere.
+* The app says so: Settings, Accounts, "What stays on this phone", and the manual.

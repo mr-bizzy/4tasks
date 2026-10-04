@@ -511,3 +511,16 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Summary:** now "Added to <list>: <title> — <due>, reminder set." with the default list's name when none was given (4Dictate shows it in the "done without asking" notification).
 - **Tests:** 17 new door tests (each rule, two lists that normalise alike, read-only, tasks.list, suggestion valid against the catalogue and runnable) and `ListNamesTest`.
   Not tried by voice on a phone.
+
+## 2026-10-04 — Long dictated notes just work (0.1.9-beta, 151222)
+
+- **Report:** a 5½-minute dictation (about 4-5 thousand characters) went to `tasks.add` as `notes`; 4Dictate's validation refused it against the catalogue's `maxLength` 2000.
+- **Fix:** `TasksCatalogue.NOTES_MAX` is 50,000 (about an hour of speech) instead of 2,000. The PM asked for 8,000; I went higher because the library validates every call against the advertised
+  `maxLength`, so the door could not "accept more than it says", and a 10-minute dictation would again be refused at 8,000. Everything advertised is really accepted (nothing below the catalogue limits the
+  length). 4Dictate re-reads the catalogue when 4Tasks is updated.
+- **Google Tasks lists:** Google holds 8,192 characters of notes. Tasks.org's inherited design already does the right thing (push sends the first 8,192, pull keeps the local whole text when
+  Google's value is exactly the cut of it; `getTruncatedValue`); it is now pinned by `GoogleTaskNotesTest` (JVM, a 12,000-character note through push and pull, three rounds) and documented
+  in SYNC-DESIGN.md section 8. The only case where the local tail is lost: the note is edited elsewhere to a text that starts the same. CalDAV and Microsoft: sent whole. The app text (Settings,
+  Accounts) and the manual say that Google keeps the first 8,192 characters.
+- **Tests:** door: an 8,000-character note and a `NOTES_MAX`-character note pass catalogue validation and are stored whole. NOT tested: a real push to Google (no Google account here; the
+  truncation path is Tasks.org's, unchanged).

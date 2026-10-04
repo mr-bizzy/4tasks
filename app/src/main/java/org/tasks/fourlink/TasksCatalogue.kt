@@ -21,7 +21,12 @@ object TasksCatalogue {
 
     /** Longest title or note accepted; also the schema's maxLength. */
     const val TITLE_MAX = 200
-    const val NOTES_MAX = 2000
+    /**
+     * About an hour of speech. A dictated note must just work, so this is generous: whatever is advertised here the door really accepts (the library checks
+     * arguments against this catalogue, and nothing below it limits the length). A Google Tasks list keeps the first 8,192 characters on Google's side and the
+     * whole note here (docs/SYNC-DESIGN.md, "Long notes").
+     */
+    const val NOTES_MAX = 50_000
     const val LIST_NAME_MAX = 60
     const val WHEN_MAX = 25
 
