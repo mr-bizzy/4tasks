@@ -34,7 +34,7 @@ object TasksCatalogue {
                 id = ADD, version = "1.0", title = "Add a task or reminder",
                 description = "Creates a task. title is what to do, in the user's words. due is when it is due and " +
                     "reminder is when to be notified, both local time. For \"remind me at 3\" send both. " +
-                    "Omit list for the default list.",
+                    "Omit list for the default list. For a note (\"make a note\", \"jot down\") send list \"Notes\".",
                 effect = Effect.CREATE,
                 input = Schema.Obj(
                     properties = linkedMapOf(
@@ -42,7 +42,7 @@ object TasksCatalogue {
                         "notes" to Schema.Str(NOTES_MAX, description = "Extra detail, only if the user gave some."),
                         "due" to Schema.Str(WHEN_MAX, description = "When it is due. $WHEN_HELP A date alone means all day."),
                         "reminder" to Schema.Str(WHEN_MAX, description = "When to notify. Needs a time: YYYY-MM-DDTHH:MM, local."),
-                        "list" to Schema.Str(LIST_NAME_MAX, description = "Name of an existing list. Leave out for the default."),
+                        "list" to Schema.Str(LIST_NAME_MAX, description = "Name of an existing list; \"the shopping list\" finds \"Shopping\". Leave out for the default."),
                         "allow_past" to Schema.Bool(description = "True only if the user asked for a reminder time already past."),
                     ),
                     required = setOf("title"),

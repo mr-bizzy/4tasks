@@ -33,7 +33,7 @@ class TasksDoorLogicTest {
         assertEquals("Get back to Sandra Elaine about her reservation", task.title)
         assertEquals(Moment.DayTime(java.time.LocalDateTime.of(2026, 10, 3, 15, 0)), task.due)
         assertEquals(listOf(r.getLong("id") to ms("2026-10-03T14:00:00Z")), port.reminders)
-        assertEquals("Get back to Sandra Elaine about her reservation — tomorrow 15:00, reminder set.", r.getString("summary"))
+        assertEquals("Added to My tasks: Get back to Sandra Elaine about her reservation — tomorrow 15:00, reminder set.", r.getString("summary"))
     }
 
     @Test fun `a reminder on a Google Tasks list is kept on the phone and the answer says it is not synced`() {
@@ -66,18 +66,18 @@ class TasksDoorLogicTest {
     @Test fun `a task with a date only is all day and says so`() {
         val r = ok(call("tasks.add", """{"title":"Bins","due":"2026-10-03"}"""))
         assertEquals(Moment.Day(LocalDate.of(2026, 10, 3)), port.created.single().due)
-        assertEquals("Bins — tomorrow.", r.getString("summary"))
+        assertEquals("Added to My tasks: Bins — tomorrow.", r.getString("summary"))
     }
 
     @Test fun `a task with nothing else is just added to the default list`() {
         val r = ok(call("tasks.add", """{"title":"Buy milk"}"""))
         assertEquals(null, port.created.single().listId)
-        assertEquals("Buy milk — added.", r.getString("summary"))
+        assertEquals("Added to My tasks: Buy milk.", r.getString("summary"))
     }
 
     @Test fun `a reminder at a different time from the due time says when`() {
         val r = ok(call("tasks.add", """{"title":"Call Sam","due":"2026-10-03T15:00","reminder":"2026-10-03T14:30"}"""))
-        assertEquals("Call Sam — tomorrow 15:00, reminder set for tomorrow 14:30.", r.getString("summary"))
+        assertEquals("Added to My tasks: Call Sam — tomorrow 15:00, reminder set for tomorrow 14:30.", r.getString("summary"))
     }
 
     @Test fun `notes are kept and trimmed, an empty note is none`() {
@@ -126,13 +126,139 @@ class TasksDoorLogicTest {
     @Test fun `a list is matched by name ignoring case`() {
         val r = ok(call("tasks.add", """{"title":"Draft","list":"  work "}"""))
         assertEquals(2L, port.created.single().listId)
-        assertEquals("Draft — on Work.", r.getString("summary"))
+        assertEquals("Added to Work: Draft.", r.getString("summary"))
     }
 
     @Test fun `an unknown list is refused naming the lists, and no list is made`() {
         val m = bad(call("tasks.add", """{"title":"X","list":"Garden"}"""))
         assertTrue(m, m.contains("no list called “Garden”") && m.contains("My tasks, Work, Shared"))
         assertTrue(port.created.isEmpty())
+    }
+
+    // ---- list names, forgivingly -------------------------------------------
+
+    private fun listsOf(vararg names: String) { port.lists = names.mapIndexed { i, n -> ListInfo(i + 1L, n, false) } }
+    private fun addTo(list: String) = call("tasks.add", JSONObject().put("title", "milk").put("list", list).toString())
+
+    @Test fun `the summary names the list, the default one too`() {
+        listsOf("Personal Calendar", "Shopping")
+        assertEquals("Added to Shopping: milk.", ok(addTo("Shopping")).getString("summary"))
+        assertEquals("Added to Personal Calendar: milk.", ok(call("tasks.add", """{"title":"milk"}""")).getString("summary"))
+    }
+
+    @Test fun `the shopping list finds Shopping`() {
+        listsOf("Personal Calendar", "Shopping")
+        assertEquals("Added to Shopping: milk.", ok(addTo("the shopping list")).getString("summary"))
+        assertEquals(2L, port.created.single().listId)
+    }
+
+    @Test fun `punctuation, my, a trailing list and a final s are all ignored`() {
+        listsOf("Personal Calendar", "Shopping", "Notes", "To-do")
+        for ((said, expected) in listOf("My Shopping List!" to 2L, "shopping lists" to 2L, "note" to 3L, "  NOTES. " to 3L, "to do" to 4L, "the todo list" to 4L)) {
+            port.created.clear()
+            ok(addTo(said))
+            assertEquals(said, expected, port.created.single().listId)
+        }
+    }
+
+    @Test fun `an exact name still wins over a normalised one`() {
+        listsOf("Shopping", "Shopping list")
+        ok(addTo("Shopping list"))
+        assertEquals(2L, port.created.single().listId)
+        port.created.clear()
+        ok(addTo("shopping"))
+        assertEquals(1L, port.created.single().listId)
+    }
+
+    @Test fun `two lists that normalise to the same name are asked about, never guessed`() {
+        listsOf("Shopping", "Shopping list", "Work")
+        val m = bad(addTo("the shopping"))
+        assertTrue(m, m.contains("“Shopping”") && m.contains("“Shopping list”") && m.contains("Nothing was added"))
+        assertTrue(port.created.isEmpty())
+    }
+
+    @Test fun `a near spelling is a question with the same call corrected, and nothing is added`() {
+        listsOf("Personal Calendar", "Shopping")
+        val o = call("tasks.add", """{"title":"milk","due":"2026-10-03","list":"Shoping"}""")
+        assertTrue(bad(o), bad(o).contains("One is close: “Shopping”") && bad(o).contains("Nothing was added"))
+        val s = (o as Outcome.BadArguments).suggestion!!
+        assertEquals("Did you mean the list “Shopping”?", s.question)
+        assertEquals("tasks.add", s.function)
+        assertEquals("Shopping", s.arguments.getString("list"))
+        assertEquals("milk", s.arguments.getString("title"))
+        assertEquals("2026-10-03", s.arguments.getString("due"))
+        assertTrue(port.created.isEmpty())
+        // saying yes runs it
+        val done = call(s.function, s.arguments.toString())
+        assertEquals("Added to Shopping: milk — tomorrow.", ok(done).getString("summary"))
+    }
+
+    @Test fun `the list suggestion is valid against the catalogue`() {
+        listsOf("Personal Calendar", "Shopping")
+        val s = (call("tasks.add", """{"title":"milk","list":"Shoping"}""") as Outcome.BadArguments).suggestion!!
+        assertEquals(null, uk.mr_biz.fourlink.Validation.problem(TasksCatalogue.CATALOGUE.find(s.function)!!.input, s.arguments))
+        assertTrue(s.question.length <= uk.mr_biz.fourlink.Suggestion.QUESTION_MAX)
+    }
+
+    @Test fun `tasks list offers the same correction for its list`() {
+        listsOf("Personal Calendar", "Shopping")
+        val s = (call("tasks.list", """{"list":"Shoping"}""") as Outcome.BadArguments).suggestion!!
+        assertEquals("tasks.list", s.function)
+        assertEquals("Shopping", s.arguments.getString("list"))
+        assertEquals(1, ok(call("tasks.list", """{"list":"the shopping list"}""")).let { port.filters.size })
+        assertEquals(2L, port.filters.single().listId)
+    }
+
+    @Test fun `two close lists give no suggestion, only the names`() {
+        listsOf("Shopping", "Shipping", "Work")
+        val o = call("tasks.add", """{"title":"milk","list":"Shoppin"}""")
+        assertTrue(bad(o).contains("The lists are: Shopping, Shipping, Work"))
+        assertEquals(null, (o as Outcome.BadArguments).suggestion)
+        assertTrue(port.created.isEmpty())
+    }
+
+    @Test fun `a name that is nothing like any list is the refusal that names the lists`() {
+        listsOf("Personal Calendar", "Shopping")
+        val o = call("tasks.add", """{"title":"milk","list":"Garden"}""")
+        assertTrue(bad(o).contains("no list called “Garden”") && bad(o).contains("Personal Calendar, Shopping"))
+        assertEquals(null, (o as Outcome.BadArguments).suggestion)
+    }
+
+    @Test fun `a close name is never offered a read-only list for adding`() {
+        port.lists = listOf(ListInfo(1, "Work", false), ListInfo(2, "Shoping", true))
+        val o = call("tasks.add", """{"title":"x","list":"Shopping"}""")
+        assertEquals(null, (o as Outcome.BadArguments).suggestion)
+    }
+
+    @Test fun `a note goes to the Notes list`() {
+        listsOf("Personal Calendar", "Notes")
+        val r = ok(addTo("Notes"))
+        assertEquals("Added to Notes: milk.", r.getString("summary"))
+        assertEquals(2L, port.created.single().listId)
+    }
+
+    @Test fun `a note with no Notes list goes to the default list and says so`() {
+        listsOf("Personal Calendar", "Shopping")
+        val r = ok(addTo("Notes"))
+        assertEquals(null, port.created.single().listId)
+        assertEquals("Added to Personal Calendar: milk. There is no Notes list, so it went to Personal Calendar, the default list.", r.getString("summary"))
+    }
+
+    @Test fun `only Notes falls back, any other missing list is still refused`() {
+        listsOf("Personal Calendar")
+        assertTrue(bad(addTo("Garden")).contains("no list called"))
+        assertTrue(port.created.isEmpty())
+    }
+
+    @Test fun `Notes is not a fallback when two lists both read as Notes`() {
+        listsOf("Notes", "My notes")
+        assertTrue(bad(addTo("note")).contains("could be any of these lists"))
+        assertTrue(port.created.isEmpty())
+    }
+
+    @Test fun `a read-only list found by a normalised name is still refused`() {
+        port.lists = listOf(ListInfo(1, "Work", false), ListInfo(2, "Shared", true))
+        assertTrue(bad(addTo("the shared list")).contains("read-only"))
     }
 
     @Test fun `a read-only list is refused for adding`() {

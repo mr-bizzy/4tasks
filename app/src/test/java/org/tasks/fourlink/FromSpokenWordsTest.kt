@@ -44,7 +44,7 @@ class FromSpokenWordsTest {
             """{"function":"tasks.add","arguments":{"title":"Get back to Sandra Elaine about her reservation","due":"2026-10-03T15:00","reminder":"2026-10-03T15:00"}}""",
         )
         val summary = JSONObject((o as Outcome.Ok).json).getString("summary")
-        assertEquals("Get back to Sandra Elaine about her reservation — tomorrow 15:00, reminder set.", summary)
+        assertEquals("Added to My tasks: Get back to Sandra Elaine about her reservation — tomorrow 15:00, reminder set.", summary)
         assertEquals(1, port.reminders.size)
     }
 

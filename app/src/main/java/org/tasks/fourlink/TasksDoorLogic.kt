@@ -121,7 +121,9 @@ class TasksDoorLogic(
             )
         }
         val listName = a.text("list")
-        val list = listName?.let { resolveList(port.lists(), it, forWriting = true) }
+        val list = listName?.let { resolveList(port.lists(), it, forWriting = true, TasksCatalogue.ADD, a, notesMayFallBack = true) }
+        // A request for the Notes list with no such list is the one case where a missing list is not an error: it goes to the default list, and the summary says so.
+        val fellBackFromNotes = listName != null && list == null
 
         val created = port.createTask(NewTask(title, notes, due, list?.id))
         var reminderNote = ""
@@ -154,10 +156,13 @@ class TasksDoorLogic(
             if (reminder != null) {
                 add(if (due == reminder) "reminder set" else "reminder set for ${DoorDates.describe(reminder, today, locale)}")
             }
-            (list?.title ?: created.listTitle)?.takeIf { listName != null }?.let { add("on $it") }
         }
-        val summary = created.title + (if (parts.isEmpty()) " — added" else " — " + parts.joinToString(", ")) +
-            "." + reminderNote + googleNote
+        val where = list?.title ?: created.listTitle
+        val notesNote = if (fellBackFromNotes) " There is no Notes list, so it went to ${where?.let { "$it, " }.orEmpty()}the default list." else ""
+        // 4Dictate shows this line when it acts without asking, so it must say WHICH list the task went to.
+        val summary = (if (where != null) "Added to $where: " else "Added: ") + created.title +
+            (if (parts.isEmpty()) "" else " — " + parts.joinToString(", ")) +
+            "." + notesNote + reminderNote + googleNote
         return Outcome.Ok(JSONObject().put("id", created.id).put("summary", summary).toString())
     }
 
@@ -165,7 +170,7 @@ class TasksDoorLogic(
 
     private suspend fun list(a: JSONObject): Outcome {
         val listName = a.text("list")
-        val list = listName?.let { resolveList(port.lists(), it, forWriting = false) }
+        val list = listName?.let { resolveList(port.lists(), it, forWriting = false, TasksCatalogue.LIST, a) }
         val from = a.text("due_from")?.let { DoorDates.parse("due_from", it) }?.startMillis(zone)
         val to = a.text("due_to")?.let { DoorDates.parse("due_to", it) }?.let {
             if (it is Moment.Day) DoorDates.endOfDayMillis(it.date, zone) else it.startMillis(zone)
@@ -273,19 +278,57 @@ class TasksDoorLogic(
 
     // ---- shared ----------------------------------------------------------
 
-    private fun resolveList(all: List<ListInfo>, name: String, forWriting: Boolean): ListInfo {
-        val match = all.firstOrNull { it.title.trim().equals(name, ignoreCase = true) }
-            ?: throw BadArgument(
-                "There is no list called “$name”. The lists are: ${all.joinToString(", ") { it.title }.ifEmpty { "(none)" }}.",
+    /**
+     * The list the caller named. An exact name (any case) wins. Failing that, names are compared by [ListNames.key]: if exactly one list has that key it
+     * is used. Two or more are never guessed between, and a name that is only close is never used: both answer bad_arguments, with a suggestion when
+     * there is one clear candidate. Returns null only for a request for "Notes" when [notesMayFallBack] and there is no such list.
+     */
+    private fun resolveList(
+        all: List<ListInfo>,
+        name: String,
+        forWriting: Boolean,
+        functionId: String,
+        args: JSONObject,
+        notesMayFallBack: Boolean = false,
+    ): ListInfo? {
+        val exact = all.firstOrNull { it.title.trim().equals(name, ignoreCase = true) }
+        val key = ListNames.key(name)
+        val alike = if (exact != null) listOf(exact) else all.filter { key.isNotEmpty() && ListNames.key(it.title) == key }
+        val nothingAdded = if (forWriting) " Nothing was added." else ""
+        val match = when {
+            alike.size == 1 -> alike.single()
+            alike.size > 1 -> throw BadArgument(
+                "“$name” could be any of these lists: ${listNames(alike)}.$nothingAdded Say which one.",
             )
+            notesMayFallBack && ListNames.isNotes(name) -> return null
+            else -> {
+                val close = all.filter { ListNames.isClose(name, it.title) && !(forWriting && it.readOnly) }
+                val known = "The lists are: ${all.joinToString(", ") { it.title }.ifEmpty { "(none)" }}."
+                if (close.size == 1) {
+                    val title = close.single().title.trim().take(LIST_QUOTED_MAX)
+                    throw BadArgument(
+                        "There is no list called “$name”. One is close: “$title”.$nothingAdded $known",
+                        Suggestion(
+                            question = "Did you mean the list “$title”?",
+                            function = functionId,
+                            arguments = JSONObject(args.toString()).put("list", close.single().title.trim()),
+                        ),
+                    )
+                }
+                throw BadArgument("There is no list called “$name”. $known")
+            }
+        }
         if (forWriting && match.readOnly) throw BadArgument("The list “${match.title}” is read-only.")
         return match
     }
+
+    private fun listNames(lists: List<ListInfo>) = lists.joinToString(", ") { "“${it.title.trim().take(LIST_QUOTED_MAX)}”" }
 
     companion object {
         const val MAX_LISTED = 50
         const val MAX_CANDIDATES = 5
         /** A task title quoted in a sentence is cut here, so a question stays within 200 characters. */
         const val QUOTED_TITLE_MAX = 120
+        const val LIST_QUOTED_MAX = 60
     }
 }

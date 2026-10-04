@@ -497,3 +497,17 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
 - **Tested:** `MakeCollectionTest` runs the real client against a fake server that behaves like the owner's SOGo (MKCOL ignores the body, the icon PROPPATCH answers 403, name PROPPATCH
   accepted) and variants (compliant server, name refused, no icon): 5 of 5 fail on the old client, pass on the new. NOT tested against a real SOGo (none here), and MKCALENDAR as a
   fallback was not added: the PROPPATCH read-back covers the symptom seen.
+
+## 2026-10-04 — Forgiving list names on tasks.add / tasks.list, and a Notes rule (0.1.8-beta, 151220)
+
+- **Why:** on the S25 "make a note: buy a new drill bit" reached `tasks.add` with no list and landed in the default list; and `resolveList` matched only exact names, so "the shopping list"
+  failed against a list called "Shopping".
+- **Rules (`ListNames.kt`, `TasksDoorLogic.resolveList`):** an exact name (any case) wins. Otherwise both sides are reduced to a key (case, punctuation and spaces ignored, a leading
+  "the"/"my" and a trailing "list(s)" dropped, one final "s" dropped) and the list is used only if exactly ONE has that key. Two or more with the same key: bad_arguments naming them, nothing
+  added. A name that is only close (a letter or two off, or the same sound): bad_arguments plus a §11a Suggestion, the same call with the list corrected ("Did you mean the list “Shopping”?"),
+  only when there is one clear candidate (never a read-only list for adding); otherwise the old refusal that lists the names. Nothing is ever written to a list the user did not choose.
+- **Notes:** the tasks.add description tells the model to send list "Notes" for "make a note / jot down". If the name reads as Notes and no list does, the task goes to the default list and
+  the summary says so ("…There is no Notes list, so it went to X, the default list."). This is the only missing-list case that falls back.
+- **Summary:** now "Added to <list>: <title> — <due>, reminder set." with the default list's name when none was given (4Dictate shows it in the "done without asking" notification).
+- **Tests:** 17 new door tests (each rule, two lists that normalise alike, read-only, tasks.list, suggestion valid against the catalogue and runnable) and `ListNamesTest`.
+  Not tried by voice on a phone.
