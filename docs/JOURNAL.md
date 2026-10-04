@@ -524,3 +524,12 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   Accounts) and the manual say that Google keeps the first 8,192 characters.
 - **Tests:** door: an 8,000-character note and a `NOTES_MAX`-character note pass catalogue validation and are stored whole. NOT tested: a real push to Google (no Google account here; the
   truncation path is Tasks.org's, unchanged).
+
+## 2026-10-04 — tasks.add notes can be the user's own words (0.1.10-beta, 151224)
+
+- **Why:** in 4Dictate's "4Dictate, …" dictation route the model retyped a long dictated note into `notes` (slow, can change words, can hit the model's output limit). 4Link spec §3a
+  (4link 62daff7) lets a string field be marked `fromSpeech`: the model sends `{{said}}` or `{{said from: <first words>}}` and the caller puts in the user's own (tidied) words before validating.
+- **Change:** 4link submodule re-pinned to 62daff7; `tasks.add` `notes` is `fromSpeech = true` (NOTES_MAX stays 50,000), its description says to use the user's own words for a note or
+  anything long. `title` stays unmarked. The substitution happens in the caller, so the door never sees a placeholder.
+- **Tests:** only `notes` is marked; the marker survives the catalogue's JSON (how 4Dictate reads it); a placeholder in notes is filled and validates at length; a placeholder in the title is refused.
+  Not tried end to end with 4Dictate's side (built in parallel by the 4Dictate session).

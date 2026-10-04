@@ -44,7 +44,7 @@ object TasksCatalogue {
                 input = Schema.Obj(
                     properties = linkedMapOf(
                         "title" to Schema.Str(TITLE_MAX, description = "What to do, as a short clean sentence."),
-                        "notes" to Schema.Str(NOTES_MAX, description = "Extra detail, only if the user gave some."),
+                        "notes" to Schema.Str(NOTES_MAX, description = "Extra detail. For a note or anything long the user dictated, use their own words.", fromSpeech = true),
                         "due" to Schema.Str(WHEN_MAX, description = "When it is due. $WHEN_HELP A date alone means all day."),
                         "reminder" to Schema.Str(WHEN_MAX, description = "When to notify. Needs a time: YYYY-MM-DDTHH:MM, local."),
                         "list" to Schema.Str(LIST_NAME_MAX, description = "Name of an existing list; \"the shopping list\" finds \"Shopping\". Leave out for the default."),
