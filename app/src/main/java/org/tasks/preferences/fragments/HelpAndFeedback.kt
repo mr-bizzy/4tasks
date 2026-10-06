@@ -71,6 +71,8 @@ class HelpAndFeedback : Fragment() {
                             .putExtra(LicensesActivity.EXTRA_TITLE, "Notices and licences"),
                     )
                 },
+                onWebsite = { context?.openUri("https://mr-biz.uk/") },
+                onManual = { context?.openUri("https://mr-biz.uk/4tasks/manual/") },
                 onPrivacyPolicy = { context?.openUri("https://mr-biz.uk/4tasks/privacy/") },
                 bottomInsets = {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))

@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.MenuBook
 import androidx.compose.material.icons.outlined.Gavel
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.PermIdentity
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,7 +23,8 @@ import org.tasks.R
 
 /**
  * About 4Tasks: what this app is, where Tasks.org's code came from, where the
- * source is, the licences, and the privacy policy. Nothing here asks for money
+ * source is, the licences, the website and manual (on every family app's
+ * About, owner 2026-10-06), and the privacy policy. Nothing here asks for money
  * or links to Tasks.org's services.
  */
 @Composable
@@ -31,6 +34,8 @@ fun AboutScreen(
     onFourTasksSource: () -> Unit,
     onGpl: () -> Unit,
     onThirdParty: () -> Unit,
+    onWebsite: () -> Unit,
+    onManual: () -> Unit,
     onPrivacyPolicy: () -> Unit,
     bottomInsets: @Composable () -> Unit = {},
 ) {
@@ -88,6 +93,31 @@ fun AboutScreen(
                     title = stringResource(R.string.about_third_party),
                     icon = Icons.Outlined.Gavel,
                     onClick = onThirdParty,
+                )
+            }
+        }
+        SectionHeader(
+            stringResource(R.string.about_web),
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+        )
+        Column(
+            modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+        ) {
+            SettingsItemCard(position = CardPosition.First) {
+                PreferenceRow(
+                    title = stringResource(R.string.about_website),
+                    icon = Icons.Outlined.Public,
+                    summary = stringResource(R.string.about_website_summary),
+                    onClick = onWebsite,
+                )
+            }
+            SettingsItemCard(position = CardPosition.Last) {
+                PreferenceRow(
+                    title = stringResource(R.string.about_manual),
+                    icon = Icons.AutoMirrored.Outlined.MenuBook,
+                    summary = stringResource(R.string.about_manual_summary),
+                    onClick = onManual,
                 )
             }
         }
