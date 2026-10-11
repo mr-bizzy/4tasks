@@ -506,10 +506,20 @@ class MainActivity : AppCompatActivity() {
                         val drawerState = rememberDrawerState(
                             initialValue = DrawerValue.Closed,
                         )
+                        // With no task open there is nothing to show beside the list, so the list
+                        // is the only pane and fills the window (no empty detail pane on a wide
+                        // window or in DeX). Two panes only while a task is open; their widths are
+                        // set in HomeScreen.
+                        val twoPanes = calculatePaneScaffoldDirectiveWithTwoPanesOnMediumWidth(
+                            windowAdaptiveInfo = currentWindowAdaptiveInfo(),
+                        )
                         val navigator = rememberListDetailPaneScaffoldNavigator(
-                            calculatePaneScaffoldDirectiveWithTwoPanesOnMediumWidth(
-                                windowAdaptiveInfo = currentWindowAdaptiveInfo(),
-                            ).copy(
+                            twoPanes.copy(
+                                maxHorizontalPartitions = if (state.task == null) {
+                                    1
+                                } else {
+                                    twoPanes.maxHorizontalPartitions
+                                },
                                 horizontalPartitionSpacerSize = 0.dp,
                                 verticalPartitionSpacerSize = 0.dp,
                             )

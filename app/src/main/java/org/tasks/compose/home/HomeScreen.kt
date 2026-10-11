@@ -10,6 +10,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -49,7 +50,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.core.content.IntentCompat.getParcelableExtra
 import androidx.fragment.compose.AndroidFragment
 import androidx.fragment.compose.rememberFragmentState
@@ -87,6 +90,12 @@ import org.tasks.preferences.MainPreferences
 import timber.log.Timber
 
 private val BottomAppBarHeight = 80.dp
+
+/** The list's width beside an open task: about 40% of the window, never under the standard 360 dp. */
+private val MinListPaneWidth = 360.dp
+private const val ListPaneShare = 0.4f
+
+internal fun listPaneWidth(windowWidth: Dp): Dp = max(MinListPaneWidth, windowWidth * ListPaneShare)
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -302,41 +311,46 @@ fun HomeScreen(
                 }
             }
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
+            BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
                 val scope = rememberCoroutineScope()
+                // Used only when the list and a task are side by side: the list gets a fair
+                // share of a wide window, the task the rest. Alone, either pane fills the window.
+                val listWidth = listPaneWidth(maxWidth)
                 ListDetailPaneScaffold(
                     directive = navigator.scaffoldDirective,
                     value = navigator.scaffoldValue,
                     listPane = {
-                        key (state.filter) {
-                            val fragment = remember { mutableStateOf<TaskListFragment?>(null) }
-                            val keyboardOpen = rememberImeState()
-                            AndroidFragment<TaskListFragment>(
-                                fragmentState = rememberFragmentState(),
-                                arguments = remember(state.filter) {
-                                    Bundle()
-                                        .apply { putParcelable(EXTRA_FILTER, state.filter) }
-                                },
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .imePadding(),
-                            ) { tlf ->
-                                fragment.value = tlf
-                                tlf.applyInsets(windowInsets.value)
-                                tlf.setNavigationClickListener {
-                                    scope.launch { drawerState.open() }
-                                }
-                            }
-                            LaunchedEffect(fragment, windowInsets, keyboardOpen.value) {
-                                fragment.value?.applyInsets(
-                                    if (keyboardOpen.value) {
-                                        PaddingValues(
-                                            top = windowInsets.value.calculateTopPadding(),
-                                        )
-                                    } else {
-                                        windowInsets.value
+                        Box(modifier = Modifier.preferredWidth(listWidth).fillMaxSize()) {
+                            key (state.filter) {
+                                val fragment = remember { mutableStateOf<TaskListFragment?>(null) }
+                                val keyboardOpen = rememberImeState()
+                                AndroidFragment<TaskListFragment>(
+                                    fragmentState = rememberFragmentState(),
+                                    arguments = remember(state.filter) {
+                                        Bundle()
+                                            .apply { putParcelable(EXTRA_FILTER, state.filter) }
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .imePadding(),
+                                ) { tlf ->
+                                    fragment.value = tlf
+                                    tlf.applyInsets(windowInsets.value)
+                                    tlf.setNavigationClickListener {
+                                        scope.launch { drawerState.open() }
                                     }
-                                )
+                                }
+                                LaunchedEffect(fragment, windowInsets, keyboardOpen.value) {
+                                    fragment.value?.applyInsets(
+                                        if (keyboardOpen.value) {
+                                            PaddingValues(
+                                                top = windowInsets.value.calculateTopPadding(),
+                                            )
+                                        } else {
+                                            windowInsets.value
+                                        }
+                                    )
+                                }
                             }
                         }
                     },
@@ -344,6 +358,7 @@ fun HomeScreen(
                         val direction = LocalLayoutDirection.current
                         Box(
                             modifier = Modifier
+                                .preferredWidth((maxWidth - listWidth).coerceAtLeast(1.dp))
                                 .fillMaxSize()
                                 .padding(
                                     top = windowInsets.value.calculateTopPadding(),
