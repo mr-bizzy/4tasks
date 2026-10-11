@@ -717,7 +717,6 @@
     <string name="settings_tab_accounts">Accounts</string>
     <string name="settings_tab_tasks">Tasks</string>
     <string name="settings_tab_look">Look</string>
-    <string name="settings_tab_more">More</string>
     <string name="local_lists_summary">Lists kept on this phone only</string>
     <string name="add_account_summary">Sync your tasks with a CalDAV server</string>
     <string name="task_defaults_summary">What a new task starts with: list, priority, dates and reminders</string>
@@ -728,9 +727,6 @@
     <string name="look_and_feel_summary">Wallpaper colour, theme and which list opens first</string>
     <string name="navigation_drawer_summary">Which filters and tags the drawer shows</string>
     <string name="widget_settings_summary">Add a shortcut or a widget to your home screen</string>
-    <string name="backups_summary">Back up your tasks to a file, and bring them back</string>
-    <string name="advanced_summary">Self-signed certificates, badges and resetting</string>
-    <string name="about_summary">Version, licences and source code</string>
     <!-- Section explanations for the settings cards (FAMILY-LOOK rule 5). New words: proposed, awaiting the owner's approval. -->
     <string name="on_launch_explanation">What you see when you open 4Tasks.</string>
     <string name="localisation_explanation">The language 4Tasks is shown in.</string>

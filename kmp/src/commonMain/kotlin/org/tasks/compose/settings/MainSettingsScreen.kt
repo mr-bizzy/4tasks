@@ -30,7 +30,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ErrorOutline
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SecondaryScrollableTabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.ui.composed
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
+import org.tasks.compose.PageMaxWidth
+import org.tasks.themes.WarningColor
+import kotlin.math.abs
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
@@ -43,9 +58,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import kotlinx.coroutines.launch
 import tasks.kmp.generated.resources.add_account_summary
-import tasks.kmp.generated.resources.advanced_summary
-import tasks.kmp.generated.resources.about_summary
-import tasks.kmp.generated.resources.backups_summary
 import tasks.kmp.generated.resources.date_and_time_summary
 import tasks.kmp.generated.resources.edit_screen_summary
 import tasks.kmp.generated.resources.local_lists_summary
@@ -53,7 +65,6 @@ import tasks.kmp.generated.resources.look_and_feel_summary
 import tasks.kmp.generated.resources.navigation_drawer_summary
 import tasks.kmp.generated.resources.notifications_summary
 import tasks.kmp.generated.resources.settings_tab_accounts
-import tasks.kmp.generated.resources.settings_tab_more
 import tasks.kmp.generated.resources.settings_tab_look
 import tasks.kmp.generated.resources.settings_tab_tasks
 import tasks.kmp.generated.resources.task_defaults_summary
@@ -158,7 +169,9 @@ data class OpenTaskAccountSettingsPane(
 
 /**
  * Settings, as in 4Dictate and 4Zones: a scrollable row of tabs, each page a column of cards, a card being a
- * title and a one-line explanation, with no leading icon. A card opens the detail screen it names.
+ * title and a one-line explanation, with no leading icon. On Accounts, Tasks and Look a card opens the detail screen
+ * it names; Backups, Advanced and About are tabs of their own that show their page directly (owner: "These should
+ * be menu items in their own right, not stuck on the more menu").
  */
 @Composable
 fun MainSettingsScreen(
@@ -183,18 +196,25 @@ fun MainSettingsScreen(
     syncIntervalMinutes: Int? = null,
     syncIntervalChoices: List<Int> = emptyList(),
     onSyncIntervalSelected: (Int) -> Unit = {},
+    /** The Backups, Advanced and About pages themselves, each shown directly as its own tab (they live in the app). */
+    backupsPage: @Composable () -> Unit,
+    advancedPage: @Composable () -> Unit,
+    aboutPage: @Composable () -> Unit,
     bottomContent: @Composable () -> Unit = {},
 ) {
     val tabNames = listOf(
         stringResource(Res.string.settings_tab_accounts),
         stringResource(Res.string.settings_tab_tasks),
         stringResource(Res.string.settings_tab_look),
-        stringResource(Res.string.settings_tab_more),
+        stringResource(Res.string.backup_BPr_header),
+        stringResource(Res.string.preferences_advanced),
+        stringResource(Res.string.about),
     )
     // The tab the user was on is kept, so coming back from a detail screen returns to it
     var savedTab by rememberSaveable { mutableIntStateOf(0) }
-    val pagerState = rememberPagerState(initialPage = savedTab) { tabNames.size }
+    val pagerState = rememberPagerState(initialPage = savedTab.coerceIn(0, tabNames.lastIndex)) { tabNames.size }
     val scope = rememberCoroutineScope()
+    val tabScroll = rememberScrollState()
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect { savedTab = it }
     }
@@ -204,15 +224,33 @@ fun MainSettingsScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface),
     ) {
-        ScrollableTabRow(
+        // The tab row spans the window and scrolls; only the pages below are capped (FAMILY-LOOK rule 8).
+        SecondaryScrollableTabRow(
             selectedTabIndex = pagerState.currentPage,
+            scrollState = tabScroll,
+            modifier = Modifier.wheelScrollsSideways(tabScroll),
+            containerColor = TabRowDefaults.primaryContainerColor,
+            contentColor = TabRowDefaults.primaryContentColor,
             edgePadding = SettingsContentPadding,
         ) {
             tabNames.forEachIndexed { index, name ->
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = { scope.launch { pagerState.animateScrollToPage(index) } },
-                    text = { Text(name, style = MaterialTheme.typography.titleSmall) },
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(name, style = MaterialTheme.typography.titleSmall)
+                            // The backup warning (the orange "!") the Backups card used to carry.
+                            if (index == TAB_BACKUPS && showBackupWarning) {
+                                Icon(
+                                    imageVector = Icons.Outlined.ErrorOutline,
+                                    contentDescription = null,
+                                    tint = WarningColor,
+                                    modifier = Modifier.padding(start = 4.dp).size(18.dp),
+                                )
+                            }
+                        }
+                    },
                 )
             }
         }
@@ -221,34 +259,77 @@ fun MainSettingsScreen(
             modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.Top,
         ) { page ->
-            SettingsPage(bottomContent) {
-                when (page) {
-                    0 -> AccountsPage(
-                        accounts = accounts,
-                        proCardState = proCardState,
-                        showAddAccount = showAddAccount,
-                        onAccountClick = onAccountClick,
-                        onAddAccountClick = onAddAccountClick,
-                        onConnectedAppsClick = onConnectedAppsClick,
-                        syncIntervalMinutes = syncIntervalMinutes,
-                        syncIntervalChoices = syncIntervalChoices,
-                        onSyncIntervalSelected = onSyncIntervalSelected,
-                    )
-                    1 -> TasksPage(
-                        showNotifications = showNotifications,
-                        onSettingsClick = onSettingsClick,
-                    )
-                    2 -> LookPage(
-                        showWidgets = showWidgets,
-                        onSettingsClick = onSettingsClick,
-                    )
-                    else -> MorePage(
-                        showBackupWarning = showBackupWarning,
-                        showMcpServer = showMcpServer,
-                        isDebug = isDebug,
-                        onSettingsClick = onSettingsClick,
-                    )
+            // FAMILY-LOOK rule 8, written once for every page of the pager: the reading width, centred.
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+                Box(modifier = Modifier.widthIn(max = PageMaxWidth).fillMaxSize()) {
+                    when (page) {
+                        TAB_ACCOUNTS -> SettingsPage(bottomContent) {
+                            AccountsPage(
+                                accounts = accounts,
+                                proCardState = proCardState,
+                                showAddAccount = showAddAccount,
+                                onAccountClick = onAccountClick,
+                                onAddAccountClick = onAddAccountClick,
+                                onConnectedAppsClick = onConnectedAppsClick,
+                                syncIntervalMinutes = syncIntervalMinutes,
+                                syncIntervalChoices = syncIntervalChoices,
+                                onSyncIntervalSelected = onSyncIntervalSelected,
+                            )
+                        }
+                        TAB_TASKS -> SettingsPage(bottomContent) {
+                            TasksPage(
+                                showNotifications = showNotifications,
+                                onSettingsClick = onSettingsClick,
+                            )
+                        }
+                        TAB_LOOK -> SettingsPage(bottomContent) {
+                            LookPage(
+                                showWidgets = showWidgets,
+                                onSettingsClick = onSettingsClick,
+                            )
+                        }
+                        // The page's own content, not a card that opens it.
+                        TAB_BACKUPS -> backupsPage()
+                        TAB_ADVANCED -> Column(modifier = Modifier.fillMaxSize()) {
+                            ExtraAdvancedLinks(
+                                showMcpServer = showMcpServer,
+                                isDebug = isDebug,
+                                onSettingsClick = onSettingsClick,
+                            )
+                            Box(modifier = Modifier.weight(1f)) { advancedPage() }
+                        }
+                        else -> aboutPage()
+                    }
                 }
+            }
+        }
+    }
+}
+
+private const val TAB_ACCOUNTS = 0
+private const val TAB_TASKS = 1
+private const val TAB_LOOK = 2
+private const val TAB_BACKUPS = 3
+private const val TAB_ADVANCED = 4
+
+/**
+ * A mouse wheel over the tab row scrolls it sideways (DeX, a tablet with a mouse), as 4Dictate's does. Only a wheel
+ * event the row itself did not use is taken; a touch drag is left to the row.
+ */
+private fun Modifier.wheelScrollsSideways(state: ScrollState): Modifier = composed {
+    val scope = rememberCoroutineScope()
+    pointerInput(state) {
+        val step = 64.dp.toPx()
+        awaitPointerEventScope {
+            while (true) {
+                val event = awaitPointerEvent()
+                if (event.type != PointerEventType.Scroll) continue
+                val change = event.changes.firstOrNull { !it.isConsumed } ?: continue
+                val delta = change.scrollDelta
+                val notches = if (abs(delta.y) >= abs(delta.x)) delta.y else delta.x
+                if (notches == 0f) continue
+                scope.launch { state.scrollBy(notches * step) }
+                event.changes.forEach { it.consume() }
             }
         }
     }
@@ -382,43 +463,32 @@ private fun LookPage(
     }
 }
 
-/** Backups, Advanced and About on one page, so the tab row fits four tabs as 4Dictate's does. */
+/** Debug builds' Debug page (and the MCP server, where offered), as cards above the Advanced page. */
 @Composable
-private fun MorePage(
-    showBackupWarning: Boolean,
+private fun ExtraAdvancedLinks(
     showMcpServer: Boolean,
     isDebug: Boolean,
     onSettingsClick: (SettingsDestination) -> Unit,
 ) {
-    SettingsLinkCard(
-        title = stringResource(Res.string.backup_BPr_header),
-        summary = stringResource(Res.string.backups_summary),
-        showWarning = showBackupWarning,
-        onClick = { onSettingsClick(SettingsDestination.Backups) },
-    )
-    if (showMcpServer) {
-        SettingsLinkCard(
-            title = stringResource(Res.string.mcp_server),
-            summary = "",
-            onClick = { onSettingsClick(SettingsDestination.McpServer) },
-        )
-    }
-    SettingsLinkCard(
-        title = stringResource(Res.string.preferences_advanced),
-        summary = stringResource(Res.string.advanced_summary),
-        onClick = { onSettingsClick(SettingsDestination.Advanced) },
-    )
-    SettingsLinkCard(
-        title = stringResource(Res.string.about),
-        summary = stringResource(Res.string.about_summary),
-        onClick = { onSettingsClick(SettingsDestination.HelpAndFeedback) },
-    )
-    if (isDebug) {
-        SettingsLinkCard(
-            title = stringResource(Res.string.debug),
-            summary = "",
-            onClick = { onSettingsClick(SettingsDestination.Debug) },
-        )
+    if (!showMcpServer && !isDebug) return
+    Column(
+        modifier = Modifier.padding(start = SettingsContentPadding, end = SettingsContentPadding, top = SettingsContentPadding),
+        verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+    ) {
+        if (showMcpServer) {
+            SettingsLinkCard(
+                title = stringResource(Res.string.mcp_server),
+                summary = "",
+                onClick = { onSettingsClick(SettingsDestination.McpServer) },
+            )
+        }
+        if (isDebug) {
+            SettingsLinkCard(
+                title = stringResource(Res.string.debug),
+                summary = "",
+                onClick = { onSettingsClick(SettingsDestination.Debug) },
+            )
+        }
     }
 }
 

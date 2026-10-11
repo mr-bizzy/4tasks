@@ -19,11 +19,10 @@ import org.tasks.R
  * look as they did. Bars still span the window; only the content is capped.
  *
  * Written ONCE per host, never in each page (4Zones ui/PageWidth.kt: "the fifth page added later would not have it"):
- * the settings host (BasePreferences, all its pages), list settings (ListSettingsScaffold), the task edit screen
- * (TaskEditScreen) and the task list's rows (TaskListFragment).
+ * the settings host (BasePreferences, all its pages), the Settings pager (MainSettingsScreen, which caps each page and
+ * leaves its tab row full width), list settings (ListSettingsScaffold), the task edit screen (TaskEditScreen) and the
+ * task list's rows (TaskListFragment). [PageMaxWidth] itself is in kmp, beside the pager.
  */
-val PageMaxWidth = 720.dp
-
 /** A Compose host's content, capped at [PageMaxWidth] and centred at the top: a fillMaxSize Box, TopCenter, widthIn. */
 @Composable
 fun PageWidth(
@@ -42,23 +41,47 @@ fun PageWidth(
 }
 
 /**
+ * A fragment that caps its own content (and keeps something full width, such as the Settings tab row): the View host
+ * leaves its padding off while this fragment is shown.
+ */
+interface CapsOwnPageWidth
+
+/** The cap on a View host; [enabled] turns it off for a fragment that caps itself ([CapsOwnPageWidth]). */
+class PageWidthCap internal constructor(private val view: View) {
+    private val maxPx = view.resources.getDimensionPixelSize(R.dimen.page_max_width)
+    private var added = 0
+
+    var enabled = true
+        set(value) {
+            field = value
+            apply()
+        }
+
+    internal fun apply() {
+        val side = if (enabled) ((view.width - maxPx) / 2).coerceAtLeast(0) else 0
+        if (side == added) return
+        view.setPaddingRelative(
+            view.paddingStart - added + side,
+            view.paddingTop,
+            view.paddingEnd - added + side,
+            view.paddingBottom,
+        )
+        added = side
+    }
+}
+
+/**
  * The same cap for a View host: its children are kept within [PageMaxWidth], centred, by side padding that follows the
  * view's width (none at or below the cap). The view's own side padding is kept and added to.
  */
-fun View.capPageWidth() {
-    val maxPx = resources.getDimensionPixelSize(R.dimen.page_max_width)
-    var added = 0
-    fun apply(width: Int) {
-        val side = ((width - maxPx) / 2).coerceAtLeast(0)
-        if (side == added) return
-        setPaddingRelative(paddingStart - added + side, paddingTop, paddingEnd - added + side, paddingBottom)
-        added = side
-    }
+fun View.capPageWidth(): PageWidthCap {
+    val cap = PageWidthCap(this)
     addOnLayoutChangeListener { v, left, _, right, _, oldLeft, _, oldRight, _ ->
         if (right - left != oldRight - oldLeft) {
             // Not during this layout pass: padding asks for a new one.
-            v.post { apply(v.width) }
+            v.post { cap.apply() }
         }
     }
-    if (width > 0) apply(width)
+    if (width > 0) cap.apply()
+    return cap
 }

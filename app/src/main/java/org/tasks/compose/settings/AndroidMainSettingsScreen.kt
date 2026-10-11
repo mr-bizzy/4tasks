@@ -29,6 +29,9 @@ fun AndroidMainSettingsScreen(
     syncIntervalMinutes: Int? = null,
     syncIntervalChoices: List<Int> = emptyList(),
     onSyncIntervalSelected: (Int) -> Unit = {},
+    backupsPage: @Composable () -> Unit,
+    advancedPage: @Composable () -> Unit,
+    aboutPage: @Composable () -> Unit,
 ) {
     MainSettingsScreen(
         accounts = accounts,
@@ -49,6 +52,9 @@ fun AndroidMainSettingsScreen(
         syncIntervalMinutes = syncIntervalMinutes,
         syncIntervalChoices = syncIntervalChoices,
         onSyncIntervalSelected = onSyncIntervalSelected,
+        backupsPage = backupsPage,
+        advancedPage = advancedPage,
+        aboutPage = aboutPage,
         bottomContent = {
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         },

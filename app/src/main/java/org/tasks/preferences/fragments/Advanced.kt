@@ -213,6 +213,8 @@ class Advanced : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Shown as a Settings tab (inside the main Settings page), the bar belongs to that page: leave it alone.
+        if (parentFragment != null) return
         val defaultColor = org.tasks.themes.surfaceBackground(requireContext())
         (activity as? BasePreferences)?.toolbar?.let { toolbar ->
             toolbar.setBackgroundColor(defaultColor)

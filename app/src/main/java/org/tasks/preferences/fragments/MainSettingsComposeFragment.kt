@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.fragment.compose.AndroidFragment
 import androidx.fragment.compose.content
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +33,7 @@ import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_FEATURE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_NAME_YOUR_PRICE
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SHOW_MORE_OPTIONS
 import org.tasks.billing.PurchaseActivityViewModel.Companion.EXTRA_SOURCE
+import org.tasks.compose.CapsOwnPageWidth
 import org.tasks.compose.accounts.AddAccountActivity
 import org.tasks.compose.settings.AndroidMainSettingsScreen
 import org.tasks.compose.settings.ManageSubscriptionSheetContent
@@ -61,7 +64,11 @@ import org.tasks.themes.Theme
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainSettingsComposeFragment : Fragment() {
+/**
+ * Settings' tabs. It caps its own pages at the reading width and keeps the tab row full width, so the settings host
+ * leaves its own cap off while it is shown ([CapsOwnPageWidth], FAMILY-LOOK rule 8).
+ */
+class MainSettingsComposeFragment : Fragment(), CapsOwnPageWidth {
 
     @Inject lateinit var firebase: Firebase
     @Inject lateinit var theme: Theme
@@ -117,6 +124,11 @@ class MainSettingsComposeFragment : Fragment() {
                 onAccountClick = { account -> handleAccountClick(account) },
                 onAddAccountClick = { addAccount() },
                 onSettingsClick = { destination -> navigateToSettings(destination) },
+                // Backups, Advanced and About are tabs of their own: each is its page, the same fragment that used to
+                // open from a card, hosted here so its pickers, dialogs and results work as before.
+                backupsPage = { AndroidFragment<Backups>(modifier = Modifier.fillMaxSize()) },
+                advancedPage = { AndroidFragment<Advanced>(modifier = Modifier.fillMaxSize()) },
+                aboutPage = { AndroidFragment<HelpAndFeedback>(modifier = Modifier.fillMaxSize()) },
                 showDesktopLinking = configuration.supportsDesktopLinking && !inventory.hasTasksAccount,
                 onLinkDesktopClick = { linkDesktop() },
                 onProCardClick = {
