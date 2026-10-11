@@ -35,6 +35,8 @@ import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.EPr_voiceRemindersEnabled_desc_enabled
 import tasks.kmp.generated.resources.EPr_voiceRemindersEnabled_title
 import tasks.kmp.generated.resources.add_default_reminders
+import tasks.kmp.generated.resources.default_reminder_explanation
+import tasks.kmp.generated.resources.swipe_to_snooze_explanation
 import tasks.kmp.generated.resources.bundle_notifications
 import tasks.kmp.generated.resources.bundle_notifications_summary
 import tasks.kmp.generated.resources.completion_sound
@@ -231,98 +233,77 @@ fun NotificationsScreen(
                     onClick = onMoreSettings,
                 )
             }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
-        SectionHeader(
-            stringResource(Res.string.default_reminder),
+        SettingsSection(
+            title = stringResource(Res.string.default_reminder),
+            explanation = stringResource(Res.string.default_reminder_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.add_default_reminders),
-                    summary = if (defaultRemindersEnabled)
-                        stringResource(Res.string.rmd_time_enabled_on)
-                    else
-                        stringResource(Res.string.rmd_time_enabled_off),
-                    checked = defaultRemindersEnabled,
-                    onCheckedChange = onDefaultReminders,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.rmd_EPr_rmd_time_title),
-                    summary = timeSummary(defaultReminderTime, is24HourFormat),
-                    onClick = onReminderTime,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.add_default_reminders),
+                summary = if (defaultRemindersEnabled)
+                    stringResource(Res.string.rmd_time_enabled_on)
+                else
+                    stringResource(Res.string.rmd_time_enabled_off),
+                checked = defaultRemindersEnabled,
+                onCheckedChange = onDefaultReminders,
+            )
+            PreferenceRow(
+                title = stringResource(Res.string.rmd_EPr_rmd_time_title),
+                summary = timeSummary(defaultReminderTime, is24HourFormat),
+                onClick = onReminderTime,
+            )
         }
 
         if (showSwipeToSnooze) {
-            SectionHeader(
-                stringResource(Res.string.swipe_to_snooze_title),
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+            SettingsSection(
+                title = stringResource(Res.string.swipe_to_snooze_title),
+                explanation = stringResource(Res.string.swipe_to_snooze_explanation),
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
             ) {
-                SettingsItemCard(position = CardPosition.First) {
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.enabled),
-                        checked = swipeToSnoozeEnabled,
-                        onCheckedChange = onSwipeToSnooze,
-                    )
-                }
-                SettingsItemCard(position = CardPosition.Last) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.swipe_to_snooze_description),
-                        summary = stringResource(
-                            Res.string.swipe_to_snooze_time_description,
-                            stringResource(snoozeLabel(swipeToSnoozeMinutes)),
-                        ),
-                        enabled = swipeToSnoozeEnabled,
-                        onClick = onSnoozeTime,
-                    )
-                }
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.enabled),
+                    checked = swipeToSnoozeEnabled,
+                    onCheckedChange = onSwipeToSnooze,
+                )
+                PreferenceRow(
+                    title = stringResource(Res.string.swipe_to_snooze_description),
+                    summary = stringResource(
+                        Res.string.swipe_to_snooze_time_description,
+                        stringResource(snoozeLabel(swipeToSnoozeMinutes)),
+                    ),
+                    enabled = swipeToSnoozeEnabled,
+                    onClick = onSnoozeTime,
+                )
             }
         }
 
-        SectionHeader(
-            stringResource(Res.string.quiet_hours),
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(Res.string.quiet_hours),
+            explanation = stringResource(Res.string.quiet_hours_summary),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    summary = stringResource(Res.string.quiet_hours_summary),
-                    checked = quietHoursEnabled,
-                    onCheckedChange = onQuietHours,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(Res.string.rmd_EPr_quiet_hours_start_title),
-                    summary = timeSummary(quietHoursStart, is24HourFormat),
-                    enabled = quietHoursEnabled,
-                    onClick = onQuietStart,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.rmd_EPr_quiet_hours_end_title),
-                    summary = timeSummary(quietHoursEnd, is24HourFormat),
-                    enabled = quietHoursEnabled,
-                    onClick = onQuietEnd,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.enabled),
+                checked = quietHoursEnabled,
+                onCheckedChange = onQuietHours,
+            )
+            PreferenceRow(
+                title = stringResource(Res.string.rmd_EPr_quiet_hours_start_title),
+                summary = timeSummary(quietHoursStart, is24HourFormat),
+                enabled = quietHoursEnabled,
+                onClick = onQuietStart,
+            )
+            PreferenceRow(
+                title = stringResource(Res.string.rmd_EPr_quiet_hours_end_title),
+                summary = timeSummary(quietHoursEnd, is24HourFormat),
+                enabled = quietHoursEnabled,
+                onClick = onQuietEnd,
+            )
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))

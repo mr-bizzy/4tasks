@@ -58,6 +58,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.app_passwords_explanation
+import tasks.kmp.generated.resources.shared_with_me_explanation
+import tasks.kmp.generated.resources.upgrade_email_to_task_description
 import tasks.kmp.generated.resources.accept
 import tasks.kmp.generated.resources.add_account
 import tasks.kmp.generated.resources.app_password
@@ -197,78 +200,68 @@ fun TasksAccountScreen(
 
         // Email-to-task card
         if (state.inboundEmail != null) {
-            SectionHeader(stringResource(Res.string.email_to_task), modifier = Modifier.padding(horizontal = SettingsContentPadding))
-            Column(
+            SettingsSection(
+                title = stringResource(Res.string.email_to_task),
+                explanation = stringResource(Res.string.upgrade_email_to_task_description),
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
             ) {
-                SettingsItemCard(position = CardPosition.First) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.email_to_task_address),
-                        summary = state.inboundEmail,
-                        icon = Icons.Outlined.Email,
-                        onClick = onCopyEmail,
-                        trailing = {
-                            Icon(
-                                imageVector = Icons.Outlined.ContentCopy,
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(end = SettingsContentPadding)
-                                    .size(SettingsIconSize),
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        },
-                    )
-                }
-                if (state.inboundCalendarName != null) {
-                    SettingsItemCard(position = CardPosition.Middle) {
-                        PreferenceRow(
-                            title = stringResource(Res.string.email_to_task_calendar),
-                            summary = state.inboundCalendarName,
-                            icon = Icons.AutoMirrored.Outlined.List,
-                            onClick = { showCalendarDialog = true },
+                PreferenceRow(
+                    title = stringResource(Res.string.email_to_task_address),
+                    summary = state.inboundEmail,
+                    icon = Icons.Outlined.Email,
+                    onClick = onCopyEmail,
+                    trailing = {
+                        Icon(
+                            imageVector = Icons.Outlined.ContentCopy,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(end = SettingsContentPadding)
+                                .size(SettingsIconSize),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
-                    }
-                }
-                SettingsItemCard(position = CardPosition.Last) {
+                    },
+                )
+                if (state.inboundCalendarName != null) {
                     PreferenceRow(
-                        title = stringResource(Res.string.regenerate_email_address),
-                        icon = Icons.Outlined.Autorenew,
-                        onClick = { showRegenerateDialog = true },
+                        title = stringResource(Res.string.email_to_task_calendar),
+                        summary = state.inboundCalendarName,
+                        icon = Icons.AutoMirrored.Outlined.List,
+                        onClick = { showCalendarDialog = true },
                     )
                 }
+                PreferenceRow(
+                    title = stringResource(Res.string.regenerate_email_address),
+                    icon = Icons.Outlined.Autorenew,
+                    onClick = { showRegenerateDialog = true },
+                )
             }
             Spacer(modifier = Modifier.height(SettingsSectionGap))
         }
 
         // Shared with me section (calendars shared by others)
         if (state.sharedWithMe.isNotEmpty()) {
-            SectionHeader(stringResource(Res.string.shared_with_me), modifier = Modifier.padding(horizontal = SettingsContentPadding))
-            Column(
+            SettingsSection(
+                title = stringResource(Res.string.shared_with_me),
+                explanation = stringResource(Res.string.shared_with_me_explanation),
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
             ) {
-                state.sharedWithMe.forEachIndexed { index, shared ->
-                    SettingsItemCard(
-                        position = CardPosition.forIndex(index, state.sharedWithMe.size),
-                    ) {
-                        PreferenceRow(
-                            title = shared.name,
-                            summary = shared.ownerName?.let { stringResource(Res.string.shared_by, it) },
-                            leading = {
-                                TasksIcon(
-                                    modifier = Modifier
-                                        .padding(start = SettingsContentPadding)
-                                        .size(SettingsIconSize),
-                                    label = shared.icon ?: TasksIcons.LIST,
-                                    tint = when (shared.color) {
-                                        0 -> MaterialTheme.colorScheme.onSurface
-                                        else -> Color(shared.color)
-                                    },
-                                )
-                            },
-                        )
-                    }
+                state.sharedWithMe.forEach { shared ->
+                    PreferenceRow(
+                        title = shared.name,
+                        summary = shared.ownerName?.let { stringResource(Res.string.shared_by, it) },
+                        leading = {
+                            TasksIcon(
+                                modifier = Modifier
+                                    .padding(start = SettingsContentPadding)
+                                    .size(SettingsIconSize),
+                                label = shared.icon ?: TasksIcons.LIST,
+                                tint = when (shared.color) {
+                                    0 -> MaterialTheme.colorScheme.onSurface
+                                    else -> Color(shared.color)
+                                },
+                            )
+                        },
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(SettingsSectionGap))
@@ -308,51 +301,42 @@ fun TasksAccountScreen(
         }
 
         // App passwords card
-        SectionHeader(stringResource(Res.string.app_passwords), modifier = Modifier.padding(horizontal = SettingsContentPadding), onClick = onOpenAppPasswordsInfo)
-        Column(
+        SettingsSection(
+            title = stringResource(Res.string.app_passwords),
+            explanation = stringResource(Res.string.app_passwords_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            onInfoClick = onOpenAppPasswordsInfo,
         ) {
-            val passwordCount = (state.appPasswords?.size ?: 0)
-            val totalPasswordItems = passwordCount + 1 // +1 for generate button
-            state.appPasswords?.forEachIndexed { index, pw ->
+            state.appPasswords?.forEach { pw ->
                 val description = pw.description ?: stringResource(Res.string.app_password)
-                SettingsItemCard(
-                    position = CardPosition.forIndex(index, totalPasswordItems),
-                ) {
-                    val createdAtText = formatRelativeDay(pw.createdAt)
-                    val lastAccessText = formatRelativeDay(pw.lastAccess)
-                        ?: stringResource(Res.string.last_backup_never)
-                    val summary = stringResource(Res.string.app_password_created_at, createdAtText ?: "") + "\n" +
-                            stringResource(Res.string.app_password_last_access, lastAccessText)
-                    PreferenceRow(
-                        title = description,
-                        summary = summary,
-                        trailing = {
-                            IconButton(onClick = {
-                                deletePasswordId = pw.sessionId
-                                deletePasswordDescription = description
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Delete,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(SettingsIconSize),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                )
-                            }
-                        },
-                    )
-                }
-            }
-            SettingsItemCard(
-                position = if (passwordCount == 0) CardPosition.Only else CardPosition.Last,
-            ) {
+                val createdAtText = formatRelativeDay(pw.createdAt)
+                val lastAccessText = formatRelativeDay(pw.lastAccess)
+                    ?: stringResource(Res.string.last_backup_never)
+                val summary = stringResource(Res.string.app_password_created_at, createdAtText ?: "") + "\n" +
+                        stringResource(Res.string.app_password_last_access, lastAccessText)
                 PreferenceRow(
-                    title = stringResource(Res.string.generate_new_password),
-                    icon = Icons.Outlined.Add,
-                    onClick = { showDescriptionDialog = true },
+                    title = description,
+                    summary = summary,
+                    trailing = {
+                        IconButton(onClick = {
+                            deletePasswordId = pw.sessionId
+                            deletePasswordDescription = description
+                        }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = null,
+                                modifier = Modifier.size(SettingsIconSize),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    },
                 )
             }
+            PreferenceRow(
+                title = stringResource(Res.string.generate_new_password),
+                icon = Icons.Outlined.Add,
+                onClick = { showDescriptionDialog = true },
+            )
         }
 
         // Bottom actions card

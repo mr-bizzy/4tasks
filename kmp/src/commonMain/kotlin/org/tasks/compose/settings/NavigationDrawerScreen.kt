@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.drawer_filters_explanation
+import tasks.kmp.generated.resources.drawer_places_explanation
+import tasks.kmp.generated.resources.drawer_tags_explanation
 import tasks.kmp.generated.resources.customize_drawer
 import tasks.kmp.generated.resources.customize_drawer_summary
 import tasks.kmp.generated.resources.drawer_filters
@@ -65,93 +68,73 @@ fun NavigationDrawerScreen(
                     onClick = onCustomizeDrawer,
                 )
             }
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
         }
 
         // Filters section
-        SectionHeader(
-            stringResource(Res.string.drawer_filters),
+        SettingsSection(
+            title = stringResource(Res.string.drawer_filters),
+            explanation = stringResource(Res.string.drawer_filters_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    checked = filtersEnabled,
-                    onCheckedChange = onFiltersEnabled,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.today),
-                    checked = showToday,
-                    enabled = filtersEnabled,
-                    onCheckedChange = onShowToday,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.filter_recently_modified),
-                    checked = showRecentlyModified,
-                    enabled = filtersEnabled,
-                    onCheckedChange = onShowRecentlyModified,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.enabled),
+                checked = filtersEnabled,
+                onCheckedChange = onFiltersEnabled,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.today),
+                checked = showToday,
+                enabled = filtersEnabled,
+                onCheckedChange = onShowToday,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.filter_recently_modified),
+                checked = showRecentlyModified,
+                enabled = filtersEnabled,
+                onCheckedChange = onShowRecentlyModified,
+            )
         }
 
         // Tags section
-        SectionHeader(
-            stringResource(Res.string.drawer_tags),
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(Res.string.drawer_tags),
+            explanation = stringResource(Res.string.drawer_tags_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.enabled),
-                    checked = tagsEnabled,
-                    onCheckedChange = onTagsEnabled,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.hide_unused_tags),
-                    checked = hideUnusedTags,
-                    enabled = tagsEnabled,
-                    onCheckedChange = onHideUnusedTags,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.enabled),
+                checked = tagsEnabled,
+                onCheckedChange = onTagsEnabled,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.hide_unused_tags),
+                checked = hideUnusedTags,
+                enabled = tagsEnabled,
+                onCheckedChange = onHideUnusedTags,
+            )
         }
 
         if (showPlaces) {
             // Places section
-            SectionHeader(
-                stringResource(Res.string.drawer_places),
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+            SettingsSection(
+                title = stringResource(Res.string.drawer_places),
+                explanation = stringResource(Res.string.drawer_places_explanation),
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
             ) {
-                SettingsItemCard(position = CardPosition.First) {
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.enabled),
-                        checked = placesEnabled,
-                        onCheckedChange = onPlacesEnabled,
-                    )
-                }
-                SettingsItemCard(position = CardPosition.Last) {
-                    SwitchPreferenceRow(
-                        title = stringResource(Res.string.hide_unused_places),
-                        checked = hideUnusedPlaces,
-                        enabled = placesEnabled,
-                        onCheckedChange = onHideUnusedPlaces,
-                    )
-                }
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.enabled),
+                    checked = placesEnabled,
+                    onCheckedChange = onPlacesEnabled,
+                )
+                SwitchPreferenceRow(
+                    title = stringResource(Res.string.hide_unused_places),
+                    checked = hideUnusedPlaces,
+                    enabled = placesEnabled,
+                    onCheckedChange = onHideUnusedPlaces,
+                )
             }
         }
 

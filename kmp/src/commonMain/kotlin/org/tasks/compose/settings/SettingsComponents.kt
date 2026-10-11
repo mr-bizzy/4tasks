@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -193,6 +194,62 @@ fun ColorIconCards(
                     )
                 },
             )
+        }
+    }
+}
+
+/**
+ * A settings section as the family draws it (FAMILY-LOOK rules 3 and 5; 4Dictate SettingsActivity.kt:1727
+ * `Section()`): ONE default card per section, its [title] inside at titleSmall, the [explanation] under it at
+ * bodySmall in onSurfaceVariant, then the controls, each keeping its own title. [onInfoClick] puts the help
+ * icon beside the title, for the sections that had one on their old label.
+ */
+@Composable
+fun SettingsSection(
+    title: String,
+    explanation: String?,
+    modifier: Modifier = Modifier,
+    onInfoClick: (() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Column {
+            Column(
+                modifier = Modifier.padding(
+                    start = SettingsCardPadding,
+                    end = SettingsCardPadding,
+                    top = SettingsCardPadding,
+                ),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                    if (onInfoClick != null) {
+                        IconButton(onClick = onInfoClick, modifier = Modifier.size(32.dp)) {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = stringResource(Res.string.help),
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
+                }
+                if (!explanation.isNullOrBlank()) {
+                    Text(
+                        text = explanation,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            // The controls are full-width rows with their own 14 dp inside, so their titles line up with
+            // the section title and each row stays one tap target.
+            content()
         }
     }
 }

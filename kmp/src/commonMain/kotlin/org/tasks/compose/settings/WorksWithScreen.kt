@@ -90,15 +90,13 @@ fun WorksWithScreen(
         }
 
         groups.forEach { group ->
-            SectionHeader(
-                stringResource(group.title),
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+            SettingsSection(
+                title = stringResource(group.title),
+                explanation = group.explanation?.let { stringResource(it) },
                 modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            Column(
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-                verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
             ) {
-                group.entries.forEachIndexed { index, entry ->
+                group.entries.forEach { entry ->
                     val labels = WorksWithTag.entries
                         .filter { it in entry.tags && it != current }
                         .map { it.label }
@@ -110,34 +108,30 @@ fun WorksWithScreen(
                         configuration.isLibre -> entry.libreDescription
                         else -> null
                     } ?: entry.description
-                    SettingsItemCard(
-                        position = CardPosition.forIndex(index, group.entries.size),
-                    ) {
-                        val links = entry.links
-                        PreferenceRow(
-                            title = stringResource(entry.title),
-                            summary = stringResource(summary),
-                            icon = entry.icon,
-                            iconDrawable = entry.iconDrawable,
-                            iconTint = if (entry.tintIcon) null else Color.Unspecified,
-                            enabled = links != null,
-                            onClick = links?.let {
-                                {
-                                    when {
-                                        entry.showPricingIfUnsubscribed && !hasSubscription ->
-                                            onPricingClick()
-                                        entry.openMcpSettingsOnDesktop && !configuration.isAndroid ->
-                                            onMcpSettingsClick()
-                                        else ->
-                                            onLinkClick(it.url(configuration.appStore))
-                                    }
+                    val links = entry.links
+                    PreferenceRow(
+                        title = stringResource(entry.title),
+                        summary = stringResource(summary),
+                        icon = entry.icon,
+                        iconDrawable = entry.iconDrawable,
+                        iconTint = if (entry.tintIcon) null else Color.Unspecified,
+                        enabled = links != null,
+                        onClick = links?.let {
+                            {
+                                when {
+                                    entry.showPricingIfUnsubscribed && !hasSubscription ->
+                                        onPricingClick()
+                                    entry.openMcpSettingsOnDesktop && !configuration.isAndroid ->
+                                        onMcpSettingsClick()
+                                    else ->
+                                        onLinkClick(it.url(configuration.appStore))
                                 }
-                            },
-                            trailing = if (labels.isEmpty()) null else {
-                                { ChipRow(labels) }
-                            },
-                        )
-                    }
+                            }
+                        },
+                        trailing = if (labels.isEmpty()) null else {
+                            { ChipRow(labels) }
+                        },
+                    )
                 }
             }
         }

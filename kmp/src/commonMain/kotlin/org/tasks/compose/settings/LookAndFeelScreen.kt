@@ -29,9 +29,11 @@ import org.tasks.themes.BaseTheme
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.color
 import tasks.kmp.generated.resources.language
+import tasks.kmp.generated.resources.localisation_explanation
 import tasks.kmp.generated.resources.markdown
 import tasks.kmp.generated.resources.markdown_description
 import tasks.kmp.generated.resources.on_launch
+import tasks.kmp.generated.resources.on_launch_explanation
 import tasks.kmp.generated.resources.open_last_viewed_list
 import tasks.kmp.generated.resources.settings_localization
 import tasks.kmp.generated.resources.theme
@@ -122,47 +124,37 @@ fun LookAndFeelScreen(
             }
         }
 
-        SectionHeader(
-            stringResource(Res.string.on_launch),
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(Res.string.on_launch),
+            explanation = stringResource(Res.string.on_launch_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(Res.string.open_last_viewed_list),
-                    checked = openLastViewedList,
-                    onCheckedChange = onOpenLastViewedList,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(Res.string.widget_open_list),
-                    summary = defaultFilterName,
-                    enabled = !openLastViewedList,
-                    onClick = onDefaultFilter,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(Res.string.open_last_viewed_list),
+                checked = openLastViewedList,
+                onCheckedChange = onOpenLastViewedList,
+            )
+            PreferenceRow(
+                title = stringResource(Res.string.widget_open_list),
+                summary = defaultFilterName,
+                enabled = !openLastViewedList,
+                onClick = onDefaultFilter,
+            )
         }
 
-        SectionHeader(
-            stringResource(Res.string.settings_localization),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            if (showLanguage) {
-                SettingsItemCard(position = CardPosition.Only) {
-                    PreferenceRow(
-                        title = stringResource(Res.string.language),
-                        summary = localeName,
-                        onClick = onLanguage,
-                    )
-                }
+        if (showLanguage) {
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+            SettingsSection(
+                title = stringResource(Res.string.settings_localization),
+                explanation = stringResource(Res.string.localisation_explanation),
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            ) {
+                PreferenceRow(
+                    title = stringResource(Res.string.language),
+                    summary = localeName,
+                    onClick = onLanguage,
+                )
             }
         }
 

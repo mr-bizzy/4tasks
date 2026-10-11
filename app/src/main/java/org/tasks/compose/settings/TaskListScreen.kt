@@ -144,56 +144,42 @@ fun TaskListScreen(
         }
 
         // Chips section
-        SectionHeader(
-            R.string.chips,
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.chips),
+            explanation = stringResource(R.string.chips_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                PreferenceRow(
-                    title = stringResource(R.string.chip_appearance),
-                    summary = chipAppearanceSummary,
-                    onClick = onChipAppearance,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.subtasks),
-                    checked = subtaskChips,
-                    onCheckedChange = onSubtaskChips,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.start_date),
-                    checked = startDateChips,
-                    onCheckedChange = onStartDateChips,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.places),
-                    checked = placeChips,
-                    onCheckedChange = onPlaceChips,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.lists),
-                    checked = listChips,
-                    onCheckedChange = onListChips,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.tags),
-                    checked = tagChips,
-                    onCheckedChange = onTagChips,
-                )
-            }
+            PreferenceRow(
+                title = stringResource(R.string.chip_appearance),
+                summary = chipAppearanceSummary,
+                onClick = onChipAppearance,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.subtasks),
+                checked = subtaskChips,
+                onCheckedChange = onSubtaskChips,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.start_date),
+                checked = startDateChips,
+                onCheckedChange = onStartDateChips,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.places),
+                checked = placeChips,
+                onCheckedChange = onPlaceChips,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.lists),
+                checked = listChips,
+                onCheckedChange = onListChips,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.tags),
+                checked = tagChips,
+                onCheckedChange = onTagChips,
+            )
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))

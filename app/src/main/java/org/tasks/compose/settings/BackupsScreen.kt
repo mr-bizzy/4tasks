@@ -82,11 +82,12 @@ fun BackupsScreen(
         }
 
         // Advanced section
-        SectionHeader(
-            R.string.preferences_advanced,
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.preferences_advanced),
+            explanation = stringResource(R.string.backups_advanced_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        SettingsItemCard(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
+        ) {
             SwitchPreferenceRow(
                 title = stringResource(R.string.backups_ignore_warnings),
                 summary = stringResource(R.string.backups_ignore_warnings_summary),

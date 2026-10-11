@@ -75,46 +75,37 @@ fun AdvancedScreen(
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
         // Security: self-signed certificates for servers the user runs (CalDAV)
-        SectionHeader(
-            R.string.advanced_security,
+        SettingsSection(
+            title = stringResource(R.string.advanced_security),
+            explanation = stringResource(R.string.advanced_security_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            SettingsItemCard(position = CardPosition.Only) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.allow_self_signed_certs),
-                    summary = stringResource(R.string.allow_self_signed_certs_summary),
-                    checked = allowSelfSignedCerts,
-                    onCheckedChange = onAllowSelfSignedCerts,
-                )
-            }
+        ) {
+            SwitchPreferenceRow(
+                title = stringResource(R.string.allow_self_signed_certs),
+                summary = stringResource(R.string.allow_self_signed_certs_summary),
+                checked = allowSelfSignedCerts,
+                onCheckedChange = onAllowSelfSignedCerts,
+            )
         }
 
         // Badges section
-        SectionHeader(
-            R.string.badges,
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.badges),
+            explanation = stringResource(R.string.badges_description),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.enabled),
-                    summary = stringResource(R.string.badges_description),
-                    checked = badgesEnabled,
-                    onCheckedChange = onBadges,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.list),
-                    summary = badgeFilterName,
-                    enabled = badgesEnabled,
-                    onClick = onBadgeList,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(R.string.enabled),
+                checked = badgesEnabled,
+                onCheckedChange = onBadges,
+            )
+            PreferenceRow(
+                title = stringResource(R.string.list),
+                summary = badgeFilterName,
+                enabled = badgesEnabled,
+                onClick = onBadgeList,
+            )
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))

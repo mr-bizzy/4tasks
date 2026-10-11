@@ -21,6 +21,16 @@ import org.tasks.AppStore
 import org.tasks.PlatformConfiguration
 import org.tasks.TasksUrls
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.works_with_mobile_explanation
+import tasks.kmp.generated.resources.works_with_desktop_apps_explanation
+import tasks.kmp.generated.resources.works_with_wearables_explanation
+import tasks.kmp.generated.resources.works_with_services_explanation
+import tasks.kmp.generated.resources.works_with_sync_explanation
+import tasks.kmp.generated.resources.works_with_servers_explanation
+import tasks.kmp.generated.resources.works_with_launchers_explanation
+import tasks.kmp.generated.resources.works_with_calendars_explanation
+import tasks.kmp.generated.resources.works_with_automation_explanation
+import tasks.kmp.generated.resources.works_with_developers_explanation
 import tasks.kmp.generated.resources.acalendar
 import tasks.kmp.generated.resources.android
 import tasks.kmp.generated.resources.apple_reminders
@@ -130,11 +140,14 @@ data class WorksWithGroup(
     val title: StringResource,
     val entries: List<WorksWithEntry>,
     val available: (PlatformConfiguration) -> Boolean = { true },
+    /** The plain sentence under the section title in its card (FAMILY-LOOK rule 5). */
+    val explanation: StringResource? = null,
 )
 
 val worksWithCatalog = listOf(
     WorksWithGroup(
         title = Res.string.works_with_mobile,
+        explanation = Res.string.works_with_mobile_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.works_with_android,
@@ -165,6 +178,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_desktop_apps,
+        explanation = Res.string.works_with_desktop_apps_explanation,
         available = { it.isAndroid },
         entries = listOf(
             WorksWithEntry(
@@ -195,6 +209,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_wearables,
+        explanation = Res.string.works_with_wearables_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.wear_os,
@@ -219,6 +234,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_services,
+        explanation = Res.string.works_with_services_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.tasks_org_account,
@@ -251,6 +267,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_sync,
+        explanation = Res.string.works_with_sync_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.davx5,
@@ -302,6 +319,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_servers,
+        explanation = Res.string.works_with_servers_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.caldav_server_nextcloud,
@@ -321,6 +339,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_launchers,
+        explanation = Res.string.works_with_launchers_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.kvaesitso,
@@ -333,6 +352,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_calendars,
+        explanation = Res.string.works_with_calendars_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.acalendar,
@@ -359,6 +379,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_automation,
+        explanation = Res.string.works_with_automation_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.tasker,
@@ -382,6 +403,7 @@ val worksWithCatalog = listOf(
     ),
     WorksWithGroup(
         title = Res.string.works_with_developers,
+        explanation = Res.string.works_with_developers_explanation,
         entries = listOf(
             WorksWithEntry(
                 title = Res.string.works_with_content_provider,

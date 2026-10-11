@@ -68,6 +68,7 @@ import org.tasks.data.entity.CaldavCalendar.Companion.ACCESS_OWNER
 import org.tasks.data.entity.Task
 import org.tasks.themes.TasksIcons
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.list_members_explanation
 import tasks.kmp.generated.resources.back
 import tasks.kmp.generated.resources.cancel
 import tasks.kmp.generated.resources.color
@@ -493,25 +494,17 @@ private fun PrincipalsList(
     canRemove: Boolean,
     onRemove: (PrincipalWithAccess) -> Unit,
 ) {
-    Column(
+    SettingsSection(
+        title = stringResource(Res.string.list_members),
+        explanation = stringResource(Res.string.list_members_explanation),
         modifier = Modifier.padding(horizontal = SettingsContentPadding),
     ) {
-        SectionHeader(title = stringResource(Res.string.list_members))
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
-        ) {
-            principals.forEachIndexed { index, principal ->
-                SettingsItemCard(
-                    position = CardPosition.forIndex(index, principals.size),
-                ) {
-                    PrincipalRow(
-                        principal = principal,
-                        canRemove = canRemove,
-                        onRemove = { onRemove(principal) },
-                    )
-                }
-            }
+        principals.forEach { principal ->
+            PrincipalRow(
+                principal = principal,
+                canRemove = canRemove,
+                onRemove = { onRemove(principal) },
+            )
         }
     }
 }

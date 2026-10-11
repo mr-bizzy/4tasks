@@ -50,6 +50,9 @@ import tasks.kmp.generated.resources.EPr_default_location_reminder_title
 import tasks.kmp.generated.resources.EPr_default_reminders_mode_title
 import tasks.kmp.generated.resources.EPr_default_reminders_title
 import tasks.kmp.generated.resources.Res
+import tasks.kmp.generated.resources.task_defaults_reminders_explanation
+import tasks.kmp.generated.resources.task_defaults_repeat_explanation
+import tasks.kmp.generated.resources.task_defaults_location_explanation
 import tasks.kmp.generated.resources.TEA_control_location
 import tasks.kmp.generated.resources.TEA_control_reminders
 import tasks.kmp.generated.resources.TEA_control_repeat
@@ -246,15 +249,13 @@ fun TaskDefaultsScreen(
             }
         }
 
-        SectionHeader(
-            stringResource(Res.string.TEA_control_reminders),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        CardGroup(
-            listOfNotNull(
+        SectionCardGroup(
+            title = stringResource(Res.string.TEA_control_reminders),
+            explanation = stringResource(Res.string.task_defaults_reminders_explanation),
+            rows = listOfNotNull(
                 ReminderRow.REMINDERS,
                 ReminderRow.RING_MODE.takeIf { showRingMode },
-            )
+            ),
         ) { row ->
             when (row) {
                 ReminderRow.REMINDERS ->
@@ -274,11 +275,11 @@ fun TaskDefaultsScreen(
             }
         }
 
-        SectionHeader(
-            stringResource(Res.string.TEA_control_repeat),
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        CardGroup(listOf(RecurrenceRow.RECURRENCE, RecurrenceRow.REPEAT_FROM)) { row ->
+        SectionCardGroup(
+            title = stringResource(Res.string.TEA_control_repeat),
+            explanation = stringResource(Res.string.task_defaults_repeat_explanation),
+            rows = listOf(RecurrenceRow.RECURRENCE, RecurrenceRow.REPEAT_FROM),
+        ) { row ->
             when (row) {
                 RecurrenceRow.RECURRENCE ->
                     PreferenceRow(
@@ -297,16 +298,14 @@ fun TaskDefaultsScreen(
         }
 
         if (showLocation) {
-            SectionHeader(
-                stringResource(Res.string.TEA_control_location),
-                modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            )
-            CardGroup(
-                listOf(
+            SectionCardGroup(
+                title = stringResource(Res.string.TEA_control_location),
+                explanation = stringResource(Res.string.task_defaults_location_explanation),
+                rows = listOf(
                     LocationRow.LOCATION,
                     LocationRow.LOCATION_REMINDER,
                     LocationRow.UPDATE_INTERVAL,
-                )
+                ),
             ) { row ->
                 when (row) {
                     LocationRow.LOCATION ->
@@ -391,6 +390,25 @@ private fun <T : Any> CardGroup(rows: List<T>, row: @Composable (T) -> Unit) {
                 }
             }
         }
+    }
+}
+
+/** One section card holding [rows], its title and explanation inside (FAMILY-LOOK rules 3 and 5). */
+@Composable
+private fun <T : Any> SectionCardGroup(
+    title: String,
+    explanation: String,
+    rows: List<T>,
+    row: @Composable (T) -> Unit,
+) {
+    if (rows.isEmpty()) return
+    Spacer(modifier = Modifier.height(SettingsContentPadding))
+    SettingsSection(
+        title = title,
+        explanation = explanation,
+        modifier = Modifier.padding(horizontal = SettingsContentPadding),
+    ) {
+        rows.forEach { item -> key(item) { row(item) } }
     }
 }
 

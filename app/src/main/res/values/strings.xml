@@ -469,4 +469,9 @@ File %1$s contained %2$s.\n\n
   <string name="widget_preview_group" translatable="false">Due today</string>
   <string name="widget_preview_task_1" translatable="false">Call the bank</string>
   <string name="widget_preview_task_2" translatable="false">Book the dentist</string>
+  <!-- Section explanations for the settings cards (FAMILY-LOOK rule 5). New words: proposed, awaiting the owner's approval. -->
+  <string name="advanced_security_explanation">For sync servers you run yourself.</string>
+  <string name="about_web_explanation">The 4Tasks website and user manual.</string>
+  <string name="backups_advanced_explanation">Most people can leave this as it is.</string>
+  <string name="chips_explanation">The small labels shown under each task in the list.</string>
 </resources>

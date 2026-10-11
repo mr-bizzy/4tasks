@@ -93,39 +93,31 @@ fun DateAndTimeScreen(
         }
 
         // Autoclose date time picker section
-        SectionHeader(
-            R.string.auto_dismiss_datetime,
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.auto_dismiss_datetime),
+            explanation = stringResource(R.string.auto_dismiss_datetime_summary),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            onClick = onAutoDismissInfo,
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
+            onInfoClick = onAutoDismissInfo,
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.auto_dismiss_datetime_list),
-                    summary = stringResource(R.string.auto_dismiss_datetime_list_summary),
-                    checked = autoDismissListEnabled,
-                    onCheckedChange = onAutoDismissList,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.auto_dismiss_datetime_edit),
-                    summary = stringResource(R.string.auto_dismiss_datetime_edit_summary),
-                    checked = autoDismissEditEnabled,
-                    onCheckedChange = onAutoDismissEdit,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                SwitchPreferenceRow(
-                    title = stringResource(R.string.auto_dismiss_datetime_widget),
-                    summary = stringResource(R.string.auto_dismiss_datetime_widget_summary),
-                    checked = autoDismissWidgetEnabled,
-                    onCheckedChange = onAutoDismissWidget,
-                )
-            }
+            SwitchPreferenceRow(
+                title = stringResource(R.string.auto_dismiss_datetime_list),
+                summary = stringResource(R.string.auto_dismiss_datetime_list_summary),
+                checked = autoDismissListEnabled,
+                onCheckedChange = onAutoDismissList,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.auto_dismiss_datetime_edit),
+                summary = stringResource(R.string.auto_dismiss_datetime_edit_summary),
+                checked = autoDismissEditEnabled,
+                onCheckedChange = onAutoDismissEdit,
+            )
+            SwitchPreferenceRow(
+                title = stringResource(R.string.auto_dismiss_datetime_widget),
+                summary = stringResource(R.string.auto_dismiss_datetime_widget_summary),
+                checked = autoDismissWidgetEnabled,
+                onCheckedChange = onAutoDismissWidget,
+            )
         }
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))

@@ -731,4 +731,28 @@
     <string name="backups_summary">Back up your tasks to a file, and bring them back</string>
     <string name="advanced_summary">Self-signed certificates, badges and resetting</string>
     <string name="about_summary">Version, licences and source code</string>
+    <!-- Section explanations for the settings cards (FAMILY-LOOK rule 5). New words: proposed, awaiting the owner's approval. -->
+    <string name="on_launch_explanation">What you see when you open 4Tasks.</string>
+    <string name="localisation_explanation">The language 4Tasks is shown in.</string>
+    <string name="default_reminder_explanation">Reminders for tasks that have a date but no time.</string>
+    <string name="swipe_to_snooze_explanation">Swipe a reminder away and it comes back later instead of going.</string>
+    <string name="task_defaults_reminders_explanation">The reminders a new task starts with.</string>
+    <string name="task_defaults_repeat_explanation">How a new task repeats.</string>
+    <string name="task_defaults_location_explanation">The place a new task starts with, and when it reminds you there.</string>
+    <string name="drawer_filters_explanation">Show the built-in filters, such as Today, in the drawer.</string>
+    <string name="drawer_tags_explanation">Show your tags in the drawer.</string>
+    <string name="drawer_places_explanation">Show your places in the drawer.</string>
+    <string name="works_with_mobile_explanation">Apps for phones and tablets.</string>
+    <string name="works_with_desktop_apps_explanation">Apps for your computer.</string>
+    <string name="works_with_wearables_explanation">Watches and other things you wear.</string>
+    <string name="works_with_services_explanation">Online services that can hold your tasks.</string>
+    <string name="works_with_sync_explanation">Apps that sync your tasks with other places.</string>
+    <string name="works_with_servers_explanation">Servers you run yourself.</string>
+    <string name="works_with_launchers_explanation">Apps that run your home screen.</string>
+    <string name="works_with_calendars_explanation">Calendars and home screen widgets.</string>
+    <string name="works_with_automation_explanation">Apps that act on your tasks for you.</string>
+    <string name="works_with_developers_explanation">For people building their own tools.</string>
+    <string name="list_members_explanation">The people this list is shared with.</string>
+    <string name="shared_with_me_explanation">Lists other people have shared with you.</string>
+    <string name="app_passwords_explanation">Passwords for other apps that use your Tasks.org account.</string>
 </resources>

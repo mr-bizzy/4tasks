@@ -66,74 +66,57 @@ fun AboutScreen(
                 )
             }
         }
-        SectionHeader(
-            stringResource(R.string.about_open_source),
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.about_open_source),
+            explanation = stringResource(R.string.about_source_code_summary),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                PreferenceRow(
-                    title = stringResource(R.string.about_source_code),
-                    summary = stringResource(R.string.about_source_code_summary),
-                    onClick = onFourTasksSource,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Middle) {
-                PreferenceRow(
-                    title = stringResource(R.string.about_gpl),
-                    icon = Icons.Outlined.Gavel,
-                    onClick = onGpl,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.about_third_party),
-                    icon = Icons.Outlined.Gavel,
-                    onClick = onThirdParty,
-                )
-            }
+            PreferenceRow(
+                title = stringResource(R.string.about_source_code),
+                onClick = onFourTasksSource,
+            )
+            PreferenceRow(
+                title = stringResource(R.string.about_gpl),
+                icon = Icons.Outlined.Gavel,
+                onClick = onGpl,
+            )
+            PreferenceRow(
+                title = stringResource(R.string.about_third_party),
+                icon = Icons.Outlined.Gavel,
+                onClick = onThirdParty,
+            )
         }
-        SectionHeader(
-            stringResource(R.string.about_web),
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.about_web),
+            explanation = stringResource(R.string.about_web_explanation),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-            verticalArrangement = Arrangement.spacedBy(SettingsCardGap),
         ) {
-            SettingsItemCard(position = CardPosition.First) {
-                PreferenceRow(
-                    title = stringResource(R.string.about_website),
-                    icon = Icons.Outlined.Public,
-                    summary = stringResource(R.string.about_website_summary),
-                    onClick = onWebsite,
-                )
-            }
-            SettingsItemCard(position = CardPosition.Last) {
-                PreferenceRow(
-                    title = stringResource(R.string.about_manual),
-                    icon = Icons.AutoMirrored.Outlined.MenuBook,
-                    summary = stringResource(R.string.about_manual_summary),
-                    onClick = onManual,
-                )
-            }
+            PreferenceRow(
+                title = stringResource(R.string.about_website),
+                icon = Icons.Outlined.Public,
+                summary = stringResource(R.string.about_website_summary),
+                onClick = onWebsite,
+            )
+            PreferenceRow(
+                title = stringResource(R.string.about_manual),
+                icon = Icons.AutoMirrored.Outlined.MenuBook,
+                summary = stringResource(R.string.about_manual_summary),
+                onClick = onManual,
+            )
         }
-        SectionHeader(
-            stringResource(R.string.about_privacy),
+        Spacer(modifier = Modifier.height(SettingsContentPadding))
+        SettingsSection(
+            title = stringResource(R.string.about_privacy),
+            explanation = stringResource(R.string.about_privacy_summary),
             modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        )
-        Column(modifier = Modifier.padding(horizontal = SettingsContentPadding)) {
-            SettingsItemCard(position = CardPosition.Only) {
-                PreferenceRow(
-                    title = stringResource(R.string.about_privacy_policy),
-                    icon = Icons.Outlined.PermIdentity,
-                    summary = stringResource(R.string.about_privacy_summary),
-                    onClick = onPrivacyPolicy,
-                )
-            }
+        ) {
+            PreferenceRow(
+                title = stringResource(R.string.about_privacy_policy),
+                icon = Icons.Outlined.PermIdentity,
+                onClick = onPrivacyPolicy,
+            )
         }
         Spacer(modifier = Modifier.height(SettingsContentPadding))
         bottomInsets()
