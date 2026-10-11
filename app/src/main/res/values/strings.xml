@@ -473,5 +473,8 @@ File %1$s contained %2$s.\n\n
   <string name="advanced_security_explanation">For sync servers you run yourself.</string>
   <string name="about_web_explanation">The 4Tasks website and user manual.</string>
   <string name="backups_advanced_explanation">Most people can leave this as it is.</string>
+  <string name="widget_opacity_explanation">How much of your home screen shows through the widget.</string>
+  <string name="widget_header_explanation">The bar at the top of the widget.</string>
+  <string name="widget_rows_explanation">How each task in the widget looks.</string>
   <string name="chips_explanation">The small labels shown under each task in the list.</string>
 </resources>
