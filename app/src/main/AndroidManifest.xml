@@ -77,6 +77,8 @@
     android:required="false"/>
 
   <queries>
+    <!-- 4Dictate, for Reprocess on a 4Dictate note (a 4Link call to its provider). Only this one package. -->
+    <package android:name="uk.mr_biz.fourdictate" />
     <intent>
       <action android:name="android.intent.action.VIEW" />
       <category android:name="android.intent.category.BROWSABLE" />

@@ -59,4 +59,16 @@ class FakePort(
     }
 
     override fun exactAlarmsAllowed() = exactAlarms
+
+    val createdLists = mutableListOf<String>()
+    val dictatedNotes = mutableListOf<Long>()
+
+    override suspend fun createLocalList(title: String): ListInfo {
+        createdLists += title
+        return ListInfo((lists.maxOfOrNull { it.id } ?: 0) + 1, title, false).also { lists = lists + it }
+    }
+
+    override suspend fun markDictatedNote(taskId: Long) {
+        dictatedNotes += taskId
+    }
 }

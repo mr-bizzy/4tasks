@@ -5,17 +5,21 @@ import org.tasks.api.AccountQuery
 import org.tasks.api.ApiQueryEngine
 import org.tasks.api.ApiWriter
 import org.tasks.api.ListQuery
+import org.tasks.api.ListWrite
 import org.tasks.api.ReminderWrite
 import org.tasks.api.TaskQuery
 import org.tasks.api.TaskRow
 import org.tasks.api.TaskWrite
 import org.tasks.api.TasksContract
 import org.tasks.api.completeTasks
+import org.tasks.api.createList
 import org.tasks.api.createTasks
 import org.tasks.api.findAccounts
 import org.tasks.api.findLists
 import org.tasks.api.findTasks
 import org.tasks.api.setTaskReminders
+import org.tasks.data.dao.CaldavDao
+import org.tasks.data.getOrCreateLocalAccount
 import org.tasks.extensions.Context.canScheduleExactAlarms
 import java.util.Locale
 
@@ -29,6 +33,7 @@ class EnginePort(
     private val engine: ApiQueryEngine,
     private val writer: ApiWriter,
     private val context: Context,
+    private val caldavDao: CaldavDao,
 ) : TasksPort {
 
     override suspend fun lists(): List<ListInfo> {
@@ -120,6 +125,14 @@ class EnginePort(
     }
 
     override fun exactAlarmsAllowed(): Boolean = context.canScheduleExactAlarms()
+
+    override suspend fun createLocalList(title: String): ListInfo {
+        val account = caldavDao.getOrCreateLocalAccount()
+        val row = engine.createList(writer, ListWrite(title = title, accountId = account.id))
+        return ListInfo(row.id, row.title, row.isReadOnly)
+    }
+
+    override suspend fun markDictatedNote(taskId: Long) = DictatedNotes.mark(context, taskId)
 
     private fun info(row: TaskRow, lists: List<ListInfo>) = TaskInfo(
         id = row.id,

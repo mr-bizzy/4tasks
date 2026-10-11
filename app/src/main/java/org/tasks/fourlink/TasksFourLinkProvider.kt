@@ -13,6 +13,7 @@ import kotlinx.coroutines.withTimeout
 import org.json.JSONObject
 import org.tasks.api.ApiQueryEngine
 import org.tasks.api.ApiWriter
+import org.tasks.data.dao.CaldavDao
 import uk.mr_biz.fourlink.Caller
 import uk.mr_biz.fourlink.Catalogue
 import uk.mr_biz.fourlink.FunctionSpec
@@ -38,6 +39,7 @@ class TasksFourLinkProvider : FourLinkProvider() {
     interface DoorEntryPoint {
         val queryEngine: ApiQueryEngine
         val writer: ApiWriter
+        val caldavDao: CaldavDao
     }
 
     override fun appName() = TasksCatalogue.APP
@@ -48,7 +50,7 @@ class TasksFourLinkProvider : FourLinkProvider() {
         val context = requireNotNull(context)
         awaitApplicationStart()
         val entry = EntryPointAccessors.fromApplication(context.applicationContext, DoorEntryPoint::class.java)
-        val logic = TasksDoorLogic(EnginePort(entry.queryEngine, entry.writer, context), mayNameTasks = mayNameTasks(context, caller))
+        val logic = TasksDoorLogic(EnginePort(entry.queryEngine, entry.writer, context, entry.caldavDao), mayNameTasks = mayNameTasks(context, caller))
         return try {
             // A binder thread: Tasks.org's data layer suspends, and needs no main thread.
             runBlocking(Dispatchers.IO) { withTimeout(TIMEOUT_MS) { logic.perform(function.id, arguments) } }

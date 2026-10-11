@@ -477,4 +477,9 @@ File %1$s contained %2$s.\n\n
   <string name="widget_header_explanation">The bar at the top of the widget.</string>
   <string name="widget_rows_explanation">How each task in the widget looks.</string>
   <string name="chips_explanation">The small labels shown under each task in the list.</string>
+  <!-- 4Dictate notes (tasks.add note=true). New words: proposed, awaiting the owner's approval. -->
+  <string name="reprocess">Reprocess</string>
+  <string name="fourdictate_reprocess_sent">Sent to 4Dictate.</string>
+  <string name="fourdictate_not_reached">4Dictate did not answer. Your note is unchanged.</string>
+  <string name="fourdictate_cannot_reprocess">This version of 4Dictate cannot reprocess a note. Your note is unchanged.</string>
 </resources>

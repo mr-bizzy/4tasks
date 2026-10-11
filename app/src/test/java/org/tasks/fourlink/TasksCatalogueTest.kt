@@ -85,4 +85,25 @@ class TasksCatalogueTest {
         val input = functions.first { it.id == "tasks.add" }.input
         assertEquals(null, uk.mr_biz.fourlink.Said.fill(input, org.json.JSONObject().put("title", "{{said}}"), "words"))
     }
+
+    @Test fun `note is an optional true-or-false for 4Dictate only, and nothing a model is told mentions it`() {
+        val add = functions.first { it.id == "tasks.add" }
+        val note = add.input.properties["note"] as uk.mr_biz.fourlink.Schema.Bool
+        assertEquals(
+            "Only for 4Dictate handing over a dictation made while the phone was locked; leave out otherwise.",
+            note.description,
+        )
+        assertFalse("note" in add.input.required)
+        // The function's description (what the model reads to choose and fill it) never mentions the argument.
+        assertFalse(add.description.contains("\"note\""))
+        assertFalse(add.description.contains("4Dictate"))
+        for ((name, field) in add.input.properties - "note") {
+            assertFalse(name, field.description.orEmpty().contains("4Dictate"))
+        }
+    }
+
+    @Test fun `adding the optional note is a minor version, so callers that read 1_0 still call it`() {
+        assertEquals("1.1", functions.first { it.id == "tasks.add" }.version)
+        assertEquals(1, functions.first { it.id == "tasks.add" }.major)
+    }
 }

@@ -16,7 +16,12 @@ import androidx.lifecycle.lifecycleScope
 import com.todoroo.astrid.activity.MainActivity.Companion.finishAffinity
 import com.todoroo.astrid.activity.MainActivity.Companion.removeTask
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.tasks.R
+import org.tasks.fourlink.DictatedNotes
+import org.tasks.fourlink.FourDictateReprocess
 import org.tasks.calendars.CalendarPicker
 import org.tasks.compose.edit.TaskEditScreen
 import org.tasks.repeats.BasicRecurrenceDialog
@@ -127,7 +132,25 @@ class TaskEditFragment : Fragment() {
                 repeatRuleToString = { repeatRuleToString.toStringBlocking(it) },
                 colorProvider = { chipProvider.getColor(it) },
                 locale = remember { locale },
+                dictatedNote = remember(viewState.task.id) {
+                    !viewState.isNew && DictatedNotes.isNote(context, viewState.task.id)
+                },
+                reprocessNote = { text -> reprocessNote(text) },
             )
+        }
+    }
+
+    /** Reprocess on a 4Dictate note: the sentence to show. The task is not touched, whatever the answer. */
+    private suspend fun reprocessNote(text: String): String {
+        val context = requireContext().applicationContext
+        val answer = withContext(Dispatchers.IO) {
+            FourDictateReprocess.reprocess(FourDictateReprocess.calls(context), text)
+        }
+        return when (answer) {
+            FourDictateReprocess.Answer.NotReached -> context.getString(R.string.fourdictate_not_reached)
+            FourDictateReprocess.Answer.NotOffered -> context.getString(R.string.fourdictate_cannot_reprocess)
+            is FourDictateReprocess.Answer.Refused -> answer.reason
+            is FourDictateReprocess.Answer.Done -> answer.summary ?: context.getString(R.string.fourdictate_reprocess_sent)
         }
     }
 

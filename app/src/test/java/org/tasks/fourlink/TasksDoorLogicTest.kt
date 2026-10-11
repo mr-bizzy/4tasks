@@ -280,6 +280,63 @@ class TasksDoorLogicTest {
         assertTrue(port.created.isEmpty())
     }
 
+    // ---- tasks.add note=true: 4Dictate handing over a dictation made while the phone was locked ----
+
+    private fun dictated(extra: JSONObject.() -> Unit = {}) =
+        call("tasks.add", JSONObject().put("title", "Dictation").put("notes", "the words").put("note", true).apply(extra).toString())
+
+    @Test fun `a 4Dictate note goes to the Notes list that exists, matched as any list name, and is marked`() {
+        listsOf("Personal Calendar", "My notes")
+        val r = ok(dictated())
+        assertEquals(2L, port.created.single().listId)
+        assertEquals("the words", port.created.single().notes)
+        assertEquals(listOf(r.getLong("id")), port.dictatedNotes)
+        assertTrue(port.createdLists.isEmpty())
+        assertEquals("Added to My notes: Dictation.", r.getString("summary"))
+    }
+
+    @Test fun `with no Notes list a local Notes list is made on this phone and the note goes there`() {
+        listsOf("Personal Calendar", "Shopping")
+        val r = ok(dictated())
+        assertEquals(listOf("Notes"), port.createdLists)
+        assertEquals(3L, port.created.single().listId)
+        assertEquals(listOf(r.getLong("id")), port.dictatedNotes)
+        assertEquals(
+            "Added to Notes: Dictation. There was no Notes list, so 4Tasks made one on this phone.",
+            r.getString("summary"),
+        )
+    }
+
+    @Test fun `a 4Dictate note goes to Notes whatever list was sent`() {
+        listsOf("Personal Calendar", "Notes", "Shopping")
+        ok(dictated { put("list", "Shopping") })
+        assertEquals(2L, port.created.single().listId)
+    }
+
+    @Test fun `the Notes list is made only once`() {
+        listsOf("Personal Calendar")
+        ok(dictated())
+        ok(dictated())
+        assertEquals(listOf("Notes"), port.createdLists)
+        assertEquals(port.created[0].listId, port.created[1].listId)
+    }
+
+    @Test fun `note false or left out changes nothing: no marker, no list made, the named list or the old Notes fallback`() {
+        listsOf("Personal Calendar", "Work")
+        ok(call("tasks.add", """{"title":"milk","list":"Work","note":false}"""))
+        ok(call("tasks.add", """{"title":"bread"}"""))
+        val r = ok(addTo("Notes"))
+        assertEquals(listOf(2L, null, null), port.created.map { it.listId })
+        assertTrue(port.dictatedNotes.isEmpty())
+        assertTrue(port.createdLists.isEmpty())
+        assertTrue(r.getString("summary").contains("There is no Notes list, so it went to"))
+    }
+
+    @Test fun `note must be true or false`() {
+        val add = TasksCatalogue.CATALOGUE.find("tasks.add")!!
+        assertEquals("arguments.note must be true or false", uk.mr_biz.fourlink.Validation.problem(add, """{"title":"x","note":"yes"}"""))
+    }
+
     @Test fun `a read-only list found by a normalised name is still refused`() {
         port.lists = listOf(ListInfo(1, "Work", false), ListInfo(2, "Shared", true))
         assertTrue(bad(addTo("the shared list")).contains("read-only"))

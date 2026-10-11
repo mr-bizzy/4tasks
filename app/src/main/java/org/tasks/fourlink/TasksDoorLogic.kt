@@ -57,6 +57,10 @@ interface TasksPort {
     suspend fun openTasks(): List<TaskInfo>
     suspend fun complete(id: Long): CompletionInfo
     fun exactAlarmsAllowed(): Boolean
+    /** Makes a list in the local account on this phone (creating that account if there is none). */
+    suspend fun createLocalList(title: String): ListInfo
+    /** Marks the task as a dictation 4Dictate handed over (tasks.add note=true); see [DictatedNotes]. */
+    suspend fun markDictatedNote(taskId: Long)
 }
 
 /**
@@ -120,12 +124,18 @@ class TasksDoorLogic(
                     "(it is now ${DoorDates.describe(Moment.DayTime(now()), now().toLocalDate(), locale)}). Send a later time.",
             )
         }
-        val listName = a.text("list")
-        val list = listName?.let { resolveList(port.lists(), it, forWriting = true, TasksCatalogue.ADD, a, notesMayFallBack = true) }
+        // note=true: 4Dictate handing over a dictation made while the phone was locked. It always goes to the Notes list (found as
+        // any other list name is), which is made on this phone when there is none, and the task is marked as a 4Dictate note.
+        val note = a.optBoolean(TasksCatalogue.NOTE, false)
+        val listName = if (note) NOTES_LIST else a.text("list")
+        var list = listName?.let { resolveList(port.lists(), it, forWriting = true, TasksCatalogue.ADD, a, notesMayFallBack = true) }
+        val madeNotesList = note && list == null
+        if (madeNotesList) list = port.createLocalList(NOTES_LIST)
         // A request for the Notes list with no such list is the one case where a missing list is not an error: it goes to the default list, and the summary says so.
-        val fellBackFromNotes = listName != null && list == null
+        val fellBackFromNotes = !note && listName != null && list == null
 
         val created = port.createTask(NewTask(title, notes, due, list?.id))
+        if (note) port.markDictatedNote(created.id)
         var reminderNote = ""
         if (reminder is Moment.DayTime) {
             try {
@@ -158,7 +168,11 @@ class TasksDoorLogic(
             }
         }
         val where = list?.title ?: created.listTitle
-        val notesNote = if (fellBackFromNotes) " There is no Notes list, so it went to ${where?.let { "$it, " }.orEmpty()}the default list." else ""
+        val notesNote = when {
+            fellBackFromNotes -> " There is no Notes list, so it went to ${where?.let { "$it, " }.orEmpty()}the default list."
+            madeNotesList -> " There was no Notes list, so 4Tasks made one on this phone."
+            else -> ""
+        }
         // 4Dictate shows this line when it acts without asking, so it must say WHICH list the task went to.
         val summary = (if (where != null) "Added to $where: " else "Added: ") + created.title +
             (if (parts.isEmpty()) "" else " — " + parts.joinToString(", ")) +
@@ -325,6 +339,8 @@ class TasksDoorLogic(
     private fun listNames(lists: List<ListInfo>) = lists.joinToString(", ") { "“${it.title.trim().take(LIST_QUOTED_MAX)}”" }
 
     companion object {
+        /** The list a dictated note goes to. */
+        const val NOTES_LIST = "Notes"
         const val MAX_LISTED = 50
         const val MAX_CANDIDATES = 5
         /** A task title quoted in a sentence is cut here, so a question stays within 200 characters. */

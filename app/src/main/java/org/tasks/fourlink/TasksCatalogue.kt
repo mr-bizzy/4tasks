@@ -19,6 +19,9 @@ object TasksCatalogue {
     const val COMPLETE = "tasks.complete"
     const val LISTS = "lists.list"
 
+    /** tasks.add's argument for 4Dictate's hand-over of a dictation made while the phone was locked. */
+    const val NOTE = "note"
+
     /** Longest title or note accepted; also the schema's maxLength. */
     const val TITLE_MAX = 200
     /**
@@ -36,7 +39,7 @@ object TasksCatalogue {
         app = APP,
         functions = listOf(
             FunctionSpec(
-                id = ADD, version = "1.0", title = "Add a task or reminder",
+                id = ADD, version = "1.1", title = "Add a task or reminder",
                 description = "Creates a task. title is what to do, in the user's words. due is when it is due and " +
                     "reminder is when to be notified, both local time. For \"remind me at 3\" send both. " +
                     "Omit list for the default list. For a note (\"make a note\", \"jot down\") send list \"Notes\".",
@@ -49,6 +52,8 @@ object TasksCatalogue {
                         "reminder" to Schema.Str(WHEN_MAX, description = "When to notify. Needs a time: YYYY-MM-DDTHH:MM, local."),
                         "list" to Schema.Str(LIST_NAME_MAX, description = "Name of an existing list; \"the shopping list\" finds \"Shopping\". Leave out for the default."),
                         "allow_past" to Schema.Bool(description = "True only if the user asked for a reminder time already past."),
+                        // Not for a model to fill: 4Dictate sets it itself, and the function's description does not mention it.
+                        NOTE to Schema.Bool(description = "Only for 4Dictate handing over a dictation made while the phone was locked; leave out otherwise."),
                     ),
                     required = setOf("title"),
                 ),

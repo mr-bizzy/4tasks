@@ -6,6 +6,8 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +26,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -41,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.IntentCompat.getParcelableExtra
 import androidx.fragment.compose.AndroidFragment
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -112,6 +118,10 @@ fun TaskEditScreen(
     locale: Locale,
     preferences: Preferences,
     colorProvider: (Int) -> Int,
+    /** A dictation 4Dictate handed over (tasks.add note=true): Copy and Reprocess are shown. */
+    dictatedNote: Boolean = false,
+    /** Hands the notes text to 4Dictate; answers the sentence to show. Never changes the task. */
+    reprocessNote: suspend (String) -> String = { "" },
 ) {
     val context = LocalContext.current
     val is24Hour = remember(context) { context.is24HourFormat }
@@ -153,7 +163,9 @@ fun TaskEditScreen(
         Timber.d("onBackPressed")
         onBackPressed()
     }
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors().copy(
@@ -227,6 +239,18 @@ fun TaskEditScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             val scope = rememberCoroutineScope()
+            if (dictatedNote) {
+                DictatedNoteButtons(
+                    notes = viewState.task.notes.orEmpty(),
+                    onCopy = { copyToClipboard(context, R.string.TEA_note_label, it) },
+                    onReprocess = { text ->
+                        scope.launch {
+                            val said = reprocessNote(text)
+                            if (said.isNotBlank()) snackbarHostState.showSnackbar(said)
+                        }
+                    },
+                )
+            }
             viewState.displayOrder.forEach { tag ->
                 when (tag) {
                     TAG_TITLE -> {
@@ -415,5 +439,30 @@ fun TaskEditScreenPreview() {
 //        TaskEditScreen(
 //
 //        )
+    }
+}
+
+/**
+ * Copy and Reprocess, for a 4Dictate note. Copy puts the notes on the clipboard (Android shows its own confirmation);
+ * Reprocess hands them to 4Dictate. Neither changes the task, so the note is never lost.
+ */
+@Composable
+private fun DictatedNoteButtons(
+    notes: String,
+    onCopy: (String) -> Unit,
+    onReprocess: (String) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        OutlinedButton(onClick = { onCopy(notes) }, enabled = notes.isNotBlank()) {
+            Text(stringResource(R.string.copy))
+        }
+        OutlinedButton(onClick = { onReprocess(notes) }, enabled = notes.isNotBlank()) {
+            Text(stringResource(R.string.reprocess))
+        }
     }
 }
