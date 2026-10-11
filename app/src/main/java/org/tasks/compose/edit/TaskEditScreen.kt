@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -26,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -88,7 +88,9 @@ import org.tasks.ui.TaskEditViewModel.Companion.TAG_TITLE
 import org.tasks.utility.copyToClipboard
 import tasks.kmp.generated.resources.Res
 import tasks.kmp.generated.resources.delete_task
+import tasks.kmp.generated.resources.edit_task
 import tasks.kmp.generated.resources.menu_discard_changes
+import tasks.kmp.generated.resources.new_task
 import timber.log.Timber
 import java.util.Locale
 
@@ -157,24 +159,29 @@ fun TaskEditScreen(
                 colors = TopAppBarDefaults.topAppBarColors().copy(
                     containerColor = MaterialTheme.colorScheme.background,
                 ),
+                // The family's nested-screen bar: a back arrow and the screen title (FAMILY-LOOK
+                // rule 4). The arrow saves, as the Save icon it replaces did, so nothing typed is
+                // lost; a read-only task has nothing to save and just goes back.
                 navigationIcon = {
-                    if (viewState.isReadOnly) {
-                        IconButton(onClick = { onBackPressed() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(R.string.back)
-                            )
+                    IconButton(
+                        onClick = {
+                            if (viewState.isReadOnly) onBackPressed() else save()
                         }
-                    } else {
-                        IconButton(onClick = { save() }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Save,
-                                contentDescription = stringResource(R.string.save)
-                            )
-                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back)
+                        )
                     }
                 },
-                title = {},
+                title = {
+                    Text(
+                        text = org.jetbrains.compose.resources.stringResource(
+                            if (viewState.isNew) Res.string.new_task else Res.string.edit_task
+                        ),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                },
                 actions = {
                     if (viewState.isReadOnly) {
                         return@TopAppBar
