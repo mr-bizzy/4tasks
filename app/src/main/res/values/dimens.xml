@@ -31,4 +31,6 @@
   <dimen name="chip_icon_size">18dp</dimen>
 
   <dimen name="icon_picker_size">48dp</dimen>
+  <!-- FAMILY-LOOK rule 8: the reading width single-column content stops at (org.tasks.compose.PageMaxWidth). -->
+  <dimen name="page_max_width">720dp</dimen>
 </resources>

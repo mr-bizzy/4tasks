@@ -62,6 +62,7 @@ import com.todoroo.astrid.ui.StartDateControlSet
 import kotlinx.coroutines.launch
 import org.tasks.R
 import org.tasks.compose.BeastModeBanner
+import org.tasks.compose.PageWidth
 import org.tasks.compose.FilterSelectionActivity.Companion.EXTRA_FILTER
 import org.tasks.compose.FilterSelectionActivity.Companion.launch
 import org.tasks.compose.pickers.DueDatePickerSheet
@@ -231,159 +232,161 @@ fun TaskEditScreen(
             }
         },
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .gesturesDisabled(viewState.isReadOnly)
-                .padding(paddingValues)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-        ) {
-            val scope = rememberCoroutineScope()
-            if (dictatedNote) {
-                DictatedNoteButtons(
-                    notes = viewState.task.notes.orEmpty(),
-                    onCopy = { copyToClipboard(context, R.string.TEA_note_label, it) },
-                    onReprocess = { text ->
-                        scope.launch {
-                            val said = reprocessNote(text)
-                            if (said.isNotBlank()) snackbarHostState.showSnackbar(said)
-                        }
-                    },
-                )
-            }
-            viewState.displayOrder.forEach { tag ->
-                when (tag) {
-                    TAG_TITLE -> {
-                        TitleRow(
-                            text = viewState.task.title,
-                            onChanged = { text: CharSequence? ->
-                                editViewModel.setTitle(text.toString().trim { it <= ' ' })
-                            },
-                            linkify = linkify,
-                            markdownProvider = markdownProvider,
-                            isCompleted = viewState.isCompleted,
-                            isRecurring = viewState.task.isRecurring,
-                            priority = viewState.task.priority,
-                            onComplete = {
-                                if (viewState.isCompleted) {
-                                    editViewModel.setComplete(false)
-                                } else {
-                                    editViewModel.setComplete(true)
+        // FAMILY-LOOK rule 8: the fields stop at the reading width, centred; the top bar still spans the pane.
+        PageWidth(modifier = Modifier.padding(paddingValues)) {
+            Column(
+                modifier = Modifier
+                    .gesturesDisabled(viewState.isReadOnly)
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                val scope = rememberCoroutineScope()
+                if (dictatedNote) {
+                    DictatedNoteButtons(
+                        notes = viewState.task.notes.orEmpty(),
+                        onCopy = { copyToClipboard(context, R.string.TEA_note_label, it) },
+                        onReprocess = { text ->
+                            scope.launch {
+                                val said = reprocessNote(text)
+                                if (said.isNotBlank()) snackbarHostState.showSnackbar(said)
+                            }
+                        },
+                    )
+                }
+                viewState.displayOrder.forEach { tag ->
+                    when (tag) {
+                        TAG_TITLE -> {
+                            TitleRow(
+                                text = viewState.task.title,
+                                onChanged = { text: CharSequence? ->
+                                    editViewModel.setTitle(text.toString().trim { it <= ' ' })
+                                },
+                                linkify = linkify,
+                                markdownProvider = markdownProvider,
+                                isCompleted = viewState.isCompleted,
+                                isRecurring = viewState.task.isRecurring,
+                                priority = viewState.task.priority,
+                                onComplete = {
+                                    if (viewState.isCompleted) {
+                                        editViewModel.setComplete(false)
+                                    } else {
+                                        editViewModel.setComplete(true)
+                                        scope.launch {
+                                            save()
+                                        }
+                                    }
+                                },
+                                requestFocus = viewState.showKeyboard,
+                                multiline = viewState.multilineTitle,
+                                save = {
                                     scope.launch {
                                         save()
                                     }
-                                }
-                            },
-                            requestFocus = viewState.showKeyboard,
-                            multiline = viewState.multilineTitle,
-                            save = {
-                                scope.launch {
-                                    save()
-                                }
-                            },
-                        )
-                    }
-
-                    TAG_DUE_DATE -> DueDateRow(
-                        dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value,
-                        hasDueDateAlarm = remember (viewState.alarms) {
-                            viewState.alarms.any { it.type == Alarm.TYPE_REL_END }
-                        },
-                        is24HourFormat = is24Hour,
-                        alwaysDisplayFullDate = viewState.alwaysDisplayFullDate,
-                        onClick = {
-                            val showPicker = { showDueDatePicker = true }
-                            context.findActivity()?.hideKeyboardThen(showPicker) ?: showPicker()
-                        },
-                    )
-                    TAG_PRIORITY ->
-                        PriorityRow(
-                            priority = viewState.task.priority,
-                            onChangePriority = { editViewModel.setPriority(it) },
-                        )
-
-                    TAG_DESCRIPTION ->
-                        DescriptionRow(
-                            text = viewState.task.notes,
-                            onChanged = { text -> editViewModel.setDescription(text.toString().trim { it <= ' ' }) },
-                            linkify = if (viewState.linkify) linkify else null,
-                            markdownProvider = markdownProvider,
-                        )
-
-                    TAG_LIST -> {
-                        val listPickerLauncher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.StartActivityForResult()
-                        ) { it ->
-                            it.data
-                                ?.let { getParcelableExtra(it, EXTRA_FILTER, CaldavFilter::class.java) }
-                                ?.let { editViewModel.setList(it) }
+                                },
+                            )
                         }
-                        ListRow(
-                            list = viewState.list,
-                            colorProvider = colorProvider,
+
+                        TAG_DUE_DATE -> DueDateRow(
+                            dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value,
+                            hasDueDateAlarm = remember (viewState.alarms) {
+                                viewState.alarms.any { it.type == Alarm.TYPE_REL_END }
+                            },
+                            is24HourFormat = is24Hour,
+                            alwaysDisplayFullDate = viewState.alwaysDisplayFullDate,
                             onClick = {
-                                listPickerLauncher.launch(
-                                    context = context,
-                                    selectedFilter = viewState.list,
-                                    listsOnly = true
-                                )
+                                val showPicker = { showDueDatePicker = true }
+                                context.findActivity()?.hideKeyboardThen(showPicker) ?: showPicker()
+                            },
+                        )
+                        TAG_PRIORITY ->
+                            PriorityRow(
+                                priority = viewState.task.priority,
+                                onChangePriority = { editViewModel.setPriority(it) },
+                            )
+
+                        TAG_DESCRIPTION ->
+                            DescriptionRow(
+                                text = viewState.task.notes,
+                                onChanged = { text -> editViewModel.setDescription(text.toString().trim { it <= ' ' }) },
+                                linkify = if (viewState.linkify) linkify else null,
+                                markdownProvider = markdownProvider,
+                            )
+
+                        TAG_LIST -> {
+                            val listPickerLauncher = rememberLauncherForActivityResult(
+                                contract = ActivityResultContracts.StartActivityForResult()
+                            ) { it ->
+                                it.data
+                                    ?.let { getParcelableExtra(it, EXTRA_FILTER, CaldavFilter::class.java) }
+                                    ?.let { editViewModel.setList(it) }
                             }
-                        )
-                    }
-
-                    TAG_CREATION ->
-                        InfoRow(
-                            creationDate = viewState.task.creationDate,
-                            modificationDate = viewState.task.modificationDate,
-                            completionDate = viewState.task.completionDate,
-                            locale = locale,
-                        )
-
-                    CalendarControlSet.TAG -> AndroidFragment<CalendarControlSet>()
-                    StartDateControlSet.TAG -> AndroidFragment<StartDateControlSet>()
-                    ReminderControlSet.TAG -> AndroidFragment<ReminderControlSet>()
-                    LocationControlSet.TAG -> AndroidFragment<LocationControlSet>()
-                    FilesControlSet.TAG -> AndroidFragment<FilesControlSet>()
-                    TimerControlSet.TAG -> AndroidFragment<TimerControlSet>()
-                    TagsControlSet.TAG -> AndroidFragment<TagsControlSet>()
-                    RepeatControlSet.TAG -> {
-                        val dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value
-                        LaunchedEffect(dueDate) {
-                            editViewModel.onDueDateChanged()
+                            ListRow(
+                                list = viewState.list,
+                                colorProvider = colorProvider,
+                                onClick = {
+                                    listPickerLauncher.launch(
+                                        context = context,
+                                        selectedFilter = viewState.list,
+                                        listsOnly = true
+                                    )
+                                }
+                            )
                         }
-                        RepeatRow(
-                            recurrence = repeatRuleToString(viewState.task.recurrence),
-                            repeatFrom = viewState.task.repeatFrom,
-                            onClick = onClickRepeat,
-                            onRepeatFromChanged = { editViewModel.setRepeatFrom(it) },
-                        )
+
+                        TAG_CREATION ->
+                            InfoRow(
+                                creationDate = viewState.task.creationDate,
+                                modificationDate = viewState.task.modificationDate,
+                                completionDate = viewState.task.completionDate,
+                                locale = locale,
+                            )
+
+                        CalendarControlSet.TAG -> AndroidFragment<CalendarControlSet>()
+                        StartDateControlSet.TAG -> AndroidFragment<StartDateControlSet>()
+                        ReminderControlSet.TAG -> AndroidFragment<ReminderControlSet>()
+                        LocationControlSet.TAG -> AndroidFragment<LocationControlSet>()
+                        FilesControlSet.TAG -> AndroidFragment<FilesControlSet>()
+                        TimerControlSet.TAG -> AndroidFragment<TimerControlSet>()
+                        TagsControlSet.TAG -> AndroidFragment<TagsControlSet>()
+                        RepeatControlSet.TAG -> {
+                            val dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value
+                            LaunchedEffect(dueDate) {
+                                editViewModel.onDueDateChanged()
+                            }
+                            RepeatRow(
+                                recurrence = repeatRuleToString(viewState.task.recurrence),
+                                repeatFrom = viewState.task.repeatFrom,
+                                onClick = onClickRepeat,
+                                onRepeatFromChanged = { editViewModel.setRepeatFrom(it) },
+                            )
+                        }
+                        SubtaskControlSet.TAG -> AndroidFragment<SubtaskControlSet>()
+                        else -> throw IllegalArgumentException("Unknown row: $tag")
                     }
-                    SubtaskControlSet.TAG -> AndroidFragment<SubtaskControlSet>()
-                    else -> throw IllegalArgumentException("Unknown row: $tag")
+                    HorizontalDivider()
                 }
-                HorizontalDivider()
-            }
-            if (viewState.showComments) {
-                CommentsRow(
-                    comments = comments,
-                    copyCommentToClipboard = { copyToClipboard(context, R.string.comment, it) },
-                    deleteComment = deleteComment,
-                    openImage = { FileHelper.startActionView(context, it) },
+                if (viewState.showComments) {
+                    CommentsRow(
+                        comments = comments,
+                        copyCommentToClipboard = { copyToClipboard(context, R.string.comment, it) },
+                        deleteComment = deleteComment,
+                        openImage = { FileHelper.startActionView(context, it) },
+                    )
+                }
+                val beastMode = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.StartActivityForResult()
+                ) {
+                    (context.findActivity() as? MainActivity)?.restartActivity()
+                }
+                BeastModeBanner(
+                    visible = viewState.showBeastModeHint,
+                    showSettings = {
+                        editViewModel.hideBeastModeHint(click = true)
+                        beastMode.launch(Intent(context, BeastModePreferences::class.java))
+                    },
+                    dismiss = dismissBeastMode,
                 )
             }
-            val beastMode = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.StartActivityForResult()
-            ) {
-                (context.findActivity() as? MainActivity)?.restartActivity()
-            }
-            BeastModeBanner(
-                visible = viewState.showBeastModeHint,
-                showSettings = {
-                    editViewModel.hideBeastModeHint(click = true)
-                    beastMode.launch(Intent(context, BeastModePreferences::class.java))
-                },
-                dismiss = dismissBeastMode,
-            )
         }
         if (showDueDatePicker) {
             val dueDate = editViewModel.dueDate.collectAsStateWithLifecycle().value

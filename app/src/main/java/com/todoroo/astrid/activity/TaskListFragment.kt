@@ -88,6 +88,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.tasks.LocalBroadcastManager
 import org.tasks.R
+import org.tasks.compose.capPageWidth
 import org.tasks.ShortcutManager
 import org.tasks.TasksApplication
 import org.tasks.TasksUrls
@@ -411,6 +412,8 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
             swipeRefreshLayout = bodyStandard.swipeLayout
             emptyRefreshLayout = bodyEmpty.swipeLayoutEmpty
             recyclerView = bodyStandard.recyclerView
+            // FAMILY-LOOK rule 8: the rows stop at the reading width, centred in the list pane; the bars still span it.
+            recyclerView.capPageWidth()
             fab.setOnClickListener { createNewTask() }
             fab.isVisible = filter.isWritable
         }

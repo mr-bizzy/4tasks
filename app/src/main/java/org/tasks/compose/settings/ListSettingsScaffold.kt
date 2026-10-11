@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import org.tasks.R
+import org.tasks.compose.PageWidth
 import org.tasks.extensions.Context.findActivity
 import org.tasks.themes.colorOn
 
@@ -102,12 +103,14 @@ fun ListSettingsScaffold(
         },
         floatingActionButton = { fab() },
     ) { paddingValues ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
-            .verticalScroll(rememberScrollState()),
-        ) {
-            content()
+        // FAMILY-LOOK rule 8: list, tag and filter settings stop at the reading width, centred (written once, here).
+        PageWidth(modifier = Modifier.padding(paddingValues)) {
+            Column(modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            ) {
+                content()
+            }
         }
         PromptAction(
             showDialog = promptDiscard,

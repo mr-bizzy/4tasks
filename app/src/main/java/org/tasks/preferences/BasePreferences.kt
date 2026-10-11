@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.tasks.R
 import org.tasks.analytics.Firebase
+import org.tasks.compose.capPageWidth
 import org.tasks.databinding.ActivityPreferencesBinding
 import org.tasks.injection.ThemedInjectingAppCompatActivity
 import timber.log.Timber
@@ -59,6 +60,8 @@ abstract class BasePreferences : ThemedInjectingAppCompatActivity(),
         }
 
         toolbar = binding.toolbar.toolbar
+        // FAMILY-LOOK rule 8: every settings page shown here stops at the reading width, centred (written once, here).
+        binding.settings.capPageWidth()
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
