@@ -11,7 +11,7 @@
     <item name="android:actionOverflowButtonStyle">@style/WhiteOverflow</item>
   </style>
 
-  <style name="LocationPickerTheme" parent="ThemeOverlay.MaterialComponents.Dark">
+  <style name="LocationPickerTheme" parent="ThemeOverlay.Material3.Dark">
     <item name="toolbarNavigationButtonStyle">@style/WhiteNavigation</item>
     <item name="iconTint">?attr/colorOnSurface</item>
     <item name="android:actionOverflowButtonStyle">@style/WhiteOverflow</item>
