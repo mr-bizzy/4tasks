@@ -82,6 +82,8 @@ class TaskViewHolder internal constructor(
     private val rowBody: ViewGroup = binding.rowBody.apply {
         setOnClickListener { callback.onClick(this@TaskViewHolder) }
         setOnLongClickListener { callback.onLongPress(this@TaskViewHolder) }
+        // A mouse right-click (a context click, as in DeX) does what a long press does: selection mode.
+        setOnContextClickListener { callback.onLongPress(this@TaskViewHolder) }
     }
     private val nameView: TextView = binding.title
     private val description: TextView = binding.description
@@ -195,6 +197,8 @@ class TaskViewHolder internal constructor(
             )
             nameView.setOnLongClickListener { callback.onLongPress(this) }
             description.setOnLongClickListener { callback.onLongPress(this) }
+            nameView.setOnContextClickListener { callback.onLongPress(this) }
+            description.setOnContextClickListener { callback.onLongPress(this) }
         }
         when {
             chipGroup.visibility == View.VISIBLE -> {

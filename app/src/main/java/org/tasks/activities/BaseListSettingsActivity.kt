@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.ColumnScope
@@ -36,6 +37,7 @@ import org.tasks.compose.settings.ListSettingsScaffold
 import org.tasks.compose.settings.createShortcut
 import org.tasks.compose.settings.createWidget
 import org.tasks.extensions.addBackPressedCallback
+import org.tasks.extensions.escapeIsBack
 import org.tasks.filters.Filter
 import org.tasks.icons.OutlinedGoogleMaterial
 import org.tasks.preferences.DefaultFilterProvider
@@ -54,6 +56,10 @@ abstract class BaseListSettingsActivity : AppCompatActivity() {
     protected val baseViewModel: BaseListSettingsViewModel by viewModels()
 
     protected abstract val defaultIcon: String
+
+    /** Esc closes the page as Back does (DeX and hardware keyboards). */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        escapeIsBack(event) || super.dispatchKeyEvent(event)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

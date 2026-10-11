@@ -9,6 +9,7 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -98,6 +99,8 @@ import org.tasks.extensions.Context.toast
 import org.tasks.extensions.broughtToFront
 import org.tasks.extensions.flagsToString
 import org.tasks.extensions.isFromHistory
+import org.tasks.extensions.KeyboardShortcut
+import org.tasks.extensions.shortcut
 import org.tasks.files.FileHelper
 import org.tasks.filters.Filter
 import org.tasks.jobs.WorkManager
@@ -643,6 +646,34 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         Timber.d("onPause")
+    }
+
+    /**
+     * A hardware keyboard, as in Samsung DeX: Ctrl+N a new task, Ctrl+F search, Esc what Back does when there is
+     * something to close (the task being edited, a search); on the bare list Esc does nothing rather than close the
+     * app. Ctrl+N and Ctrl+F wait while a task is open, so an edit is never replaced by them.
+     */
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val shortcut = event.shortcut ?: return super.dispatchKeyEvent(event)
+        val taskOpen = viewModel.state.value.task != null
+        val list = supportFragmentManager.fragments
+            .filterIsInstance<TaskListFragment>()
+            .firstOrNull { it.isAdded }
+        when (shortcut) {
+            KeyboardShortcut.BACK -> if (taskOpen || list?.isSearching == true) {
+                onBackPressedDispatcher.onBackPressed()
+                return true
+            }
+            KeyboardShortcut.NEW_TASK -> if (!taskOpen && list != null) {
+                list.newTaskFromKeyboard()
+                return true
+            }
+            KeyboardShortcut.SEARCH -> if (!taskOpen && list != null) {
+                list.searchFromKeyboard()
+                return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onSupportActionModeStarted(mode: ActionMode) {

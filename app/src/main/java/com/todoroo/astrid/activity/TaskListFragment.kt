@@ -892,6 +892,25 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         }
     }
 
+    /** Ctrl+N on a hardware keyboard: the + button, when this list shows one. */
+    fun newTaskFromKeyboard() {
+        if (this::binding.isInitialized && binding.fab.isVisible) {
+            createNewTask()
+        }
+    }
+
+    /** Ctrl+F on a hardware keyboard: the search button. */
+    fun searchFromKeyboard() {
+        if (this::search.isInitialized) {
+            onMenuItemClick(search)
+        }
+    }
+
+    /** Whether Back (or Esc) would leave a search rather than the app. */
+    val isSearching: Boolean
+        get() = (this::search.isInitialized && search.isActionViewExpanded) ||
+            (mainViewModel.state.value.filter as? SearchFilter)?.query?.isNotBlank() == true
+
     private fun createNewTask() = lifecycleScope.launch {
         if (hasWritableList) {
             shortcutManager.reportShortcutUsed(ShortcutManager.SHORTCUT_NEW_TASK)
