@@ -321,7 +321,7 @@ class TasksDoorLogicTest {
         assertEquals(port.created[0].listId, port.created[1].listId)
     }
 
-    @Test fun `note false or left out changes nothing: no marker, no list made, the named list or the old Notes fallback`() {
+    @Test fun `note false or left out changes nothing - no marker, no list made, the named list or the old Notes fallback`() {
         listsOf("Personal Calendar", "Work")
         ok(call("tasks.add", """{"title":"milk","list":"Work","note":false}"""))
         ok(call("tasks.add", """{"title":"bread"}"""))
