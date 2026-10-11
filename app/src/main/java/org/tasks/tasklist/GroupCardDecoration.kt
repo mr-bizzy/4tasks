@@ -16,8 +16,10 @@ import org.tasks.R
 enum class ItemKind { OTHER, TASK, HEADER }
 
 /**
- * Each group of tasks sits in one rounded card, the way 4Dictate and 4Zones group their rows
- * (surfaceVariant like 4Dictate's Cards, the stock 12 dp corners). With [GroupStyle.LABEL_ABOVE_CARD] the group's label sits above
+ * Each group of tasks sits in one rounded card, the way 4Dictate and 4Zones group their rows: the
+ * DEFAULT card colour (surfaceContainerHighest, what a stock M3 filled Card() paints) and the stock
+ * 12 dp corners (FAMILY-LOOK rule 3, grouped rows, corrected 2026-10-10; surfaceVariant is only for
+ * a status card with its label inside, rule 5). With [GroupStyle.LABEL_ABOVE_CARD] the group's label sits above
  * the card; with [GroupStyle.TITLE_IN_CARD] the header is the top row of the card. The rows draw no
  * background of their own; the card is painted here, behind them.
  */
@@ -38,8 +40,8 @@ class GroupCardDecoration(
     init {
         paint.color = MaterialColors.getColor(
             context,
-            com.google.android.material.R.attr.colorSurfaceVariant,
-            ContextCompat.getColor(context, R.color.surface_variant),
+            com.google.android.material.R.attr.colorSurfaceContainerHighest,
+            ContextCompat.getColor(context, R.color.surface_container_highest),
         )
     }
 
