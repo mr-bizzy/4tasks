@@ -88,6 +88,28 @@ import tasks.kmp.generated.resources.tasks_org_description
 import tasks.kmp.generated.resources.terms_of_service_proper
 import tasks.kmp.generated.resources.upgrade_to_pro
 
+/** The account types Add account lists under Free, in order (Tasks.org's own account apart). Pure, so tested. */
+fun freeAccountTypes(configuration: PlatformConfiguration): List<Platform> {
+    val isDesktop = configuration.billingProvider == BillingProvider.PADDLE
+    return buildList {
+        if (configuration.supportsMicrosoft && !isDesktop) add(Platform.MICROSOFT)
+        if (configuration.supportsGoogleTasks && !isDesktop) add(Platform.GOOGLE_TASKS)
+    }
+}
+
+/** The account types Add account lists under Name your price, in order. Pure, so tested. */
+fun proAccountTypes(configuration: PlatformConfiguration): List<Platform> {
+    val isDesktop = configuration.billingProvider == BillingProvider.PADDLE
+    return buildList {
+        if (configuration.supportsMicrosoft && isDesktop) add(Platform.MICROSOFT)
+        if (configuration.supportsGoogleTasks && isDesktop) add(Platform.GOOGLE_TASKS)
+        if (configuration.supportsOpenTasks) add(Platform.DAVX5)
+        if (configuration.supportsCaldav) add(Platform.CALDAV)
+        if (configuration.supportsEteSync) add(Platform.ETEBASE)
+        if (configuration.supportsOpenTasks) add(Platform.DECSYNC_CC)
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddAccountScreen(
@@ -207,11 +229,7 @@ fun AddAccountScreen(
                     Spacer(modifier = Modifier.height(SettingsSectionGap))
                 }
 
-                val isDesktop = configuration.billingProvider == BillingProvider.PADDLE
-                val freeAccounts = buildList {
-                    if (configuration.supportsMicrosoft && !isDesktop) add(Platform.MICROSOFT)
-                    if (configuration.supportsGoogleTasks && !isDesktop) add(Platform.GOOGLE_TASKS)
-                }
+                val freeAccounts = freeAccountTypes(configuration)
                 if (freeAccounts.isNotEmpty()) {
                     if (!hasPro) {
                         SectionHeader(stringResource(Res.string.cost_free))
@@ -244,14 +262,7 @@ fun AddAccountScreen(
                     }
                 }
 
-                val proAccounts = buildList {
-                    if (configuration.supportsMicrosoft && isDesktop) add(Platform.MICROSOFT)
-                    if (configuration.supportsGoogleTasks && isDesktop) add(Platform.GOOGLE_TASKS)
-                    if (configuration.supportsOpenTasks) add(Platform.DAVX5)
-                    if (configuration.supportsCaldav) add(Platform.CALDAV)
-                    if (configuration.supportsEteSync) add(Platform.ETEBASE)
-                    if (configuration.supportsOpenTasks) add(Platform.DECSYNC_CC)
-                }
+                val proAccounts = proAccountTypes(configuration)
                 if (proAccounts.isNotEmpty()) {
                     if (!hasPro) {
                         SectionHeader(
