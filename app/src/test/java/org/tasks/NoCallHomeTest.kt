@@ -66,7 +66,7 @@ class NoCallHomeTest {
         "kmp/src/jvmMain/kotlin/org/tasks/sync/microsoft/DesktopMicrosoftClientProvider.kt" to "Microsoft, desktop target",
         "app/src/generic/java/org/tasks/auth/MicrosoftAuthenticationActivity.kt" to "Microsoft sign-in: the userinfo call, after the user signs in",
         "app/src/main/java/org/tasks/location/GeocoderMapbox.kt" to "location: off",
-        "app/src/main/java/org/tasks/location/GeocoderNominatim.kt" to "location: off",
+        "app/src/main/java/org/tasks/location/GeocoderNominatim.kt" to "not bound since 0.1.15: FlavorModule binds NoGeocoder (NoGeocoderTest)",
         "app/src/main/java/org/tasks/location/PlaceSearchGoogle.kt" to "location: off",
         "app/src/main/java/org/tasks/location/PlaceSearchMapbox.kt" to "location: off",
         // Google Tasks (phase C, ON): the user's own Google account. Google's client library (NetHttpTransport) calls

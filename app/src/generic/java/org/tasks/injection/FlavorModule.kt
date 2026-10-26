@@ -11,8 +11,8 @@ import dagger.hilt.components.SingletonComponent
 import org.tasks.billing.DesktopLinkService
 import org.tasks.billing.QrScanner
 import org.tasks.location.Geocoder
-import org.tasks.location.GeocoderNominatim
 import org.tasks.location.LocationService
+import org.tasks.location.NoGeocoder
 import org.tasks.location.NoLocationService
 import org.tasks.location.MapFragment
 import org.tasks.location.OsmMapFragment
@@ -63,7 +63,8 @@ class FlavorModule {
     fun getMapFragment(osm: OsmMapFragment): MapFragment = osm
 
     @Provides
-    fun getGeocoder(nominatim: GeocoderNominatim): Geocoder = nominatim
+    // No location look-up off the phone (0.1.15): the coordinates stay as they are, with no name or address.
+    fun getGeocoder(none: NoGeocoder): Geocoder = none
 
     @Provides
     fun getWearRefresher(): WearRefresher = object : WearRefresher {
