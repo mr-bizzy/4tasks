@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 4Tasks user manual, written for 0.1.0-beta (2026-10-03). Styling copied from the 4Dictate manual, the family's manual style.
-     Published 2026-10-03. It describes only what this build does; each claim was checked against the app. -->
+     Published 2026-10-03; updated for 0.1.15-beta (2026-10-26). It describes only what this build does; each claim was checked against the app. -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -116,7 +116,7 @@
 <body>
 <div class="container">
 <h1>4Tasks User Manual</h1>
-<p class="note">For 4Tasks 0.1.0 (beta), October 2026. Android 13 or later; works on phones, tablets and Samsung DeX.</p>
+<p class="note">For 4Tasks 0.1.15 (beta), October 2026. Android 13 or later; works on phones, tablets and Samsung DeX.</p>
 
 <p>4Tasks is a <strong>private to-do and reminder app</strong>. Your lists, tasks and reminders live on your phone. If you want
 them on other devices, you can <strong>sync</strong> them with a CalDAV server of your choice. There is no account with us, no
@@ -238,13 +238,12 @@ minute.</p>
 
 <h2 id="sync">5. Sync with a CalDAV server</h2>
 <p>CalDAV is an open standard for tasks and calendars. Nextcloud, SOGo (including mailcow), Radicale, Baikal and many hosts offer
-it. 4Tasks is built for <strong>any standards-following CalDAV server</strong> you can sign in to, and has been tried with mailcow (SOGo). <strong>Microsoft To Do and Google Tasks are
-coming</strong>; they are not in this version.</p>
+it. 4Tasks is built for <strong>any standards-following CalDAV server</strong> you can sign in to, and has been tried with mailcow (SOGo).</p>
 <h3>Adding an account</h3>
 <ol>
 <li>Settings, <strong>Accounts</strong>, <strong>Add account</strong>, then CalDAV.</li>
-<li>Type the server's <strong>URL</strong>. Often the address without a path is enough (for example <code>https://mail.example.org</code>,
-including the <code>https://</code>); 4Tasks finds the CalDAV address itself. If your provider gives a longer address, use that.</li>
+<li>Type the server's <strong>URL</strong>. Often the server's address without a path is enough (starting with
+<code>https://</code>); 4Tasks finds the CalDAV address itself. If your provider gives a longer address, use that.</li>
 <li>Type your <strong>user</strong> and <strong>password</strong>. Tap the eye at the end of the password to check what you
 typed.</li>
 <li>Leave <em>Server type</em> on Unknown unless you know better, and tap <strong>Sign in</strong>.</li>
@@ -265,8 +264,8 @@ the request names another list, so set a list on the server as the default (Sett
 <ul>
 <li>The address must be <strong>https://</strong>. A plain <code>http://</code> address is refused, with a message saying so.</li>
 <li>By default the server's certificate must be one your phone already trusts (a normal Let&rsquo;s Encrypt certificate is).</li>
-<li>If you <strong>run your own server with a self-signed certificate</strong>, turn on Settings, <strong>More</strong>,
-Advanced, <em>Allow self-signed certificates</em>. It is off by default. When you connect, you are shown the certificate's
+<li>If you <strong>run your own server with a self-signed certificate</strong>, turn on Settings,
+<strong>Advanced</strong>, <em>Allow self-signed certificates</em>. It is off by default. When you connect, you are shown the certificate's
 fingerprints and asked to trust <strong>that one certificate</strong>. Even then, the certificate must carry the name you
 connected by; a certificate for a different name is always refused. Turning the switch off again forgets every certificate you
 trusted.</li>
@@ -323,7 +322,7 @@ the details of a task.</li>
 </ul>
 
 <h2 id="backup">8. Backup and restore</h2>
-<p>Settings, <strong>More</strong>, <strong>Backups</strong>:</p>
+<p>Settings, <strong>Backups</strong>:</p>
 <ul>
 <li><strong>Backup folder</strong>: where backup files go. A warning appears if it is inside the app's own storage, because Android
 deletes that if you uninstall 4Tasks. Pick a folder of your own.</li>
@@ -348,13 +347,15 @@ spacing, font size, and what each row shows.</li>
 </ul>
 
 <h2 id="settings">10. Settings</h2>
-<p>Tap <strong>⚙</strong> at the top right of the main screen. Settings has four tabs, each a column of cards, and each card opens the page it names:</p>
+<p>Tap <strong>⚙</strong> at the top right of the main screen. Settings has six tabs. The first three are columns of cards, and each card opens the page it names; Backups, Advanced and About are pages of their own:</p>
 <table>
 <tr><th>Tab</th><th>Cards</th></tr>
 <tr><td>Accounts</td><td>Local lists, each account you have added, Add account, Sync interval, Apps allowed to use 4Tasks.</td></tr>
 <tr><td>Tasks</td><td>Task defaults, Task list options (font size, spacing, chips, per-list sorting), Edit screen options, Date and time, Notifications.</td></tr>
 <tr><td>Look</td><td>Look and feel, Navigation drawer, Widget settings.</td></tr>
-<tr><td>More</td><td>Backups, Advanced, About.</td></tr>
+<tr><td>Backups</td><td>Backup folder, Backup now, Automatic backups, Import backup (<a href="#backup">section 8</a>).</td></tr>
+<tr><td>Advanced</td><td>See below.</td></tr>
+<tr><td>About</td><td>The version, who makes 4Tasks, and its links (<a href="#about">section 14</a>).</td></tr>
 </table>
 <p>Advanced has the attachment folder, the self-signed certificates switch (<a href="#sync">section 5</a>), task-count badges on the app icon,
 <em>Astrid manual sorting</em> (an older manual sort mode, kept for anyone who uses it), and the buttons that reset your preferences or delete
@@ -398,8 +399,15 @@ else</strong>, over an encrypted connection.</li>
 <h2 id="about">14. About, licence and source</h2>
 <p>4Tasks is free software under the <strong>GNU General Public Licence v3</strong> (the 4Link library inside it is under Apache-2.0). It is based on
 <a href="https://github.com/tasks/tasks">Tasks.org</a> by Todoroo (Astrid) and the Tasks.org contributors, and is a separate app that is
-not made or supported by the Tasks.org project. Settings, More, About shows the version, a link to the original Tasks.org code, a link to 4Tasks' own source code, the full text of the
-GNU General Public Licence v3, the notices and licences of the libraries it uses, and the privacy policy. The source code is at <a href="https://github.com/mr-bizzy/4tasks">github.com/mr-bizzy/4tasks</a>.</p>
+not made or supported by the Tasks.org project. The source code is at <a href="https://github.com/mr-bizzy/4tasks">github.com/mr-bizzy/4tasks</a>.</p>
+<p>Settings, <strong>About</strong> shows, from the top:</p>
+<ul>
+<li><strong>4Tasks</strong> with its version and build number, and who makes it: John Paul Bizeray, trading as Mr-Bizzy, United Kingdom.</li>
+<li><strong>Website</strong> (mr-biz.uk), <strong>User manual</strong> (this page), <strong>Privacy policy</strong> and <strong>Support</strong>, which opens your email app with a message to support@mr-biz.uk.</li>
+<li><strong>Based on Tasks.org</strong>, a link to the original code.</li>
+<li><strong>Open source</strong>: 4Tasks' own source code, the full text of the GNU General Public Licence v3, and the notices and licences of the libraries it uses.</li>
+<li><strong>Apps allowed to use 4Tasks</strong> (<a href="#apps">section 7</a>).</li>
+</ul>
 <p>Questions and bug reports: <a href="mailto:support@mr-biz.uk">support@mr-biz.uk</a>.</p>
 
 <footer>&copy; 2026 Mr-Bizzy, United Kingdom. 4Tasks is developed by Mr-Bizzy.</footer>
