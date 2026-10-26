@@ -80,23 +80,13 @@ class SyncClientsTest {
     private val toolsNs = "http://schemas.android.com/tools"
 
     @Test
-    fun genericManifestDeclaresExactlyOneRedirectActivityWithOnlyTheMsauthRedirect() {
+    fun genericManifestRemovesTheRedirectActivity() {
+        // 0.1.15: Microsoft sign-in is out of the shipped app; the library's exported msauth return is removed.
         val activities = manifest("src/generic/AndroidManifest.xml").getElementsByTagName("activity")
-        val receivers = (0 until activities.length).map { activities.item(it) as org.w3c.dom.Element }
-            .filter { it.getAttributeNS(androidNs, "name") == "net.openid.appauth.RedirectUriReceiverActivity" }
-        assertEquals(1, receivers.size)
-        val activity = receivers.single()
-        assertEquals("true", activity.getAttributeNS(androidNs, "exported"))
-        // replace, so the library's own filter (appAuthRedirectScheme) never merges in
-        assertEquals("replace", activity.getAttributeNS(toolsNs, "node"))
-        val filters = activity.getElementsByTagName("intent-filter")
-        assertEquals(1, filters.length)
-        val data = (filters.item(0) as org.w3c.dom.Element).getElementsByTagName("data")
-        assertEquals(1, data.length)
-        val d = data.item(0) as org.w3c.dom.Element
-        assertEquals("msauth", d.getAttributeNS(androidNs, "scheme"))
-        assertEquals("\${applicationId}", d.getAttributeNS(androidNs, "host"))
-        assertEquals(SyncClients.microsoftRedirectPath, d.getAttributeNS(androidNs, "path"))
+        val all = (0 until activities.length).map { activities.item(it) as org.w3c.dom.Element }
+        val redirect = all.single { it.getAttributeNS(androidNs, "name") == "net.openid.appauth.RedirectUriReceiverActivity" }
+        assertEquals("remove", redirect.getAttributeNS(toolsNs, "node"))
+        assertEquals(1, all.size)
     }
 
     @Test
