@@ -286,3 +286,8 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.xpp3)
 }
+
+// ShippedManifestTest reads the merged release manifest (what Play gets), so the unit tests build it first.
+tasks.matching { it.name == "testGenericDebugUnitTest" }.configureEach {
+    dependsOn("processGenericReleaseManifest")
+}
