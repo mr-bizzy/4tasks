@@ -23,8 +23,8 @@ import org.tasks.R
 import org.tasks.TasksUrls
 import org.tasks.BuildConfig
 import org.tasks.compose.settings.AboutScreen
+import org.tasks.fourlink.ConnectedAppsActivity
 import org.tasks.fourlink.LicensesActivity
-import org.tasks.extensions.Context.openUri
 import org.tasks.logging.FileLogger
 import org.tasks.preferences.BasePreferences
 import org.tasks.preferences.DiagnosticInfo
@@ -53,32 +53,49 @@ class HelpAndFeedback : Fragment() {
             theme = theme.themeBase.index,
             primary = theme.themeColor.primaryColor,
         ) {
+            // The family About (0.1.15): every link opens in runCatching, so a phone with no browser or no
+            // mail app shows nothing rather than crashing.
             AboutScreen(
                 versionName = BuildConfig.VERSION_NAME,
-                onTasksOrgSource = { context?.openUri("https://github.com/tasks/tasks") },
-                onFourTasksSource = { context?.openUri("https://github.com/mr-bizzy/4tasks") },
+                versionCode = BuildConfig.VERSION_CODE,
+                onWebsite = { view("https://mr-biz.uk/") },
+                onManual = { view("https://mr-biz.uk/4tasks/manual/") },
+                onPrivacyPolicy = { view("https://mr-biz.uk/4tasks/privacy/") },
+                onSupport = {
+                    runCatching { startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:support@mr-biz.uk"))) }
+                },
+                onTasksOrgSource = { view("https://github.com/tasks/tasks") },
+                onFourTasksSource = { view("https://github.com/mr-bizzy/4tasks") },
                 onGpl = {
-                    startActivity(
-                        Intent(requireContext(), LicensesActivity::class.java)
-                            .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.GPL)
-                            .putExtra(LicensesActivity.EXTRA_TITLE, "GNU General Public Licence v3"),
-                    )
+                    runCatching {
+                        startActivity(
+                            Intent(requireContext(), LicensesActivity::class.java)
+                                .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.GPL)
+                                .putExtra(LicensesActivity.EXTRA_TITLE, "GNU General Public Licence v3"),
+                        )
+                    }
                 },
                 onThirdParty = {
-                    startActivity(
-                        Intent(requireContext(), LicensesActivity::class.java)
-                            .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.THIRD_PARTY)
-                            .putExtra(LicensesActivity.EXTRA_TITLE, "Notices and licences"),
-                    )
+                    runCatching {
+                        startActivity(
+                            Intent(requireContext(), LicensesActivity::class.java)
+                                .putExtra(LicensesActivity.EXTRA_FILE, LicensesActivity.THIRD_PARTY)
+                                .putExtra(LicensesActivity.EXTRA_TITLE, "Notices and licences"),
+                        )
+                    }
                 },
-                onWebsite = { context?.openUri("https://mr-biz.uk/") },
-                onManual = { context?.openUri("https://mr-biz.uk/4tasks/manual/") },
-                onPrivacyPolicy = { context?.openUri("https://mr-biz.uk/4tasks/privacy/") },
+                onConnectedApps = {
+                    runCatching { startActivity(Intent(requireContext(), ConnectedAppsActivity::class.java)) }
+                },
                 bottomInsets = {
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 },
             )
         }
+    }
+
+    private fun view(url: String) {
+        runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
     }
 
     override fun onResume() {
