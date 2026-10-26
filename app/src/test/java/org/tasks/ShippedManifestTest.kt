@@ -86,6 +86,14 @@ class ShippedManifestTest {
     }
 
     @Test
+    fun theCertificateTrustScreenIsNotExported() {
+        // Exported, any app could make 4Tasks trust a certificate of its choosing (cert4android's EXTRA_TRUSTED).
+        val trust = components.single { it.name() == "at.bitfire.cert4android.TrustCertificateActivity" }
+        assertEquals("false", trust.getAttributeNS(android, "exported"))
+        assertFalse(trust.isExported())
+    }
+
+    @Test
     fun backupAndDeviceTransferAreOff() {
         assertEquals("false", application.getAttributeNS(android, "allowBackup"))
         assertEquals("@xml/data_extraction_rules", application.getAttributeNS(android, "dataExtractionRules"))

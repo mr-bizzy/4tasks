@@ -259,6 +259,13 @@
     <provider android:name="org.dmfs.provider.tasks.TaskProvider" tools:node="remove" />
     <receiver android:name="org.dmfs.provider.tasks.TaskProviderBroadcastReceiver" tools:node="remove" />
     <receiver android:name="org.tasks.location.LocationUpdateReceiver" tools:node="remove" />
+    <!-- cert4android declares its trust screen exported with no filter: any app could start it with a certificate and
+         "trusted"=true and 4Tasks would trust that certificate without the user choosing (0.1.15). Only 4Tasks
+         opens it (its own notification and startActivity), so it is not exported. -->
+    <activity
+        android:name="at.bitfire.cert4android.TrustCertificateActivity"
+        android:exported="false"
+        tools:replace="android:exported" />
     <!-- AppAuth's RedirectUriReceiverActivity (the way back from Microsoft's sign-in page) is removed in the
          generic flavour's manifest (0.1.15: Microsoft sign-in is out of the shipped app). -->
 
