@@ -20,7 +20,6 @@
     <string name="android" translatable="false">Android</string>
     <string name="ios" translatable="false">iOS</string>
     <string name="wear_os" translatable="false">Wear OS</string>
-    <string name="pebble" translatable="false">Pebble</string>
     <string name="etesync" translatable="false">EteSync</string>
     <string name="gtasks_GPr_header" translatable="false">Google Tasks</string>
     <string name="microsoft" translatable="false">Microsoft To&#xA0;Do</string>
@@ -35,7 +34,6 @@
     <string name="pricing_sponsor_annual" translatable="false">$30</string>
     <string name="pricing_sponsor_monthly" translatable="false">$3</string>
     <string name="pricing_sponsor_nyp" translatable="false">$1</string>
-    <string name="event_pebble" translatable="false">pebble</string>
     <string name="param_device_model" translatable="false">device_model</string>
     <string name="not_available_desktop" translatable="false">🚧 UNDER CONSTRUCTION 🚧</string>
     <string name="debug_unlock_pro" translatable="false">Unlock pro</string>

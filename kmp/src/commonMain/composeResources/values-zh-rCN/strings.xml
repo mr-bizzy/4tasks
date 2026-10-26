@@ -579,7 +579,6 @@
     <string name="works_with_android_description">手机、平板、Chrome 笔记本</string>
     <string name="works_with_coming_soon">即将到来</string>
     <string name="works_with_desktop_description">macOS、Windows、 Linux</string>
-    <string name="works_with_pebble_description">Pebble 智能手表应用</string>
     <string name="works_with_content_provider">内容提供商 API</string>
     <string name="works_with_missing">注意到缺少了什么吗？%1$s 或者发电子邮件给 %2$s。</string>
     <string name="works_with_submit_pull_request">提交拉取请求</string>

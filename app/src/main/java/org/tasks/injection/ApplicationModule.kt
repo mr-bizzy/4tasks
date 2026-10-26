@@ -78,9 +78,6 @@ import org.tasks.jobs.WorkManager
 import org.tasks.location.Geocoder
 import org.tasks.location.LocationService
 import org.tasks.notifications.Notifier
-import org.tasks.pebble.PebbleMessageHandler
-import org.tasks.pebble.PebbleRefresher
-import org.tasks.pebble.PebbleService
 import org.tasks.preferences.AppPreferences
 import org.tasks.preferences.Preferences
 import org.tasks.preferences.TasksPreferences
@@ -745,11 +742,6 @@ class ApplicationModule {
     ) = TasksAccountDataRepository(provider, caldavDao, tasksPreferences)
 
     @Provides
-    fun providesPebbleRefresher(
-        @ApplicationContext context: Context,
-    ) = PebbleRefresher(context)
-
-    @Provides
     @Singleton
     fun providesCaldavListCache(caldavDao: CaldavDao) = CaldavListCache(caldavDao)
 
@@ -793,21 +785,4 @@ class ApplicationModule {
         taskCreator = taskCreator,
         context = context,
     )
-
-    @Provides
-    fun providesPebbleMessageHandler(
-        watchServiceLogic: WatchServiceLogic,
-        firebase: Firebase,
-    ) = PebbleMessageHandler(
-        watchService = watchServiceLogic,
-        analytics = firebase,
-    )
-
-    @Provides
-    @Singleton
-    fun providesPebbleService(
-        @ApplicationContext context: Context,
-        messageHandler: PebbleMessageHandler,
-        @ApplicationScope scope: CoroutineScope,
-    ) = PebbleService(context, messageHandler, scope)
 }

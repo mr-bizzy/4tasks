@@ -588,7 +588,6 @@
     <string name="works_with_android_description">Telefonlar, tabletler ve Chromebook\'lar</string>
     <string name="works_with_coming_soon">Yakında geliyor</string>
     <string name="works_with_desktop_description">macOS, Windows ve Linux</string>
-    <string name="works_with_pebble_description">Pebble akıllı saatler için saat uygulaması</string>
     <string name="works_with_content_provider">İçerik sağlayıcı API\'si</string>
     <string name="works_with_missing">Eksik bir şey fark ettiniz mi? %1$s veya %2$s adresine e-posta gönderin.</string>
     <string name="works_with_submit_pull_request">Çekme isteği gönderin</string>

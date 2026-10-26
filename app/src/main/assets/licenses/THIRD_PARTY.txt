@@ -206,7 +206,6 @@ com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.13.0  -  BSD 2-Claus
 com.atlassian.commonmark:commonmark-ext-gfm-tables:0.13.0  -  BSD 2-Clause License
 com.caverock:androidsvg-aar:1.4  -  The Apache Software License, Version 2.0
 com.etebase:client:2.3.2  -  LGPL-3.0-only
-com.getpebble:pebblekit:4.0.1  -  Pebble Developer Agreement
 com.github.ajalt.colormath:colormath:3.6.1  -  The MIT License
 com.github.ajalt.colormath:colormath-jvm:3.6.1  -  The MIT License
 com.github.bitfireAT:dav4jvm:af443c2f  -  MPL-2.0 (as stated by the project)

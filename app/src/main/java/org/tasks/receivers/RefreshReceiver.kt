@@ -10,7 +10,6 @@ import org.tasks.data.dao.TaskDao
 import org.tasks.injection.InjectingJobIntentService
 import org.tasks.preferences.DefaultFilterProvider
 import org.tasks.preferences.Preferences
-import org.tasks.pebble.PebbleRefresher
 import org.tasks.wear.WearRefresher
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,7 +21,6 @@ class RefreshReceiver : InjectingJobIntentService() {
     @Inject lateinit var taskDao: TaskDao
     @Inject lateinit var preferences: Preferences
     @Inject lateinit var wearRefresher: WearRefresher
-    @Inject lateinit var pebbleRefresher: PebbleRefresher
 
     override suspend fun doWork(intent: Intent) {
         if (preferences.getBoolean(R.string.p_badges_enabled, true)) {
@@ -30,6 +28,5 @@ class RefreshReceiver : InjectingJobIntentService() {
             ShortcutBadger.applyCount(context, taskDao.count(badgeFilter))
         }
         wearRefresher.refresh()
-        pebbleRefresher.refresh()
     }
 }

@@ -8,7 +8,6 @@ object TasksUrls {
     const val REDDIT = "https://reddit.com/r/tasks"
     const val TWITTER = "https://x.com/tasks_org"
     const val SOURCE_CODE = "https://tasks.org/source"
-    const val PEBBLE_LISTING = "https://apps.repebble.com/13e39c547aee442eb19a4755"
     const val CONTENT_PROVIDER =
         "https://github.com/tasks/tasks/blob/main/CONTENT_PROVIDER.md"
     const val WORKS_WITH_SOURCE =

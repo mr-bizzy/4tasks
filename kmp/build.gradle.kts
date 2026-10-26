@@ -42,7 +42,6 @@ kotlin {
                     exclude(group = "org.codehaus.groovy", module = "groovy-dateutil")
                 }
                 implementation(libs.persistent.cookiejar)
-                implementation(libs.pebblekit)
                 implementation(libs.dmfs.opentasks.provider.get().toString()) {
                     exclude("com.github.tasks.opentasks", "opentasks-contract")
                 }

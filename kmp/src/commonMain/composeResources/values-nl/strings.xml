@@ -532,7 +532,6 @@
     <string name="works_with_android_description">Telefoons, tablets en Chromebooks</string>
     <string name="works_with_coming_soon">Binnenkort verkrijgbaar</string>
     <string name="works_with_desktop_description">macOS, Windows en Linux</string>
-    <string name="works_with_pebble_description">Watchapp voor Pebble smartwatches</string>
     <string name="works_with_content_provider">Content provider API</string>
     <string name="works_with_missing">Ontbreekt er iets? %1$s of e-mail %2$s.</string>
     <string name="works_with_submit_pull_request">Dien een pull-verzoek in</string>

@@ -605,7 +605,6 @@
     <string name="works_with_android_description">Téléphones, tablettes et Chromebooks</string>
     <string name="works_with_coming_soon">Bientôt</string>
     <string name="works_with_desktop_description">macOS, Windows et Linux</string>
-    <string name="works_with_pebble_description">Application pour les montres connectées Pebble</string>
     <string name="works_with_content_provider">Fournisseur de contenu API</string>
     <string name="works_with_missing">Vous avez oublié quelque chose ? %1$s ou courriel %2$s.</string>
     <string name="works_with_submit_pull_request">Soumettez une demande de tirage</string>

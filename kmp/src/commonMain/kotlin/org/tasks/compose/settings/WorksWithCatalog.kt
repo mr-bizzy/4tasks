@@ -7,7 +7,6 @@ import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Checklist
 import androidx.compose.material.icons.outlined.Cloud
-import androidx.compose.material.icons.outlined.DevicesOther
 import androidx.compose.material.icons.outlined.Dns
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Laptop
@@ -57,7 +56,6 @@ import tasks.kmp.generated.resources.ksync
 import tasks.kmp.generated.resources.mcp_server
 import tasks.kmp.generated.resources.microsoft
 import tasks.kmp.generated.resources.microsoft_selection_description_googleplay
-import tasks.kmp.generated.resources.pebble
 import tasks.kmp.generated.resources.radicale
 import tasks.kmp.generated.resources.tasker
 import tasks.kmp.generated.resources.tasks_org_account
@@ -85,7 +83,6 @@ import tasks.kmp.generated.resources.works_with_ksync_description
 import tasks.kmp.generated.resources.works_with_launchers
 import tasks.kmp.generated.resources.works_with_mcp_description
 import tasks.kmp.generated.resources.works_with_nextcloud_description
-import tasks.kmp.generated.resources.works_with_pebble_description
 import tasks.kmp.generated.resources.works_with_radicale_description
 import tasks.kmp.generated.resources.works_with_tag_official
 import tasks.kmp.generated.resources.works_with_tag_sync
@@ -222,13 +219,6 @@ val worksWithCatalog = listOf(
                     web = TasksUrls.GOOGLE_PLAY_LISTING,
                     play = "org.tasks",
                 ),
-            ),
-            WorksWithEntry(
-                title = Res.string.pebble,
-                description = Res.string.works_with_pebble_description,
-                icon = Icons.Outlined.DevicesOther,
-                tags = setOf(WorksWithTag.ANDROID, WorksWithTag.OFFICIAL),
-                links = WorksWithLinks(web = TasksUrls.PEBBLE_LISTING),
             ),
         ),
     ),
