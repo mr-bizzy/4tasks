@@ -10,13 +10,26 @@ import java.time.Clock
  * command while the phone was out of reach may send it again when an acknowledgement was lost; the
  * same caller and request_id then get the first call's answer back, and nothing is done twice.
  *
+ * It holds no task details (privacy policy: the 4Link records never record the details of a task): only the caller's
+ * package, the request_id, the function, the task id, what happened ([Kind]) and when. A repeat's summary is rebuilt from
+ * the task as it is now.
+ *
  * Kept in one small JSON file in the app's private storage, so it survives a restart. Pure JVM, so the
  * rules are tested on the workstation. One instance per file: [mutex] keeps two copies of one request
  * arriving together from both running.
  */
 class RequestLedger(private val file: File, private val clock: Clock = Clock.systemUTC()) {
 
-    data class Entry(val function: String, val json: String, val atMillis: Long)
+    /** What the first call did. [wire] is what the file holds. */
+    enum class Kind(val wire: String) {
+        ADDED("added"), DONE("done"), ALREADY_DONE("already_done"), DELETED("deleted"), GONE("gone");
+
+        companion object {
+            fun fromWire(w: String?): Kind? = entries.firstOrNull { it.wire == w }
+        }
+    }
+
+    data class Entry(val function: String, val taskId: Long?, val kind: Kind, val atMillis: Long)
 
     val mutex = Mutex()
 
@@ -30,10 +43,10 @@ class RequestLedger(private val file: File, private val clock: Clock = Clock.sys
     }
 
     @Synchronized
-    fun put(caller: String, requestId: String, function: String, json: String) {
+    fun put(caller: String, requestId: String, function: String, taskId: Long?, kind: Kind) {
         val all = entries()
         prune(all)
-        all[key(caller, requestId)] = Entry(function, json, clock.millis())
+        all[key(caller, requestId)] = Entry(function, taskId, kind, clock.millis())
         // A ceiling on the file whatever a caller does: the oldest answers go first.
         if (all.size > MAX_ENTRIES) {
             all.entries.sortedBy { it.value.atMillis }.take(all.size - MAX_ENTRIES).forEach { all.remove(it.key) }
@@ -56,14 +69,17 @@ class RequestLedger(private val file: File, private val clock: Clock = Clock.sys
         val o = runCatching { JSONObject(text) }.getOrNull() ?: return out
         for (k in o.keys()) {
             val e = o.optJSONObject(k) ?: continue
-            out[k] = Entry(e.optString("f"), e.optString("j"), e.optLong("t"))
+            val kind = Kind.fromWire(e.optString("k")) ?: continue
+            out[k] = Entry(e.optString("f"), if (e.has("i")) e.optLong("i") else null, kind, e.optLong("t"))
         }
         return out
     }
 
     private fun save(all: Map<String, Entry>) {
         val o = JSONObject()
-        all.forEach { (k, e) -> o.put(k, JSONObject().put("f", e.function).put("j", e.json).put("t", e.atMillis)) }
+        all.forEach { (k, e) ->
+            o.put(k, JSONObject().put("f", e.function).put("k", e.kind.wire).put("t", e.atMillis).also { j -> e.taskId?.let { j.put("i", it) } })
+        }
         runCatching {
             file.parentFile?.mkdirs()
             val tmp = File(file.path + ".tmp")

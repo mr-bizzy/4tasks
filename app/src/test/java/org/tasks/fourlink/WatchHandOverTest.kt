@@ -111,8 +111,54 @@ class WatchHandOverTest {
         val again = ok(call("tasks.complete", """{"id":${t.id},"request_id":"w-2"}"""))
         assertEquals(listOf(7L), port.completedIds)
         assertEquals("Done: Call the bank.", first.getString("summary"))
-        assertEquals(first.getString("summary"), again.getString("summary"))
+        assertEquals("Already done: Call the bank.", again.getString("summary"))
         assertTrue(again.getBoolean("repeated"))
+    }
+
+    @Test fun `the record holds no task details, only caller, request_id, function, task id, kind and time`() {
+        ok(call("tasks.add", """{"title":"Secret surprise party","notes":"for Sandra","due":"2026-10-03","request_id":"w-1"}"""))
+        port.open(7, "Call the bank")
+        ok(call("tasks.complete", """{"id":7,"request_id":"w-2"}"""))
+        val text = ledgerFile.readText()
+        for (word in listOf("Secret", "surprise", "Sandra", "Call the bank", "bank", "My tasks", "summary", "2026-10-03")) {
+            assertFalse("the record names “$word”: $text", text.contains(word))
+        }
+        val o = JSONObject(text)
+        assertEquals(2, o.length())
+        val fields = o.keys().asSequence().flatMap { o.getJSONObject(it).keys().asSequence() }.toSet()
+        assertEquals(setOf("f", "k", "i", "t"), fields)
+        assertEquals(setOf("added", "done"), o.keys().asSequence().map { o.getJSONObject(it).getString("k") }.toSet())
+    }
+
+    @Test fun `a repeat is told about the task as it is now`() {
+        val id = ok(call("tasks.add", """{"title":"Buy milk","request_id":"w-1"}""")).getLong("id")
+        val t = port.tasks.first { it.id == id }
+        port.tasks[port.tasks.indexOf(t)] = t.copy(title = "Buy oat milk", listTitle = "Work")
+        val again = ok(call("tasks.add", """{"title":"Buy milk","request_id":"w-1"}"""))
+        assertEquals(id, again.getLong("id"))
+        assertEquals("Added to Work: Buy oat milk.", again.getString("summary"))
+    }
+
+    @Test fun `a repeat for a task that is gone says only Already handled`() {
+        val id = ok(call("tasks.add", """{"title":"Buy milk","request_id":"w-1"}""")).getLong("id")
+        port.delete(id)
+        val again = ok(call("tasks.add", """{"title":"Buy milk","request_id":"w-1"}"""))
+        assertEquals("Already handled.", again.getString("summary"))
+        assertEquals(id, again.getLong("id"))
+        assertEquals(1, port.created.size)
+        port.open(8, "Pay rent")
+        ok(call("tasks.complete", """{"id":8,"request_id":"w-5"}"""))
+        port.delete(8)
+        assertEquals("Already handled.", ok(call("tasks.complete", """{"id":8,"request_id":"w-5"}""")).getString("summary"))
+    }
+
+    @Test fun `repeats of deleted and gone keep their answers`() {
+        port.open(7, "Call the bank")
+        port.delete(7)
+        ok(call("tasks.complete", """{"id":7,"request_id":"w-6"}"""))
+        assertEquals("That task was deleted.", ok(call("tasks.complete", """{"id":7,"request_id":"w-6"}""")).getString("summary"))
+        ok(call("tasks.complete", """{"id":404,"request_id":"w-7"}"""))
+        assertEquals("That task is no longer in 4Tasks.", ok(call("tasks.complete", """{"id":404,"request_id":"w-7"}""")).getString("summary"))
     }
 
     @Test fun `two copies arriving together are answered once`() = runBlocking {

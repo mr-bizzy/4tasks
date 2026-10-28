@@ -98,9 +98,13 @@ class TasksDoorLogic(
 ) {
     private val zone get() = clock.zone
 
+    /** What add or complete did, for [RequestLedger]: the kind and the task id, never the task's details. */
+    private var handled: Pair<RequestLedger.Kind, Long?>? = null
+
     /**
-     * A call with a request_id this caller already used (within 14 days) gets the first answer back, marked repeated, and
-     * nothing is done. Only an answer that succeeded is kept: a refused or failed call can be sent again and runs again.
+     * A call with a request_id this caller already used (within 14 days) gets an answer for the same task, marked repeated,
+     * and nothing is done. The record holds no task details, so the summary is made again from the task as it is now
+     * ([repeatAnswer]). Only a call that succeeded is recorded: a refused or failed call can be sent again and runs again.
      */
     suspend fun perform(functionId: String, args: JSONObject): Outcome {
         val requestId = if (functionId == TasksCatalogue.ADD || functionId == TasksCatalogue.COMPLETE) args.text(TasksCatalogue.REQUEST_ID) else null
@@ -108,15 +112,33 @@ class TasksDoorLogic(
         return ledger.mutex.withLock {
             val first = ledger.get(callerPackage, requestId)
             when {
-                first == null -> run(functionId, args).also {
-                    if (it is Outcome.Ok) ledger.put(callerPackage, requestId, functionId, it.json)
+                first == null -> {
+                    handled = null
+                    run(functionId, args).also { out ->
+                        val h = handled
+                        if (out is Outcome.Ok && h != null) ledger.put(callerPackage, requestId, functionId, h.second, h.first)
+                    }
                 }
                 first.function != functionId -> Outcome.BadArguments(
                     "request_id “$requestId” was already used for ${first.function}. Nothing was done.",
                 )
-                else -> Outcome.Ok(JSONObject(first.json).put("repeated", true).toString())
+                else -> repeatAnswer(first)
             }
         }
+    }
+
+    /** The answer to a repeated request_id, from the task as it is now; "Already handled." when it no longer exists. */
+    private suspend fun repeatAnswer(first: RequestLedger.Entry): Outcome {
+        val task = first.taskId?.let { port.task(it) }
+        val summary = when (first.kind) {
+            RequestLedger.Kind.DELETED -> "That task was deleted."
+            RequestLedger.Kind.GONE -> "That task is no longer in 4Tasks."
+            RequestLedger.Kind.ADDED -> task?.let { t -> (t.listTitle?.let { "Added to $it: " } ?: "Added: ") + t.title + "." }
+            RequestLedger.Kind.DONE, RequestLedger.Kind.ALREADY_DONE -> task?.let { "Already done: ${it.title}." }
+        } ?: "Already handled."
+        val out = JSONObject()
+        if (first.function == TasksCatalogue.ADD) first.taskId?.let { out.put("id", it) }
+        return Outcome.Ok(out.put("summary", summary).put("repeated", true).toString())
     }
 
     private suspend fun run(functionId: String, args: JSONObject): Outcome = try {
@@ -222,6 +244,7 @@ class TasksDoorLogic(
         val summary = (if (where != null) "Added to $where: " else "Added: ") + created.title +
             (if (parts.isEmpty()) "" else " — " + parts.joinToString(", ")) +
             saidNote(saidAt) + "." + notesNote + reminderNote + googleNote
+        handled = RequestLedger.Kind.ADDED to created.id
         return Outcome.Ok(JSONObject().put("id", created.id).put("summary", summary).toString())
     }
 
@@ -264,16 +287,26 @@ class TasksDoorLogic(
         val handedOver = a.text(TasksCatalogue.REQUEST_ID) != null || saidAt != null
         val target: TaskInfo = if (id != null) {
             port.task(id) ?: when {
-                port.wasDeleted(id) -> return Outcome.Ok(JSONObject().put("summary", "That task was deleted$said.").toString())
-                handedOver -> return Outcome.Ok(JSONObject().put("summary", "That task is no longer in 4Tasks$said.").toString())
+                port.wasDeleted(id) -> {
+                    handled = RequestLedger.Kind.DELETED to id
+                    return Outcome.Ok(JSONObject().put("summary", "That task was deleted$said.").toString())
+                }
+                handedOver -> {
+                    handled = RequestLedger.Kind.GONE to id
+                    return Outcome.Ok(JSONObject().put("summary", "That task is no longer in 4Tasks$said.").toString())
+                }
                 else -> throw BadArgument("There is no task with id $id.")
             }
         } else {
             pickByTitle(title!!)
         }
-        if (target.completed) return Outcome.Ok(JSONObject().put("summary", "Already done: ${target.title}$said.").toString())
+        if (target.completed) {
+            handled = RequestLedger.Kind.ALREADY_DONE to target.id
+            return Outcome.Ok(JSONObject().put("summary", "Already done: ${target.title}$said.").toString())
+        }
 
         val done = port.complete(target.id)
+        handled = RequestLedger.Kind.DONE to target.id
         val summary = if (done.advanced) {
             val next = done.task?.let { fmtDue(it) }
             "Done: ${target.title}$said. It repeats" + (next?.let { ", so the next one is $it." } ?: ".")
