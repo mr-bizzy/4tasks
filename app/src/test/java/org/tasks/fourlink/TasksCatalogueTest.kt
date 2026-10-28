@@ -11,14 +11,15 @@ import uk.mr_biz.fourlink.FourLink
 class TasksCatalogueTest {
     private val functions = TasksCatalogue.CATALOGUE.functions
 
-    @Test fun `phase 1 offers these four functions and no delete`() {
-        assertEquals(listOf("tasks.add", "tasks.list", "tasks.complete", "lists.list"), functions.map { it.id })
+    @Test fun `these five functions and no delete`() {
+        assertEquals(listOf("tasks.add", "tasks.list", "tasks.complete", "lists.list", "tasks.snapshot"), functions.map { it.id })
         assertFalse(functions.any { it.effect == Effect.DELETE })
     }
 
     @Test fun `reads read and changes change`() {
         assertEquals(
-            mapOf("tasks.add" to Effect.CREATE, "tasks.list" to Effect.READ, "tasks.complete" to Effect.CHANGE, "lists.list" to Effect.READ),
+            mapOf("tasks.add" to Effect.CREATE, "tasks.list" to Effect.READ, "tasks.complete" to Effect.CHANGE, "lists.list" to Effect.READ,
+                "tasks.snapshot" to Effect.READ),
             functions.associate { it.id to it.effect },
         )
     }
@@ -102,8 +103,8 @@ class TasksCatalogueTest {
         }
     }
 
-    @Test fun `adding the optional note is a minor version, so callers that read 1_0 still call it`() {
-        assertEquals("1.1", functions.first { it.id == "tasks.add" }.version)
+    @Test fun `adding the optional note, request_id and said_at are minor versions, so callers that read 1_0 still call it`() {
+        assertEquals("1.2", functions.first { it.id == "tasks.add" }.version)
         assertEquals(1, functions.first { it.id == "tasks.add" }.major)
     }
 }

@@ -71,4 +71,21 @@ class FakePort(
     override suspend fun markDictatedNote(taskId: Long) {
         dictatedNotes += taskId
     }
+
+    /** Deleted ids: [task] no longer finds them, as with Tasks.org's engine. */
+    val deleted = mutableSetOf<Long>()
+    /** Last-modified time per task id; a task not here counts as modified at 0. */
+    val modified = mutableMapOf<Long, Long>()
+    var next = mutableMapOf<Long, Long>()
+
+    fun delete(id: Long) {
+        tasks.removeIf { it.id == id }
+        deleted += id
+    }
+
+    override suspend fun wasDeleted(id: Long) = id in deleted
+
+    override suspend fun changeMarks() = tasks.map { ChangeMark(it.id, modified[it.id] ?: 0L, it.completed) }
+
+    override suspend fun nextReminders(): Map<Long, Long> = next.filterKeys { id -> tasks.any { it.id == id && !it.completed } }
 }

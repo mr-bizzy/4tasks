@@ -1,11 +1,15 @@
 package org.tasks.fourlink
 
+import kotlinx.coroutines.sync.withLock
+import org.json.JSONArray
 import org.json.JSONObject
 import uk.mr_biz.fourlink.Outcome
 import uk.mr_biz.fourlink.Suggestion
 import java.time.Clock
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 /** A list of tasks, as the door needs to know it. */
@@ -34,6 +38,9 @@ data class TaskFilter(
 
 data class TaskPage(val total: Int, val tasks: List<TaskInfo>)
 
+/** What makes a snapshot's stamp change: one per task in any state (not deleted), with its last-modified time. */
+data class ChangeMark(val id: Long, val modified: Long?, val completed: Boolean)
+
 /** [task] is the task as it is after completing; [advanced] when a repeating task moved to its next date instead. */
 data class CompletionInfo(val task: TaskInfo?, val advanced: Boolean)
 
@@ -61,6 +68,12 @@ interface TasksPort {
     suspend fun createLocalList(title: String): ListInfo
     /** Marks the task as a dictation 4Dictate handed over (tasks.add note=true); see [DictatedNotes]. */
     suspend fun markDictatedNote(taskId: Long)
+    /** True when the task exists but was deleted (Tasks.org keeps a deleted task until it is purged). */
+    suspend fun wasDeleted(id: Long): Boolean
+    /** Every task that is not deleted, open or done, with its last-modified time. */
+    suspend fun changeMarks(): List<ChangeMark>
+    /** For each open task with one, the next reminder still to come (epoch millis), as Tasks.org's own alarms work it out. */
+    suspend fun nextReminders(): Map<Long, Long>
 }
 
 /**
@@ -78,15 +91,41 @@ class TasksDoorLogic(
      * words at tasks.complete, which they were never allowed to read.
      */
     private val mayNameTasks: Boolean = true,
+    /** The caller's package, which a request_id belongs to. */
+    private val callerPackage: String? = null,
+    /** Where first answers to a request_id are kept; null turns request_id off (it is then ignored). */
+    private val ledger: RequestLedger? = null,
 ) {
     private val zone get() = clock.zone
 
-    suspend fun perform(functionId: String, args: JSONObject): Outcome = try {
+    /**
+     * A call with a request_id this caller already used (within 14 days) gets the first answer back, marked repeated, and
+     * nothing is done. Only an answer that succeeded is kept: a refused or failed call can be sent again and runs again.
+     */
+    suspend fun perform(functionId: String, args: JSONObject): Outcome {
+        val requestId = if (functionId == TasksCatalogue.ADD || functionId == TasksCatalogue.COMPLETE) args.text(TasksCatalogue.REQUEST_ID) else null
+        if (requestId == null || ledger == null || callerPackage == null) return run(functionId, args)
+        return ledger.mutex.withLock {
+            val first = ledger.get(callerPackage, requestId)
+            when {
+                first == null -> run(functionId, args).also {
+                    if (it is Outcome.Ok) ledger.put(callerPackage, requestId, functionId, it.json)
+                }
+                first.function != functionId -> Outcome.BadArguments(
+                    "request_id “$requestId” was already used for ${first.function}. Nothing was done.",
+                )
+                else -> Outcome.Ok(JSONObject(first.json).put("repeated", true).toString())
+            }
+        }
+    }
+
+    private suspend fun run(functionId: String, args: JSONObject): Outcome = try {
         when (functionId) {
             TasksCatalogue.ADD -> add(args)
             TasksCatalogue.LIST -> list(args)
             TasksCatalogue.COMPLETE -> complete(args)
             TasksCatalogue.LISTS -> lists()
+            TasksCatalogue.SNAPSHOT -> snapshot(args)
             else -> Outcome.Failed("4Tasks has no code for “$functionId”.")
         }
     } catch (e: BadArgument) {
@@ -118,7 +157,11 @@ class TasksDoorLogic(
             throw BadArgument("reminder needs a time as well as a day, like 2026-10-03T15:00.")
         }
         val allowPast = a.optBoolean("allow_past", false)
-        if (reminder is Moment.DayTime && !allowPast && reminder.at.isBefore(now())) {
+        val saidAt = saidAt(a)
+        // Delivered late (said_at): a reminder the user asked for at or after the moment they spoke, which has passed while the
+        // command waited, goes off at once. One before said_at was already past when they spoke, and keeps the rule below.
+        val fireNow = reminder is Moment.DayTime && reminder.at.isBefore(now()) && saidAt != null && !reminder.at.isBefore(saidAt)
+        if (reminder is Moment.DayTime && !allowPast && !fireNow && reminder.at.isBefore(now())) {
             throw BadArgument(
                 "The reminder time ${DoorDates.describe(reminder, now().toLocalDate(), locale)} has already passed " +
                     "(it is now ${DoorDates.describe(Moment.DayTime(now()), now().toLocalDate(), locale)}). Send a later time.",
@@ -139,7 +182,7 @@ class TasksDoorLogic(
         var reminderNote = ""
         if (reminder is Moment.DayTime) {
             try {
-                port.addReminder(created.id, reminder.startMillis(zone))
+                port.addReminder(created.id, if (fireNow) clock.millis() else reminder.startMillis(zone))
             } catch (e: Exception) {
                 return Outcome.Failed(
                     "“$title” was added, but its reminder could not be set (${e.message ?: "unknown reason"}). " +
@@ -163,7 +206,9 @@ class TasksDoorLogic(
         val today = now().toLocalDate()
         val parts = buildList {
             due?.let { add(DoorDates.describe(it, today, locale)) }
-            if (reminder != null) {
+            if (fireNow) {
+                add("the reminder for ${DoorDates.describe(reminder!!, today, locale)} had passed when this arrived, so it goes off now")
+            } else if (reminder != null) {
                 add(if (due == reminder) "reminder set" else "reminder set for ${DoorDates.describe(reminder, today, locale)}")
             }
         }
@@ -176,7 +221,7 @@ class TasksDoorLogic(
         // 4Dictate shows this line when it acts without asking, so it must say WHICH list the task went to.
         val summary = (if (where != null) "Added to $where: " else "Added: ") + created.title +
             (if (parts.isEmpty()) "" else " — " + parts.joinToString(", ")) +
-            "." + notesNote + reminderNote + googleNote
+            saidNote(saidAt) + "." + notesNote + reminderNote + googleNote
         return Outcome.Ok(JSONObject().put("id", created.id).put("summary", summary).toString())
     }
 
@@ -212,19 +257,28 @@ class TasksDoorLogic(
         val title = a.text("title")
         if (id == null && title == null) throw BadArgument("Send the task's id or part of its title.")
 
+        val saidAt = saidAt(a)
+        val said = saidNote(saidAt)
+        // A command handed over late (4Watch) may find its task already done or deleted: that is an answer, not an error a
+        // caller would send again and again.
+        val handedOver = a.text(TasksCatalogue.REQUEST_ID) != null || saidAt != null
         val target: TaskInfo = if (id != null) {
-            port.task(id) ?: throw BadArgument("There is no task with id $id.")
+            port.task(id) ?: when {
+                port.wasDeleted(id) -> return Outcome.Ok(JSONObject().put("summary", "That task was deleted$said.").toString())
+                handedOver -> return Outcome.Ok(JSONObject().put("summary", "That task is no longer in 4Tasks$said.").toString())
+                else -> throw BadArgument("There is no task with id $id.")
+            }
         } else {
             pickByTitle(title!!)
         }
-        if (target.completed) return Outcome.Ok(JSONObject().put("summary", "“${target.title}” was already done.").toString())
+        if (target.completed) return Outcome.Ok(JSONObject().put("summary", "Already done: ${target.title}$said.").toString())
 
         val done = port.complete(target.id)
         val summary = if (done.advanced) {
             val next = done.task?.let { fmtDue(it) }
-            "Done: ${target.title}. It repeats" + (next?.let { ", so the next one is $it." } ?: ".")
+            "Done: ${target.title}$said. It repeats" + (next?.let { ", so the next one is $it." } ?: ".")
         } else {
-            "Done: ${target.title}."
+            "Done: ${target.title}$said."
         }
         return Outcome.Ok(JSONObject().put("summary", summary).toString())
     }
@@ -290,7 +344,78 @@ class TasksDoorLogic(
         )
     }
 
+    // ---- tasks.snapshot --------------------------------------------------
+
+    /**
+     * Everything a watch needs to answer "what's due" while the phone is out of reach: the list names and the open tasks,
+     * soonest due first, with a stamp that changes whenever any task or list changes. With since equal to the current
+     * stamp, only unchanged, the stamp and taken_at come back.
+     */
+    private suspend fun snapshot(a: JSONObject): Outcome {
+        val lists = port.lists()
+        val next = port.nextReminders()
+        val stamp = stamp(lists, port.changeMarks(), next)
+        val takenAt = now().withNano(0).format(TAKEN_AT)
+        if (a.text("since") == stamp) {
+            return Outcome.Ok(JSONObject().put("unchanged", true).put("stamp", stamp).put("taken_at", takenAt).toString())
+        }
+        val open = port.openTasks()
+            .sortedWith(compareBy<TaskInfo, Long?>(nullsLast()) { it.dueMillis }.thenBy { it.id })
+        fun answer(shown: List<TaskInfo>): String {
+            val tasks = JSONArray()
+            shown.forEach { t ->
+                tasks.put(
+                    JSONObject().apply {
+                        put("id", t.id)
+                        put("title", t.title)
+                        t.dueMillis?.let { put("due", localText(it, allDay = t.dueAllDay)) }
+                        next[t.id]?.let { put("reminder", localText(it, allDay = false)) }
+                        t.listTitle?.let { put("list", it) }
+                        put("repeats", t.repeats)
+                    },
+                )
+            }
+            return JSONObject()
+                .put("unchanged", false)
+                .put("stamp", stamp)
+                .put("taken_at", takenAt)
+                .put("lists", lists.joinToString(", ") { it.title })
+                .put("count", open.size)
+                .put("tasks", tasks.toString())
+                .put("truncated", shown.size < open.size)
+                .toString()
+        }
+        var shown = open.take(TasksCatalogue.SNAPSHOT_MAX_TASKS)
+        var json = answer(shown)
+        while (json.length > TasksCatalogue.SNAPSHOT_MAX_CHARS && shown.isNotEmpty()) {
+            shown = shown.take(shown.size * 9 / 10)
+            json = answer(shown)
+        }
+        return Outcome.Ok(json)
+    }
+
+    private fun localText(millis: Long, allDay: Boolean): String {
+        val at = java.time.Instant.ofEpochMilli(millis).atZone(zone).toLocalDateTime()
+        return if (allDay) at.toLocalDate().toString() else at.withSecond(0).withNano(0).format(MINUTE)
+    }
+
     // ---- shared ----------------------------------------------------------
+
+    /** said_at, never later than now (a watch's clock may run ahead of the phone's). */
+    private fun saidAt(a: JSONObject): LocalDateTime? {
+        val raw = a.text(TasksCatalogue.SAID_AT) ?: return null
+        val moment = DoorDates.parse(TasksCatalogue.SAID_AT, raw) as? Moment.DayTime
+            ?: throw BadArgument("said_at needs a time as well as a day, like 2026-10-03T14:02.")
+        return minOf(moment.at, now())
+    }
+
+    /** " (said at 14:02)" when the user spoke more than two minutes before this arrived; "" otherwise. */
+    private fun saidNote(saidAt: LocalDateTime?): String {
+        if (saidAt == null || !Duration.between(saidAt, now()).minus(SAID_SHOWN_AFTER).isPositive) return ""
+        val today = now().toLocalDate()
+        return if (saidAt.toLocalDate() == today) " (said at ${saidAt.format(HOUR_MINUTE)})"
+        else " (said ${DoorDates.describe(Moment.DayTime(saidAt), today, locale)})"
+    }
 
     /**
      * The list the caller named. An exact name (any case) wins. Failing that, names are compared by [ListNames.key]: if exactly one list has that key it
@@ -339,6 +464,25 @@ class TasksDoorLogic(
     private fun listNames(lists: List<ListInfo>) = lists.joinToString(", ") { "“${it.title.trim().take(LIST_QUOTED_MAX)}”" }
 
     companion object {
+        private val TAKEN_AT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+        private val MINUTE: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
+        private val HOUR_MINUTE: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+        private val SAID_SHOWN_AFTER: Duration = Duration.ofMinutes(2)
+
+        /**
+         * A short text that changes when any list (id, name, read-only) or any task (added, done, edited, removed) changes,
+         * or a reminder still to come does. Not a secret: a SHA-256 of those, cut to 16 hex characters.
+         */
+        fun stamp(lists: List<ListInfo>, marks: List<ChangeMark>, next: Map<Long, Long>): String {
+            val text = buildString {
+                lists.sortedBy { it.id }.forEach { append("L").append(it.id).append('|').append(it.title).append('|').append(it.readOnly).append('\n') }
+                marks.sortedBy { it.id }.forEach { append("T").append(it.id).append('|').append(it.modified).append('|').append(it.completed).append('\n') }
+                next.toSortedMap().forEach { (id, at) -> append("R").append(id).append('|').append(at).append('\n') }
+            }
+            val digest = java.security.MessageDigest.getInstance("SHA-256").digest(text.toByteArray(Charsets.UTF_8))
+            return digest.take(8).joinToString("") { "%02x".format(it) }
+        }
+
         /** The list a dictated note goes to. */
         const val NOTES_LIST = "Notes"
         const val MAX_LISTED = 50

@@ -18,9 +18,25 @@ object TasksCatalogue {
     const val LIST = "tasks.list"
     const val COMPLETE = "tasks.complete"
     const val LISTS = "lists.list"
+    const val SNAPSHOT = "tasks.snapshot"
 
     /** tasks.add's argument for 4Dictate's hand-over of a dictation made while the phone was locked. */
     const val NOTE = "note"
+
+    /**
+     * tasks.add and tasks.complete (0.1.16): for a caller handing over commands it queued while the phone was out of reach
+     * (4Watch through 4Dictate). The same caller and request_id within 14 days get the first answer back; said_at is when the
+     * user spoke. A model leaves both out.
+     */
+    const val REQUEST_ID = "request_id"
+    const val SAID_AT = "said_at"
+    const val REQUEST_ID_MAX = 64
+
+    /** tasks.snapshot: at most this many open tasks, and the whole answer within [SNAPSHOT_MAX_CHARS]. */
+    const val SNAPSHOT_MAX_TASKS = 300
+    /** Well inside a binder transaction (about 1 MB, shared by the process): a Bundle string costs two bytes a character. */
+    const val SNAPSHOT_MAX_CHARS = 100_000
+    const val STAMP_MAX = 64
 
     /** Longest title or note accepted; also the schema's maxLength. */
     const val TITLE_MAX = 200
@@ -35,11 +51,21 @@ object TasksCatalogue {
 
     private const val WHEN_HELP = "Local time with no zone: YYYY-MM-DD, or YYYY-MM-DDTHH:MM."
 
+    private val requestIdField = Schema.Str(
+        REQUEST_ID_MAX,
+        description = "Only for a caller handing over queued commands: sent again, the first answer comes back. Leave out otherwise.",
+    )
+    private val saidAtField = Schema.Str(
+        WHEN_MAX,
+        description = "Only for a caller handing over queued commands: when the user spoke, YYYY-MM-DDTHH:MM local. Leave out otherwise.",
+    )
+    private val repeatedField = Schema.Bool(description = "True when this request_id was done before: this is that first answer, and nothing was done again.")
+
     val CATALOGUE = Catalogue(
         app = APP,
         functions = listOf(
             FunctionSpec(
-                id = ADD, version = "1.1", title = "Add a task or reminder",
+                id = ADD, version = "1.2", title = "Add a task or reminder",
                 description = "Creates a task. title is what to do, in the user's words. due is when it is due and " +
                     "reminder is when to be notified, both local time. For \"remind me at 3\" send both. " +
                     "Omit list for the default list. For a note (\"make a note\", \"jot down\") send list \"Notes\".",
@@ -54,6 +80,8 @@ object TasksCatalogue {
                         "allow_past" to Schema.Bool(description = "True only if the user asked for a reminder time already past."),
                         // Not for a model to fill: 4Dictate sets it itself, and the function's description does not mention it.
                         NOTE to Schema.Bool(description = "Only for 4Dictate handing over a dictation made while the phone was locked; leave out otherwise."),
+                        REQUEST_ID to requestIdField,
+                        SAID_AT to saidAtField,
                     ),
                     required = setOf("title"),
                 ),
@@ -61,6 +89,7 @@ object TasksCatalogue {
                     linkedMapOf(
                         "id" to Schema.Num(description = "The new task's id."),
                         "summary" to Schema.Str(description = "One line saying what was created."),
+                        "repeated" to repeatedField,
                     ),
                 ),
             ),
@@ -85,7 +114,7 @@ object TasksCatalogue {
                 ),
             ),
             FunctionSpec(
-                id = COMPLETE, version = "1.0", title = "Mark a task done",
+                id = COMPLETE, version = "1.1", title = "Mark a task done",
                 description = "Completes one task. Send the task's id, or part of its title, which must match exactly " +
                     "one open task. A repeating task moves to its next date instead of staying done.",
                 effect = Effect.CHANGE,
@@ -93,9 +122,16 @@ object TasksCatalogue {
                     linkedMapOf(
                         "id" to Schema.Num(description = "The task's id, if known."),
                         "title" to Schema.Str(TITLE_MAX, description = "Part of the task's title, as the user said it."),
+                        REQUEST_ID to requestIdField,
+                        SAID_AT to saidAtField,
                     ),
                 ),
-                output = Schema.Obj(linkedMapOf("summary" to Schema.Str(description = "One line saying what was completed."))),
+                output = Schema.Obj(
+                    linkedMapOf(
+                        "summary" to Schema.Str(description = "One line saying what was completed, or that it was already done or deleted."),
+                        "repeated" to repeatedField,
+                    ),
+                ),
             ),
             FunctionSpec(
                 id = LISTS, version = "1.0", title = "List the task lists",
@@ -105,6 +141,29 @@ object TasksCatalogue {
                     linkedMapOf(
                         "count" to Schema.Num(description = "How many lists there are."),
                         "lists" to Schema.Str(description = "The list names, separated by commas."),
+                    ),
+                ),
+            ),
+            FunctionSpec(
+                id = SNAPSHOT, version = "1.0", title = "Take a copy of the open tasks",
+                description = "For a device that answers questions while the phone is out of reach, not for a conversation: the list names " +
+                    "and up to $SNAPSHOT_MAX_TASKS open tasks, soonest due first, with a stamp. Send that stamp as since next time; if nothing " +
+                    "changed, only unchanged and the stamp come back.",
+                effect = Effect.READ,
+                input = Schema.Obj(
+                    linkedMapOf(
+                        "since" to Schema.Str(STAMP_MAX, description = "The stamp from the last snapshot. Leave out for a full one."),
+                    ),
+                ),
+                output = Schema.Obj(
+                    linkedMapOf(
+                        "unchanged" to Schema.Bool(description = "True when nothing changed since the stamp sent; nothing else but stamp and taken_at then."),
+                        "stamp" to Schema.Str(STAMP_MAX, description = "Changes whenever any task or list changes."),
+                        "taken_at" to Schema.Str(WHEN_MAX, description = "When this was taken, YYYY-MM-DDTHH:MM:SS local."),
+                        "lists" to Schema.Str(description = "The list names, separated by commas, as lists.list."),
+                        "count" to Schema.Num(description = "How many open tasks there are in all."),
+                        "tasks" to Schema.Str(description = "A JSON array: {id, title, due, reminder, list, repeats} per open task, soonest due first."),
+                        "truncated" to Schema.Bool(description = "True when not every open task is in tasks."),
                     ),
                 ),
             ),

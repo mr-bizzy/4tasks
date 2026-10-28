@@ -493,7 +493,7 @@ class TasksDoorLogicTest {
         port.tasks += TaskInfo(7, "Water plants", null, false, null, completed = true, repeats = true)
         val r = ok(call("tasks.complete", """{"id":7}"""))
         assertTrue(port.completedIds.isEmpty())
-        assertEquals("“Water plants” was already done.", r.getString("summary"))
+        assertEquals("Already done: Water plants.", r.getString("summary"))
     }
 
     @Test fun `a repeating task moves to its next date and the answer says so`() {

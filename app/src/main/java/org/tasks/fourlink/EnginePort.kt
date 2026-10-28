@@ -1,6 +1,8 @@
 package org.tasks.fourlink
 
 import android.content.Context
+import com.todoroo.astrid.alarms.AlarmCalculator
+import org.tasks.data.entity.Alarm
 import org.tasks.api.AccountQuery
 import org.tasks.api.ApiQueryEngine
 import org.tasks.api.ApiWriter
@@ -18,9 +20,12 @@ import org.tasks.api.findAccounts
 import org.tasks.api.findLists
 import org.tasks.api.findTasks
 import org.tasks.api.setTaskReminders
+import org.tasks.data.dao.AlarmDao
 import org.tasks.data.dao.CaldavDao
+import org.tasks.data.dao.TaskDao
 import org.tasks.data.getOrCreateLocalAccount
 import org.tasks.extensions.Context.canScheduleExactAlarms
+import org.tasks.preferences.AppPreferences
 import java.util.Locale
 
 /**
@@ -34,6 +39,11 @@ class EnginePort(
     private val writer: ApiWriter,
     private val context: Context,
     private val caldavDao: CaldavDao,
+    private val taskDao: TaskDao,
+    private val alarmDao: AlarmDao,
+    private val alarmCalculator: AlarmCalculator,
+    private val preferences: AppPreferences,
+    private val nowMillis: () -> Long = System::currentTimeMillis,
 ) : TasksPort {
 
     override suspend fun lists(): List<ListInfo> {
@@ -133,6 +143,39 @@ class EnginePort(
     }
 
     override suspend fun markDictatedNote(taskId: Long) = DictatedNotes.mark(context, taskId)
+
+    override suspend fun wasDeleted(id: Long): Boolean = taskDao.fetch(id)?.isDeleted == true
+
+    override suspend fun changeMarks(): List<ChangeMark> {
+        val marks = mutableListOf<ChangeMark>()
+        var offset = 0
+        while (true) {
+            val page = engine.findTasks(TaskQuery(status = "any", limit = PAGE, offset = offset))
+            page.rows.forEach { marks += ChangeMark(it.id, it.modified, it.completed != null && it.completed!! > 0) }
+            offset += page.rows.size
+            if (page.rows.isEmpty() || offset >= page.total) break
+        }
+        return marks
+    }
+
+    /**
+     * Tasks.org's own reckoning (AlarmCalculator, as AlarmService uses it): for each open task, the soonest alarm still to
+     * come; a snooze still to come wins, as it does there. Random reminders are left out: they have no fixed time.
+     */
+    override suspend fun nextReminders(): Map<Long, Long> {
+        val now = nowMillis()
+        val defaultDueTime = preferences.defaultDueTime()
+        val byTask = alarmDao.getActiveAlarms().filter { it.type != Alarm.TYPE_RANDOM }.groupBy { it.task }
+        val tasks = taskDao.fetch(byTask.keys.toList()).associateBy { it.id }
+        val out = HashMap<Long, Long>()
+        byTask.forEach { (taskId, alarms) ->
+            val task = tasks[taskId]?.takeIf { !it.isCompleted && !it.isDeleted } ?: return@forEach
+            val coming = alarms.mapNotNull { alarmCalculator.toAlarmEntry(task, it, defaultDueTime) }.filter { it.timestamp >= now }
+            val at = coming.filter { it.type == Alarm.TYPE_SNOOZE }.maxOfOrNull { it.timestamp } ?: coming.minOfOrNull { it.timestamp }
+            at?.let { out[taskId] = it }
+        }
+        return out
+    }
 
     private fun info(row: TaskRow, lists: List<ListInfo>) = TaskInfo(
         id = row.id,

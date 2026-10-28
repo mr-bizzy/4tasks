@@ -40,6 +40,15 @@ class TasksFourLinkProvider : FourLinkProvider() {
         val queryEngine: ApiQueryEngine
         val writer: ApiWriter
         val caldavDao: CaldavDao
+        val taskDao: org.tasks.data.dao.TaskDao
+        val alarmDao: org.tasks.data.dao.AlarmDao
+        val alarmCalculator: com.todoroo.astrid.alarms.AlarmCalculator
+        val preferences: org.tasks.preferences.Preferences
+    }
+
+    /** One per process, so two copies of one request_id arriving together are answered once (0.1.16). */
+    private val ledger by lazy {
+        RequestLedger(java.io.File(requireNotNull(context).filesDir, RequestLedger.FILE_NAME))
     }
 
     override fun appName() = TasksCatalogue.APP
@@ -50,7 +59,16 @@ class TasksFourLinkProvider : FourLinkProvider() {
         val context = requireNotNull(context)
         awaitApplicationStart()
         val entry = EntryPointAccessors.fromApplication(context.applicationContext, DoorEntryPoint::class.java)
-        val logic = TasksDoorLogic(EnginePort(entry.queryEngine, entry.writer, context, entry.caldavDao), mayNameTasks = mayNameTasks(context, caller))
+        val port = EnginePort(
+            entry.queryEngine, entry.writer, context, entry.caldavDao,
+            entry.taskDao, entry.alarmDao, entry.alarmCalculator, entry.preferences,
+        )
+        val logic = TasksDoorLogic(
+            port,
+            mayNameTasks = mayNameTasks(context, caller),
+            callerPackage = caller.packageName,
+            ledger = ledger,
+        )
         return try {
             // A binder thread: Tasks.org's data layer suspends, and needs no main thread.
             runBlocking(Dispatchers.IO) { withTimeout(TIMEOUT_MS) { logic.perform(function.id, arguments) } }
