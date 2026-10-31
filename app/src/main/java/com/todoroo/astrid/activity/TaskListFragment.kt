@@ -444,7 +444,10 @@ class TaskListFragment : Fragment(), OnRefreshListener, Toolbar.OnMenuItemClickL
         recyclerView.updatePadding(bottom = baseFooterHeight + additionalFabSpace)
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewHolderFactory.dateFormatter = DateFormatter.create(requireContext().is24HourFormat)
+                // Not on Main: if the resources lock were handed to a coroutine waiting here on Main, a stringResource in
+                // composition would block Main behind it and neither could ever run.
+                val is24Hour = requireContext().is24HourFormat
+                viewHolderFactory.dateFormatter = withContext(Dispatchers.Default) { DateFormatter.create(is24Hour) }
                 listViewModel.updateBannerState()
                 launch {
                     listViewModel.banner.collect { banner ->
