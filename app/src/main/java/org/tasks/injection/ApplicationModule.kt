@@ -36,8 +36,6 @@ import org.tasks.billing.BillingClientImpl
 import org.tasks.billing.Inventory
 import org.tasks.broadcast.RefreshBroadcaster
 import org.tasks.caldav.CaldavClientProvider
-import org.tasks.etebase.EtebaseClientProvider
-import org.tasks.etebase.EtebaseSynchronizer
 import org.tasks.caldav.TasksBasicAuth
 import org.tasks.feed.BlogFeedChecker
 import org.tasks.http.HttpClientFactory
@@ -363,40 +361,6 @@ class ApplicationModule {
     )
 
     @Provides
-    fun providesEtebaseSynchronizer(
-        caldavDao: CaldavDao,
-        dirtyDao: DirtyDao,
-        refreshBroadcaster: RefreshBroadcaster,
-        taskDeleter: TaskDeleter,
-        clientProvider: EtebaseClientProvider,
-        iCal: org.tasks.caldav.iCalendar,
-        vtodoCache: VtodoCache,
-        reporting: Reporting,
-    ): EtebaseSynchronizer = EtebaseSynchronizer(
-        caldavDao = caldavDao,
-        dirtyDao = dirtyDao,
-        refreshBroadcaster = refreshBroadcaster,
-        taskDeleter = taskDeleter,
-        clientProvider = clientProvider,
-        iCal = iCal,
-        vtodoCache = vtodoCache,
-        reporting = reporting,
-    )
-
-    @Provides
-    fun providesEtebaseClientProvider(
-        @ApplicationContext context: Context,
-        encryption: KeyStoreEncryption,
-        caldavDao: CaldavDao,
-        httpClientFactory: HttpClientFactory,
-    ): EtebaseClientProvider = EtebaseClientProvider(
-        filesDir = context.filesDir.absolutePath,
-        encryption = encryption,
-        caldavDao = caldavDao,
-        httpClientFactory = httpClientFactory,
-    )
-
-    @Provides
     fun providesOpenTaskDao(
         @ApplicationContext context: Context,
         caldavDao: CaldavDao,
@@ -655,14 +619,12 @@ class ApplicationModule {
         caldavDao: CaldavDao,
         taskDeleter: TaskDeleter,
         caldavClientProvider: CaldavClientProvider,
-        etebaseClientProvider: EtebaseClientProvider,
         microsoftClientProvider: MicrosoftClientProvider,
         invokerFactory: org.tasks.googleapis.InvokerFactory,
     ) = org.tasks.api.ApiListManager(
         caldavDao = caldavDao,
         taskDeleter = taskDeleter,
         caldavClientProvider = caldavClientProvider,
-        etebaseClientProvider = etebaseClientProvider,
         microsoftClientProvider = microsoftClientProvider,
         gtasksInvoker = { invokerFactory.getGtasksInvoker(it.username!!) },
     )

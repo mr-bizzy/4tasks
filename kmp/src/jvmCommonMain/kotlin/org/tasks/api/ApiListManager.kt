@@ -12,7 +12,6 @@ import org.tasks.data.UUIDHelper
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavCalendar
-import org.tasks.etebase.EtebaseClientProvider
 import org.tasks.googleapis.GtasksInvoker
 import org.tasks.service.TaskDeleter
 import org.tasks.sync.microsoft.MicrosoftClientProvider
@@ -22,7 +21,6 @@ class ApiListManager(
     private val caldavDao: CaldavDao,
     private val taskDeleter: TaskDeleter,
     private val caldavClientProvider: CaldavClientProvider,
-    private val etebaseClientProvider: EtebaseClientProvider,
     private val microsoftClientProvider: MicrosoftClientProvider,
     private val gtasksInvoker: suspend (CaldavAccount) -> GtasksInvoker,
 ) {
@@ -36,7 +34,8 @@ class ApiListManager(
     ): CaldavCalendar = withContext(NonCancellable) {
         val calendar = remote("create") {
             when {
-                account.isLocalList -> CaldavCalendar(
+                // An old EteSync account (gone since 0.1.17) has no server: its lists are local ones.
+                account.isLocalList || account.isEtebaseAccount -> CaldavCalendar(
                     uuid = UUIDHelper.newUUID(),
                     account = account.uuid,
                     name = title,
@@ -61,14 +60,6 @@ class ApiListManager(
                     CaldavCalendar(account = account.uuid, color = color, icon = icon)
                         .apply { list.applyTo(this) }
                 }
-                account.isEtebaseAccount -> CaldavCalendar(
-                    uuid = UUIDHelper.newUUID(),
-                    account = account.uuid,
-                    url = etebaseClientProvider.forAccount(account).makeCollection(title, color),
-                    name = title,
-                    color = color,
-                    icon = icon,
-                )
                 else -> CaldavCalendar(
                     uuid = UUIDHelper.newUUID(),
                     account = account.uuid,
@@ -96,7 +87,7 @@ class ApiListManager(
         if (renamed || recolored || reiconed) {
             remote("update") {
                 when {
-                    account.isLocalList -> Unit
+                    account.isLocalList || account.isEtebaseAccount -> Unit
                     account.isGoogleTasks ->
                         if (renamed) {
                             gtasksInvoker(account).renameGtaskList(calendar.uuid, title)
@@ -106,11 +97,6 @@ class ApiListManager(
                             microsoftClientProvider
                                 .getService(account)
                                 .updateList(calendar.uuid!!, TaskLists.TaskList(displayName = title))
-                        }
-                    account.isEtebaseAccount ->
-                        if (renamed || recolored) {
-                            etebaseClientProvider.forAccount(account)
-                                .updateCollection(calendar, title, color)
                         }
                     else ->
                         caldavClientProvider.forAccount(account, calendar.url!!)
@@ -126,12 +112,10 @@ class ApiListManager(
     suspend fun delete(account: CaldavAccount, calendar: CaldavCalendar) = withContext(NonCancellable) {
         remote("delete") {
             when {
-                account.isLocalList -> Unit
+                account.isLocalList || account.isEtebaseAccount -> Unit
                 account.isGoogleTasks -> gtasksInvoker(account).deleteGtaskList(calendar.uuid)
                 account.isMicrosoft ->
                     microsoftClientProvider.getService(account).deleteList(calendar.uuid!!)
-                account.isEtebaseAccount ->
-                    etebaseClientProvider.forAccount(account).deleteCollection(calendar)
                 else ->
                     caldavClientProvider.forAccount(account, calendar.url!!).deleteCollection()
             }

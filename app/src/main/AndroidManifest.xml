@@ -389,10 +389,6 @@
       android:theme="@style/Tasks"/>
 
     <activity
-      android:name=".etebase.EtebaseSignInActivity"
-      android:theme="@style/Tasks" />
-
-    <activity
       android:name=".caldav.CaldavCalendarSettingsActivity"
       android:theme="@style/Tasks"/>
 
@@ -492,10 +488,6 @@
       android:theme="@style/TranslucentDialog"/>
 
     <activity android:name=".tags.TagPickerActivity" />
-
-    <activity
-      android:name=".etebase.EtebaseCalendarSettingsActivity"
-      android:theme="@style/Tasks" />
 
     <activity
       android:name=".preferences.MainPreferences"

@@ -66,13 +66,10 @@ import tasks.kmp.generated.resources.davx5
 import tasks.kmp.generated.resources.davx5_selection_description
 import tasks.kmp.generated.resources.decsync
 import tasks.kmp.generated.resources.decsync_selection_description
-import tasks.kmp.generated.resources.etesync
-import tasks.kmp.generated.resources.etesync_selection_description
 import tasks.kmp.generated.resources.google_tasks_selection_description
 import tasks.kmp.generated.resources.gtasks_GPr_header
 import tasks.kmp.generated.resources.ic_davx5_icon_green_bg
 import tasks.kmp.generated.resources.ic_decsync
-import tasks.kmp.generated.resources.ic_etesync
 import tasks.kmp.generated.resources.ic_google
 import tasks.kmp.generated.resources.ic_microsoft_tasks
 import tasks.kmp.generated.resources.ic_round_icon
@@ -105,7 +102,6 @@ fun proAccountTypes(configuration: PlatformConfiguration): List<Platform> {
         if (configuration.supportsGoogleTasks && isDesktop) add(Platform.GOOGLE_TASKS)
         if (configuration.supportsOpenTasks) add(Platform.DAVX5)
         if (configuration.supportsCaldav) add(Platform.CALDAV)
-        if (configuration.supportsEteSync) add(Platform.ETEBASE)
         if (configuration.supportsOpenTasks) add(Platform.DECSYNC_CC)
     }
 }
@@ -308,12 +304,6 @@ fun AddAccountScreen(
                                         tint = MaterialTheme.colorScheme.onSurface.copy(alpha = .8f),
                                         description = stringResource(Res.string.caldav_selection_description),
                                         onClick = { signIn(Platform.CALDAV) },
-                                    )
-                                    Platform.ETEBASE -> AccountTypeRow(
-                                        title = stringResource(Res.string.etesync),
-                                        icon = Res.drawable.ic_etesync,
-                                        description = stringResource(Res.string.etesync_selection_description),
-                                        onClick = { signIn(Platform.ETEBASE) },
                                     )
                                     Platform.DECSYNC_CC -> AccountTypeRow(
                                         title = stringResource(Res.string.decsync),

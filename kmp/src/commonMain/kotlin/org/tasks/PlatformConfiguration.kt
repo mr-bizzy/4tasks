@@ -11,7 +11,6 @@ data class PlatformConfiguration(
     val supportsGoogleTasks: Boolean = false,
     val supportsMicrosoft: Boolean = false,
     val supportsOpenTasks: Boolean = false,
-    val supportsEteSync: Boolean = false,
 
     // Platform features
     val supportsBackupImport: Boolean = false,

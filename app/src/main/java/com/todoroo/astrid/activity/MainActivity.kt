@@ -92,7 +92,6 @@ import org.tasks.data.entity.Task
 import org.tasks.data.listSettingsClass
 import org.tasks.data.newLocalAccount
 import org.tasks.dialogs.NewFilterDialog
-import org.tasks.etebase.EtebaseSignInActivity
 import org.tasks.extensions.Context.nightMode
 import org.tasks.extensions.Context.openUri
 import org.tasks.extensions.Context.toast
@@ -316,11 +315,6 @@ class MainActivity : AppCompatActivity() {
                                         Intent(this@MainActivity, CaldavSignInActivity::class.java)
                                     )
 
-                                Platform.ETEBASE ->
-                                    syncLauncher.launch(
-                                        Intent(this@MainActivity, EtebaseSignInActivity::class.java)
-                                    )
-
                                 else -> throw IllegalArgumentException()
                             }
                         }
@@ -342,8 +336,7 @@ class MainActivity : AppCompatActivity() {
                                     pendingPlatform = null
                                     val platform = Platform.valueOf(name)
                                     when (platform) {
-                                        Platform.CALDAV,
-                                        Platform.ETEBASE -> doSignIn(platform)
+                                        Platform.CALDAV -> doSignIn(platform)
                                         Platform.DAVX5, Platform.DECSYNC_CC -> doOpenUrl(platform)
                                         else -> {}
                                     }
@@ -371,7 +364,7 @@ class MainActivity : AppCompatActivity() {
                                             )
                                         }
                                     }
-                                    Platform.CALDAV, Platform.ETEBASE -> {
+                                    Platform.CALDAV -> {
                                         if (inventory.hasPro) {
                                             doSignIn(platform)
                                         } else {

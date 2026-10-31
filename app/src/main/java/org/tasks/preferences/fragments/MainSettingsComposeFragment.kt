@@ -51,7 +51,6 @@ import org.tasks.preferences.PreferencesViewModel
 import org.tasks.preferences.ProCardViewModel
 import org.tasks.preferences.fragments.GoogleTasksAccount.Companion.newGoogleTasksAccountPreference
 import org.tasks.preferences.fragments.CaldavAccountFragment.Companion.newCaldavAccountFragment
-import org.tasks.preferences.fragments.EtebaseAccountFragment.Companion.newEtebaseAccountFragment
 import org.tasks.preferences.fragments.LocalAccount.Companion.newLocalAccountPreference
 import org.tasks.preferences.fragments.OpenTaskAccountFragment.Companion.newOpenTaskAccountFragment
 import org.tasks.preferences.fragments.MicrosoftAccount.Companion.newMicrosoftAccountPreference
@@ -271,9 +270,10 @@ class MainSettingsComposeFragment : Fragment(), CapsOwnPageWidth {
                     getString(R.string.caldav)
                 )
             }
+            // An old EteSync account (gone since 0.1.17) has no server: the local screen can rename it or delete it.
             account.isEtebaseAccount -> {
                 activity.startPreference(
-                    newEtebaseAccountFragment(account),
+                    newLocalAccountPreference(account),
                     getString(R.string.etesync)
                 )
             }
