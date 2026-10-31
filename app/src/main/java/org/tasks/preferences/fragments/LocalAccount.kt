@@ -87,7 +87,8 @@ class LocalAccount : Fragment() {
                 },
                 onNavigateBack = navigateBack,
                 onDiscardDialogChange = { showDiscardDialog = it },
-                showMigrate = !initialAccount.isEtebaseAccount,
+                // The row leads to PurchaseActivity, which no manifest declares: tapping it stopped the app.
+                showMigrate = false,
             )
         }
     }
