@@ -533,3 +533,17 @@ Short entries, newest last. The reasoning before the first build is in PHASE0-PL
   anything long. `title` stays unmarked. The substitution happens in the caller, so the door never sees a placeholder.
 - **Tests:** only `notes` is marked; the marker survives the catalogue's JSON (how 4Dictate reads it); a placeholder in notes is filled and validates at length; a placeholder in the title is refused.
   Not tried end to end with 4Dictate's side (built in parallel by the 4Dictate session).
+
+## 2026-10-31 — EteSync out, for Production (0.1.17-beta, 151238)
+
+- **Why:** Play refuses 0.1.15 for Production: `libetebase_android.so` is 4 KB aligned and `com.etebase:client` 2.3.2 is the
+  newest there is. Branched from 0.1.15, not main: 0.1.16 (the 4Link framework for 4Watch) is not in this release.
+- **Change:** the library, the desktop jar in `libs/`, the client, synchronizer, sign-in and settings screens, view models,
+  `Platform.ETEBASE`, `supportsEteSync`, the manifest entries, the strings named for it and the licence entries are gone.
+- **An old account:** no schema change. `TYPE_ETEBASE`, `isEtebaseAccount`, the name "EteSync" and the kmp icon stay, because a
+  database can still hold such a row and the task list reads the title with `!!`. Sync skips the row. Its tasks stay under the old
+  list and work as local tasks. Its lists open the local list settings; its row in Settings opens the local account screen without
+  the Migrate row (rename, delete). A stored `cda_error` stays, so the drawer can keep its red sync icon until the account is deleted.
+- **Left alone:** OpenTasks' `OpenTaskProvider.ETESYNC` (no library; OpenTasks is off; an old OpenTasks row needs it), the API's
+  `TYPE_ETEBASE` name, and the word EteSync in `advanced_tools_description` and `pricing_nyp_feature_2` (upgrade screens, not
+  reachable because `hasPro` is always true here).
