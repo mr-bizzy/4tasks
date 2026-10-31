@@ -352,7 +352,7 @@ class SyncAdaptersTest {
     }
 
     @Test
-    fun etebaseSyncsOnAlarmChange() = runTest(testDispatcher) {
+    fun anOldEteSyncRowIsStillMarkedDirtyOnAlarmChange() = runTest(testDispatcher) {
         val task = createTask()
         setupAccount(task.id, TYPE_ETEBASE)
         task.putTransitory(SYNC_ALARMS, true)

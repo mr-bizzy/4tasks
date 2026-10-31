@@ -23,8 +23,8 @@ the Tasks.org project. Tasks.org's own README is kept in
 [docs/TASKS_ORG_README.md](docs/TASKS_ORG_README.md); its copyright notices are kept in the source.
 
 What changed: its own name, icon and application id (`uk.mr_biz.fourtasks`); no Google, Firebase,
-Play Billing, analytics or crash reporting; no location or calendar permission; Tasks.org's own account, Etebase, OpenTasks, Google Tasks
-and Microsoft sync switched off (CalDAV sync stays on; Microsoft and Google come later); Tasks.org's
+Play Billing, analytics or crash reporting; no location or calendar permission; Tasks.org's own account, OpenTasks, Google Tasks
+and Microsoft sync switched off (CalDAV sync stays on; Microsoft and Google come later); Etebase removed; Tasks.org's
 exported content providers and AppFunctions service removed; Android auto-backup off; a 4Link
 door; and a different About screen. The Kotlin package stays `org.tasks`, so upstream changes
 merge cleanly. The decisions are in [docs/PHASE0-PLAN.md](docs/PHASE0-PLAN.md) and
