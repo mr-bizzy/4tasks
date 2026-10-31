@@ -238,7 +238,6 @@ dependencies {
     implementation(libs.google.api.drive)
     implementation(libs.google.oauth2)
     implementation(libs.androidx.work)
-    implementation(libs.etebase)
     implementation(libs.colorpicker)
     implementation(libs.appauth)
     implementation(libs.osmdroid)

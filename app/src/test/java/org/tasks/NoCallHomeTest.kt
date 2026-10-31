@@ -57,8 +57,6 @@ class NoCallHomeTest {
         "kmp/src/jvmCommonMain/kotlin/org/tasks/auth/TasksOAuthClient.kt" to "Tasks.org account: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/billing/DesktopLinkServiceImpl.kt" to "Tasks.org desktop link: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/sse/SseClient.kt" to "Tasks.org account: off",
-        "kmp/src/jvmCommonMain/kotlin/org/tasks/etebase/EtebaseClientProvider.kt" to "Etebase: off",
-        "kmp/src/jvmCommonMain/kotlin/org/tasks/etebase/OkHttpBridge.kt" to "Etebase: off",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/googleapis/ProxyAuthProvider.kt" to "Tasks.org's Google proxy, desktop target only: not in the Android app",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/http/MicrosoftGraphClient.kt" to "Microsoft To Do sync: Graph, after the user signs in",
         "kmp/src/jvmCommonMain/kotlin/org/tasks/sync/microsoft/MicrosoftService.kt" to "Microsoft To Do sync: Graph, after the user signs in",

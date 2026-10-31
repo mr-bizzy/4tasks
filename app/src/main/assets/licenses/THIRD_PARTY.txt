@@ -205,7 +205,6 @@ com.atlassian.commonmark:commonmark:0.13.0  -  BSD 2-Clause License
 com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.13.0  -  BSD 2-Clause License
 com.atlassian.commonmark:commonmark-ext-gfm-tables:0.13.0  -  BSD 2-Clause License
 com.caverock:androidsvg-aar:1.4  -  The Apache Software License, Version 2.0
-com.etebase:client:2.3.2  -  LGPL-3.0-only
 com.github.ajalt.colormath:colormath:3.6.1  -  The MIT License
 com.github.ajalt.colormath:colormath-jvm:3.6.1  -  The MIT License
 com.github.bitfireAT:dav4jvm:af443c2f  -  MPL-2.0 (as stated by the project)
@@ -407,4 +406,3 @@ org.mnode.ical4j:ical4j:3.2.19  -  BSD-3-Clause
 org.osmdroid:osmdroid-android:6.1.20  -  The Apache Software License, Version 2.0
 org.slf4j:slf4j-api:2.0.18  -  MIT
 org.slf4j:slf4j-jdk14:2.0.17  -  MIT
-libs/client-jvm-2.3.2.jar (Etebase client, bundled in the Tasks.org source)  -  as stated by the project: BSD-3-Clause

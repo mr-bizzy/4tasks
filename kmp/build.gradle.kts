@@ -48,14 +48,12 @@ kotlin {
                 implementation(libs.dmfs.rfc5545.datetime)
                 implementation(libs.dmfs.recur)
                 implementation(libs.dmfs.jems)
-                api(libs.etebase)
             }
         }
         jvmMain {
             dependsOn(jvmCommonMain)
             dependencies {
                 implementation(libs.xpp3)
-                implementation(files("../libs/client-jvm-2.3.2.jar"))
             }
         }
         val jvmTest by getting {
@@ -91,7 +89,6 @@ kotlin {
             implementation(libs.ktor.content.negotiation)
             implementation(libs.ktor.serialization)
             compileOnly(libs.xpp3)
-            compileOnly(files("../libs/client-jvm-2.3.2.jar"))
         }
         commonMain.dependencies {
             api(projects.cert4android)
