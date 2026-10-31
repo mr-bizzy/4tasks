@@ -58,6 +58,7 @@ fun LocalAccountScreen(
     onMigrateConfirm: () -> Unit,
     onNavigateBack: () -> Unit,
     onDiscardDialogChange: (Boolean) -> Unit,
+    showMigrate: Boolean = true,
 ) {
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
     var showMigrateDialog by rememberSaveable { mutableStateOf(false) }
@@ -104,25 +105,27 @@ fun LocalAccountScreen(
 
         Spacer(modifier = Modifier.height(SettingsContentPadding))
 
-        Column(
-            modifier = Modifier.padding(horizontal = SettingsContentPadding),
-        ) {
-            SettingsItemCard {
-                PreferenceRow(
-                    title = stringResource(Res.string.migrate_to_cloud),
-                    icon = Icons.Outlined.CloudUpload,
-                    onClick = {
-                        scope.launch {
-                            if (onCanMigrate()) {
-                                showMigrateDialog = true
+        if (showMigrate) {
+            Column(
+                modifier = Modifier.padding(horizontal = SettingsContentPadding),
+            ) {
+                SettingsItemCard {
+                    PreferenceRow(
+                        title = stringResource(Res.string.migrate_to_cloud),
+                        icon = Icons.Outlined.CloudUpload,
+                        onClick = {
+                            scope.launch {
+                                if (onCanMigrate()) {
+                                    showMigrateDialog = true
+                                }
                             }
-                        }
-                    },
-                )
+                        },
+                    )
+                }
             }
-        }
 
-        Spacer(modifier = Modifier.height(SettingsContentPadding))
+            Spacer(modifier = Modifier.height(SettingsContentPadding))
+        }
 
         Column(
             modifier = Modifier.padding(horizontal = SettingsContentPadding),

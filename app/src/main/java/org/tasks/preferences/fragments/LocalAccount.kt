@@ -87,6 +87,7 @@ class LocalAccount : Fragment() {
                 },
                 onNavigateBack = navigateBack,
                 onDiscardDialogChange = { showDiscardDialog = it },
+                showMigrate = !initialAccount.isEtebaseAccount,
             )
         }
     }
