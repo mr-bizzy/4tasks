@@ -16,6 +16,7 @@ import org.tasks.data.dao.TaskDao
 import org.tasks.data.db.Database
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
+import org.tasks.data.entity.CaldavAccount.Companion.TYPE_ETEBASE
 import org.tasks.data.entity.CaldavCalendar
 import org.tasks.data.entity.CaldavTask
 import org.tasks.data.entity.Task
@@ -110,6 +111,21 @@ class SyncAdaptersDebounceTest {
         quiet()
 
         adapters.flushPending()
+        delay(DEBOUNCE * 3)
+
+        assertEquals(emptyList<SyncSource>(), synced)
+    }
+
+    /** EteSync is gone since 0.1.17. A row left from before stays, and on its own it never starts a sync. */
+    @Test
+    fun anOldEteSyncAccountOnItsOwnStartsNoSync() = runBlocking {
+        setupAccount(TYPE_ETEBASE)
+        val adapters = syncAdapters()
+        quiet()
+
+        dirtyTask()
+        delay(DEBOUNCE * 3)
+        adapters.sync(SyncSource.USER_INITIATED)
         delay(DEBOUNCE * 3)
 
         assertEquals(emptyList<SyncSource>(), synced)
@@ -228,8 +244,8 @@ class SyncAdaptersDebounceTest {
         delay(DEBOUNCE * 5)
     }
 
-    private suspend fun setupAccount() {
-        caldavDao.insert(CaldavAccount(accountType = TYPE_CALDAV, uuid = ACCOUNT))
+    private suspend fun setupAccount(accountType: Int = TYPE_CALDAV) {
+        caldavDao.insert(CaldavAccount(accountType = accountType, uuid = ACCOUNT))
         caldavDao.insert(CaldavCalendar(account = ACCOUNT, uuid = CALENDAR))
     }
 

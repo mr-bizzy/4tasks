@@ -29,7 +29,6 @@ import org.tasks.data.OpenTaskDao
 import org.tasks.data.dao.CaldavDao
 import org.tasks.data.entity.CaldavAccount
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_CALDAV
-import org.tasks.data.entity.CaldavAccount.Companion.TYPE_ETEBASE
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_GOOGLE_TASKS
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_MICROSOFT
 import org.tasks.data.entity.CaldavAccount.Companion.TYPE_TASKS
@@ -126,7 +125,6 @@ class WorkManagerImpl(
                 TYPE_GOOGLE_TASKS,
                 TYPE_CALDAV,
                 TYPE_TASKS,
-                TYPE_ETEBASE,
                 TYPE_MICROSOFT
             ).isNotEmpty()
             workManager.cancelUniqueWork(TAG_BACKGROUND_SYNC)
