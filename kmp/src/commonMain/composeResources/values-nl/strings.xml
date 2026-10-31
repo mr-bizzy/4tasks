@@ -55,7 +55,6 @@
     <string name="name_your_price">Bepaal je eigen prijs</string>
     <string name="caldav_selection_description">Synchroniseren op eigen open source CalDAV-server of bij derden</string>
     <string name="davx5_selection_description">Synchroniseren met de DAVx⁵-app</string>
-    <string name="etesync_selection_description">End-to-end versleuteld synchroniseren met EteSync</string>
     <string name="decsync_selection_description">Synchroniseren op de interne opslag</string>
     <string name="sign_in_with_google">Log in met Google</string>
     <string name="completed">Voltooid</string>
@@ -157,7 +156,6 @@
     <string name="url_invalid_scheme">Moet beginnen met http(s)://</string>
     <string name="url_required">URL vereist</string>
     <string name="username_required">Gebruikersnaam vereist</string>
-    <string name="etesync_account_description">Voorwaarde is een account op www.EteSync.com of een eigen server</string>
     <string name="show_advanced_settings">Geavanceerde instellingen tonen</string>
     <string name="app_settings">App-instellingen</string>
     <string name="whats_new">Wat is nieuw</string>

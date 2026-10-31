@@ -65,7 +65,6 @@
     <string name="name_your_price">Odredi tvoju cijenu</string>
     <string name="caldav_selection_description">Sinkronizacija temeljena na otvorenim internetskim standardima</string>
     <string name="davx5_selection_description">Sinkroniziraj tvoje zadatke s DAVx⁵</string>
-    <string name="etesync_selection_description">Obostrana šifrirana sinkronizacija</string>
     <string name="decsync_selection_description">Sinkronizacija pojedinačnih datoteka</string>
     <string name="sign_in_with_google">Google prijava</string>
     <string name="completed">Obavljeno</string>
@@ -172,7 +171,6 @@
     <string name="url_invalid_scheme">Mora početi s http(s)://</string>
     <string name="url_required">URL-adresa je obavezna</string>
     <string name="username_required">Korisničko ime je obavezno</string>
-    <string name="etesync_account_description">Zahtijeva račun na EteSync.com ili vlastiti poslužitelj</string>
     <string name="show_advanced_settings">Pokaži napredne postavke</string>
     <string name="app_settings">Postavke aplikacije</string>
     <string name="whats_new">Nedavne promjene</string>

@@ -41,7 +41,6 @@
     <string name="name_your_price">ตั้งชื่อราคาของคุณ</string>
     <string name="caldav_selection_description">การซิงโครไนซ์ตามมาตรฐานอินเทอร์เน็ตแบบเปิด</string>
     <string name="davx5_selection_description">ซิงโครไนซ์งานของคุณกับแอป davx⁵ของคุณ</string>
-    <string name="etesync_selection_description">การทําข้อมูลให้ตรงกันที่เข้ารหัสตั้งแต่ต้นจนจบ</string>
     <string name="decsync_selection_description">การซิงโครไนส์ตามไฟล์</string>
     <string name="sign_in_with_google">ลงชื่อเข้าใช้ด้วย Google</string>
     <string name="filter_overdue">เกิน</string>
@@ -115,7 +114,6 @@
     <string name="url_invalid_scheme">ต้องเริ่มต้นด้วย http(s)://</string>
     <string name="url_required">URL ที่ต้องการ</string>
     <string name="username_required">ต้องการชื่อผู้ใช้</string>
-    <string name="etesync_account_description">ต้องการบัญชีผู้ใช้ที่มี EteSync.com หรือเซิร์ฟเวอร์ที่โฮสต์ด้วยตนเอง</string>
     <string name="show_advanced_settings">แสดงการตั้งค่าขั้นสูง</string>
     <string name="whats_new">มีอะไรใหม่</string>
     <string name="version_string">เวอร์ชั่น %1$s</string>

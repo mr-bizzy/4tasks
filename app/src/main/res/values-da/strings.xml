@@ -111,7 +111,6 @@
     <string name="preferences_advanced">Avanceret</string>
     <string name="show_advanced_settings">Vis avancerede indstillinger</string>
     <string name="davx5_selection_description">Synkroniser dine opgaver med DAVx⁵-appen</string>
-    <string name="etesync_selection_description">End-to-end-krypteret synkronisering</string>
     <string name="caldav_selection_description">Synkronisering baseret på åbne internetstandarder</string>
     <string name="choose_synchronization_service">Vælg tjeneste</string>
     <string name="collapse_subtasks">Skjul underopgaver</string>

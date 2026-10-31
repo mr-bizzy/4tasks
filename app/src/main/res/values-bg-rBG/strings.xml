@@ -293,7 +293,6 @@
     <string name="choose_synchronization_service">Избор на услуга</string>
     <string name="whats_new">Какво е новото</string>
     <string name="no_app_found">Липсва приложение, което да обработи тази заявка</string>
-    <string name="etesync_selection_description">Синхронизация, шифрована от край до край</string>
     <string name="back">Назад</string>
     <string name="now">Сега</string>
     <string name="filter_criteria_unstarted">Незапочнати</string>

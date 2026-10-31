@@ -50,7 +50,6 @@
     <string name="name_your_price">Καθορίστε την τιμή σας</string>
     <string name="caldav_selection_description">Συγχρονισμός βασισμένος σε ανοιχτά πρότυπα διαδικτύου</string>
     <string name="davx5_selection_description">Συγχρονίστε τις εργασίες σας με την εφαρμογή DAVx⁵</string>
-    <string name="etesync_selection_description">Κρυπτογραφημένος συγχρονισμός από άκρο σε άκρο</string>
     <string name="decsync_selection_description">Συγχρονισμός βάσει αρχείων</string>
     <string name="sign_in_with_google">Συνδεθείτε μέσω Google</string>
     <string name="completed">Ολοκληρώθηκε</string>
@@ -143,7 +142,6 @@
     <string name="url_invalid_scheme">Πρέπει να αρχίζει με http(s)://</string>
     <string name="url_required">Απαιτείται διεύθυνση URL</string>
     <string name="username_required">Απαιτείται όνομα χρήστη</string>
-    <string name="etesync_account_description">Απαιτείται λογαριασμός στο EteSync.com ή σε αυτο-φιλοξενούμενο διακομιστή</string>
     <string name="show_advanced_settings">Εμφάνιση σύνθετων ρυθμίσεων</string>
     <string name="app_settings">Ρυθμίσεις Εφαρμογής</string>
     <string name="whats_new">Τι καινούργιο υπάρχει</string>

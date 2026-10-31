@@ -65,7 +65,6 @@
     <string name="name_your_price">自行設定價格</string>
     <string name="caldav_selection_description">基於開放網際網路標準的同步</string>
     <string name="davx5_selection_description">使用 DAVx⁵ 應用程式同步您的任務</string>
-    <string name="etesync_selection_description">端對端加密同步</string>
     <string name="decsync_selection_description">基於檔案的同步</string>
     <string name="sign_in_with_google">使用 Google 登入</string>
     <string name="completed">已完成</string>
@@ -168,7 +167,6 @@
     <string name="url_invalid_scheme">必須由 http(s):// 開頭</string>
     <string name="url_required">需要URL</string>
     <string name="username_required">需要使用者名稱</string>
-    <string name="etesync_account_description">需要 EteSync.com 帳戶或自架伺服器</string>
     <string name="show_advanced_settings">顯示進階設定</string>
     <string name="app_settings">應用程式設定</string>
     <string name="whats_new">有什麼新鮮事</string>

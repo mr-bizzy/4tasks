@@ -76,7 +76,6 @@
     <string name="cost_free">Free</string>
     <string name="davx5_selection_description">Synchronise your tasks with the DAVx⁵ app</string>
     <string name="decsync_selection_description">File-based synchronisation</string>
-    <string name="etesync_selection_description">End-to-end encrypted synchronisation</string>
     <string name="google_tasks_selection_description">Syncs titles, notes, due dates, completion and subtasks with your Google account. Google Tasks cannot hold reminders, repeats, times of day, priority or tags, so those stay on this phone</string>
     <string name="sync_interval_title">Sync interval</string>
     <string name="sync_interval_summary">How often 4Tasks checks your accounts for changes made on other devices when it isn't open</string>
@@ -277,7 +276,6 @@
         <item quantity="one">%1$d list</item>
         <item quantity="other">%1$d lists</item>
     </plurals>
-    <string name="etesync_account_description">Requires an account with EteSync.com or a self-hosted server</string>
     <string name="show_advanced_settings">Show advanced settings</string>
     <string name="sync_metadata">Store tag metadata here</string>
     <string name="sync_metadata_summary">Store tag names, colours, icons and display order on this account so they sync across your devices</string>

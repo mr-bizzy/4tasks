@@ -369,7 +369,6 @@
     <string name="snackbar_tasks_completed">%d ülesannet on lõpetatud</string>
     <string name="background_location_permission_required">Selleks, et kasutada asukohapõhiseid meeldetuletusi ka siis, kui rakendus on suletud või pole kasutusel, kogub Tasks asukohaandmeid.</string>
     <string name="location_permission_required_location">Sinu praeguse asukoha tuvastamiseks on vaja õiguseid asukohateenuste kasutamiseks</string>
-    <string name="etesync_selection_description">Sünkroniseerimine, mis kasutab läbivat krüptimist</string>
     <string name="caldav_selection_description">Sünkroniseerimine, mis põhineb avatud ja vabadel internetistandarditel</string>
     <string name="davx5_selection_description">Ülesannete sünkroniseerimise võimalus DAVx⁵ rakendusega</string>
     <string name="filter_any_due_date">Igal tähtajal</string>

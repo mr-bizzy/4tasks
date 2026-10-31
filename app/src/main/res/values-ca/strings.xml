@@ -291,7 +291,6 @@
     <string name="banner_app_updated_description">Les tasques s\'han actualitzat a %s. Voleu veure les notes de la versió?</string>
     <string name="choose_synchronization_service">Seleccioneu una plataforma</string>
     <string name="caldav_selection_description">Sincronització basada en estàndards oberts d\'Internet</string>
-    <string name="etesync_selection_description">Sincronització xifrada d\'extrem a extrem</string>
     <string name="decsync_selection_description">Sincronització per fitxers</string>
     <string name="davx5_selection_description">Sincronitza les teves tasques amb l\'aplicació DAVx5</string>
     <string name="show_advanced_settings">Mostreu la configuració avançada</string>

@@ -50,7 +50,6 @@
     <string name="name_your_price">Spune prețul</string>
     <string name="caldav_selection_description">Sincronizare bazată pe standarde deschise de internet</string>
     <string name="davx5_selection_description">Sincronizează-ți sarcinile cu aplicația DAVx⁵</string>
-    <string name="etesync_selection_description">Sincronizare criptată end-to-end</string>
     <string name="decsync_selection_description">Sincronizare pe bază de fișiere</string>
     <string name="sign_in_with_google">Conectează-te cu Google</string>
     <string name="completed">Finalizat</string>
@@ -145,7 +144,6 @@
     <string name="url_invalid_scheme">Trebuie să înceapă cu http(s)://</string>
     <string name="url_required">URL necesar</string>
     <string name="username_required">Nume de utilizator necesar</string>
-    <string name="etesync_account_description">Necesită un cont cu EteSync.com sau un server auto-găzduit</string>
     <string name="show_advanced_settings">Afișează setările avansate</string>
     <string name="app_settings">Setările aplicației</string>
     <string name="whats_new">Ce este nou</string>

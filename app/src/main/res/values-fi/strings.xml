@@ -205,7 +205,6 @@
     <string name="back">Takaisin</string>
     <string name="color_wheel">Väriympyrä</string>
     <string name="documentation">Dokumentaatio</string>
-    <string name="etesync_selection_description">End-to-end-salattu synkronointi</string>
     <string name="caldav_selection_description">Avoimiin verkkostandardeihin pohjautuva synkronointi</string>
     <string name="choose_synchronization_service">Valitse alusta</string>
     <string name="collapse_subtasks">Pienennä alitehtävät</string>

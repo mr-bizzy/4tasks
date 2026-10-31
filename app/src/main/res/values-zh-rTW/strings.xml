@@ -336,7 +336,6 @@
     <string name="caldav_selection_description">基於開放網際網路標準的同步</string>
     <string name="davx5_selection_description">使用 DAVx⁵ 應用程式同步您的任務</string>
     <string name="show_advanced_settings">顯示進階設定</string>
-    <string name="etesync_selection_description">端對端加密同步</string>
     <string name="upgrade_blurb_1">嗨！我的名字是 Alex。我是 Tasks 背後的獨立開發者</string>
     <string name="calendar_event_created">建立行事曆事件於 %s</string>
     <string name="widget_id">小工具 ID：%d</string>

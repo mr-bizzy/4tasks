@@ -318,7 +318,6 @@
     <string name="upgrade_blurb_1">Hej! Jag heter Alex. Jag är den oberoende utvecklaren bakom Tasks</string>
     <string name="davx5_selection_description">Synkronisera dina uppgifter med DAVx⁵-appen</string>
     <string name="decsync_selection_description">Filbaserad synkronisering</string>
-    <string name="etesync_selection_description">Ände-till-ände-krypterad synkronisering</string>
     <string name="caldav_selection_description">Synkronisering baserad på öppna internetstandarder</string>
     <string name="choose_synchronization_service">Välj synkroniseringstjänst</string>
     <string name="collapse_subtasks">Fäll in deluppgifter</string>

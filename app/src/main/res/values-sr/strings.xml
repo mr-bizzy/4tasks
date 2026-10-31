@@ -231,7 +231,6 @@
     <string name="invalid_backup_file">Невалидна датотека резерве</string>
     <string name="expand_subtasks">Прошири подзадатке</string>
     <string name="choose_synchronization_service">Одабери платформу</string>
-    <string name="etesync_selection_description">End-to-end енкриптована синхронизација</string>
     <string name="decsync_selection_description">Синхронизација базирана на датотеци</string>
     <string name="davx5_selection_description">Синхронизуј своје задатке са DAVx⁵ апликацијом</string>
     <string name="show_advanced_settings">Прикажи напредна подешавања</string>

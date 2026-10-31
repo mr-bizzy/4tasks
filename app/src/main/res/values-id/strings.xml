@@ -195,7 +195,6 @@
     <string name="expand_subtasks">Lebarkan subtugas</string>
     <string name="choose_synchronization_service">Pilih sebuah platform</string>
     <string name="caldav_selection_description">Sinkronisasi yang berdasarkan pada standar internet terbuka</string>
-    <string name="etesync_selection_description">Enkripsi klien-ke-klien bersumber terbuka</string>
     <string name="theme_wallpaper">Latar</string>
     <string name="show_advanced_settings">Tampilkan pengaturan lanjutan</string>
     <string name="help_and_feedback">Bantuan &amp; umpanbalik</string>

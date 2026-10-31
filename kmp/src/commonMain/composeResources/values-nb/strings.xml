@@ -43,7 +43,6 @@
     <string name="name_your_price">Betal det du vil</string>
     <string name="caldav_selection_description">Synkronisering basert på åpne internettstandarder</string>
     <string name="davx5_selection_description">Synkroniser dine gjøremål med DAVx⁵-programmet</string>
-    <string name="etesync_selection_description">Ende-til-ende-kryptert synkronisering</string>
     <string name="decsync_selection_description">Filbasert synkronisering</string>
     <string name="sign_in_with_google">Logg inn med Google</string>
     <string name="completed">Fullført</string>
@@ -133,7 +132,6 @@
     <string name="url_invalid_scheme">Må begynne med http(s)://</string>
     <string name="url_required">Nettadresse kreves</string>
     <string name="username_required">Brukernavn kreves</string>
-    <string name="etesync_account_description">Krever en konto hos EteSync.com eller selvdrevet tjener</string>
     <string name="show_advanced_settings">Vis avanserte innstillinger</string>
     <string name="whats_new">Hva er nytt</string>
     <string name="version_string">Versjon %1$s</string>

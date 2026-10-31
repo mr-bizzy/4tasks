@@ -276,7 +276,6 @@
     <string name="SSD_sort_my_order">הסדר שלי</string>
     <string name="color_wheel">גלגל צבעים</string>
     <string name="show_advanced_settings">הצגת הגדרות מתקדמות</string>
-    <string name="etesync_selection_description">סנכרון מוצפן מקצה־לקצה</string>
     <string name="caldav_selection_description">סנכרון מבוסס על תקני אינטרנט פתוחים</string>
     <string name="choose_synchronization_service">בחירת פלטפורמה</string>
     <string name="theme_system_default">ברירת מחדל של המערכת</string>

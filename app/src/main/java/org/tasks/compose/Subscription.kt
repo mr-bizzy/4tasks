@@ -136,12 +136,6 @@ object PurchaseText {
             R.string.caldav_selection_description
         ),
         CarouselItem(
-            R.string.etesync,
-            R.drawable.ic_etesync,
-            R.string.etesync_selection_description,
-            iconStyle = IconStyle.ORIGINAL
-        ),
-        CarouselItem(
             R.string.decsync,
             R.drawable.ic_decsync,
             R.string.decsync_selection_description,

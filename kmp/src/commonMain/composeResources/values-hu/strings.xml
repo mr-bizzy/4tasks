@@ -57,7 +57,6 @@
     <string name="name_your_price">Nevezd meg az árat</string>
     <string name="caldav_selection_description">Nyílt Internetes szabványon alapuló szinkronizáció</string>
     <string name="davx5_selection_description">Feladatok szinkronizálása DAVx⁵ alkalmazással</string>
-    <string name="etesync_selection_description">Végponttól végpontig titkosított szinkronizáció</string>
     <string name="decsync_selection_description">Fájl alapú szinkronizálás</string>
     <string name="sign_in_with_google">Bejelentkezés Google fiókkal</string>
     <string name="completed">Elvégzett</string>
@@ -172,7 +171,6 @@
     <string name="url_invalid_scheme">http(s)://-el kell kezdődnie</string>
     <string name="url_required">Link szükséges</string>
     <string name="username_required">Felhasználónév szükséges</string>
-    <string name="etesync_account_description">EteSync.com accountot, vagy saját szervert igényel</string>
     <string name="show_advanced_settings">Haladó beállítások mutatása</string>
     <string name="app_settings">Alkalmazás beállításai</string>
     <string name="whats_new">Újdonságok</string>

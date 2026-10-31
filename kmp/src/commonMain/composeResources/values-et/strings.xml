@@ -60,7 +60,6 @@
     <string name="name_your_price">Ütle oma hind</string>
     <string name="caldav_selection_description">Sünkroniseerimine, mis põhineb avatud ja vabadel internetistandarditel</string>
     <string name="davx5_selection_description">Ülesannete sünkroniseerimise võimalus DAVx⁵ rakendusega</string>
-    <string name="etesync_selection_description">Sünkroniseerimine, mis kasutab läbivat krüptimist</string>
     <string name="decsync_selection_description">Failipõhine sünkrooniseerimine</string>
     <string name="sign_in_with_google">Logi sisse Google'i kasutajakontoga</string>
     <string name="completed">Lõpetatud</string>
@@ -170,7 +169,6 @@
     <string name="url_invalid_scheme">Peab algama kujul http(s)://</string>
     <string name="url_required">URL on nõutud</string>
     <string name="username_required">Kasutajanimi on nõutud</string>
-    <string name="etesync_account_description">Eeldab, et sul on olemas kasutajakonto EteSync.com teenusepakkuja serveris või sinu omas vastavas serveris</string>
     <string name="show_advanced_settings">Näita üksikasjalikke seadistusi</string>
     <string name="app_settings">Rakenduse seadistused</string>
     <string name="whats_new">Mida on uut?</string>

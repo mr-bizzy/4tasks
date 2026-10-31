@@ -134,7 +134,6 @@
     <string name="documentation">ஆவணம்</string>
     <string name="preferences_advanced">மேம்படுத்தபட்ட</string>
     <string name="show_advanced_settings">மேம்பட்ட அமைப்புகளைக் காட்டு</string>
-    <string name="etesync_selection_description">திறந்த மூல, இறுதி முதல் இறுதி மறைகுறியாக்க ஒத்திசைவு</string>
     <string name="caldav_selection_description">திறந்த இணைய தரங்களின் அடிப்படையில் ஒத்திசைவு</string>
     <string name="choose_synchronization_service">ஒரு தளத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="collapse_subtasks">துணை பணிகளைச் சுருக்கவும்</string>

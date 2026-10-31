@@ -50,7 +50,6 @@
     <string name="name_your_price">سمي سعرك</string>
     <string name="caldav_selection_description">التزامن على أساس معايير الإنترنت المفتوحة</string>
     <string name="davx5_selection_description">مزامنة مهامك مع تطبيق DAVx⁵</string>
-    <string name="etesync_selection_description">مزامنة مشفرة من طرف إلى طرف</string>
     <string name="decsync_selection_description">مزامنة على اساس الملف</string>
     <string name="sign_in_with_google">تسجيل الدخول بجوجل</string>
     <string name="completed">مكتمل</string>
@@ -151,7 +150,6 @@
     <string name="url_invalid_scheme">يجب أن يبدأ بhttp(s)://</string>
     <string name="url_required">الرابط مطلوب</string>
     <string name="username_required">اسم المستعمل مطلوب</string>
-    <string name="etesync_account_description">يتطلب حسابًا مع EteSync.com أو خادمًا مستضافًا ذاتيًا</string>
     <string name="show_advanced_settings">عرض الإعدادات المتقدمة</string>
     <string name="app_settings">إعدادات التطبيق</string>
     <string name="whats_new">ما الجديد</string>

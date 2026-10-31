@@ -288,7 +288,6 @@
     <string name="filter_after_today">Fra i morgen av</string>
     <string name="filter_any_due_date">Alle tidsfristdatoer</string>
     <string name="filter_today_only">Kun i dag</string>
-    <string name="etesync_selection_description">Ende-til-ende-kryptert synkronisering</string>
     <string name="caldav_selection_description">Synkronisering basert på åpne internettstandarder</string>
     <string name="sort_created">Etter opprettelsestid</string>
     <string name="auto_dismiss_datetime_list">Gjøremålsliste</string>

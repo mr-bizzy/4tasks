@@ -43,7 +43,6 @@
     <string name="cancel">අවලංගු කරන්න</string>
     <string name="caldav_selection_description">විවෘත අන්තර්ජාල ප්‍රමිතීන් මත පදනම් වූ සමමුහුර්තකරණය</string>
     <string name="davx5_selection_description">DAVx⁵ යෙදුම සමඟ ඔබගේ කාර්යයන් සමමුහුර්ත කරන්න</string>
-    <string name="etesync_selection_description">End-to-end encrypted සමමුහුර්තකරණය</string>
     <string name="decsync_selection_description">ගොනු මත පදනම් වූ සමමුහුර්තකරණය</string>
     <string name="sign_in_with_google">Google සමඟ පුරනය වන්න</string>
     <string name="filter_overdue">නියමිත දිනය පසුවූ</string>
@@ -120,7 +119,6 @@
     <string name="url_invalid_scheme">http(s):// වලින් ආරම්භවිය යුතුය</string>
     <string name="url_required">URL අවශ්‍යයි</string>
     <string name="username_required">පරිශීලක නාමය අවශ්‍යයි</string>
-    <string name="etesync_account_description">EteSync.com හෝ ස්වයං සත්කාරක සේවාදායකයක් සමඟ ගිණුමක් අවශ්‍ය වේ</string>
     <string name="show_advanced_settings">උසස් සැකසුම් පෙන්වන්න</string>
     <string name="whats_new">නව විශේෂාංග</string>
     <string name="version_string">%1$s වන අනුවාදය</string>

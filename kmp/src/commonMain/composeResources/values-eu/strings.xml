@@ -45,7 +45,6 @@
     <string name="cancel">Ezeztatu</string>
     <string name="caldav_selection_description">Internet estandar irekietan oinarritutako sinkronizazioa</string>
     <string name="davx5_selection_description">Sinkronizatu zure zereginak DAVx⁵ aplikazioarekin</string>
-    <string name="etesync_selection_description">Muturretik-muturrera zifratutako sinkronizazioa</string>
     <string name="decsync_selection_description">Fitxategietan oinarritutako sinkronizazioa</string>
     <string name="sign_in_with_google">Hasi saioa Google-n</string>
     <string name="completed">Amaituta</string>
@@ -127,7 +126,6 @@
     <string name="url_invalid_scheme">https:// batekin hasi behar da</string>
     <string name="url_required">URL-a ezinbestekoa da</string>
     <string name="username_required">Erabiltzaile-izena ezinbestekoa da</string>
-    <string name="etesync_account_description">EteSync.com zerbitzuko edo zuk zeuk ostatatutako zerbitzari bateko kontua behar du</string>
     <string name="show_advanced_settings">Erakutsi ezarpen aurreratuak</string>
     <string name="whats_new">Zer dago berri</string>
     <string name="version_string">%1$s bertsioa</string>

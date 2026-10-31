@@ -50,7 +50,6 @@
     <string name="name_your_price">Prezo flexible</string>
     <string name="caldav_selection_description">Sincronización basada en estándares abertos de internet</string>
     <string name="davx5_selection_description">Sincronizar tarefas co aplicativo DAVx⁵</string>
-    <string name="etesync_selection_description">Sincronización con cifrado par a par</string>
     <string name="decsync_selection_description">Sincronización baseada en ficheiros</string>
     <string name="sign_in_with_google">Acceso con Google</string>
     <string name="completed">Finalizada</string>
@@ -143,7 +142,6 @@
     <string name="url_invalid_scheme">Ten que comezar cun http(s)://</string>
     <string name="url_required">Precísase a URL</string>
     <string name="username_required">Precísase nome de usuario</string>
-    <string name="etesync_account_description">Require unha conta con EteSync.com ou un servidor autoaloxado</string>
     <string name="show_advanced_settings">Amosar configuración avanzada</string>
     <string name="app_settings">Configuración da aplicación</string>
     <string name="whats_new">Que hai novo</string>

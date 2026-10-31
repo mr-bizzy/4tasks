@@ -287,7 +287,6 @@
     <string name="expand_subtasks">Desencoller as subtarefas</string>
     <string name="collapse_subtasks">Encoller as subtarefas</string>
     <string name="choose_synchronization_service">Escolle unha plataforma</string>
-    <string name="etesync_selection_description">Sincronización con cifrado par a par</string>
     <string name="decsync_selection_description">Sincronización baseada en ficheiros</string>
     <string name="davx5_selection_description">Sincronizar tarefas co aplicativo DAVx⁵</string>
     <string name="color_wheel">Roda de cores</string>

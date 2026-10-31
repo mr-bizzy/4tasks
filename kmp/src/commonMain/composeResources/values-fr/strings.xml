@@ -65,7 +65,6 @@
     <string name="name_your_price">Donnez votre prix</string>
     <string name="caldav_selection_description">Synchronisation basée sur des normes d'Internet ouvertes</string>
     <string name="davx5_selection_description">Synchroniser vos tâches avec l’application « DAVx⁵ »</string>
-    <string name="etesync_selection_description">Synchronisation du chiffrement de bout en bout</string>
     <string name="decsync_selection_description">Synchronisation basée sur les fichiers</string>
     <string name="sign_in_with_google">Connectez-vous avec « Google »</string>
     <string name="completed">Terminé</string>
@@ -184,7 +183,6 @@
     <string name="url_invalid_scheme">Doit commencer par http(s)://</string>
     <string name="url_required">Adresse web requise</string>
     <string name="username_required">Nom d'utilisateur requis</string>
-    <string name="etesync_account_description">Nécessite un compte « EteSync.com » ou un serveur auto-hébergé</string>
     <string name="show_advanced_settings">Afficher les paramètres avancés</string>
     <string name="app_settings">Paramètres de l'application</string>
     <string name="logout_confirmation">Se déconnecter de %1$s ?</string>

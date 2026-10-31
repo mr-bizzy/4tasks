@@ -245,7 +245,6 @@
     <string name="documentation">Documentazione (online)</string>
     <string name="preferences_advanced">Avanzate</string>
     <string name="show_advanced_settings">Mostra impostazioni avanzate</string>
-    <string name="etesync_selection_description">Sincronizzazione con crittografia end-to-end</string>
     <string name="caldav_selection_description">Sincronizzazione basata su standard aperti di internet</string>
     <string name="choose_synchronization_service">Seleziona una piattaforma</string>
     <string name="collapse_subtasks">Comprimi attività secondarie</string>

@@ -280,7 +280,6 @@
     <string name="widget_show_dividers">区切り線を表示</string>
     <string name="whats_new">更新情報</string>
     <string name="caldav_selection_description">オープンインターネット標準による同期</string>
-    <string name="etesync_selection_description">エンドツーエンド暗号化による同期</string>
     <string name="chip_appearance_text_and_icon">文字とアイコン</string>
     <string name="chip_appearance_text_only">文字のみ</string>
     <string name="auto_dismiss_datetime_list_summary">タスクリストから選択時に自動で閉じる</string>

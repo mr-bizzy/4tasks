@@ -65,7 +65,6 @@
     <string name="name_your_price">Zaplaťte libovolnou částku</string>
     <string name="caldav_selection_description">Synchronizace založená na otevřených internetových standardech</string>
     <string name="davx5_selection_description">Synchronizujte své úkoly pomocí aplikace DAVx⁵</string>
-    <string name="etesync_selection_description">Synchronizace šifrovaná mezi koncovými body</string>
     <string name="decsync_selection_description">Synchronizace založená na souborech</string>
     <string name="sign_in_with_google">Přihlášení přes Google</string>
     <string name="completed">Splněný</string>
@@ -185,7 +184,6 @@
     <string name="url_invalid_scheme">Musí začínat na http(s)://</string>
     <string name="url_required">Zadejte URL</string>
     <string name="username_required">Zadejte uživatelské jméno</string>
-    <string name="etesync_account_description">Vyžaduje účet na EteSync.com nebo vlastní server</string>
     <string name="show_advanced_settings">Zobrazit pokročilé možnosti</string>
     <string name="app_settings">Nastavení aplikace</string>
     <string name="logout_confirmation">Odhlásit se z %1$s?</string>

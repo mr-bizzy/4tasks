@@ -298,7 +298,6 @@
     <string name="background_location_permission_required">Táto aplikácia zbiera údaje o vašej polohe, aby fungovali upozornenia podľa polohy aj keď aplikáciu práve nepoužívate.</string>
     <string name="invalid_backup_file">Neplatný súbor zálohy</string>
     <string name="choose_synchronization_service">Vyberte službu</string>
-    <string name="etesync_selection_description">Synchronizácia šifrovaná medzi koncovými uzlami</string>
     <string name="decsync_selection_description">Synchronizácia založená na súboroch</string>
     <string name="davx5_selection_description">Synchronizujte svoje úlohy pomocou aplikácie DAVx⁵</string>
     <string name="show_advanced_settings">Zobraziť pokročilé možnosti</string>

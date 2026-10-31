@@ -50,7 +50,6 @@
     <string name="name_your_price">구독 금액 정하기</string>
     <string name="caldav_selection_description">개방형 인터넷 표준을 바탕으로 한 동기화</string>
     <string name="davx5_selection_description">DAVx⁵ 앱과 내 할일 동기화</string>
-    <string name="etesync_selection_description">종단간 암호화된 동기화</string>
     <string name="decsync_selection_description">파일 기반 동기화</string>
     <string name="sign_in_with_google">구글을 이용해서 로그인</string>
     <string name="completed">완료</string>
@@ -142,7 +141,6 @@
     <string name="url_invalid_scheme">반드시 http(s):// 로 시작해야 합니다</string>
     <string name="url_required">URL 필수</string>
     <string name="username_required">계정명 필수</string>
-    <string name="etesync_account_description">EteSync.com이나 자체호스팅 서버의 계정 필요</string>
     <string name="show_advanced_settings">고급 설정 표시</string>
     <string name="app_settings">앱 설정</string>
     <string name="whats_new">새 기능</string>

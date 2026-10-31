@@ -286,7 +286,6 @@
     <string name="back">عودة</string>
     <string name="davx5_selection_description">مزامنة مهامك مع تطبيق DAVx⁵</string>
     <string name="decsync_selection_description">مزامنة على اساس الملف</string>
-    <string name="etesync_selection_description">مزامنة مشفرة من طرف إلى طرف</string>
     <string name="caldav_selection_description">التزامن على أساس معايير الإنترنت المفتوحة</string>
     <string name="collapse_subtasks">طي المهام الفرعية</string>
     <string name="expand_subtasks">وسع المهام الفرعية</string>

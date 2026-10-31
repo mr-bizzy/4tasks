@@ -57,7 +57,6 @@
     <string name="name_your_price">価格はあなた次第</string>
     <string name="caldav_selection_description">オープンインターネット標準による同期</string>
     <string name="davx5_selection_description">DAVx⁵ でタスクを同期する</string>
-    <string name="etesync_selection_description">エンドツーエンド暗号化による同期</string>
     <string name="decsync_selection_description">ファイルベースによる同期</string>
     <string name="sign_in_with_google">Google でサインイン</string>
     <string name="completed">完了</string>
@@ -180,7 +179,6 @@
     <string name="url_invalid_scheme">http(s):// で始める必要があります</string>
     <string name="url_required">URL が必要です</string>
     <string name="username_required">ユーザー名が必要です</string>
-    <string name="etesync_account_description">EteSync.com またはセルフホストサーバーのアカウントが必要です</string>
     <string name="show_advanced_settings">詳細な設定を表示</string>
     <string name="app_settings">アプリ設定</string>
     <string name="whats_new">更新情報</string>

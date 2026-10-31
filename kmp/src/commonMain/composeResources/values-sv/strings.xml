@@ -57,7 +57,6 @@
     <string name="name_your_price">Ange ditt pris</string>
     <string name="caldav_selection_description">Synkronisering baserad på öppna internetstandarder</string>
     <string name="davx5_selection_description">Synkronisera dina uppgifter med DAVx⁵-appen</string>
-    <string name="etesync_selection_description">Ände-till-ände-krypterad synkronisering</string>
     <string name="decsync_selection_description">Filbaserad synkronisering</string>
     <string name="sign_in_with_google">Logga in med Google</string>
     <string name="completed">Slutförd</string>
@@ -153,7 +152,6 @@
     <string name="url_invalid_scheme">Måste börja med http(s)://</string>
     <string name="url_required">URL krävs</string>
     <string name="username_required">Användarnamn krävs</string>
-    <string name="etesync_account_description">Kräver ett konto hos EteSync.com eller en egen värdserver</string>
     <string name="show_advanced_settings">Visa avancerade inställningar</string>
     <string name="app_settings">Appinställningar</string>
     <string name="whats_new">Nyheter</string>

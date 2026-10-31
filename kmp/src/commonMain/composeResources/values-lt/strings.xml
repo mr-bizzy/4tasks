@@ -45,7 +45,6 @@
     <string name="cancel">Atšaukti</string>
     <string name="caldav_selection_description">Sinchronizacija paremta atviro interneto standartais</string>
     <string name="davx5_selection_description">Sinchronizuoti užduotis su DAVx⁵ programėle</string>
-    <string name="etesync_selection_description">Sinchronizacija paremta abipusiu šifravimu</string>
     <string name="decsync_selection_description">Failais paremta sinchronizacija</string>
     <string name="sign_in_with_google">Prisijungti naudojant Google</string>
     <string name="completed">Įvykdyta</string>
@@ -129,7 +128,6 @@
     <string name="url_invalid_scheme">Turi prasidėti http(s)://</string>
     <string name="url_required">Reikalingas URL</string>
     <string name="username_required">Reikalingas vartotojo vardas</string>
-    <string name="etesync_account_description">Reikia paskyros EteSync.com arba asmeninis serveris</string>
     <string name="show_advanced_settings">Rodyti išplėstinius nustatymus</string>
     <string name="whats_new">Kas naujo</string>
     <string name="version_string">Versija %1$s</string>

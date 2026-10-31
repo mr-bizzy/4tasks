@@ -65,7 +65,6 @@
     <string name="name_your_price">Gönlünüzden kopan</string>
     <string name="caldav_selection_description">Açık internet standartlarında eşzamanlama</string>
     <string name="davx5_selection_description">DAVx⁵ uygulamasıyla görevlerinizi eşzamanlayın</string>
-    <string name="etesync_selection_description">Uçtan uca şifreli eşzamanlama</string>
     <string name="decsync_selection_description">Dosya tabanlı eşzamanlama</string>
     <string name="sign_in_with_google">Google ile oturum aç</string>
     <string name="completed">Tamamlandı</string>
@@ -182,7 +181,6 @@
     <string name="url_invalid_scheme">http(s):// ile başlamalı</string>
     <string name="url_required">URL gerekli</string>
     <string name="username_required">Kullanıcı adı gerekli</string>
-    <string name="etesync_account_description">EteSync.com hesabı veya kendi kendine barındırılan sunucu gerektirir</string>
     <string name="show_advanced_settings">Gelişmiş ayarları göster</string>
     <string name="app_settings">Uygulama ayarları</string>
     <string name="logout_confirmation">%1$s oturumu kapatılsın mı?</string>

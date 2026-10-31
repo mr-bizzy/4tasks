@@ -57,7 +57,6 @@
     <string name="name_your_price">Наведи цену</string>
     <string name="caldav_selection_description">Синхронизација заснована на стандардима отвореног интернета</string>
     <string name="davx5_selection_description">Синхронизуј своје задатке са DAVx⁵ апликацијом</string>
-    <string name="etesync_selection_description">End-to-end енкриптована синхронизација</string>
     <string name="decsync_selection_description">Синхронизација базирана на датотеци</string>
     <string name="sign_in_with_google">Пријави се путем Гугла</string>
     <string name="completed">Завршено</string>
@@ -162,7 +161,6 @@
     <string name="url_invalid_scheme">Мора почети са http(s)://</string>
     <string name="url_required">URL је неопходан</string>
     <string name="username_required">Корисничко име је неопходно</string>
-    <string name="etesync_account_description">Захтева налог код ,,EteSync.com'' или приватни сервер</string>
     <string name="show_advanced_settings">Прикажи напредна подешавања</string>
     <string name="app_settings">Подешавања апликације</string>
     <string name="whats_new">Шта је ново</string>

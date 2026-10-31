@@ -238,7 +238,6 @@
     <string name="theme_system_default">Systemstandard</string>
     <string name="choose_synchronization_service">Einen Dienst wählen</string>
     <string name="caldav_selection_description">Synchronisierung basierend auf offenen Internetstandards</string>
-    <string name="etesync_selection_description">Ende-zu-Ende-verschlüsselte Synchronisierung</string>
     <string name="show_advanced_settings">Erweiterte Einstellungen anzeigen</string>
     <string name="preferences_advanced">Erweitert</string>
     <string name="documentation">Dokumentation</string>

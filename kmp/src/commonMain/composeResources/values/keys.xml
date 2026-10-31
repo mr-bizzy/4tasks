@@ -24,8 +24,6 @@
     <string name="gtasks_GPr_header" translatable="false">Google Tasks</string>
     <string name="microsoft" translatable="false">Microsoft To&#xA0;Do</string>
     <string name="tasks_org_account" translatable="false">Tasks.org Cloud</string>
-    <string name="etebase_url" translatable="false">https://api.etebase.com/partner/tasksorg/</string>
-    <string name="url_etesync" translatable="false">https://tasks.org/etesync</string>
     <string name="url_google_play" translatable="false">https://play.google.com/store/apps/details?id=org.tasks</string>
     <string name="pricing_cloud_annual_price" translatable="false">$2.49</string>
     <string name="pricing_cloud_monthly_price" translatable="false">$2.99</string>

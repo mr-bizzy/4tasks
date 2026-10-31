@@ -15,7 +15,6 @@ object TasksUrls {
     const val DOWNLOAD = "https://tasks.org/download"
     const val DAVX5 = "https://tasks.org/davx5"
     const val DECSYNC = "https://tasks.org/decsync"
-    const val ETESYNC = "https://tasks.org/etesync"
     const val TASKER = "https://tasks.org/help/tasker"
     const val SYNC = "https://tasks.org/sync"
     const val GOOGLE_TASKS = "https://mr-biz.uk/4tasks/manual/#google"

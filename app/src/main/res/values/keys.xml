@@ -15,12 +15,10 @@
   <string name="tasks_org_account">Tasks.org Cloud</string>
   <string name="gtasks_GPr_header">Google Tasks</string>
   <string name="microsoft">Microsoft To&#xA0;Do</string>
-  <string name="etebase_url">https://api.etebase.com/partner/tasksorg/</string>
   <string name="help_url_sync">https://tasks.org/sync</string>
 
   <string name="url_davx5">https://tasks.org/davx5</string>
   <string name="url_caldav">https://tasks.org/caldav</string>
-  <string name="url_etesync">https://tasks.org/etesync</string>
   <string name="url_decsync">https://tasks.org/decsync</string>
   <string name="url_tasker">https://tasks.org/help/tasker</string>
   <string name="url_donate">https://tasks.org/donate</string>

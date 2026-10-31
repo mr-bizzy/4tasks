@@ -65,7 +65,6 @@
     <string name="name_your_price">您愿意支付多少费用</string>
     <string name="caldav_selection_description">基于开放的互联网标准的同步</string>
     <string name="davx5_selection_description">使用 DAVx⁵ 应用同步您的任务</string>
-    <string name="etesync_selection_description">端到端加密的同步</string>
     <string name="decsync_selection_description">基于文件的同步</string>
     <string name="sign_in_with_google">使用 Google 登录</string>
     <string name="completed">已完成</string>
@@ -180,7 +179,6 @@
     <string name="url_invalid_scheme">必须以 http(s):// 开头</string>
     <string name="url_required">请填写网址</string>
     <string name="username_required">请填写用户名</string>
-    <string name="etesync_account_description">需要一个 EteSync.com 账号或一个自托管服务器</string>
     <string name="show_advanced_settings">显示高级设置</string>
     <string name="logout_confirmation">退出登录 %1$s ？</string>
     <string name="caldav_server_owncloud">ownCloud</string>

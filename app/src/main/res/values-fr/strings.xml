@@ -241,7 +241,6 @@
     <string name="display_name">Afficher le nom</string>
     <string name="choose_synchronization_service">Sélectionner une plate-forme</string>
     <string name="caldav_selection_description">Synchronisation basée sur des normes d\'Internet ouvertes</string>
-    <string name="etesync_selection_description">Synchronisation du chiffrement de bout en bout</string>
     <string name="show_advanced_settings">Afficher les paramètres avancés</string>
     <string name="help_and_feedback">Aide et remarques</string>
     <string name="documentation">Documentation</string>

@@ -39,14 +39,11 @@ import tasks.kmp.generated.resources.davx5_selection_description
 import tasks.kmp.generated.resources.decsync
 import tasks.kmp.generated.resources.decsync_selection_description
 import tasks.kmp.generated.resources.desktop
-import tasks.kmp.generated.resources.etesync
-import tasks.kmp.generated.resources.etesync_selection_description
 import tasks.kmp.generated.resources.google_tasks_selection_description
 import tasks.kmp.generated.resources.gtasks_GPr_header
 import tasks.kmp.generated.resources.ios
 import tasks.kmp.generated.resources.ic_davx5_icon_green_bg
 import tasks.kmp.generated.resources.ic_decsync
-import tasks.kmp.generated.resources.ic_etesync
 import tasks.kmp.generated.resources.ic_ksync
 import tasks.kmp.generated.resources.ic_google
 import tasks.kmp.generated.resources.ic_microsoft_tasks
@@ -280,18 +277,6 @@ val worksWithCatalog = listOf(
                 links = WorksWithLinks(
                     web = TasksUrls.DECSYNC,
                     fdroid = "org.decsync.cc",
-                ),
-            ),
-            WorksWithEntry(
-                title = Res.string.etesync,
-                description = Res.string.etesync_selection_description,
-                iconDrawable = Res.drawable.ic_etesync,
-                tintIcon = false,
-                tags = setOf(WorksWithTag.ANDROID, WorksWithTag.SYNC),
-                links = WorksWithLinks(
-                    web = TasksUrls.ETESYNC,
-                    play = "com.etesync.syncadapter",
-                    fdroid = "com.etesync.syncadapter",
                 ),
             ),
             WorksWithEntry(

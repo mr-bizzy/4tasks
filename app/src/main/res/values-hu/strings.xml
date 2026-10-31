@@ -234,7 +234,6 @@
     <string name="display_name">Megjelenített név</string>
     <string name="choose_synchronization_service">Platform választása</string>
     <string name="caldav_selection_description">Nyílt Internetes szabványon alapuló szinkronizáció</string>
-    <string name="etesync_selection_description">Végponttól végpontig titkosított szinkronizáció</string>
     <string name="show_advanced_settings">Haladó beállítások mutatása</string>
     <string name="help_and_feedback">Segítség és visszajelzés</string>
     <string name="documentation">Dokumentáció</string>

@@ -42,7 +42,6 @@
     <string name="name_your_price">Tetapkan harga dari Anda</string>
     <string name="caldav_selection_description">Sinkronisasi yang berdasarkan pada standar internet terbuka</string>
     <string name="davx5_selection_description">Sinkronkan tugas Anda dengan aplikasi DAVx⁵</string>
-    <string name="etesync_selection_description">Enkripsi klien-ke-klien bersumber terbuka</string>
     <string name="decsync_selection_description">Sinkronisasi berdasarkan berkas</string>
     <string name="sign_in_with_google">Masuk dengan Google</string>
     <string name="completed">Selesai</string>
@@ -170,7 +169,6 @@
     <string name="url_invalid_scheme">Harus diawali dengan http(s)://</string>
     <string name="url_required">URL diperlukan</string>
     <string name="username_required">Nama pengguna diperlukan</string>
-    <string name="etesync_account_description">Membutuhkan akun EteSync.com atau server hosting-mandiri</string>
     <string name="show_advanced_settings">Tampilkan pengaturan lanjutan</string>
     <string name="app_settings">Pengaturan aplikasi</string>
     <string name="whats_new">Apa yang Baru</string>

@@ -137,7 +137,6 @@
     <string name="show_advanced_settings">Hiện cài đặt nâng cao</string>
     <string name="davx5_selection_description">Đồng bộ hoá các công việc của bạn bằng ứng dụng DAVx⁵</string>
     <string name="decsync_selection_description">Đồng bộ hoá dựa trên từng tệp</string>
-    <string name="etesync_selection_description">Đồng bộ hoá được mã hoá đầu cuối</string>
     <string name="caldav_selection_description">Đồng bộ hoá dựa trên các tiêu chuẩn internet mở</string>
     <string name="choose_synchronization_service">Chọn nền tảng</string>
     <string name="collapse_subtasks">Thu gọn các công việc con</string>

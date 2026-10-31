@@ -57,7 +57,6 @@
     <string name="name_your_price">Elekti propran prezon</string>
     <string name="caldav_selection_description">Sinkronigo bazite el malfermaj interretaj normoj</string>
     <string name="davx5_selection_description">Sinkronigi viajn taskojn kun la DAVx⁵ aplikaĵo</string>
-    <string name="etesync_selection_description">Fin-al-fina ĉifrada sinkronigo</string>
     <string name="decsync_selection_description">Perdosiersistema sinkronigo</string>
     <string name="sign_in_with_google">Ensaluti per Google</string>
     <string name="completed">Finite</string>
@@ -162,7 +161,6 @@
     <string name="url_invalid_scheme">Devas komenci per http(s)://</string>
     <string name="url_required">URL bezonata</string>
     <string name="username_required">Uzantnomo bezonata</string>
-    <string name="etesync_account_description">Bezonas konton de EteSync.com aŭ memgastigan servilon</string>
     <string name="show_advanced_settings">Vidigi altnivelajn agordojn</string>
     <string name="app_settings">Agordoj de Aplikaĵo</string>
     <string name="whats_new">Novaĵoj</string>

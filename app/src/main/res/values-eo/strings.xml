@@ -328,7 +328,6 @@
     <string name="back_button_saves_task">Butono reen konservas taskon</string>
     <string name="restart_required">Restartigu Tasks por efikigi ĉi tiun ŝanĝon</string>
     <string name="restart_now">Restartigi tuj</string>
-    <string name="etesync_selection_description">Fin-al-fina ĉifrada sinkronigo</string>
     <string name="backup_location_warning">AVERTO: Dosieroj situas en %s estos forigitaj se Tasks malinstaliĝos! Bonvolu elekti propran lokon por malpermesi ke Android forigos viajn dosierojn.</string>
     <string name="snackbar_task_completed">Tasko finita</string>
     <string name="snackbar_tasks_completed">%d taskoj estas finitaj</string>

@@ -45,7 +45,6 @@
     <string name="name_your_price">Đặt giá của bạn</string>
     <string name="caldav_selection_description">Đồng bộ hoá dựa trên các tiêu chuẩn internet mở</string>
     <string name="davx5_selection_description">Đồng bộ hoá các công việc của bạn bằng ứng dụng DAVx⁵</string>
-    <string name="etesync_selection_description">Đồng bộ hoá được mã hoá đầu cuối</string>
     <string name="decsync_selection_description">Đồng bộ hoá dựa trên từng tệp</string>
     <string name="sign_in_with_google">Đăng nhập bằng Google</string>
     <string name="completed">Hoàn tất</string>
@@ -133,7 +132,6 @@
     <string name="url_invalid_scheme">Phải bắt đầu bằng http(s)://</string>
     <string name="url_required">Yêu cầu URL</string>
     <string name="username_required">Yêu cầu tên người dùng</string>
-    <string name="etesync_account_description">Yêu cầu một tài khoản trên EteSync.com hoặc một máy chủ mà bạn vận hành</string>
     <string name="show_advanced_settings">Hiện cài đặt nâng cao</string>
     <string name="app_settings">Cài đặt ứng dụng</string>
     <string name="whats_new">Có gì mới</string>
