@@ -243,7 +243,6 @@ com.materialkolor:material-kolor-android:5.0.1  -  The MIT License
 com.mikepenz:iconics-core:5.5.0-b01  -  Apache-2.0
 com.mikepenz:iconics-typeface-api:5.5.0-b01  -  Apache-2.0
 com.rubiconproject.oss:jchronic:0.2.6  -  MIT License
-com.squareup.okhttp3:logging-interceptor:3.12.1  -  Apache 2.0
 com.squareup.okhttp3:okhttp:5.5.0  -  The Apache Software License, Version 2.0
 com.squareup.okhttp3:okhttp-android:5.5.0  -  The Apache Software License, Version 2.0
 com.squareup.okio:okio:3.18.1  -  The Apache Software License, Version 2.0
